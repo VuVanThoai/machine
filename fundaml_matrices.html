@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</title><!-- <script>
+var pageProperties = {
+    
+    category: "FundaML",
+    
+    url: "/2017/10/20/fundaml_matrices/",
+    title: "FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/2017/10/20/fundaml_matrices/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/2017/10/20/fundaml_matrices/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2017-10-28"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="FundaML"><meta property="article:tag" content="Numpy"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2017/10/20/fundaml_matrices/',
+'title': 'FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="fundaml.html">FundaML.com</a></li>
+                  
+                
+              
+                
+              
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="fundaml_vectors.html">&laquo; FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="fundaml_vectors.html">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</h1>
+
+
+<ul class="tags"><a href="/tags#Numpy" class="tag">Numpy</a>
+   
+</ul><span class="post-date" style="color: gray; font-style: italic;">Oct 28, 2017
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <p><strong>T&#7845;t c&#7843; c&aacute;c b&agrave;i t&#7853;p trong b&agrave;i vi&#7871;t n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n tr&#7921;c ti&#7871;p tr&ecirc;n tr&igrave;nh duy&#7879;t qua trang web <a href="https://fundaml.com">FundaML</a></strong></p>
+
+<!-- MarkdownTOC -->
+
+<ul><li><a href="#-mang-nhieu-chieu">2.0. M&#7843;ng nhi&#7873;u chi&#7873;u</a></li>
+  <li><a href="#-khoi-tao-mot-ma-tran">2.1. Kh&#7903;i t&#7841;o m&#7897;t ma tr&#7853;n</a>
+    <ul><li><a href="#-khoi-tao-mot-ma-tran-1">2.1.1. Kh&#7903;i t&#7841;o m&#7897;t ma tr&#7853;n</a></li>
+    </ul></li>
+  <li><a href="#-ma-tran-don-vi-va-ma-tran-duong-cheo">2.2. Ma tr&#7853;n &#273;&#417;n v&#7883; v&agrave; ma tr&#7853;n &#273;&#432;&#7901;ng ch&eacute;o</a>
+    <ul><li><a href="#-ma-tran-don-vi">2.2.1. Ma tr&#7853;n &#273;&#417;n v&#7883;</a></li>
+      <li><a href="#-ma-tran-duong-cheo">2.2.2. Ma tr&#7853;n &#273;&#432;&#7901;ng ch&eacute;o</a></li>
+    </ul></li>
+  <li><a href="#-kich-thuoc-cua-ma-tran">2.3. K&iacute;ch th&#432;&#7899;c c&#7911;a ma tr&#7853;n</a></li>
+  <li><a href="#-truy-cap-vao-tung-phan-tu-cua-ma-tran">2.4. Truy c&#7853;p v&agrave;o t&#7915;ng ph&#7847;n t&#7917; c&#7911;a ma tr&#7853;n</a>
+    <ul><li><a href="#-truy-cap-vao-tung-phan-tu">2.4.1. Truy c&#7853;p v&agrave;o t&#7915;ng ph&#7847;n t&#7917;</a>
+        <ul><li><a href="#-cach--giong-voi-list">2.4.1.1. C&aacute;ch 1: gi&#7889;ng v&#7899;i list</a></li>
+          <li><a href="#-cach--giong-nhu-matlab">2.4.1.2. C&aacute;ch 2: gi&#7889;ng nh&#432; Matlab</a></li>
+        </ul></li>
+      <li><a href="#-truy-cap-vao-hangcot">2.4.2. Truy c&#7853;p v&agrave;o h&agrave;ng/c&#7897;t</a></li>
+    </ul></li>
+  <li><a href="#-truy-cap-vao-nhieu-phan-tu-cua-ma-tran">2.5. Truy c&#7853;p v&agrave;o nhi&#7873;u ph&#7847;n t&#7917; c&#7911;a ma tr&#7853;n</a>
+    <ul><li><a href="#-nhieu-phan-tu-trong-cung-mot-hang">2.5.1. Nhi&#7873;u ph&#7847;n t&#7917; trong c&ugrave;ng m&#7897;t h&agrave;ng</a></li>
+      <li><a href="#-nhieu-phan-tu-trong-cung-mot-cot">2.5.2. Nhi&#7873;u ph&#7847;n t&#7917; trong c&ugrave;ng m&#7897;t c&#7897;t</a></li>
+      <li><a href="#-nhieu-hang-nhieu-cot">2.5.3. Nhi&#7873;u h&agrave;ng, nhi&#7873;u c&#7897;t</a></li>
+      <li><a href="#-cap-cac-toa-do">2.5.4. C&#7863;p c&aacute;c to&#7841; &#273;&#7897;</a></li>
+    </ul></li>
+  <li><a href="#-npsum-npmin-npmax-npmean-cho-mang-nhieu-chieu">2.6. np.sum, np.min, np.max, np.mean cho m&#7843;ng nhi&#7873;u chi&#7873;u</a>
+    <ul><li><a href="#keepdims--true"><code class="language-plaintext highlighter-rouge">keepdims = True</code></a></li>
+    </ul></li>
+  <li><a href="#-cac-phep-toan-tac-dong-den-moi-phan-tu-cua-ma-tran">2.7. C&aacute;c ph&eacute;p to&aacute;n t&aacute;c &#273;&#7897;ng &#273;&#7871;n m&#7885;i ph&#7847;n t&#7917; c&#7911;a ma tr&#7853;n</a>
+    <ul><li><a href="#-tinh-toan-giua-mot-mang-hai-chieu-va-mot-so-vo-huong">2.7.1. T&iacute;nh to&aacute;n gi&#7919;a m&#7897;t m&#7843;ng hai chi&#7873;u v&agrave; m&#7897;t s&#7889; v&ocirc; h&#432;&#7899;ng</a></li>
+      <li><a href="#-npabs-npsin-npexp-">2.7.2. np.abs, np.sin, np.exp, &hellip;</a></li>
+    </ul></li>
+  <li><a href="#-cac-phep-toan-giua-hai-ma-tran-i">2.8. C&aacute;c ph&eacute;p to&aacute;n gi&#7919;a hai ma tr&#7853;n I</a></li>
+  <li><a href="#-chuyen-vi-ma-tran-reshape-ma-tran">2.9. Chuy&#7879;n v&#7883; ma tr&#7853;n, Reshape ma tr&#7853;n</a>
+    <ul><li><a href="#-chuyen-vi-ma-tran">2.9.1 Chuy&#7875;n v&#7883; ma tr&#7853;n</a></li>
+      <li><a href="#-reshape">2.9.2. Reshape</a></li>
+      <li><a href="#-thu-tu-cua-phep-toan-reshape">2.9.3. Th&#7913; t&#7921; c&#7911;a ph&eacute;p to&aacute;n reshape</a></li>
+    </ul></li>
+  <li><a href="#-cac-phep-toan-giua-ma-tran-va-vector">2.10. C&aacute;c ph&eacute;p to&aacute;n gi&#7919;a ma tr&#7853;n v&agrave; vector</a></li>
+  <li><a href="#-tich-giua-hai-ma-tran-tich-giua-ma-tran-va-vector">2.11. T&iacute;ch gi&#7919;a hai ma tr&#7853;n, t&iacute;ch gi&#7919;a ma tr&#7853;n v&agrave; vector</a>
+    <ul><li><a href="#-tich-giua-hai-ma-tran">2.11.1. T&iacute;ch gi&#7919;a hai ma tr&#7853;n</a></li>
+      <li><a href="#-tich-giua-mot-ma-tran-va-mot-vector">2.11.2. T&iacute;ch gi&#7919;a m&#7897;t ma tr&#7853;n v&agrave; m&#7897;t vector</a></li>
+    </ul></li>
+  <li><a href="#-softmax-iii---phien-ban-tong-quat">2.12. Softmax III - Phi&ecirc;n b&#7843;n t&#7893;ng qu&aacute;t</a></li>
+</ul><!-- /MarkdownTOC --><p><a name="-mang-nhieu-chieu" href="fundaml_matrices.html"></a></p>
+
+<h2 id="20-m&#7843;ng-nhi&#7873;u-chi&#7873;u">2.0. M&#7843;ng nhi&#7873;u chi&#7873;u</h2>
+<p>Trong Numpy, ng&#432;&#7901;i ta th&#432;&#7901;ng d&ugrave;ng m&#7843;ng numpy hai chi&#7873;u &#273;&#7875; th&#7875; hi&#7879;n m&#7897;t ma tr&#7853;n. M&#7843;ng hai chi&#7873;u c&oacute; th&#7875; coi l&agrave; m&#7897;t m&#7843;ng c&#7911;a c&aacute;c m&#7843;ng m&#7897;t chi&#7873;u. Trong &#273;&oacute;, m&#7895;i <em>m&#7843;ng nh&#7887; m&#7897;t chi&#7873;u</em> t&#432;&#417;ng &#7913;ng v&#7899;i m&#7897;t h&agrave;ng c&#7911;a ma tr&#7853;n.</p>
+
+<p>N&oacute;i c&aacute;ch kh&aacute;c, ma tr&#7853;n c&oacute; th&#7875; &#273;&#432;&#7907;c coi l&agrave; m&#7843;ng c&#7911;a c&aacute;c vector h&agrave;ng - m&#7895;i vector h&agrave;ng &#273;&#432;&#7907;c bi&#7875;u di&#7877;n b&#7857;ng m&#7897;t m&#7843;ng numpy m&#7897;t chi&#7873;u.</p>
+
+<hr><div class="imgcap">
+<img src="images/fundaml-matrix.png" align="center" width="400"></div>
+<hr><p>V&iacute; d&#7909;, n&#7871;u m&#7897;t m&#7843;ng numpy hai chi&#7873;u <code class="language-plaintext highlighter-rouge">a</code> m&ocirc; t&#7843; ma tr&#7853;n:
+\(\left[
+\begin{matrix} 1 &amp; 2 \\ 3 &amp; 4 \end{matrix} \right]
+\), khi &#273;&#432;&#7907;c in ra n&oacute; s&#7869; c&oacute; d&#7841;ng:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p>&#7902; &#273;&acirc;y ch&uacute;ng ta c&oacute; th&#7875; nh&igrave;n th&#7845;y ba m&#7843;ng, m&#7895;i m&#7843;ng &#273;&#432;&#7907;c th&#7875; hi&#7879;n b&#7857;ng m&#7897;t c&#7863;p 
+&#273;&oacute;ng m&#7903; ngo&#7863;c vu&ocirc;ng <code class="language-plaintext highlighter-rouge">[]</code>:</p>
+
+<ul><li>
+    <p>hai m&#7843;ng <code class="language-plaintext highlighter-rouge">[1, 2]</code> v&agrave; <code class="language-plaintext highlighter-rouge">[3, 4]</code> th&#7875; hi&#7879;n c&aacute;c h&agrave;ng c&#7911;a ma tr&#7853;n. Ch&uacute;ng l&agrave; c&aacute;c 
+m&#7843;ng m&#7897;t chi&#7873;u.</p>
+  </li>
+  <li>
+    <p>m&#7843;ng <code class="language-plaintext highlighter-rouge">[[1, 2], [3, 4]]</code> c&oacute; hai ph&acirc;n t&#7917;, m&#7895;i ph&#7847;n t&#7917; l&agrave; m&#7897;t h&agrave;ng c&#7911;a ma tr&#7853;n.</p>
+  </li>
+</ul><p>Theo quy &#432;&#7899;c c&#7911;a Numpy, ch&uacute;ng ta c&#7847;n &#273;i t&#7915; m&#7843;ng ngo&agrave;i c&ugrave;ng t&#7899;i c&aacute;c m&#7843;ng trong:</p>
+
+<ul><li>
+    <p>m&#7843;ng l&#7899;n nh&#7845;t l&agrave; <code class="language-plaintext highlighter-rouge">[[1, 2], [3, 4]]</code> &#273;&#432;&#7907;c coi l&agrave; m&#7843;ng &#7913;ng v&#7899;i <code class="language-plaintext highlighter-rouge">axis = 0</code>. 
+Trong m&#7843;ng n&agrave;y, th&agrave;nh ph&#7847;n th&#7913; nh&#7845;t l&agrave; <code class="language-plaintext highlighter-rouge">[1, 2]</code>, th&agrave;nh ph&#7847;n th&#7913; hai l&agrave; <code class="language-plaintext highlighter-rouge">[3, 4]</code>.</p>
+  </li>
+  <li>
+    <p>hai m&#7843;ng l&#7899;n th&#7913; hai l&agrave; <code class="language-plaintext highlighter-rouge">[1, 2]</code> v&agrave; <code class="language-plaintext highlighter-rouge">[3, 4]</code> &#273;&#432;&#7907;c coi l&agrave; c&aacute;c m&#7843;ng &#7913;ng v&#7899;i <code class="language-plaintext highlighter-rouge">axis = 1</code>.</p>
+  </li>
+</ul><p>(Xem th&ecirc;m h&igrave;nh v&#7869; b&ecirc;n.)</p>
+
+<p><strong>Ch&uacute; &yacute;:</strong></p>
+
+<ol><li>
+    <p>M&#7897;t m&#7843;ng numpy ho&agrave;n to&agrave;n c&oacute; th&#7875; c&oacute; nhi&#7873;u h&#417;n hai chi&#7873;u. Khi &#273;&oacute; ta v&#7851;n &#273;i t&#7915; 
+c&#7863;p ngo&#7863;c vu&ocirc;ng ngo&agrave;i c&ugrave;ng v&agrave;o t&#7899;i trong c&ugrave;ng, <code class="language-plaintext highlighter-rouge">axis</code> c&#361;ng &#273;i t&#7915; <code class="language-plaintext highlighter-rouge">0, 1, ...</code> 
+theo th&#7913; t&#7921; &#273;&oacute;.</p>
+  </li>
+  <li>
+    <p>M&#7895;i <em>m&#7843;ng con</em> ph&#7843;i c&oacute; s&#7889; ph&#7847;n t&#7917; b&#7857;ng nhau, th&#7875; hi&#7879;n cho vi&#7879;c m&#7895;i h&agrave;ng c&#7911;a 
+ma tr&#7853;n ph&#7843;i c&oacute; s&#7889; chi&#7873;u nh&#432; nhau, kh&ocirc;ng c&oacute; h&agrave;ng n&agrave;o <em>th&ograve; ra th&#7909;t v&agrave;o</em>.</p>
+  </li>
+  <li>
+    <p>Khi l&agrave;m vi&#7879;c v&#7899;i c&aacute;c th&#432; vi&#7879;n cho Machine Learning, m&#7895;i &#273;i&#7875;m d&#7919; li&#7879;u th&#432;&#7901;ng 
+&#273;&#432;&#7907;c coi l&agrave; m&#7897;t m&#7843;ng m&#7897;t chi&#7873;u. T&#7853;p h&#7907;p c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u th&#432;&#7901;ng &#273;&#432;&#7907;c l&#432;u trong 
+m&#7897;t ma tr&#7853;n - t&#7913;c m&#7843;ng c&#7911;a c&aacute;c m&#7843;ng m&#7897;t chi&#7873;u. Trong ma tr&#7853;n n&agrave;y, m&#7895;i <strong>h&agrave;ng</strong> 
+t&#432;&#417;ng &#7913;ng v&#7899;i m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u.</p>
+  </li>
+</ol><p>Vi&#7879;c n&agrave;y h&#417;i ng&#432;&#7907;c v&#7899;i c&aacute;ch x&acirc;y d&#7921;ng to&aacute;n h&#7885;c c&#7911;a c&aacute;c thu&#7853;t to&aacute;n, n&#417;i m&agrave; m&#7895;i 
+&#273;i&#7875;m d&#7919; li&#7879;u th&#432;&#7901;ng &#273;&#432;&#7907;c coi l&agrave; m&#7897;t vector c&#7897;t - t&#7913;c m&#7895;i <strong>c&#7897;t</strong> c&#7911;a ma tr&#7853;n l&agrave; 
+m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u. Khi &#273;&#7885;c c&aacute;c t&agrave;i li&#7879;u v&agrave; l&agrave;m vi&#7879;c v&#7899;i c&aacute;c th&#432; vi&#7879;n, b&#7841;n &#273;&#7885;c c&#7847;n 
+ch&uacute; &yacute;.</p>
+
+<p>Gi&#7889;ng nh&#432; b&agrave;i &ldquo;C&#417; b&#7843;n v&#7873; vector&rdquo;, trong b&agrave;i h&#7885;c n&agrave;y, ch&uacute;ng ta s&#7869; c&ugrave;ng l&agrave;m quen 
+v&#7899;i c&aacute;c c&aacute;ch x&#7917; l&yacute; ma tr&#7853;n trong Numpy: Kh&#7903;i t&#7841;o, truy c&#7853;p, thay &#273;&#7893;i, ma tr&#7853;n 
+&#273;&#7863;c bi&#7879;t, &hellip;</p>
+
+<p><a name="-khoi-tao-mot-ma-tran" href="fundaml_matrices.html"></a></p>
+
+<h2 id="21-kh&#7903;i-t&#7841;o-m&#7897;t-ma-tr&#7853;n">2.1. Kh&#7903;i t&#7841;o m&#7897;t ma tr&#7853;n</h2>
+<p><a name="-khoi-tao-mot-ma-tran-1" href="fundaml_matrices.html"></a></p>
+
+<h3 id="211-kh&#7903;i-t&#7841;o-m&#7897;t-ma-tr&#7853;n">2.1.1. Kh&#7903;i t&#7841;o m&#7897;t ma tr&#7853;n</h3>
+<p>C&aacute;ch &#273;&#417;n gi&#7843;n nh&#7845;t &#273;&#7875; kh&#7903;i t&#7841;o m&#7897;t ma tr&#7853;n l&agrave; nh&#7853;p v&agrave;o t&#7915;ng ph&#7847;n t&#7917; c&#7911;a ma tr&#7853;n 
+&#273;&oacute;. C&aacute;ch l&agrave;m n&agrave;y, t&#7845;t nhi&ecirc;n, ch&#7881; ph&ugrave; h&#7907;p v&#7899;i c&aacute;c ma tr&#7853;n nh&#7887;.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+</code></pre></div></div>
+<p><em>N&#7871;u b&#7841;n m&#7899;i chuy&#7875;n t&#7915; Matlab qua Python, b&#7841;n s&#7869; th&#7845;y c&aacute;ch khai b&aacute;o c&#7911;a Matlab <strong>d&#7877; ch&#7883;u</strong> h&#417;n r&#7845;t nhi&#7873;u. Ch&uacute;ng ta s&#7869; ph&#7843;i quen d&#7847;n th&ocirc;i :).</em></p>
+
+<p>Khi khai b&aacute;o m&#7897;t m&#7843;ng numpy n&oacute;i chung, n&#7871;u <em>&iacute;t nh&#7845;t m&#7897;t</em> ph&#7847;n t&#7917; c&#7911;a m&#7843;ng l&agrave; 
+<code class="language-plaintext highlighter-rouge">float</code>, <code class="language-plaintext highlighter-rouge">type</code> c&#7911;a m&#7885;i ph&#7847;n t&#7917; trong m&#7843;ng s&#7869; &#273;&#432;&#7907;c coi l&agrave; <code class="language-plaintext highlighter-rouge">'numpy.float64'</code> 
+(s&#7889; th&#7921;c 64 bit).</p>
+
+<p>Ng&#432;&#7907;c l&#7841;i, n&#7871;u to&agrave;n b&#7897; c&aacute;c ph&#7847;n t&#7917; l&agrave; s&#7889; nguy&ecirc;n (kh&ocirc;ng c&oacute; d&#7845;u <code class="language-plaintext highlighter-rouge">.</code> xu&#7845;t hi&#7879;n),
+<code class="language-plaintext highlighter-rouge">type</code> c&#7911;a m&#7885;i ph&#7847;n t&#7917; trong m&#7843;ng s&#7869; &#273;&#432;&#7907;c coi l&agrave; <code class="language-plaintext highlighter-rouge">'numpy.int64'</code> (s&#7889; nguy&ecirc;n 64 bit).</p>
+
+<p>N&#7871;u mu&#7889;n ch&#7881; &#273;&#7883;nh <code class="language-plaintext highlighter-rouge">type</code> c&#7911;a c&aacute;c ph&#7847;n t&#7917; trong m&#7843;ng, ta c&#7847;n &#273;&#7863;t gi&aacute; tr&#7883; cho <code class="language-plaintext highlighter-rouge">dtype</code>. 
+V&iacute; d&#7909;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">float</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s">'numpy.float64'</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<hr><p><strong>B&agrave;i t&#7853;p:</strong></p>
+
+<p>Khai b&aacute;o m&#7897;t m&#7843;ng numpy hai chi&#7873;u <code class="language-plaintext highlighter-rouge">A</code> m&ocirc; t&#7843; ma tr&#7853;n:</p>
+
+<p>\[\mathbf{A} = \left[
+\begin{matrix}
+1 &amp; 2 &amp; 3 \\ 4 &amp; 5 &amp; 6 \\ 7 &amp; 8 &amp; 9
+\end{matrix}
+\right]
+\]</p>
+
+<hr><p><a name="-ma-tran-don-vi-va-ma-tran-duong-cheo" href="fundaml_matrices.html"></a></p>
+
+<h2 id="22-ma-tr&#7853;n-&#273;&#417;n-v&#7883;-v&agrave;-ma-tr&#7853;n-&#273;&#432;&#7901;ng-ch&eacute;o">2.2. Ma tr&#7853;n &#273;&#417;n v&#7883; v&agrave; ma tr&#7853;n &#273;&#432;&#7901;ng ch&eacute;o</h2>
+<p><a name="-ma-tran-don-vi" href="fundaml_matrices.html"></a></p>
+
+<h3 id="221-ma-tr&#7853;n-&#273;&#417;n-v&#7883;">2.2.1. Ma tr&#7853;n &#273;&#417;n v&#7883;</h3>
+
+<p>&#272;&#7875; t&#7841;o m&#7897;t ma tr&#7853;n &#273;&#417;n v&#7883; c&oacute; s&#7889; chi&#7873;u b&#7857;ng <code class="language-plaintext highlighter-rouge">n</code> (ma tr&#7853;n &#273;&#417;n v&#7883; l&agrave; m&#7897;t ma tr&#7853;n vu&ocirc;ng c&oacute; t&#7845;t c&#7843; c&aacute;c ph&#7847;n t&#7917; tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o b&#7857;ng 1), ch&uacute;ng ta s&#7917; d&#7909;ng h&agrave;m <a href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.eye.html"><code class="language-plaintext highlighter-rouge">np.eye()</code></a>:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p>H&agrave;m <code class="language-plaintext highlighter-rouge">np.eye()</code> c&#361;ng &#273;&#432;&#7907;c d&ugrave;ng &#273;&#7875; t&#7841;o c&aacute;c ma tr&#7853;n to&agrave;n 1 &#7903; m&#7897;t &#273;&#432;&#7901;ng ch&eacute;o ph&#7909; n&agrave;o &#273;&oacute;, c&aacute;c th&agrave;nh ph&#7847;n c&ograve;n l&#7841;i b&#7857;ng 0. V&iacute; d&#7909;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">k = 1</code> s&#7869; t&#432;&#417;ng &#7913;ng v&#7899;i &#273;&#432;&#7901;ng ch&eacute;o ph&#7909; ngay <em>tr&ecirc;n</em> &#273;&#432;&#7901;ng ch&eacute;o ch&iacute;h. <code class="language-plaintext highlighter-rouge">k = -2</code> s&#7869; t&#432;&#417;ng &#7913;ng v&#7899;i &#273;&#432;&#7901;ng ch&eacute;o ph&#7909; th&#7913; hai <em>b&ecirc;n d&#432;&#7899;i</em> &#273;&#432;&#7901;ng ch&eacute;o ch&iacute;nh.</p>
+
+<p>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#273;&#7885;c th&ecirc;m v&#7873; c&aacute;ch s&#7917; d&#7909;ng h&agrave;m &lsquo;np.eye()&rsquo; <a href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.eye.html">t&#7841;i &#273;&acirc;y</a>.</p>
+
+<p><em>Xin nh&#7855;c l&#7841;i r&#7857;ng b&#7841;n &#273;&#7885;c lu&ocirc;n c&oacute; th&#7875; xem c&aacute;ch s&#7917; d&#7909;ng m&#7897;t h&agrave;m tr&ecirc;n terminal b&#7857;ng c&aacute;ch g&otilde; <code class="language-plaintext highlighter-rouge">help(func)</code> trong &#273;&oacute; <code class="language-plaintext highlighter-rouge">func</code> l&agrave; t&ecirc;n h&agrave;m b&#7841;n mu&#7889;n tra c&#7913;u. V&iacute; d&#7909;, <code class="language-plaintext highlighter-rouge">help(np.eye)</code>.</em></p>
+
+<p><a name="-ma-tran-duong-cheo" href="fundaml_matrices.html"></a></p>
+
+<h3 id="222-ma-tr&#7853;n-&#273;&#432;&#7901;ng-ch&eacute;o">2.2.2. Ma tr&#7853;n &#273;&#432;&#7901;ng ch&eacute;o</h3>
+<p>&#272;&#7875; khai b&aacute;o m&#7897;t ma tr&#7853;n &#273;&#432;&#7901;ng ch&eacute;o, ho&#7863;c mu&#7889;n tr&iacute;ch xu&#7845;t &#273;&#432;&#7901;ng ch&eacute;o c&#7911;a m&#7897;t ma tr&#7853;n, ta d&ugrave;ng h&agrave;m <code class="language-plaintext highlighter-rouge">np.diag</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">diag</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">diag</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]))</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+</code></pre></div></div>
+
+<ul><li>
+    <p>N&#7871;u &#273;&#7847;u v&agrave;o l&agrave; m&#7897;t m&#7843;ng m&#7897;t chi&#7873;u, tr&#7843; v&#7873; m&#7897;t m&#7843;ng hai chi&#7873;u th&#7875; hi&#7879;n ma tr&#7853;n c&oacute; &#273;&#432;&#7901;ng ch&eacute;o l&agrave; c&aacute;c ph&#7847;n t&#7917; thu&#7897;c m&#7843;ng &#273;&oacute;.</p>
+  </li>
+  <li>
+    <p>N&#7871;u &#273;&#7847;u v&agrave;o l&agrave; m&#7897;t m&#7843;ng hai chi&#7873;u (c&oacute; th&#7875; kh&ocirc;ng vu&ocirc;ng), tr&#7843; v&#7873; m&#7843;ng m&#7897;t chi&#7873;u ch&#7913;a c&aacute;c gi&aacute; tr&#7883; &#7903; h&agrave;ng th&#7913; <code class="language-plaintext highlighter-rouge">i</code>, 
+c&#7897;t th&#7913; <code class="language-plaintext highlighter-rouge">i</code> v&#7899;i <code class="language-plaintext highlighter-rouge">0 &lt;= i &lt;= min(m, n)</code>. Trong &#273;&oacute; <code class="language-plaintext highlighter-rouge">m</code>, <code class="language-plaintext highlighter-rouge">n</code> l&#7847;n l&#432;&#7907;t l&agrave; s&#7889; h&agrave;ng v&agrave; s&#7889; c&#7897;t c&#7911;a ma tr&#7853;n &#273;&#432;&#7907;c bi&#7875;u di&#7877;n b&#7857;ng m&#7843;ng hai chi&#7873;u ban &#273;&#7847;u.</p>
+  </li>
+</ul><p><em>&#272;&#432;&#7901;ng ch&eacute;o ph&#7909;</em> c&#7911;a m&#7897;t ma tr&#7853;n c&#361;ng c&oacute; th&#7875; &#273;&#432;&#7907;c l&#7845;y b&#7857;ng c&aacute;ch s&#7917; d&#7909;ng h&agrave;m n&agrave;y v&agrave; ch&#7881; ra gi&aacute; tr&#7883; c&#7911;a <code class="language-plaintext highlighter-rouge">k</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">diag</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+</code></pre></div></div>
+
+<hr><p><strong>B&agrave;i t&#7853;p:</strong></p>
+
+<p>V&#7899;i m&#7897;t s&#7889; t&#7921; nhi&ecirc;n <code class="language-plaintext highlighter-rouge">n</code>, h&atilde;y vi&#7871;t h&agrave;m tr&#7843; v&#7873; ma tr&#7853;n c&oacute; d&#7841;ng: 
+\[
+\left[
+\begin{matrix}
+0 &amp; 0 &amp; 0 &amp; 0 &amp; \dots &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 0 &amp; 0 &amp; \dots &amp; 0 &amp; 0 \\ 0 &amp; 2 &amp; 0 &amp; 0 &amp; \dots &amp; 0 &amp; 0 \\ \dots &amp; \dots &amp; \dots &amp; \dots &amp; \ddots &amp; \dots \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; \dots &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; \dots &amp; n &amp; 0 
+\end{matrix}
+\right]
+\]
+t&#7913;c &#273;&#432;&#7901;ng ch&eacute;o ph&#7909; ngay d&#432;&#7899;i &#273;&#432;&#7901;ng ch&eacute;o ch&iacute;nh nh&#7853;n c&aacute;c gi&aacute; tr&#7883; t&#7915; 1 &#273;&#7871;n \(n\). C&aacute;c th&agrave;nh ph&#7847;n l&agrave; ki&#7875;u s&#7889; nguy&ecirc;n.</p>
+
+<hr><p><a name="-kich-thuoc-cua-ma-tran" href="fundaml_matrices.html"></a></p>
+
+<h2 id="23-k&iacute;ch-th&#432;&#7899;c-c&#7911;a-ma-tr&#7853;n">2.3. K&iacute;ch th&#432;&#7899;c c&#7911;a ma tr&#7853;n</h2>
+
+<p>Gi&#7889;ng nh&#432; c&aacute;ch t&igrave;m k&iacute;ch th&#432;&#7899;c c&#7911;a m&#7843;ng m&#7897;t chi&#7875;u, &#273;&#7875; t&igrave;m k&iacute;ch th&#432;&#7899;c c&#7911;a m&#7843;ng hai chi&#7873;u, ta c&#361;ng s&#7917; d&#7909;ng thu&#7897;c t&iacute;nh <code class="language-plaintext highlighter-rouge">shape</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">.</span><span class="n">shape</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>&#7902; &#273;&acirc;y, k&#7871;t qu&#7843; tr&#7843; v&#7873; l&agrave; m&#7897;t <code class="language-plaintext highlighter-rouge">tuple</code>. S&#7889; ph&#7847;n t&#7917; c&#7911;a tuple n&agrave;y ch&iacute;nh l&agrave; s&#7889; 
+chi&#7873;u c&#7911;a m&#7843;ng. N&#7871;u coi m&#7843;ng hai chi&#7873;u nh&#432; ma tr&#7853;n, s&#7889; h&agrave;ng v&agrave; s&#7889; c&#7897;t c&#7911;a ma 
+tr&#7853;n c&oacute; th&#7875; &#273;&#432;&#7907;c t&iacute;nh b&#7857;ng:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="mi">4</span>
+</code></pre></div></div>
+
+<p>V&#7899;i m&#7843;ng numpy nhi&#7873;u chi&#7873;u, ta c&#361;ng d&ugrave;ng thu&#7897;c t&iacute;nh <code class="language-plaintext highlighter-rouge">shape</code> &#273;&#7875; t&igrave;m k&iacute;ch th&#432;&#7899;c 
+c&#7911;a m&#7895;i chi&#7873;u.</p>
+
+<p><a name="-truy-cap-vao-tung-phan-tu-cua-ma-tran" href="fundaml_matrices.html"></a></p>
+
+<h2 id="24-truy-c&#7853;p-v&agrave;o-t&#7915;ng-ph&#7847;n-t&#7917;-c&#7911;a-ma-tr&#7853;n">2.4. Truy c&#7853;p v&agrave;o t&#7915;ng ph&#7847;n t&#7917; c&#7911;a ma tr&#7853;n</h2>
+
+<p><a name="-truy-cap-vao-tung-phan-tu" href="fundaml_matrices.html"></a></p>
+
+<h3 id="241-truy-c&#7853;p-v&agrave;o-t&#7915;ng-ph&#7847;n-t&#7917;">2.4.1. Truy c&#7853;p v&agrave;o t&#7915;ng ph&#7847;n t&#7917;</h3>
+<p>C&oacute; hai c&aacute;ch &#273;&#7875; truy c&#7853;p v&agrave;o m&#7895;i ph&#7847;n t&#7917; c&#7911;a m&#7843;ng hai chi&#7873;u:
+<a name="-cach--giong-voi-list" href="fundaml_matrices.html"></a></p>
+
+<h4 id="2411-c&aacute;ch-1-gi&#7889;ng-v&#7899;i-list">2.4.1.1. C&aacute;ch 1: gi&#7889;ng v&#7899;i list</h4>
+<p>&#272;&#7875; truy c&#7853;p v&agrave;o ph&#7847;n t&#7917; &#7903; h&agrave;ng th&#7913; <code class="language-plaintext highlighter-rouge">i</code>, c&#7897;t th&#7913; <code class="language-plaintext highlighter-rouge">j</code> c&#7911;a ma tr&#7853;n (ch&#7881; s&#7889; b&#7855;t &#273;&#7847;u 
+t&#7915; 0), ta c&oacute; th&#7875; coi ph&#7847;n t&#7917; &#273;&oacute; l&agrave; ph&#7847;n t&#7917; th&#7913; <code class="language-plaintext highlighter-rouge">j</code> c&#7911;a m&#7843;ng <code class="language-plaintext highlighter-rouge">i</code> trong m&#7843;ng hai 
+chi&#7873;u ban &#273;&#7847;u.</p>
+
+<p>V&iacute; d&#7909;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+<span class="mi">6</span>
+</code></pre></div></div>
+<p>&#7903; &#273;&acirc;y <code class="language-plaintext highlighter-rouge">A[1]</code> ch&iacute;nh l&#7843; m&#7843;ng m&#7897;t chi&#7873;u <code class="language-plaintext highlighter-rouge">[4, 5, 6]</code>, trong m&#7843;ng n&agrave;y, ta l&#7845;y ph&#7847;n 
+t&#7917; c&oacute; ch&#7881; s&#7889; l&agrave; <code class="language-plaintext highlighter-rouge">2</code>, ph&#7847;n t&#7917; &#273;&oacute; c&oacute; gi&aacute; tr&#7883; l&agrave; <code class="language-plaintext highlighter-rouge">6</code>. V&#7853;y <code class="language-plaintext highlighter-rouge">A[1][2]</code> = 6.</p>
+
+<p><a name="-cach--giong-nhu-matlab" href="fundaml_matrices.html"></a></p>
+
+<h4 id="2412-c&aacute;ch-2-gi&#7889;ng-nh&#432;-matlab">2.4.1.2. C&aacute;ch 2: gi&#7889;ng nh&#432; Matlab</h4>
+<p>Trong Matlab, &#273;&#7875; truy c&#7853;p v&agrave;o ph&#7847;n t&#7917; &#7903; h&agrave;ng &#273;&#7847;u ti&ecirc;n, c&#7897;t &#273;&#7847;u ti&ecirc;n c&#7911;a m&#7897;t ma 
+tr&#7853;n <code class="language-plaintext highlighter-rouge">A</code>, ta s&#7917; d&#7909;ng <code class="language-plaintext highlighter-rouge">A(1, 1)</code>. Trong Numpy, c&oacute; m&#7897;t ch&uacute;t thay &#273;&#7893;i:</p>
+
+<ol><li>Ch&#7881; s&#7889; b&#7855;t &#273;&#7847;u t&#7915; 0.</li>
+  <li>B&#7897; ch&#7881; s&#7889; &#273;&#432;&#7907;c &#273;&#7863;t trong d&#7845;u ngo&#7863;c vu&ocirc;ng <code class="language-plaintext highlighter-rouge">[]</code>.</li>
+</ol><p>V&iacute; d&#7909;</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="mi">8</span>
+</code></pre></div></div>
+
+<p><a name="-truy-cap-vao-hangcot" href="fundaml_matrices.html"></a></p>
+
+<h3 id="242-truy-c&#7853;p-v&agrave;o-h&agrave;ngc&#7897;t">2.4.2. Truy c&#7853;p v&agrave;o h&agrave;ng/c&#7897;t</h3>
+
+<p>&#272;&#7875; truy c&#7853;p v&agrave;o h&agrave;ng c&oacute; ch&#7881; s&#7889; <code class="language-plaintext highlighter-rouge">i</code> c&#7911;a m&#7897;t ma tr&#7853;n <code class="language-plaintext highlighter-rouge">A</code>, ta ch&#7881; c&#7847;n d&ugrave;ng <code class="language-plaintext highlighter-rouge">A[i]</code> 
+ho&#7863;c <code class="language-plaintext highlighter-rouge">A[i,:]</code> ho&#7863;c <code class="language-plaintext highlighter-rouge">A[i][:]</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>&#272;&#7875; truy c&#7853;p v&agrave;o c&#7897;t c&oacute; ch&#7881; s&#7889; <code class="language-plaintext highlighter-rouge">j</code>, ta d&ugrave;ng <code class="language-plaintext highlighter-rouge">A[:,j]</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p><strong>Ch&uacute; &yacute;:</strong></p>
+
+<ul><li>
+    <p>Trong Numpy, k&#7871;t qu&#7843; tr&#7843; v&#7873; c&#7911;a m&#7897;t c&#7897;t hay h&agrave;ng &#273;&#7873;u l&agrave; m&#7897;t m&#7843;ng m&#7897;t chi&#7873;u, 
+kh&ocirc;ng ph&#7843;i l&agrave; m&#7897;t vector c&#7897;t nh&#432; trong Matlab. Tuy nhi&ecirc;n, khi l&#7845;y m&#7897;t ma tr&#7853;n 
+nh&acirc;n v&#7899;i n&oacute;, n&oacute; v&#7851;n &#273;&#432;&#7907;c coi l&agrave; m&#7897;t vector c&#7897;t. Th&ocirc;ng tin chi ti&#7871;t s&#7869; c&oacute; trong 
+c&aacute;c b&agrave;i sau.</p>
+  </li>
+  <li>
+    <p>N&#7871;u s&#7917; d&#7909;ng <code class="language-plaintext highlighter-rouge">A[:][1]</code>, k&#7871;t qu&#7843; tr&#7843; v&#7873; l&agrave; <strong>h&agrave;ng</strong> c&oacute; ch&#7881; s&#7889; <code class="language-plaintext highlighter-rouge">1</code> ch&#7913; kh&ocirc;ng 
+ph&#7843;i c&#7897;t c&oacute; ch&#7881; s&#7889; <code class="language-plaintext highlighter-rouge">1</code>. Trong tr&#432;&#7901;ng h&#7907;p n&agrave;y, <code class="language-plaintext highlighter-rouge">A[:]</code> v&#7851;n &#273;&#432;&#7907;c hi&#7875;u l&agrave; c&#7843; ma 
+tr&#7853;n <code class="language-plaintext highlighter-rouge">A</code>, v&igrave; v&#7853;y n&ecirc;n <code class="language-plaintext highlighter-rouge">A[:][1]</code> t&#432;&#417;ng &#273;&#432;&#417;ng v&#7899;i <code class="language-plaintext highlighter-rouge">A[1]</code>.</p>
+  </li>
+  <li>
+    <p>C&oacute; s&#7921; kh&aacute;c nhau c&#259;n b&#7843;n gi&#7919;a <code class="language-plaintext highlighter-rouge">A</code> v&agrave; <code class="language-plaintext highlighter-rouge">A[:]</code>, ch&uacute;ng ta s&#7869; quay l&#7841;i trong m&#7897;t 
+b&agrave;i n&agrave;o &#273;&oacute; &#7903; sau.</p>
+  </li>
+</ul><hr><p><strong>B&agrave;i t&#7853;p:</strong></p>
+
+<p>Cho m&#7897;t ma tr&#7853;n <code class="language-plaintext highlighter-rouge">A</code>, vi&#7871;t h&agrave;m <code class="language-plaintext highlighter-rouge">myfunc</code> t&iacute;nh t&#7893;ng c&aacute;c ph&#7847;n t&#7917; tr&ecirc;n c&aacute;c <strong>c&#7897;t</strong> 
+c&oacute; ch&#7881; s&#7889; ch&#7861;n (<code class="language-plaintext highlighter-rouge">0, 2, 4, ...</code>) c&#7911;a ma tr&#7853;n &#273;&oacute;. 
+V&iacute; d&#7909;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">myfunc</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="mi">4</span>
+</code></pre></div></div>
+<p>Gi&#7843;i th&iacute;ch: c&#7897;t c&oacute; ch&#7881; s&#7889; <code class="language-plaintext highlighter-rouge">0</code> c&#7911;a ma tr&#7853;n l&agrave; m&#7843;ng <code class="language-plaintext highlighter-rouge">[1, 3]</code>, t&#7893;ng c&aacute;c ph&#7847;n t&#7917; 
+c&#7911;a m&#7843;ng n&agrave;y l&agrave; 4.</p>
+
+<hr><p><a name="-truy-cap-vao-nhieu-phan-tu-cua-ma-tran" href="fundaml_matrices.html"></a></p>
+
+<h2 id="25-truy-c&#7853;p-v&agrave;o-nhi&#7873;u-ph&#7847;n-t&#7917;-c&#7911;a-ma-tr&#7853;n">2.5. Truy c&#7853;p v&agrave;o nhi&#7873;u ph&#7847;n t&#7917; c&#7911;a ma tr&#7853;n</h2>
+<p><a name="-nhieu-phan-tu-trong-cung-mot-hang" href="fundaml_matrices.html"></a></p>
+
+<h3 id="251-nhi&#7873;u-ph&#7847;n-t&#7917;-trong-c&ugrave;ng-m&#7897;t-h&agrave;ng">2.5.1. Nhi&#7873;u ph&#7847;n t&#7917; trong c&ugrave;ng m&#7897;t h&agrave;ng</h3>
+<p>Vi&#7879;c truy c&#7853;p v&agrave;o nhi&#7873;u ph&#7847;n t&#7917; trong m&#7897;t h&agrave;ng t&#432;&#417;ng t&#7921; nh&#432; v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)]</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>trong &#273;&oacute;, <code class="language-plaintext highlighter-rouge">range(0, A.shape[1], 2)</code> t&#7841;o ra m&#7897;t <code class="language-plaintext highlighter-rouge">list</code> c&aacute;c ph&#7847;n t&#7917; l&agrave; c&#7845;p s&#7889; c&#7897;ng v&#7899;i c&ocirc;ng sai l&agrave; <code class="language-plaintext highlighter-rouge">2</code>, 
+b&#7855;t &#273;&#7847;u t&#7915; <code class="language-plaintext highlighter-rouge">0</code> v&agrave; k&#7871;t th&uacute;c t&#7841;i s&#7889; l&#7899;n nh&#7845;t c&oacute; th&#7875; kh&ocirc;ng v&#432;&#7907;t qu&aacute; s&#7889; c&#7897;t c&#7911;a <code class="language-plaintext highlighter-rouge">A</code>. S&#7889; c&#7897;t c&#7911;a <code class="language-plaintext highlighter-rouge">A</code> ch&iacute;nh l&agrave; <code class="language-plaintext highlighter-rouge">A.shape[1]</code>.</p>
+
+<p><a name="-nhieu-phan-tu-trong-cung-mot-cot" href="fundaml_matrices.html"></a></p>
+
+<h3 id="252-nhi&#7873;u-ph&#7847;n-t&#7917;-trong-c&ugrave;ng-m&#7897;t-c&#7897;t">2.5.2. Nhi&#7873;u ph&#7847;n t&#7917; trong c&ugrave;ng m&#7897;t c&#7897;t</h3>
+<p>T&#432;&#417;ng t&#7921; v&#7899;i nhi&#7873;u ph&#7847;n t&#7917; trong c&ugrave;ng m&#7897;t c&#7897;t:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; A[[0, 2], -1] # the first and the third elements in the last column
+array([ 4, 12])
+</code></pre></div></div>
+
+<p><a name="-nhieu-hang-nhieu-cot" href="fundaml_matrices.html"></a></p>
+
+<h3 id="253-nhi&#7873;u-h&agrave;ng-nhi&#7873;u-c&#7897;t">2.5.3. Nhi&#7873;u h&agrave;ng, nhi&#7873;u c&#7897;t</h3>
+<p>N&#7871;u mu&#7889;n <em>tr&iacute;ch</em> m&#7897;t ma tr&#7853;n con t&#7915; ma tr&#7853;n ban &#273;&#7847;u, gi&#7843; s&#7917; l&#7845;y ma tr&#7853;n &#273;&#432;&#7907;c 
+t&#7841;o b&#7903;i h&agrave;ng c&oacute; ch&#7881; s&#7889; <code class="language-plaintext highlighter-rouge">1</code> v&agrave; <code class="language-plaintext highlighter-rouge">2</code>, c&#7897;t c&oacute; ch&#7881; s&#7889; <code class="language-plaintext highlighter-rouge">0</code> v&agrave; <code class="language-plaintext highlighter-rouge">3</code>, ta l&agrave;m nh&#432; sau:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]][:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p><strong>Ch&uacute; &yacute;:</strong> M&#7897;t c&aacute;ch t&#7921; nhi&ecirc;n, b&#7841;n &#273;&#7885;c c&oacute; th&#7875; suy ra r&#7857;ng c&acirc;u l&#7879;nh n&ecirc;n l&agrave; <code class="language-plaintext highlighter-rouge">A[[1, 
+2], [0, 3]]</code> (gi&#7889;ng nh&#432; c&aacute;ch l&agrave;m trong Matlab). Tuy nhi&ecirc;n, c&acirc;u l&#7879;nh n&agrave;y s&#7869; cho 
+ra m&#7897;t k&#7871;t qu&#7843; kh&aacute;c (xem m&#7909;c 4).</p>
+
+<p><code class="language-plaintext highlighter-rouge">A[[1, 2]][:, [0,3]]</code> c&oacute; th&#7875; hi&#7875;u &#273;&#432;&#7907;c l&agrave;: &#273;&#7847;u ti&ecirc;n l&#7845;y hai h&agrave;ng c&oacute; ch&#7881; s&#7889; <code class="language-plaintext highlighter-rouge">1</code> 
+v&agrave; <code class="language-plaintext highlighter-rouge">2</code> b&#7857;ng <code class="language-plaintext highlighter-rouge">A[[1, 2]]</code>, ta &#273;&#432;&#7907;c m&#7897;t ma tr&#7853;n, sau &#273;&oacute; l&#7845;y hai c&#7897;t c&oacute; ch&#7881; s&#7889; <code class="language-plaintext highlighter-rouge">0</code> 
+v&agrave; <code class="language-plaintext highlighter-rouge">3</code> c&#7911;a ma tr&#7853;n m&#7899;i n&agrave;y.
+<a name="-cap-cac-toa-do" href="fundaml_matrices.html"></a></p>
+
+<h3 id="254-c&#7863;p-c&aacute;c-to&#7841;-&#273;&#7897;">2.5.4. C&#7863;p c&aacute;c to&#7841; &#273;&#7897;</h3>
+
+<p>X&eacute;t c&acirc;u l&#7879;nh:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+<span class="n">array</span><span class="p">([</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">12</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>C&acirc;u l&#7879;nh n&agrave;y s&#7869; tr&#7843; v&#7873; m&#7897;t m&#7843;ng m&#7897;t chi&#7873;u g&#7891;m c&aacute;c ph&#7847;n t&#7917;: <code class="language-plaintext highlighter-rouge">A[1][0]</code> v&agrave; <code class="language-plaintext highlighter-rouge">A[2][3]
+</code>, t&#7913;c <code class="language-plaintext highlighter-rouge">[1, 2]</code> v&agrave; <code class="language-plaintext highlighter-rouge">[0, 3]</code> l&agrave; <code class="language-plaintext highlighter-rouge">list</code> c&aacute;c to&#7841; &#273;&#7897; theo m&#7895;i chi&#7873;u. Hai <code class="language-plaintext highlighter-rouge">list</code> n&agrave;y 
+ph&#7843;i c&oacute; &#273;&#7897; d&agrave;i b&#7857;ng nhau ho&#7863;c m&#7897;t <code class="language-plaintext highlighter-rouge">list</code> c&oacute; &#273;&#7897; d&agrave;i b&#7857;ng 1. 
+Khi m&#7897;t <code class="language-plaintext highlighter-rouge">list</code> c&oacute; &#273;&#7897; d&agrave;i b&#7857;ng 1, n&oacute; s&#7869; &#273;&#432;&#7907;c <em>c&#7863;p</em> v&#7899;i m&#7885;i ph&#7847;n t&#7917; c&#7911;a <code class="language-plaintext highlighter-rouge">list</code> 
+c&ograve;n l&#7841;i. V&iacute; d&#7909;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="c1"># equivalent to A[[1, 2], [0, 0]]
+</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</code></pre></div></div>
+
+<hr><p><strong>B&agrave;i t&#7853;p:</strong> 
+Vi&#7871;t h&agrave;m <code class="language-plaintext highlighter-rouge">myfunc</code> t&iacute;nh t&#7893;ng t&#7845;t c&#7843; c&aacute;c ph&#7847;n t&#7917; c&oacute; c&#7843; hai ch&#7881; s&#7889; &#273;&#7873;u ch&#7861;n c&#7911;a 
+m&#7897;t ma tr&#7853;n <code class="language-plaintext highlighter-rouge">A</code> b&#7845;t k&#7923;. V&iacute; d&#7909;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">myfunc</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="c1"># = 1 + 3 + 9 + 11
+</span><span class="mi">24</span>
+</code></pre></div></div>
+
+<p>G&#7907;i &yacute;: b&#7841;n &#273;&#7885;c t&igrave;m &#273;&#7885;c tr&#432;&#7899;c c&aacute;ch s&#7917; d&#7909;ng <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sum.html"><code class="language-plaintext highlighter-rouge">np.sum</code></a> cho m&#7843;ng nhi&#7873;u chi&#7873;u.</p>
+
+<hr><p><a name="-npsum-npmin-npmax-npmean-cho-mang-nhieu-chieu" href="fundaml_matrices.html"></a></p>
+
+<h2 id="26-npsum-npmin-npmax-npmean-cho-m&#7843;ng-nhi&#7873;u-chi&#7873;u">2.6. np.sum, np.min, np.max, np.mean cho m&#7843;ng nhi&#7873;u chi&#7873;u</h2>
+
+<p>Xin nh&#7855;c l&#7841;i v&#7873; c&aacute;ch quy &#432;&#7899;c <code class="language-plaintext highlighter-rouge">axis</code> c&#7911;a ma tr&#7853;n. <code class="language-plaintext highlighter-rouge">axis = 0</code> l&agrave; t&iacute;nh theo chi&#7873;u 
+t&#7915; tr&ecirc;n xu&#7889;ng d&#432;&#7899;i, ngh&#297;a l&agrave; ph&#432;&#417;ng c&#7911;a n&oacute; c&ugrave;ng v&#7899;i ph&#432;&#417;ng c&#7911;a c&aacute;c c&#7897;t. T&#432;&#417;ng 
+t&#7921; <code class="language-plaintext highlighter-rouge">axis = 1</code> s&#7869; c&oacute; ph&#432;&#417;ng c&ugrave;ng v&#7899;i ph&#432;&#417;ng c&#7911;a c&aacute;c h&agrave;ng. H&atilde;y quan s&aacute;t h&igrave;nh d&#432;&#7899;i 
+&#273;&acirc;y v&agrave; ghi nh&#7899; c&aacute;ch quy &#432;&#7899;c quan tr&#7885;ng n&agrave;y.</p>
+
+<hr><div class="imgcap">
+<img src="images/fundaml-matrix.png" align="center" width="400"></div>
+<hr><p>X&eacute;t m&#7897;t ma tr&#7853;n:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mf">1.</span><span class="p">,</span>  <span class="mf">2.</span><span class="p">,</span>  <span class="mf">3.</span><span class="p">,</span>  <span class="mf">2.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">4.</span><span class="p">,</span>  <span class="mf">3.</span><span class="p">,</span>  <span class="mf">7.</span><span class="p">,</span>  <span class="mf">4.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">1.</span><span class="p">,</span>  <span class="mf">4.</span><span class="p">,</span>  <span class="mf">2.</span><span class="p">,</span>  <span class="mf">3.</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p>V&agrave; c&aacute;c h&agrave;m <code class="language-plaintext highlighter-rouge">np.sum(), np.min(), np.max(), np.mean()</code> t&aacute;c &#273;&#7897;ng l&ecirc;n <code class="language-plaintext highlighter-rouge">A</code> theo <code class="language-plaintext highlighter-rouge">axis = 0</code> (t&#7913;c c&aacute;c c&#7897;t c&#7911;a <code class="language-plaintext highlighter-rouge">A</code>), k&#7871;t qu&#7843; s&#7869; l&agrave;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span>  <span class="mf">6.</span><span class="p">,</span>   <span class="mf">9.</span><span class="p">,</span>  <span class="mf">12.</span><span class="p">,</span>   <span class="mf">9.</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="nb">min</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span> <span class="mf">1.</span><span class="p">,</span>  <span class="mf">2.</span><span class="p">,</span>  <span class="mf">2.</span><span class="p">,</span>  <span class="mf">2.</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span> <span class="mf">4.</span><span class="p">,</span>  <span class="mf">4.</span><span class="p">,</span>  <span class="mf">7.</span><span class="p">,</span>  <span class="mf">4.</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span> <span class="mf">2.</span><span class="p">,</span>  <span class="mf">3.</span><span class="p">,</span>  <span class="mf">4.</span><span class="p">,</span>  <span class="mf">3.</span><span class="p">])</span>
+</code></pre></div></div>
+<p>C&aacute;c gi&aacute; tr&#7883; theo c&aacute;c h&agrave;m tr&ecirc; l&#7847;n l&#432;&#7907;t l&agrave; <em>t&#7893;ng, gi&aacute; tr&#7883; nh&#7887; nh&#7845;t, gi&aacute; tr&#7883; l&#7899;n nh&#7845;t, trung b&igrave;nh</em> theo m&#7895;i <strong>c&#7897;t</strong>. K&#7871;t qu&#7843; tr&#7843; v&#7873; l&agrave; c&aacute;c m&#7843;ng m&#7897;t chi&#7873;u c&oacute; s&#7889; ph&#7847;n t&#7917; b&#7857;ng s&#7889; c&#7897;t c&#7911;a <code class="language-plaintext highlighter-rouge">A</code>.</p>
+
+<p>T&#432;&#417;ng t&#7921; nh&#432; th&#7871; khi thay <code class="language-plaintext highlighter-rouge">axis = 1</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span>  <span class="mf">8.</span><span class="p">,</span>  <span class="mf">18.</span><span class="p">,</span>  <span class="mf">10.</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="nb">min</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span> <span class="mf">1.</span><span class="p">,</span>  <span class="mf">3.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span> <span class="mf">3.</span><span class="p">,</span>  <span class="mf">7.</span><span class="p">,</span>  <span class="mf">4.</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span> <span class="mf">2.</span> <span class="p">,</span>  <span class="mf">4.5</span><span class="p">,</span>  <span class="mf">2.5</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>K&#7871;t qu&#7843; tr&#7843; v&#7873; &#273;&#432;&#7907;c t&iacute;nh theo <strong>h&agrave;ng</strong>. K&#7871;t qu&#7843; tr&#7843; v&#7873; c&#361;ng l&agrave; c&aacute;c m&#7843;ng m&#7897;t 
+chi&#7873;u c&oacute; s&#7889; ph&#7847;n t&#7917; b&#7857;ng v&#7899;i s&#7889; h&agrave;ng c&#7911;a A.</p>
+
+<p>Khi kh&ocirc;ng &#273;&#7873; c&#7853;p t&#7899;i <code class="language-plaintext highlighter-rouge">axis</code>, k&#7871;t qu&#7843; &#273;&#432;&#7907;c t&iacute;nh tr&ecirc;n to&agrave;n b&#7897; ma tr&#7853;n:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="mf">36.0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="nb">min</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="mf">1.0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="mf">7.0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="mf">3.0</span>
+</code></pre></div></div>
+
+<p><a name="keepdims--true" href="fundaml_matrices.html"></a></p>
+
+<h3 id="keepdims--true"><code class="language-plaintext highlighter-rouge">keepdims = True</code></h3>
+
+<p>&#272;&ocirc;i khi, &#273;&#7875; thu&#7853;n ti&#7879;n cho vi&#7879;c t&iacute;nh to&aacute;n v&#7873; sau, ch&uacute;ng ta mu&#7889;n k&#7871;t qu&#7843; tr&#7843; v&#7873; khi <code class="language-plaintext highlighter-rouge">axis = 0</code> l&agrave; c&aacute;c vector h&agrave;ng <strong>th&#7921;c s&#7921;</strong>, khi <code class="language-plaintext highlighter-rouge">axis = 1</code> l&agrave; c&aacute;c vector c&#7897;t <strong>th&#7921;c s&#7921;</strong>.
+&#272;&#7875; l&agrave;m &#273;&#432;&#7907;c vi&#7879;c &#273;&oacute;, Numpy cung c&#7845;p thu&#7897;c t&iacute;nh <code class="language-plaintext highlighter-rouge">keepdims = True</code> (m&#7863;c &#273;&#7883;nh l&agrave; <code class="language-plaintext highlighter-rouge">False</code>). Khi <code class="language-plaintext highlighter-rouge">keepdims = True</code>, n&#7871;u s&#7917; d&#7909;ng <code class="language-plaintext highlighter-rouge">axis = 0</code>, k&#7871;t qu&#7843; s&#7869; l&agrave; m&#7897;t m&#7843;ng hai chi&#7873;u c&oacute; chi&#7873;u th&#7913; nh&#7845;t b&#7857;ng 1 (coi nh&#432; ma tr&#7853;n m&#7897;t h&agrave;ng). 
+T&#432;&#417;ng t&#7921;, n&#7871;u s&#7917; d&#7909;ng <code class="language-plaintext highlighter-rouge">axis = 1</code>, k&#7871;t qu&#7843; s&#7869; l&agrave; m&#7897;t m&#7843;ng hai chi&#7873;u c&oacute; chi&#7873;u th&#7913; hai b&#7857;ng 1 (m&#7897;t ma tr&#7853;n c&oacute; s&#7889; c&#7897;t b&#7857;ng 1). Vi&#7879;c n&agrave;y, v&#7873; sau ch&uacute;ng ta s&#7869; th&#7845;y, quan tr&#7885;ng trong nhi&#7873;u tr&#432;&#7901;ng h&#7907;p &#273;&#7863;c bi&#7879;t:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([[</span>  <span class="mf">6.</span><span class="p">,</span>   <span class="mf">9.</span><span class="p">,</span>  <span class="mf">12.</span><span class="p">,</span>   <span class="mf">9.</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mf">2.</span> <span class="p">],</span>
+       <span class="p">[</span> <span class="mf">4.5</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">2.5</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<hr><p><strong>B&agrave;i t&#7853;p:</strong>
+Cho m&#7897;t ma tr&#7853;n <code class="language-plaintext highlighter-rouge">A</code> b&#7845;t k&#7923;. Trong m&#7895;i h&agrave;ng, ta &#273;&#7883;nh ngh&#297;a <em>&#273;&#7897; bi&#7871;n &#273;&#7897;ng</em> c&#7911;a n&oacute; 
+l&agrave; s&#7921; kh&aacute;c nhau gi&#7919;a gi&aacute; tr&#7883; l&#7899;n nh&#7845;t v&agrave; nh&#7887; nh&#7845;t c&#7911;a c&aacute;c ph&#7847;n t&#7917; trong h&agrave;ng 
+&#273;&oacute;. H&atilde;y vi&#7871;t h&agrave;m <code class="language-plaintext highlighter-rouge">myfunc</code> tr&#7843; v&#7873; t&#7893;ng <em>&#273;&#7897; bi&#7871;n &#273;&#7897;ng</em> c&#7911;a t&#7845;t c&#7843; c&aacute;c h&agrave;ng trong 
+ma tr&#7853;n &#273;&oacute;.</p>
+
+<p>V&iacute; d&#7909; v&#7899;i ma tr&#7853;n <code class="language-plaintext highlighter-rouge">A</code> trong b&agrave;i h&#7885;c, <em>&#273;&#7897; bi&#7871;n &#273;&#7897;ng</em> c&#7911;a m&#7895;i h&agrave;ng l&#7847;n l&#432;&#7907;t l&agrave; 
+<code class="language-plaintext highlighter-rouge">2.0, 4.0, 3.0</code>. V&#7853;y <code class="language-plaintext highlighter-rouge">myfunc(A) = 9.0</code>.</p>
+
+<hr><p><a name="-cac-phep-toan-tac-dong-den-moi-phan-tu-cua-ma-tran" href="fundaml_matrices.html"></a></p>
+
+<h2 id="27-c&aacute;c-ph&eacute;p-to&aacute;n-t&aacute;c-&#273;&#7897;ng-&#273;&#7871;n-m&#7885;i-ph&#7847;n-t&#7917;-c&#7911;a-ma-tr&#7853;n">2.7. C&aacute;c ph&eacute;p to&aacute;n t&aacute;c &#273;&#7897;ng &#273;&#7871;n m&#7885;i ph&#7847;n t&#7917; c&#7911;a ma tr&#7853;n</h2>
+
+<p><a name="-tinh-toan-giua-mot-mang-hai-chieu-va-mot-so-vo-huong" href="fundaml_matrices.html"></a></p>
+
+<h3 id="271-t&iacute;nh-to&aacute;n-gi&#7919;a-m&#7897;t-m&#7843;ng-hai-chi&#7873;u-v&agrave;-m&#7897;t-s&#7889;-v&ocirc;-h&#432;&#7899;ng">2.7.1. T&iacute;nh to&aacute;n gi&#7919;a m&#7897;t m&#7843;ng hai chi&#7873;u v&agrave; m&#7897;t s&#7889; v&ocirc; h&#432;&#7899;ng</h3>
+<p>Khi t&iacute;nh to&aacute;n gi&#7919;a m&#7897;t s&#7889; v&ocirc; h&#432;&#7899;ng v&agrave; m&#7897;t m&#7843;ng hai chi&#7873;u, v&iacute; d&#7909;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">*</span><span class="mi">2</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mi">2</span><span class="p">,</span>  <span class="mi">6</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span><span class="o">**</span><span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mi">2</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">32</span><span class="p">]])</span>
+</code></pre></div></div>
+<p>Ta nh&#7853;n th&#7845;y r&#7857;ng t&#7915;ng ph&#7847;n t&#7917; c&#7911;a m&#7843;ng s&#7869; &#273;&#432;&#7907;c k&#7871;t h&#7907;p v&#7899;i s&#7889; v&ocirc; h&#432;&#7899;ng b&#7857;ng 
+c&aacute;c ph&eacute;p to&aacute;n t&#432;&#417;ng &#7913;ng &#273;&#7875; t&#7841;o ra m&#7897;t m&#7843;ng m&#7899;i c&ugrave;ng k&iacute;ch th&#432;&#7899;c. Vi&#7879;c n&agrave;y, nh&#432; 
+c&#361;ng &#273;&atilde; tr&igrave;nh b&agrave;y trong khi l&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u,
+&#273;&uacute;ng v&#7899;i c&aacute;c m&#7843;ng numpy v&#7899;i s&#7889; chi&#7873;u b&#7845;t k&#7923;.</p>
+
+<p><a name="-npabs-npsin-npexp-" href="fundaml_matrices.html"></a></p>
+
+<h3 id="272-npabs-npsin-npexp-">2.7.2. np.abs, np.sin, np.exp, &hellip;</h3>
+<p>B&#7841;n &#273;&#7885;c c&#361;ng c&oacute; th&#7875; d&#7921; &#273;o&aacute;n &#273;&#432;&#7907;c r&#7857;ng c&aacute;c h&agrave;m s&#7889; n&agrave;y c&#361;ng t&aacute;c &#273;&#7897;ng l&ecirc;n t&#7915;ng 
+ph&#7847;n t&#7917; c&#7911;a m&#7843;ng v&agrave; tr&#7843; v&#7873; m&#7897;t m&#7843;ng c&ugrave;ng k&iacute;ch th&#432;&#7899;c v&#7899;i m&#7843;ng ban &#273;&#7847;u.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># create a random numpy array with shape = (2, 3)
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mf">0.66079861</span><span class="p">,</span>  <span class="mf">2.11481663</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.42221111</span><span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mf">1.13931439</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.31866767</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.37294795</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="nb">abs</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mf">0.66079861</span><span class="p">,</span>  <span class="mf">2.11481663</span><span class="p">,</span>  <span class="mf">1.42221111</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">1.13931439</span><span class="p">,</span>  <span class="mf">0.31866767</span><span class="p">,</span>  <span class="mf">0.37294795</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<hr><p><strong>B&agrave;i t&#7853;p: Frobenious norm</strong></p>
+
+<p><a href="https://en.wikipedia.org/wiki/Matrix_norm#Frobenius_norm">Frobenius norm</a> c&#7911;a 
+m&#7897;t ma tr&#7853;n &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a l&agrave; c&#259;n b&#7853;c hai c&#7911;a t&#7893;ng b&igrave;nh ph&#432;&#417;ng c&aacute;c ph&#7847;n t&#7917; c&#7911;a 
+ma tr&#7853;n. 
+Frobenius norm &#273;&#432;&#7907;c s&#7917; d&#7909;ng r&#7845;t nhi&#7873;u trong c&aacute;c thu&#7853;t to&aacute;n Machine Learning v&igrave; 
+c&aacute;c t&iacute;nh ch&#7845;t to&aacute;n h&#7885;c &#273;&#7865;p c&#7911;a n&oacute;, trong &#273;&oacute; quan tr&#7885;ng nh&#7845;t l&agrave; vi&#7879;c &#273;&#7841;o h&agrave;m c&#7911;a 
+b&igrave;nh ph&#432;&#417;ng c&#7911;a n&oacute; r&#7845;t &#273;&#417;n gi&#7843;n. 
+Frobenius norm c&#7911;a m&#7897;t ma tr&#7853;n \(\mathbf{A}\)
+&#273;&#432;&#7907;c k&yacute; hi&#7879;u l&agrave; \(||\mathbf{A}||_F\)</p>
+
+<p>Numpy c&oacute; s&#7861;n h&agrave;m t&iacute;nh to&aacute;n norm n&agrave;y, tuy nhi&ecirc;n, ch&uacute;ng ta n&ecirc;n h&#7885;c c&aacute;ch t&#7921; t&iacute;nh 
+n&oacute; tr&#432;&#7899;c. 
+Vi&#7871;t h&agrave;m <code class="language-plaintext highlighter-rouge">norm_fro(A)</code> t&iacute;nh Frobenius norm c&#7911;a m&#7897;t ma tr&#7853;n b&#7845;t k&#7923;.</p>
+
+<p>V&iacute; d&#7909;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
+</code></pre></div></div>
+<p>th&igrave; <code class="language-plaintext highlighter-rouge">norm_fro(A) = 6.2449979983983983</code> \(= \sqrt{1^2 + 3^2 + 2^2 + 5^2}\).</p>
+
+<p><strong>G&#7907;i &yacute;:</strong> S&#7917; d&#7909;ng h&agrave;m <a href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.sqrt.html"><code class="language-plaintext highlighter-rouge">np.sqrt</code></a>.</p>
+
+<hr><p><a name="-cac-phep-toan-giua-hai-ma-tran-i" href="fundaml_matrices.html"></a></p>
+
+<h2 id="28-c&aacute;c-ph&eacute;p-to&aacute;n-gi&#7919;a-hai-ma-tr&#7853;n-i">2.8. C&aacute;c ph&eacute;p to&aacute;n gi&#7919;a hai ma tr&#7853;n I</h2>
+<p>C&aacute;c ph&eacute;p to&aacute;n c&#7897;ng, tr&#7915;, nh&acirc;n, chia, lu&#7929; th&#7915;a (<code class="language-plaintext highlighter-rouge">+, -, *, /, **</code>) gi&#7919;a hai m&#7843;ng 
+<strong>c&ugrave;ng k&iacute;ch th&#432;&#7899;c</strong> c&#361;ng &#273;&#432;&#7907;c th&#7921;c hi&#7879;n d&#7921;a tr&ecirc;n t&#7915;ng c&#7863;p ph&#7847;n t&#7917;. K&#7871;t qu&#7843; tr&#7843; 
+v&#7873; l&agrave; m&#7897;t m&#7843;ng c&ugrave;ng chi&#7873;u v&#7899;i hai m&#7843;ng &#273;&atilde; cho:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">5.</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">*</span><span class="n">B</span>
+<span class="n">array</span><span class="p">([[</span>  <span class="mf">5.</span><span class="p">,</span>  <span class="mf">40.</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">14.</span><span class="p">,</span>   <span class="mf">9.</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">**</span><span class="n">B</span>
+<span class="n">array</span><span class="p">([[</span>  <span class="mf">1.00000000e+00</span><span class="p">,</span>   <span class="mf">3.90625000e+05</span><span class="p">],</span>
+       <span class="p">[</span>  <span class="mf">1.28000000e+02</span><span class="p">,</span>   <span class="mf">2.70000000e+01</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p><strong>Ch&uacute; &yacute;:</strong> t&iacute;ch c&#7911;a hai ma tr&#7853;n nh&#432; &#273;&#7883;nh ngh&#297;a trong &#272;&#7841;i s&#7889; tuy&#7871;n t&iacute;nh &#273;&#432;&#7907;c th&#7921;c hi&#7879;n d&#7921;a tr&ecirc;n h&agrave;m s&#7889; kh&aacute;c. C&aacute;ch vi&#7871;t <code class="language-plaintext highlighter-rouge">A*B</code> &#273;&#432;&#7907;c th&#7921;c hi&#7879;n tr&ecirc;n t&#7915;ng c&#7863;p ph&#7847;n t&#7917; c&#7911;a <code class="language-plaintext highlighter-rouge">A</code> v&agrave; <code class="language-plaintext highlighter-rouge">B</code></p>
+
+<hr><p><strong>B&agrave;i t&#7853;p:</strong></p>
+
+<p>Trong khi l&agrave;m vi&#7879;c v&#7899;i Machine Learning, ch&uacute;ng ta th&#432;&#7901;ng xuy&ecirc;n ph&#7843;i <em>so s&aacute;nh</em> hai ma tr&#7853;n. Xem xem li&#7879;u ch&uacute;ng c&oacute; g&#7847;n gi&#7889;ng nhau kh&ocirc;ng. M&#7897;t c&aacute;ch ph&#7893; bi&#7871;n &#273;&#7875; l&agrave;m vi&#7879;c n&agrave;y l&agrave; t&iacute;nh b&igrave;nh ph&#432;&#417;ng c&#7911;a Frobineous norm
+c&#7911;a hi&#7879;u hai ma tr&#7853;n &#273;&oacute;. C&#7909; th&#7875;, &#273;&#7875; xem ma tr&#7853;n \(\mathbf{A}\) c&oacute; g&#7847;n ma tr&#7853;n \(\mathbf{B}\) hay kh&ocirc;ng, ng&#432;&#7901;i ta th&#432;&#7901;ng t&iacute;nh \(||\mathbf{A} - \mathbf{B}||_F^2\).</p>
+
+<p>Cho hai m&#7843;ng hai chi&#7873;u c&oacute; c&ugrave;ng k&iacute;ch th&#432;&#7899;c <code class="language-plaintext highlighter-rouge">A</code> v&agrave; <code class="language-plaintext highlighter-rouge">B</code>. Vi&#7871;t h&agrave;m <code class="language-plaintext highlighter-rouge">dist_fro</code> t&iacute;nh b&igrave;nh ph&#432;&#417;ng Frobenious norm c&#7911;a hi&#7879;u hai ma tr&#7853;n &#273;&#432;&#7907;c m&ocirc; t&#7843; b&#7903;i hai m&#7843;ng &#273;&oacute;.</p>
+
+<hr><p><a name="-chuyen-vi-ma-tran-reshape-ma-tran" href="fundaml_matrices.html"></a></p>
+
+<h2 id="29-chuy&#7879;n-v&#7883;-ma-tr&#7853;n-reshape-ma-tr&#7853;n">2.9. Chuy&#7879;n v&#7883; ma tr&#7853;n, Reshape ma tr&#7853;n</h2>
+<p><a name="-chuyen-vi-ma-tran" href="fundaml_matrices.html"></a></p>
+
+<h3 id="291-chuy&#7875;n-v&#7883;-ma-tr&#7853;n">2.9.1 Chuy&#7875;n v&#7883; ma tr&#7853;n</h3>
+
+<p>C&oacute; hai c&aacute;ch &#273;&#7875; l&#7845;y chuy&#7875;n v&#7883; c&#7911;a m&#7897;t ma tr&#7853;n: d&ugrave;ng thu&#7897;c t&iacute;nh <code class="language-plaintext highlighter-rouge">.T</code> ho&#7863;c d&ugrave;ng h&agrave;m <code class="language-plaintext highlighter-rouge">np.transpose</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">.</span><span class="n">T</span> 
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p><a name="-reshape" href="fundaml_matrices.html"></a></p>
+
+<h3 id="292-reshape">2.9.2. Reshape</h3>
+
+<p>Khi l&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n, ch&uacute;ng ta s&#7869; ph&#7843;i th&#432;&#7901;ng xuy&ecirc;n l&agrave;m vi&#7879;c v&#7899;i c&aacute;c ph&eacute;p bi&#7871;n &#273;&#7893;i k&iacute;ch th&#432;&#7899;c c&#7911;a ma tr&#7853;n. Ph&eacute;p bi&#7871;n &#273;&#7893;i k&iacute;ch th&#432;&#7899;c c&oacute; th&#7875; coi l&agrave; vi&#7879;c s&#7855;p x&#7871;p l&#7841;i c&aacute;c ph&#7847;n t&#7917; c&#7911;a m&#7897;t 
+ma tr&#7853;n v&agrave;o m&#7897;t ma tr&#7853;n kh&aacute;c c&oacute; t&#7893;ng s&#7889; ph&#7847;n t&#7917; nh&#432; nhau.</p>
+
+<p>Trong numpy, &#273;&#7875; l&agrave;m &#273;&#432;&#7907;c vi&#7879;c n&agrave;y ch&uacute;ng ta d&ugrave;ng ph&#432;&#417;ng th&#7913;c <code class="language-plaintext highlighter-rouge">.reshape</code> ho&#7863;c h&agrave;m <code class="language-plaintext highlighter-rouge">np.reshape</code>. C&ugrave;ng xem v&iacute; d&#7909;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p>S&#7889; chi&#7873;u c&#7911;a m&#7843;ng m&#7899;i kh&ocirc;ng nh&#7845;t thi&#7871;t ph&#7843;i b&#7857;ng 2, n&oacute; c&oacute; th&#7875; b&#7857;ng b&#7845;t k&#7923; gi&aacute; tr&#7883; n&agrave;o (l&#7899;n h&#417;n ho&#7863;c b&#7857;ng 1) nh&#432;ng ph&#7843;i &#273;&#7843;m b&#7843;o t&#7893;ng s&#7889; ph&#7847;n t&#7917; c&#7911;a hai m&#7843;ng l&agrave; nh&#432; nhau. Khi bi&#7871;n th&agrave;nh m&#7843;ng 
+m&#7897;t chi&#7873;u, ta kh&ocirc;ng d&ugrave;ng tuple (nh&#432; <code class="language-plaintext highlighter-rouge">(3,2)</code>) n&#7919;a m&agrave; ch&#7881; d&ugrave;ng m&#7897;t s&#7889; t&#7921; nhi&ecirc;n:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="c1"># to a 1d numpy array
+</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># to a 3d numpy array 
+</span><span class="n">array</span><span class="p">([[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]],</span>
+
+       <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span>
+
+       <span class="p">[[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]])</span>
+</code></pre></div></div>
+
+<p>Ta c&oacute; th&#7875; nh&#7853;n th&#7845;y r&#7857;ng n&#7871;u bi&#7871;n th&agrave;nh m&#7897;t m&#7843;ng hai chi&#7873;u m&#7899;i, ta kh&ocirc;ng nh&#7845;t thi&#7871;t ph&#7843;i bi&#7871;t k&iacute;ch th&#432;&#7899;c c&#7911;a m&#7895;i chi&#7873;u m&agrave; ch&#7881; c&#7847;n k&iacute;ch th&#432;&#7899;c c&#7911;a m&#7897;t chi&#7873;u. K&iacute;ch th&#432;&#7899;c c&ograve;n l&#7841;i &#273;&#432;&#7907;c suy ra
+t&#7915; vi&#7879;c t&#7893;ng s&#7889; ph&#7847;n t&#7917; c&#7911;a hai m&#7843;ng l&agrave; nh&#432; nhau. T&#432;&#417;ng t&#7921;, n&#7871;u bi&#7871;n th&agrave;nh m&#7897;t m&#7843;ng ba chi&#7873;u m&#7899;i, ta ch&#7881; c&#7847;n bi&#7871;t hai trong ba k&iacute;ch th&#432;&#7899;c. K&iacute;ch th&#432;&#7899;c c&ograve;n l&#7841;i s&#7869; &#273;&#432;&#7907;c python t&#7921; t&iacute;nh ra, v&agrave; ta
+ch&#7881; c&#7847;n g&aacute;n n&oacute; b&#7857;ng <code class="language-plaintext highlighter-rouge">-1</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># to 1d array, its size must be 6
+</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># ~ a 2d array of shape 6x1
+</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">4</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">5</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">6</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p><a name="-thu-tu-cua-phep-toan-reshape" href="fundaml_matrices.html"></a></p>
+
+<h3 id="293-th&#7913;-t&#7921;-c&#7911;a-ph&eacute;p-to&aacute;n-reshape">2.9.3. Th&#7913; t&#7921; c&#7911;a ph&eacute;p to&aacute;n reshape</h3>
+<p>C&oacute; m&#7897;t &#273;i&#7875;m quan tr&#7885;ng c&#7847;n nh&#7899; l&agrave; th&#7913; t&#7921; c&#7911;a ph&eacute;p to&aacute;n reshape: c&aacute;c ph&#7847;n t&#7917; trong m&#7843;ng m&#7899;i &#273;&#432;&#7907;c s&#7855;p x&#7871;p nh&#432; th&#7871; n&agrave;o. C&oacute; hai c&aacute;ch s&#7855;p x&#7871;p ch&uacute;ng ta c&#7847;n l&#432;u &yacute;: m&#7863;c &#273;&#7883;nh l&agrave; <code class="language-plaintext highlighter-rouge">'C'-order</code>, v&agrave; m&#7897;t c&aacute;ch kh&aacute;c l&agrave; <code class="language-plaintext highlighter-rouge">'F'-order</code> (xem h&igrave;nh).</p>
+
+<hr><div class="imgcap">
+<img src="images/fundaml-reshape.png" align="center" width="400"></div>
+<hr><p>Trong <code class="language-plaintext highlighter-rouge">'C'-order</code>, c&aacute;c th&agrave;nh ph&#7847;n c&#7911;a m&#7843;ng ngu&#7891;n &#273;&#432;&#7907;c qu&eacute;t t&#7915; <code class="language-plaintext highlighter-rouge">axis</code> <em>trong ra ngo&agrave;i</em> (<code class="language-plaintext highlighter-rouge">axis = 1</code> r&#7891;i m&#7899;i t&#7899;i <code class="language-plaintext highlighter-rouge">axis = 0</code> trong m&#7843;ng hai chi&#7873;u, t&#7913;c t&#7915;ng h&agrave;ng m&#7897;t), sau &#273;&oacute; ch&uacute;ng &#273;&#432;&#7907;c x&#7871;p v&agrave;o m&#7843;ng &#273;&iacute;ch c&#361;ng theo th&#7913; t&#7921; &#273;&oacute;.</p>
+
+<p>Trong <code class="language-plaintext highlighter-rouge">'F'-oder</code> (Fortran) c&aacute;c th&agrave;nh ph&#7847;n c&#7911;a m&#7843;ng ngu&#7891;n &#273;&#432;&#7907;c qu&eacute;t t&#7915; <code class="language-plaintext highlighter-rouge">axis</code> <em>ngo&agrave;i v&agrave;o trong</em> (trong m&#7843;ng hai chi&#7873;u l&agrave; t&#7915;ng c&#7897;t m&#7897;t), sau &#273;&oacute; ch&uacute;ng &#273;&#432;&#7907;c s&#7855;p x&#7871;p v&agrave;o m&#7843;ng &#273;&iacute;ch c&#361;ng theo th&#7913; t&#7921; &#273;&oacute; - t&#7915;ng c&#7897;t m&#7897;t.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span> <span class="o">=</span> <span class="s">'F'</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> 
+
+</code></pre></div></div>
+
+<p>(&#272;&#7885;c th&ecirc;m <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html"><code class="language-plaintext highlighter-rouge">numpy.reshape</code></a>.)</p>
+
+<hr><p><strong>B&agrave;i t&#7853;p:</strong> 
+H&atilde;y t&#7841;o ma tr&#7853;n <code class="language-plaintext highlighter-rouge">A</code> sau m&#7897;t c&aacute;ch nhanh nh&#7845;t, kh&ocirc;ng d&ugrave;ng c&aacute;ch th&#7911; c&ocirc;ng ghi t&#7915;ng ph&#7847;n t&#7917; ra.</p>
+
+<p>\[
+\left[
+\begin{matrix}
+1 &amp;5&amp;9&amp;2\\6&amp;10&amp;3&amp;7 \\11&amp;4&amp;8&amp;12
+\end{matrix}
+\right]
+\]
+G&#7907;i &yacute;:</p>
+<ul><li>s&#7917; d&#7909;ng <code class="language-plaintext highlighter-rouge">np.arange()</code></li>
+  <li>&#272;&#7875; &yacute; v&#7883; tr&iacute; c&#7911;a 9, 10, 11 v&agrave; 2, 3, 4</li>
+  <li>L&#7901;i gi&#7843;i kh&ocirc;ng qu&aacute; hai d&ograve;ng</li>
+</ul><p>B&#7841;n c&oacute; th&#7875; nh&#7853;n &#273;&#432;&#7907;c ph&#7843;n h&#7891;i &lsquo;K&#7871;t qu&#7843; th&agrave;nh c&ocirc;ng&rsquo; nh&#432;ng h&atilde;y th&#7917; c&#7889; ngh&#297; quy lu&#7853;t c&#7911;a ma tr&#7853;n n&agrave;y r&#7891;i d&ugrave;ng c&aacute;c ph&eacute;p <code class="language-plaintext highlighter-rouge">transpose, reshape</code> th&iacute;ch h&#7907;p.</p>
+
+<hr><p><a name="-cac-phep-toan-giua-ma-tran-va-vector" href="fundaml_matrices.html"></a></p>
+
+<h2 id="210-c&aacute;c-ph&eacute;p-to&aacute;n-gi&#7919;a-ma-tr&#7853;n-v&agrave;-vector">2.10. C&aacute;c ph&eacute;p to&aacute;n gi&#7919;a ma tr&#7853;n v&agrave; vector</h2>
+
+<!-- *Ph&#7847;n t&iacute;ch gi&#7919;a ma tr&#7853;n v&agrave; vector trong &#272;&#7841;i S&#7889; Tuy&#7871;n T&iacute;nh s&#7869; &#273;&#432;&#7907;c &#273;&#7873; c&#7853;p &#7903; b&agrave;i t&#7853;p sau*. -->
+
+<p>Ch&uacute;ng ta &#273;&atilde; qua c&aacute;c b&agrave;i v&#7873; ph&eacute;p to&aacute;n gi&#7919;a m&#7897;t m&#7843;ng hai chi&#7873;u v&agrave; m&#7897;t s&#7889; v&ocirc; h&#432;&#7899;ng, gi&#7919;a hai m&#7843;ng hai chi&#7873;u c&ugrave;ng k&iacute;ch th&#432;&#7899;c. Trong b&agrave;i n&agrave;y, ch&uacute;ng ta c&ugrave;ng l&agrave;m quen v&#7899;i c&aacute;c ph&eacute;p to&aacute;n gi&#7919;a m&#7897;t m&#7843;ng hai chi&#7873;u 
+v&agrave; m&#7897;t m&#7843;ng m&#7897;t chi&#7873;u. Tr&#432;&#7899;c ti&ecirc;n, h&atilde;y th&#7917; v&agrave;i v&iacute; d&#7909;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">+</span> <span class="n">b</span>
+<span class="n">array</span><span class="p">([[</span>  <span class="mf">1.</span><span class="p">,</span>   <span class="mf">3.</span><span class="p">,</span>   <span class="mf">5.</span><span class="p">,</span>   <span class="mf">8.</span><span class="p">],</span>
+       <span class="p">[</span>  <span class="mf">5.</span><span class="p">,</span>   <span class="mf">7.</span><span class="p">,</span>   <span class="mf">9.</span><span class="p">,</span>  <span class="mf">12.</span><span class="p">],</span>
+       <span class="p">[</span>  <span class="mf">9.</span><span class="p">,</span>  <span class="mf">11.</span><span class="p">,</span>  <span class="mf">13.</span><span class="p">,</span>  <span class="mf">16.</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">*</span><span class="n">b</span> 
+<span class="n">array</span><span class="p">([[</span>  <span class="mf">0.</span><span class="p">,</span>   <span class="mf">2.</span><span class="p">,</span>   <span class="mf">6.</span><span class="p">,</span>  <span class="mf">15.</span><span class="p">],</span>
+       <span class="p">[</span>  <span class="mf">4.</span><span class="p">,</span>  <span class="mf">10.</span><span class="p">,</span>  <span class="mf">18.</span><span class="p">,</span>  <span class="mf">35.</span><span class="p">],</span>
+       <span class="p">[</span>  <span class="mf">8.</span><span class="p">,</span>  <span class="mf">18.</span><span class="p">,</span>  <span class="mf">30.</span><span class="p">,</span>  <span class="mf">55.</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p>Nh&#7853;n th&#7845;y r&#7857;ng k&#7871;t qu&#7843; c&#7911;a ph&eacute;p to&aacute;n <code class="language-plaintext highlighter-rouge">A + b</code> thu &#273;&#432;&#7907;c b&#7857;ng c&aacute;ch l&#7845;y t&#7915;ng <em>h&agrave;ng</em> c&#7911;a <code class="language-plaintext highlighter-rouge">A</code> c&#7897;ng v&#7899;i <code class="language-plaintext highlighter-rouge">b</code>. K&#7871;t qu&#7843; c&#7911;a <code class="language-plaintext highlighter-rouge">A*b</code> thu &#273;&#432;&#7907;c b&#7857;ng c&aacute;ch l&#7845;y t&iacute;ch c&#7911;a t&#7915;ng h&agrave;ng c&#7911;a <code class="language-plaintext highlighter-rouge">A</code> v&agrave; <code class="language-plaintext highlighter-rouge">b</code> - t&iacute;ch &#7903; &#273;&acirc;y l&agrave; t&iacute;ch theo t&#7915;ng ph&#7847;n t&#7917; 
+c&#7911;a hai m&#7843;ng m&#7897;t chi&#7873;u, kh&ocirc;ng ph&#7843;i t&iacute;ch v&ocirc; h&#432;&#7899;ng c&#7911;a hai vector. N&oacute;i c&aacute;ch kh&aacute;c, k&#7871;t qu&#7843; c&#7911;a <code class="language-plaintext highlighter-rouge">A*b</code> thu &#273;&#432;&#7907;c b&#7857;ng c&aacute;ch l&#7845;y t&#7915;ng <em>c&#7897;t</em> c&#7911;a <code class="language-plaintext highlighter-rouge">A</code> nh&acirc;n v&#7899;i ph&#7847;n t&#7917; t&#432;&#417;ng &#7913;ng c&#7911;a <code class="language-plaintext highlighter-rouge">b</code>. Quy lu&#7853;t t&#432;&#417;ng t&#7921; x&#7843;y ra 
+v&#7899;i c&#7843; ph&eacute;p <code class="language-plaintext highlighter-rouge">-</code>, <code class="language-plaintext highlighter-rouge">/</code> v&agrave; <code class="language-plaintext highlighter-rouge">**</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">**</span><span class="n">c</span>
+<span class="n">array</span><span class="p">([[</span>  <span class="mi">0</span><span class="p">,</span>   <span class="mi">1</span><span class="p">,</span>   <span class="mi">2</span><span class="p">,</span>   <span class="mi">9</span><span class="p">],</span>
+       <span class="p">[</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">25</span><span class="p">,</span>   <span class="mi">6</span><span class="p">,</span>  <span class="mi">49</span><span class="p">],</span>
+       <span class="p">[</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">81</span><span class="p">,</span>  <span class="mi">10</span><span class="p">,</span> <span class="mi">121</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<hr><p><strong>B&agrave;i t&#7853;p</strong></p>
+
+<p>Gi&#7843; s&#7917; t&#7853;p d&#7919; li&#7879;u bao g&#7891;m nhi&#7873;u &#273;i&#7875;m d&#7919; li&#7879;u c&oacute; c&ugrave;ng chi&#7873;u, &#273;&#432;&#7907;c s&#7855;p x&#7871;p th&agrave;nh m&#7897;t m&#7843;ng hai chi&#7873;u m&ocirc; t&#7843; m&#7897;t ma tr&#7853;n - &#273;&#432;&#7907;c g&#7885;i l&agrave; ma tr&#7853;n d&#7919; li&#7879;u. M&#7895;i h&agrave;ng c&#7911;a ma tr&#7853;n n&agrave;y l&agrave; m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u. 
+M&#7897;t trong c&aacute;c k&#7929; thu&#7853;t quan tr&#7885;ng tr&#432;&#7899;c khi &aacute;p d&#7909;ng c&aacute;c thu&#7853;t to&aacute;n Machine Learning l&ecirc;n d&#7919; li&#7879;u l&agrave; <a href="https://machinelearningcoban.com/general/2017/02/06/featureengineering/#feature-scaling-and-normalization"><strong>chu&#7849;n ho&aacute; d&#7919; li&#7879;u</strong></a>.
+Trong c&aacute;c ph&#432;&#417;ng ph&aacute;p chu&#7849;n ho&aacute; d&#7919; li&#7879;u, m&#7897;t ph&#432;&#417;ng ph&aacute;p th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave; &#273;&#432;a d&#7919; li&#7879;u v&#7873; d&#7841;ng <em>zero-mean</em>, t&#7913;c trung b&igrave;nh c&#7897;ng c&#7911;a to&agrave;n b&#7897; d&#7919; li&#7879;u l&agrave; m&#7897;t vector c&oacute; to&agrave;n b&#7897; c&aacute;c th&agrave;nh ph&#7847;n b&#7857;ng 0.</p>
+
+<p>C&aacute;ch chu&#7849;n ho&aacute; n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n b&#7857;ng c&aacute;ch tr&#432;&#7899;c ti&ecirc;n t&iacute;nh vector trung b&igrave;nh c&#7911;a to&agrave;n b&#7897; d&#7919; li&#7879;u (&#7903; &#273;&acirc;y l&agrave; vector trung b&igrave;nh c&#7911;a to&agrave;n b&#7897; c&aacute;c h&agrave;ng), 
+sau &#273;&oacute; l&#7845;y t&#7915;ng &#273;i&#7875;m d&#7919; li&#7879;u tr&#7915; &#273;i vector trung b&igrave;nh. Khi &#273;&oacute;, ma tr&#7853;n m&#7899;i s&#7869; c&oacute; trung b&igrave;nh c&#7897;ng c&aacute;c h&agrave;ng b&#7857;ng vector 0, v&agrave; ta n&oacute;i r&#7857;ng ma tr&#7853;n d&#7919; li&#7879;u m&#7899;i n&agrave;y l&agrave; <em>zero-mean</em>.</p>
+
+<p>Cho m&#7897;t m&#7843;ng hai chi&#7873;u <code class="language-plaintext highlighter-rouge">X</code> m&ocirc; t&#7843; d&#7919; li&#7879;u, trong &#273;&oacute; <code class="language-plaintext highlighter-rouge">X[i]</code> l&agrave; m&#7897;t m&#7843;ng m&#7897;t chi&#7873;u m&ocirc; t&#7843; d&#7919; li&#7879;u c&oacute; ch&#7881; s&#7889; <code class="language-plaintext highlighter-rouge">i</code>. H&atilde;y vi&#7871;t h&agrave;m <code class="language-plaintext highlighter-rouge">zero_mean</code> tr&#7843; v&#7873; ma tr&#7853;n d&#7919; li&#7879;u &#273;&atilde; chu&#7849;n ho&aacute; theo <em>zero-mean</em>.</p>
+
+<hr><p><a name="-tich-giua-hai-ma-tran-tich-giua-ma-tran-va-vector" href="fundaml_matrices.html"></a></p>
+
+<h2 id="211-t&iacute;ch-gi&#7919;a-hai-ma-tr&#7853;n-t&iacute;ch-gi&#7919;a-ma-tr&#7853;n-v&agrave;-vector">2.11. T&iacute;ch gi&#7919;a hai ma tr&#7853;n, t&iacute;ch gi&#7919;a ma tr&#7853;n v&agrave; vector</h2>
+
+<p><a name="-tich-giua-hai-ma-tran" href="fundaml_matrices.html"></a></p>
+
+<h3 id="2111-t&iacute;ch-gi&#7919;a-hai-ma-tr&#7853;n">2.11.1. T&iacute;ch gi&#7919;a hai ma tr&#7853;n</h3>
+<p>Trong &#272;&#7841;i S&#7889; Tuy&#7871;n T&iacute;nh (&#272;STT), t&iacute;ch c&#7911;a hai ma tr&#7853;n \(\mathbf{A} \in \mathbb{R}^{m\times n}\) v&agrave; \(\mathbf{B} \in \mathbb{R}^{n \times p}\) &#273;&#432;&#7907;c k&yacute; hi&#7879;u l&agrave; \(\mathbf{C = AB} \in \mathbb{R}^{m \times p}\) 
+trong &#273;&oacute; ph&#7847;n t&#7917; &#7903; h&agrave;ng th&#7913; \(i\) c&#7897;t th&#7913; \(j\) (t&iacute;nh t&#7915; \(0\)) c&#7911;a \(\mathbf{C}\) &#273;&#432;&#7907;c t&iacute;nh theo c&ocirc;ng th&#7913;c: 
+\[
+c_{ij} = \sum_{k=0}^{n-1}a_{ik}b_{kj}
+\]</p>
+
+<p>Ch&uacute; &yacute; r&#7857;ng &#273;&#7875; ph&eacute;p nh&acirc;n th&#7921;c hi&#7879;n &#273;&#432;&#7907;c, s&#7889; c&#7897;t c&#7911;a ma tr&#7853;n th&#7913; nh&#7845;t ph&#7843;i b&#7857;ng v&#7899;i s&#7889; h&agrave;ng c&#7911;a ma tr&#7853;n th&#7913; hai (&#7903; &#273;&acirc;y &#273;&#7873;u b&#7857;ng \(n\)). V&agrave; ph&eacute;p nh&acirc;n ma tr&#7853;n kh&ocirc;ng c&oacute; t&iacute;nh ch&#7845;t giao ho&aacute;n, nh&#432;ng <strong>c&oacute; t&iacute;nh ch&#7845;t k&#7871;t h&#7907;p</strong>, t&#7913;c: 
+\[
+\mathbf{ABC} = \mathbf{(AB)C} = \mathbf{A}(\mathbf{BC})
+\]</p>
+
+<p>Trong numpy, k&yacute; hi&#7879;u <code class="language-plaintext highlighter-rouge">*</code> kh&ocirc;ng th&#7921;c s&#7921; &#273;&#7875; ch&#7881; t&iacute;ch hai ma tr&#7853;n theo ngh&#297;a n&agrave;y m&agrave; l&agrave; t&iacute;ch theo t&#7915;ng c&#7863;p ph&#7847;n t&#7917; (element-wise). Ph&eacute;p to&aacute;n <code class="language-plaintext highlighter-rouge">*</code> trong numpy y&ecirc;u c&#7847;u hai m&#7843;ng ph&#7843;i c&oacute; c&ugrave;ng k&iacute;ch th&#432;&#7899;c, v&agrave; ph&eacute;p to&aacute;n n&agrave;y c&oacute; t&iacute;nh ch&#7845;t giao ho&aacute;n v&igrave; ph&eacute;p nh&acirc;n
+c&#7911;a hai s&#7889; v&ocirc; h&#432;&#7899;ng c&oacute; t&iacute;nh ch&#7845;t giao ho&aacute;n.</p>
+
+<p>Cho hai m&#7843;ng numpy hai chi&#7873;u <code class="language-plaintext highlighter-rouge">A, B</code> trong &#273;&oacute; <code class="language-plaintext highlighter-rouge">A.shape[1] == B.shape[0]</code> (&#273;&#7915;ng qu&ecirc;n &#273;i&#7873;u ki&#7879;n n&agrave;y). N&#7871;u hai m&#7843;ng n&agrave;y m&ocirc; t&#7843; hai ma tr&#7853;n th&igrave; t&iacute;ch c&#7911;a hai ma tr&#7853;n (theo &#272;STT) c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n b&#7857;ng thu&#7897;c t&iacute;nh 
+<code class="language-plaintext highlighter-rouge">.dot</code> ho&#7863;c h&agrave;m <code class="language-plaintext highlighter-rouge">np.dot</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">B</span>
+<span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([[</span>  <span class="mi">5</span><span class="p">,</span>   <span class="mi">8</span><span class="p">,</span>  <span class="mi">11</span><span class="p">,</span>  <span class="mi">14</span><span class="p">],</span>
+       <span class="p">[</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span>   <span class="mi">8</span><span class="p">,</span>  <span class="mi">20</span><span class="p">,</span>  <span class="mi">32</span><span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mi">13</span><span class="p">,</span>   <span class="mi">8</span><span class="p">,</span>  <span class="mi">29</span><span class="p">,</span>  <span class="mi">50</span><span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mi">22</span><span class="p">,</span>   <span class="mi">8</span><span class="p">,</span>  <span class="mi">38</span><span class="p">,</span>  <span class="mi">68</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([[</span>  <span class="mi">5</span><span class="p">,</span>   <span class="mi">8</span><span class="p">,</span>  <span class="mi">11</span><span class="p">,</span>  <span class="mi">14</span><span class="p">],</span>
+       <span class="p">[</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span>   <span class="mi">8</span><span class="p">,</span>  <span class="mi">20</span><span class="p">,</span>  <span class="mi">32</span><span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mi">13</span><span class="p">,</span>   <span class="mi">8</span><span class="p">,</span>  <span class="mi">29</span><span class="p">,</span>  <span class="mi">50</span><span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mi">22</span><span class="p">,</span>   <span class="mi">8</span><span class="p">,</span>  <span class="mi">38</span><span class="p">,</span>  <span class="mi">68</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p><a name="-tich-giua-mot-ma-tran-va-mot-vector" href="fundaml_matrices.html"></a></p>
+
+<h3 id="2112-t&iacute;ch-gi&#7919;a-m&#7897;t-ma-tr&#7853;n-v&agrave;-m&#7897;t-vector">2.11.2. T&iacute;ch gi&#7919;a m&#7897;t ma tr&#7853;n v&agrave; m&#7897;t vector</h3>
+
+<p>Trong &#272;STT, t&iacute;ch gi&#7919;a m&#7897;t ma tr&#7853;n v&agrave; m&#7897;t vector c&#7897;t &#273;&#432;&#7907;c coi l&agrave; m&#7897;t tr&#432;&#7901;ng h&#7907;p &#273;&#7863;c bi&#7879;t c&#7911;a t&iacute;ch gi&#7919;a m&#7897;t ma tr&#7853;n v&agrave; m&#7897;t ma tr&#7853;n c&oacute; s&#7889; c&#7897;t b&#7857;ng m&#7897;t. Khi l&agrave;m vi&#7879;c v&#7899;i numpy, ma tr&#7853;n &#273;&#432;&#7907;c m&ocirc; t&#7843; b&#7903;i
+m&#7843;ng hai chi&#7873;u, vector &#273;&#432;&#7907;c m&ocirc; t&#7843; b&#7903;i c&aacute;c m&#7843;ng m&#7897;t chi&#7873;u.</p>
+
+<p>Xem v&iacute; d&#7909; d&#432;&#7899;i &#273;&acirc;y:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">11</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">83</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">*</span><span class="n">b</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">8</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">44</span><span class="p">]])</span>
+</code></pre></div></div>
+<p>T&iacute;ch c&#7911;a m&#7843;ng hai chi&#7873;u <code class="language-plaintext highlighter-rouge">A</code> v&agrave; m&#7843;ng m&#7897;t chi&#7873;u <code class="language-plaintext highlighter-rouge">b</code> v&#7899;i <code class="language-plaintext highlighter-rouge">A.shape[1] == b.shape[0]</code> theo &#272;STT &#273;&#432;&#7907;c th&#7921;c hi&#7879;n b&#7857;ng ph&#432;&#417;ng th&#7913;c <code class="language-plaintext highlighter-rouge">.dot()</code> c&#7911;a m&#7843;ng numpy <code class="language-plaintext highlighter-rouge">A</code>. K&#7871;t qu&#7843; tr&#7843; v&#7873; l&agrave; m&#7897;t m&#7843;ng m&#7897;t chi&#7873;u c&oacute; <code class="language-plaintext highlighter-rouge">shape[0] == 4</code>. 
+Ch&uacute;ng ta c&#7847;n ch&uacute; &yacute; m&#7897;t ch&uacute;t &#7903; &#273;&acirc;y l&agrave; k&#7871;t qu&#7843; tr&#7843; v&#7873; l&agrave; m&#7897;t m&#7843;ng m&#7897;t chi&#7873;u ch&#7913; kh&ocirc;ng ph&#7843;i m&#7897;t vector c&#7897;t (&#273;&#432;&#7907;c bi&#7875;u di&#7877;n b&#7903;i m&#7897;t m&#7843;ng hai chi&#7873;u c&oacute; <code class="language-plaintext highlighter-rouge">shape[1] = 1</code>) nh&#432; tr&ecirc;n l&yacute; thuy&#7871;t. K&#7871;t qu&#7843;
+c&#7911;a <code class="language-plaintext highlighter-rouge">A*b</code> c&#361;ng &#273;&#432;&#7907;c ch&#7881; ra &#273;&#7875; nh&#7855;c c&aacute;c b&#7841;n ph&acirc;n bi&#7879;t hai ph&eacute;p nh&acirc;n n&agrave;y.</p>
+
+<p>Ti&#7871;p t&#7909;c quan s&aacute;t:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">ValueError</span><span class="p">:</span> <span class="n">shapes</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)</span> <span class="ow">and</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="ow">not</span> <span class="n">aligned</span><span class="p">:</span> <span class="mi">3</span> <span class="p">(</span><span class="n">dim</span> <span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span> <span class="p">(</span><span class="n">dim</span> <span class="mi">0</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">])</span>
+</code></pre></div></div>
+<p>ta th&#7845;y r&#7857;ng n&#7871;u &#273;&#7863;t <code class="language-plaintext highlighter-rouge">b</code> l&ecirc;n tr&#432;&#7899;c <code class="language-plaintext highlighter-rouge">A</code> th&igrave; c&oacute; l&#7895;i x&#7843;y ra v&igrave; xung &#273;&#7897;t chi&#7873;u. Tuy nhi&ecirc;n n&#7871;u m&#7843;ng m&#7897;t chi&#7873;u <code class="language-plaintext highlighter-rouge">c</code> c&oacute; k&iacute;ch th&#432;&#7899;c b&#7857;ng <code class="language-plaintext highlighter-rouge">4</code> th&igrave; l&#7841;i c&oacute; th&#7875; nh&acirc;n v&#7899;i m&#7843;ng hai chi&#7873;u <code class="language-plaintext highlighter-rouge">A</code> &#273;&#432;&#7907;c. 
+K&#7871;t qu&#7843; thu &#273;&#432;&#7907;c ch&iacute;nh l&agrave; vector h&agrave;ng <code class="language-plaintext highlighter-rouge">c</code> nh&acirc;n v&#7899;i ma tr&#7853;n <code class="language-plaintext highlighter-rouge">A</code>. (B&#7841;n c&oacute; th&#7875; t&#7921; ki&#7875;m tra l&#7841;i).</p>
+
+<p>C&oacute; m&#7897;t ch&uacute;t c&#7847;n l&#432;u &yacute; &#7903; &#273;&acirc;y: N&#7871;u m&#7843;ng m&#7897;t chi&#7873;u &#273;&#432;&#7907;c nh&acirc;n v&agrave;o sau m&#7897;t m&#7843;ng hai chi&#7873;u, n&oacute; &#273;&#432;&#7907;c coi nh&#432; m&#7897;t vector c&#7897;t. N&#7871;u n&oacute; &#273;&#432;&#7907;c nh&acirc;n v&agrave;o tr&#432;&#7899;c m&#7897;t m&#7843;ng hai chi&#7873;u, n&oacute; l&#7841;i &#273;&#432;&#7907;c coi l&agrave; m&#7897;t vector h&agrave;ng. 
+D&ugrave; sao th&igrave; n&oacute; v&#7851;n l&agrave; m&#7897;t vector, v&agrave; v&#7851;n &#273;&#432;&#7907;c l&#432;u b&#7903;i m&#7897;t m&#7843;ng m&#7897;t chi&#7873;u :). &#272;&acirc;y c&#361;ng ch&iacute;nh l&agrave; m&#7897;t trong nh&#7919;ng l&yacute; o m&agrave; nh&#7919;ng ng&#432;&#7901;i ban &#273;&#7847;u l&agrave;m quen v&#7899;i numpy g&#7863;p nhi&#7873;u kh&oacute; kh&#259;n.</p>
+
+<hr><p><strong>B&agrave;i t&#7853;p:</strong> Quay l&#7841;i v&#7899;i Frobineus norm. C&oacute; m&#7897;t c&aacute;ch kh&aacute;c &#273;&#7875; t&iacute;nh b&igrave;nh ph&#432;&#417;ng c&#7911;a Frobineus norm c&#7911;a m&#7897;t ma tr&#7853;n d&#7921;a tr&ecirc;n c&ocirc;ng th&#7913;c: 
+\[
+||\mathbf{A}||_F^2 = \text{trace}(\mathbf{AA}^T) = \text{trace}(\mathbf{A}^T\mathbf{A})
+\]</p>
+
+<p>trong &#273;&oacute; \(\text{trace}()\) l&agrave; h&agrave;m t&iacute;nh t&#7893;ng c&aacute;c ph&#7847;n t&#7917; tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o c&#7911;a m&#7897;t ma tr&#7853;n vu&ocirc;ng.</p>
+
+<p>Cho m&#7897;t m&#7843;ng hai chi&#7873;u <code class="language-plaintext highlighter-rouge">A</code>, h&atilde;y vi&#7871;t h&agrave;m <code class="language-plaintext highlighter-rouge">fro_trace</code> t&iacute;nh b&igrave;nh ph&#432;&#417;ng c&#7911;a Frobineus norm c&#7911;a ma tr&#7853;n n&agrave;y d&#7921;a v&agrave;o c&ocirc;ng th&#7913;c tr&ecirc;n.</p>
+
+<p>G&#7907;i &yacute;:</p>
+<ul><li>s&#7917; d&#7909;ng h&agrave;m <code class="language-plaintext highlighter-rouge">np.diag</code>, ho&#7863;c</li>
+  <li>s&#7917; d&#7909;ng <code class="language-plaintext highlighter-rouge">np.trace</code> (g&otilde; <code class="language-plaintext highlighter-rouge">help(np.trace)</code> tr&ecirc;n Terminal ho&#7863;c google &#273;&#7875; bi&#7871;t th&ecirc;m chi ti&#7871;t).</li>
+</ul><p>Hy v&#7885;ng c&aacute;c b&#7841;n g&#7863;p kh&oacute; kh&#259;n ch&uacute;t v&#7899;i Compiler v&agrave; nh&#7853;n ra l&yacute; do c&#7911;a vi&#7879;c &#273;&oacute; ;).</p>
+
+<hr><p><a name="-softmax-iii---phien-ban-tong-quat" href="fundaml_matrices.html"></a></p>
+
+<h2 id="212-softmax-iii---phi&ecirc;n-b&#7843;n-t&#7893;ng-qu&aacute;t">2.12. Softmax III - Phi&ecirc;n b&#7843;n t&#7893;ng qu&aacute;t</h2>
+<p>Ch&uacute;ng ta &#273;&atilde; l&agrave;m quen v&#7899;i <a href="https://fundaml.com/course/5990a766cdc6e32b3b4d0666/lesson/5990aa22cdc6e32b3b4d0667/5991da2ecdc6e32b3b4d066e">Phi&ecirc;n b&#7843;n &#7893;n &#273;&#7883;nh c&#7911;a h&agrave;m Softmax</a>
+v&#7899;i m&#7897;t m&#7897;t m&#7843;ng m&#7897;t chi&#7873;u \(\mathbf{z}\):</p>
+
+\[\frac{\exp(z_i)}{\sum_{j=0}^{C-1} \exp(z_j)} = 
+\frac{\exp(-b)\exp(z_i)}{\exp(-b)\sum_{j=0}^{C-1} \exp(z_j)}
+= \frac{\exp(z_i-b)}{\sum_{j=0}^{C-1} \exp(z_j-b)}\]
+
+<p>B&acirc;y gi&#7901;, ch&uacute;ng ta ti&#7871;p t&#7909;c t&#7893;ng qu&aacute;t h&agrave;m s&#7889; n&agrave;y &#273;&#7875; &aacute;p d&#7909;ng cho nhi&#7873;u ph&#7847;n t&#7917; 
+c&ugrave;ng l&uacute;c. Gi&#7843; s&#7917; ma tr&#7853;n \(\mathbf{Z}\) l&agrave; ma tr&#7853;n <em>scores</em> c&#7911;a \(N\) &#273;i&#7875;m d&#7919; 
+li&#7879;u, m&#7895;i h&agrave;ng \(\mathbf{z}_i\) c&#7911;a ma tr&#7853;n n&agrave;y &#7913;ng v&#7899;i score c&#7911;a m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u. 
+H&atilde;y vi&#7871;t m&#7897;t h&agrave;m s&#7889; tr&ecirc;n python &#273;&#7875; t&iacute;nh softmax cho t&#7915;ng h&agrave;ng c&#7911;a \(\mathbf{Z}\). 
+K&#7871;t qu&#7843; thu &#273;&#432;&#7907;c l&agrave; m&#7897;t ma tr&#7853;n \(\mathbf{A}\) c&ugrave;ng chi&#7873;u v&#7899;i \(\mathbf{Z}\) m&agrave; 
+m&#7895;i h&agrave;ng c&#7911;a \(\mathbf{A}\) l&agrave; k&#7871;t qu&#7843; khi &aacute;p d&#7909;ng h&agrave;m Softmax l&ecirc;n m&#7897;t h&agrave;ng t&#432;&#417;ng 
+&#7913;ng c&#7911;a \(\mathbf{Z}\).</p>
+
+<p>B&#7841;n &#273;&#7885;c c&#7847;n vi&#7871;t h&agrave;m d&#432;&#7899;i d&#7841;ng <em>vectorization</em>, t&#7913;c kh&ocirc;ng s&#7917; d&#7909;ng v&ograve;ng <code class="language-plaintext highlighter-rouge">for</code>.</p>
+
+<p><strong>G&#7907;i &yacute;:</strong> L&#7901;i gi&#7843;i c&oacute; th&#7875; kh&ocirc;ng v&#432;&#7907;t qu&aacute; 2 d&ograve;ng l&#7879;nh.</p>
+
+</div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="fundaml_vectors.html">&laquo; FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="fundaml_vectors.html">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2017/10/20/fundaml_matrices/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11485458; 
+var sc_invisible=0; 
+var sc_security="cf3b741d"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/cf3b741d-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+                  
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/10/20/fundaml_matrices/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2017/10/20/fundaml_matrices/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/10/20/fundaml_matrices/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n&url=https://machinelearningcoban.com/2017/10/20/fundaml_matrices/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2017/10/20/fundaml_matrices/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2017/10/20/fundaml_matrices/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#122d416770787771662f417b7f627e7732417a73607732506766667d7c6134737f6229507d766b2f5b372022617365372022667a7b61372022737c76372022667a7d67757a663720227d743720226b7d6733372022327a66666261283d3d7f73717a7b7c777e7773607c7b7c75717d70737c3c717d7f3d202223253d23223d20223d74677c76737f7e4d7f7366607b7177613d">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

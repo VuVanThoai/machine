@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</title><!-- <script>
+var pageProperties = {
+    
+    category: "Classification",
+    
+    url: "/2017/08/31/evaluation/",
+    title: "B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/2017/08/31/evaluation/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/2017/08/31/evaluation/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2018-01-03"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="Classification"><meta property="article:tag" content="Classification"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2017/08/31/evaluation/',
+'title': 'B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="id3.html">34. Decision Trees (1): ID3</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+                  
+                
+              
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="fundaml_vectors.html">&laquo; FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="id3.html">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3 &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</h1>
+
+
+<ul class="tags"><a href="/tags#Classification" class="tag">Classification</a>
+   
+</ul><span class="post-date" style="color: gray; font-style: italic;">Jan 3, 2018
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <p><strong>Trong trang n&agrave;y:</strong></p>
+
+<!-- MarkdownTOC -->
+
+<ul><li><a href="#-gioi-thieu">1. Gi&#7899;i thi&#7879;u</a></li>
+  <li><a href="#-accuracy">2. Accuracy</a></li>
+  <li><a href="#-confusion-matrix">3. Confusion matrix</a></li>
+  <li><a href="#-truefalse-positivenegative">4. True/False Positive/Negative</a>
+    <ul><li><a href="#-truefalse-positivenegative-1">4.1. True/False Positive/Negative</a></li>
+      <li><a href="#-receiver-operating-characteristic-curve">4.2. Receiver Operating Characteristic curve</a></li>
+      <li><a href="#-area-under-the-curve">4.3. Area Under the Curve</a></li>
+    </ul></li>
+  <li><a href="#-precision-va-recall">5. Precision v&agrave; Recall</a>
+    <ul><li><a href="#-dinh-nghia">5.1 &#272;&#7883;nh ngh&#297;a</a></li>
+      <li><a href="#-precision-recall-curve-va-average-precision">5.2. Precision-Recall curve v&agrave; Average precision</a></li>
+      <li><a href="#-f-score">5.3. F1-score</a></li>
+      <li><a href="#-precision-recall-cho-bai-toan-phan-lop-nhieu-lop">5.4. Precision-recall cho b&agrave;i to&aacute;n ph&acirc;n l&#7899;p nhi&#7873;u l&#7899;p</a>
+        <ul><li><a href="#-micro-average">5.4.1. Micro-average</a></li>
+          <li><a href="#-macro-average">5.4.2. Macro-average</a></li>
+        </ul></li>
+    </ul></li>
+  <li><a href="#-tom-tat">6. T&oacute;m t&#7855;t</a></li>
+  <li><a href="#-tai-lieu-tham-khao">7. T&agrave;i li&#7879;u tham kh&#7843;o</a></li>
+</ul><!-- /MarkdownTOC --><p>B&#7841;n c&oacute; th&#7875; download to&agrave;n b&#7897; source code d&#432;&#7899;i d&#7841;ng Jupyter Notebook <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/33_evaluation/python/Evaluation%20methods.ipynb">t&#7841;i &#273;&acirc;y</a>.
+<a name="-gioi-thieu" href="evaluation.html"></a></p>
+
+<h2 id="1-gi&#7899;i-thi&#7879;u">1. Gi&#7899;i thi&#7879;u</h2>
+<p>Khi x&acirc;y d&#7921;ng m&#7897;t m&ocirc; h&igrave;nh Machine Learning, ch&uacute;ng ta c&#7847;n m&#7897;t ph&eacute;p &#273;&aacute;nh gi&aacute; &#273;&#7875; xem m&ocirc; h&igrave;nh s&#7917; d&#7909;ng c&oacute; hi&#7879;u qu&#7843; kh&ocirc;ng v&agrave; &#273;&#7875; so s&aacute;nh kh&#7843; n&#259;ng c&#7911;a c&aacute;c m&ocirc; h&igrave;nh. Trong b&agrave;i vi&#7871;t n&agrave;y, t&ocirc;i s&#7869; gi&#7899;i thi&#7879;u c&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; c&aacute;c m&ocirc; h&igrave;nh classification.</p>
+
+<p>Hi&#7879;u n&#259;ng c&#7911;a m&#7897;t m&ocirc; h&igrave;nh th&#432;&#7901;ng &#273;&#432;&#7907;c &#273;&aacute;nh gi&aacute; d&#7921;a tr&ecirc;n t&#7853;p d&#7919; li&#7879;u ki&#7875;m th&#7917; (test data). C&#7909; th&#7875;, gi&#7843; s&#7917; &#273;&#7847;u ra c&#7911;a m&ocirc; h&igrave;nh khi &#273;&#7847;u v&agrave;o l&agrave; t&#7853;p ki&#7875;m th&#7917; &#273;&#432;&#7907;c m&ocirc; t&#7843; b&#7903;i vector <code class="language-plaintext highlighter-rouge">y_pred</code> - l&agrave; vector d&#7921; &#273;o&aacute;n &#273;&#7847;u ra v&#7899;i m&#7895;i ph&#7847;n t&#7917; l&agrave; class &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n c&#7911;a m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u trong t&#7853;p ki&#7875;m th&#7917;. Ta c&#7847;n so s&aacute;nh gi&#7919;a vector d&#7921; &#273;o&aacute;n <code class="language-plaintext highlighter-rouge">y_pred</code> n&agrave;y v&#7899;i vector class <em>th&#7853;t</em> c&#7911;a d&#7919; li&#7879;u, &#273;&#432;&#7907;c m&ocirc; t&#7843; b&#7903;i vector <code class="language-plaintext highlighter-rouge">y_true</code>.</p>
+
+<p>V&iacute; d&#7909; v&#7899;i b&agrave;i to&aacute;n c&oacute; 3 l&#7899;p d&#7919; li&#7879;u &#273;&#432;&#7907;c g&aacute;n nh&atilde;n l&agrave; <code class="language-plaintext highlighter-rouge">0, 1, 2</code>. Trong b&agrave;i to&aacute;n th&#7921;c t&#7871;, c&aacute;c class c&oacute; th&#7875; c&oacute; nh&atilde;n b&#7845;t k&#7923;, kh&ocirc;ng nh&#7845;t thi&#7871;t l&agrave; s&#7889;, v&agrave; kh&ocirc;ng nh&#7845;t thi&#7871;t b&#7855;t &#273;&#7847;u t&#7915; <code class="language-plaintext highlighter-rouge">0</code>. Ch&uacute;ng ta h&atilde;y t&#7841;m gi&#7843; s&#7917; c&aacute;c class &#273;&#432;&#7907;c &#273;&aacute;nh s&#7889; t&#7915; <code class="language-plaintext highlighter-rouge">0</code> &#273;&#7871;n <code class="language-plaintext highlighter-rouge">C-1</code> trong tr&#432;&#7901;ng h&#7907;p c&oacute; <code class="language-plaintext highlighter-rouge">C</code> l&#7899;p d&#7919; li&#7879;u.  C&oacute; 10 &#273;i&#7875;m d&#7919; li&#7879;u trong t&#7853;p ki&#7875;m th&#7917; v&#7899;i c&aacute;c nh&atilde;n th&#7921;c s&#7921; &#273;&#432;&#7907;c m&ocirc; t&#7843; b&#7903;i <code class="language-plaintext highlighter-rouge">y_true = [0, 0, 0, 0, 1, 1, 1, 2, 2, 2]</code>. Gi&#7843; s&#7917; b&#7897; ph&acirc;n l&#7899;p ch&uacute;ng ta &#273;ang c&#7847;n &#273;&aacute;nh gi&aacute; d&#7921; &#273;o&aacute;n nh&atilde;n cho c&aacute;c &#273;i&#7875;m n&agrave;y l&agrave; <code class="language-plaintext highlighter-rouge">y_pred = [0, 1, 0, 2, 1, 1, 0, 2, 1, 2]</code>.</p>
+
+<p>C&oacute; r&#7845;t nhi&#7873;u c&aacute;ch &#273;&aacute;nh gi&aacute; m&#7897;t m&ocirc; h&igrave;nh ph&acirc;n l&#7899;p. Tu&#7923; v&agrave;o nh&#7919;ng b&agrave;i to&aacute;n kh&aacute;c nhau m&agrave; ch&uacute;ng ta s&#7917; d&#7909;ng c&aacute;c ph&#432;&#417;ng ph&aacute;p kh&aacute;c nhau. C&aacute;c ph&#432;&#417;ng ph&aacute;p th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave;: accuracy score, confusion matrix, ROC curve, Area Under the Curve, Precision and Recall, F1 score, Top R error, etc.</p>
+
+<p>Trong Ph&#7847;n 1 n&agrave;y, t&ocirc;i s&#7869; tr&igrave;nh b&agrave;y v&#7873; accuracy score, confusion matrix, ROC curve, v&agrave; Area Under the Curve. C&aacute;c ph&#432;&#417;ng ph&aacute;p c&ograve;n l&#7841;i s&#7869; &#273;&#432;&#7907;c tr&igrave;nh b&agrave;y trong Ph&#7847;n 2.</p>
+
+<p><a name="-accuracy" href="evaluation.html"></a></p>
+
+<h2 id="2-accuracy">2. Accuracy</h2>
+<p>C&aacute;ch &#273;&#417;n gi&#7843;n v&agrave; hay &#273;&#432;&#7907;c s&#7917; d&#7909;ng nh&#7845;t l&agrave; <em>accuracy</em> (&#273;&#7897; ch&iacute;nh x&aacute;c). C&aacute;ch &#273;&aacute;nh gi&aacute; n&agrave;y &#273;&#417;n gi&#7843;n t&iacute;nh t&#7881; l&#7879; gi&#7919;a s&#7889; &#273;i&#7875;m &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n &#273;&uacute;ng v&agrave; t&#7893;ng s&#7889; &#273;i&#7875;m trong t&#7853;p d&#7919; li&#7879;u ki&#7875;m th&#7917;.</p>
+
+<p>Trong v&iacute; d&#7909; n&agrave;y, ta c&oacute; th&#7875; &#273;&#7871;m &#273;&#432;&#7907;c c&oacute; 6 &#273;i&#7875;m d&#7919; li&#7879;u &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n &#273;&uacute;ng tr&ecirc;n t&#7893;ng s&#7889; 10 &#273;i&#7875;m. V&#7853;y ta k&#7871;t lu&#7853;n &#273;&#7897; ch&iacute;nh x&aacute;c c&#7911;a m&ocirc; h&igrave;nh l&agrave; 0.6 (hay 60%). &#272;&#7875; &yacute; r&#7857;ng &#273;&acirc;y l&agrave; b&agrave;i to&aacute;n v&#7899;i ch&#7881; 3 class, n&ecirc;n &#273;&#7897; ch&iacute;nh x&aacute;c nh&#7887; nh&#7845;t &#273;&atilde; l&agrave; kho&#7843;ng 1/3, khi t&#7845;t c&#7843; c&aacute;c &#273;i&#7875;m &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n l&agrave; thu&#7897;c v&agrave;o m&#7897;t class n&agrave;o &#273;&oacute;.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+
+<span class="k">def</span> <span class="nf">acc</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">y_true</span> <span class="o">==</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">correct</span><span class="p">)</span><span class="o">/</span><span class="n">y_true</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'accuracy = '</span><span class="p">,</span> <span class="n">acc</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    accuracy =  0.6
+</code></pre></div></div>
+
+<p>V&agrave; &#273;&acirc;y l&agrave; <a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html">c&aacute;ch t&iacute;nh b&#7857;ng th&#432; vi&ecirc;n</a>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'accuracy = '</span><span class="p">,</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    accuracy =  0.6
+</code></pre></div></div>
+
+<p><a name="-confusion-matrix" href="evaluation.html"></a></p>
+
+<h2 id="3-confusion-matrix">3. Confusion matrix</h2>
+<p>C&aacute;ch t&iacute;nh s&#7917; d&#7909;ng accuracy nh&#432; &#7903; tr&ecirc;n ch&#7881; cho ch&uacute;ng ta bi&#7871;t &#273;&#432;&#7907;c bao nhi&ecirc;u ph&#7847;n tr&#259;m l&#432;&#7907;ng d&#7919; li&#7879;u &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i &#273;&uacute;ng m&agrave; kh&ocirc;ng ch&#7881; ra &#273;&#432;&#7907;c c&#7909; th&#7875; m&#7895;i lo&#7841;i &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i nh&#432; th&#7871; n&agrave;o, l&#7899;p n&agrave;o &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i &#273;&uacute;ng nhi&#7873;u nh&#7845;t, v&agrave; d&#7919; li&#7879;u thu&#7897;c l&#7899;p n&agrave;o th&#432;&#7901;ng b&#7883; ph&acirc;n lo&#7841;i nh&#7847;m v&agrave;o l&#7899;p kh&aacute;c. &#272;&#7875; c&oacute; th&#7875; &#273;&aacute;nh gi&aacute; &#273;&#432;&#7907;c c&aacute;c gi&aacute; tr&#7883; n&agrave;y, ch&uacute;ng ta s&#7917; d&#7909;ng m&#7897;t ma tr&#7853;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>confusion matrix</em>.</p>
+
+<p>V&#7873; c&#417; b&#7843;n, confusion matrix th&#7875; hi&#7879;n c&oacute; bao nhi&ecirc;u &#273;i&#7875;m d&#7919; li&#7879;u <em>th&#7921;c s&#7921;</em> thu&#7897;c v&agrave;o m&#7897;t class, v&agrave; &#273;&#432;&#7907;c <em>d&#7921; &#273;o&aacute;n</em> l&agrave; r&#417;i v&agrave;o m&#7897;t class. &#272;&#7875; hi&#7875;u r&otilde; h&#417;n, h&atilde;y xem b&#7843;ng d&#432;&#7899;i &#273;&acirc;y:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Total: 10 | Predicted | Predicted | Predicted |   
+           |    as: 0  |    as: 1  |    as: 2  |   
+-----------|-----------|-----------|-----------|---
+ True: 0   |     2     |     1     |     1     | 4 
+-----------|-----------|-----------|-----------|---
+ True: 1   |     1     |     2     |     0     | 3 
+-----------|-----------|-----------|-----------|---
+ True: 2   |     0     |     1     |     2     | 3 
+-----------|-----------|-----------|-----------|---
+
+</code></pre></div></div>
+
+<p>C&oacute; t&#7893;ng c&#7897;ng 10 &#273;i&#7875;m d&#7919; li&#7879;u. Ch&uacute;ng ta x&eacute;t ma tr&#7853;n t&#7841;o b&#7903;i c&aacute;c gi&aacute; tr&#7883; t&#7841;i v&ugrave;ng 3x3 trung t&acirc;m c&#7911;a b&#7843;ng.</p>
+
+<p>Ma tr&#7853;n thu &#273;&#432;&#7907;c &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>confusion matrix</em>. N&oacute; l&agrave; m&#7897;t ma tr&#7853;n vu&ocirc;ng v&#7899;i k&iacute;ch th&#432;&#7899;c m&#7895;i chi&#7873;u b&#7857;ng s&#7889; l&#432;&#7907;ng l&#7899;p d&#7919; li&#7879;u. Gi&aacute; tr&#7883; t&#7841;i h&agrave;ng th&#7913; <code class="language-plaintext highlighter-rouge">i</code>, c&#7897;t th&#7913; <code class="language-plaintext highlighter-rouge">j</code> l&agrave; s&#7889; l&#432;&#7907;ng &#273;i&#7875;m <strong>l&#7869; ra thu&#7897;c v&agrave;o class <code class="language-plaintext highlighter-rouge">i</code> nh&#432;ng l&#7841;i &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n l&agrave; thu&#7897;c v&agrave;o class <code class="language-plaintext highlighter-rouge">j</code></strong>. Nh&#432; v&#7853;y, nh&igrave;n v&agrave;o h&agrave;ng th&#7913; nh&#7845;t (<code class="language-plaintext highlighter-rouge">0</code>), ta c&oacute; th&#7875; th&#7845;y &#273;&#432;&#7907;c r&#7857;ng trong s&#7889; b&#7889;n &#273;i&#7875;m th&#7921;c s&#7921; thu&#7897;c l&#7899;p <code class="language-plaintext highlighter-rouge">0</code>, ch&#7881; c&oacute; hai &#273;i&#7875;m &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i &#273;&uacute;ng, hai &#273;i&#7875;m c&ograve;n l&#7841;i b&#7883; ph&acirc;n lo&#7841;i nh&#7847;m v&agrave;o l&#7899;p <code class="language-plaintext highlighter-rouge">1</code> v&agrave; l&#7899;p <code class="language-plaintext highlighter-rouge">2</code>.</p>
+
+<p><em><strong>Ch&uacute; &yacute;:</strong> C&oacute; m&#7897;t s&#7889; t&agrave;i li&#7879;u &#273;&#7883;nh ngh&#297;a ng&#432;&#7907;c l&#7841;i, t&#7913;c gi&aacute; tr&#7883; t&#7841;i <strong>c&#7897;t</strong> th&#7913; <code class="language-plaintext highlighter-rouge">i</code>, <strong>h&agrave;ng</strong> th&#7913; <code class="language-plaintext highlighter-rouge">j</code> l&agrave; s&#7889; l&#432;&#7907;ng &#273;i&#7875;m l&#7869; ra thu&#7897;c v&agrave;o class <code class="language-plaintext highlighter-rouge">i</code> nh&#432;ng l&#7841;i &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n l&agrave; thu&#7897;c v&agrave;o class <code class="language-plaintext highlighter-rouge">j</code>. Khi &#273;&oacute; ta s&#7869; &#273;&#432;&#7907;c confusion matrix l&agrave; ma tr&#7853;n chuy&#7875;n v&#7883; c&#7911;a confusion matrix nh&#432; c&aacute;ch t&ocirc;i &#273;ang l&agrave;m. T&ocirc;i ch&#7885;n c&aacute;ch n&agrave;y v&igrave; &#273;&acirc;y ch&iacute;nh l&agrave; c&aacute;ch th&#432; vi&#7879;n sklearn s&#7917; d&#7909;ng.</em></p>
+
+<p>Ch&uacute;ng ta c&oacute; th&#7875; suy ra ngay r&#7857;ng t&#7893;ng c&aacute;c ph&#7847;n t&#7917; trong to&agrave;n ma tr&#7853;n n&agrave;y ch&iacute;nh l&agrave; s&#7889; &#273;i&#7875;m trong t&#7853;p ki&#7875;m th&#7917;. C&aacute;c ph&#7847;n t&#7917; tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o  c&#7911;a ma tr&#7853;n l&agrave; s&#7889; &#273;i&#7875;m &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i &#273;&uacute;ng c&#7911;a m&#7895;i l&#7899;p d&#7919; li&#7879;u. T&#7915; &#273;&acirc;y c&oacute; th&#7875; suy ra <em>accuracy</em> ch&iacute;nh b&#7857;ng t&#7893;ng c&aacute;c ph&#7847;n t&#7917; tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o chia cho t&#7893;ng c&aacute;c ph&#7847;n t&#7917; c&#7911;a to&agrave;n ma tr&#7853;n. &#272;o&#7841;n code d&#432;&#7899;i &#273;&acirc;y m&ocirc; t&#7843; c&aacute;ch t&iacute;nh confusion matrix:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">my_confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_true</span><span class="p">).</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># number of classes 
+</span>    <span class="n">cm</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y_true</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">cm</span><span class="p">[</span><span class="n">y_true</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">[</span><span class="n">n</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">cm</span> 
+
+<span class="n">cnf_matrix</span> <span class="o">=</span> <span class="n">my_confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Confusion matrix:'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cnf_matrix</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">Accuracy:'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">cnf_matrix</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span><span class="o">/</span><span class="n">cnf_matrix</span><span class="p">.</span><span class="nb">sum</span><span class="p">())</span>
+
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Confusion matrix:
+[[ 2.  1.  1.]
+ [ 1.  2.  0.]
+ [ 0.  1.  2.]]
+
+Accuracy: 0.6
+</code></pre></div></div>
+
+<p>C&aacute;ch bi&#7875;u di&#7877;n tr&ecirc;n &#273;&acirc;y c&#7911;a confusion matrix c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>unnormalized confusion matrix</em>, t&#7913;c ma <em>confusion matrix</em> ch&#432;a chu&#7849;n ho&aacute;. &#272;&#7875; c&oacute; c&aacute;i nh&igrave;n r&otilde; h&#417;n, ta c&oacute; th&#7875; d&ugrave;ng <em>normalized confuion matrix</em>, t&#7913;c <em>confusion matrix</em> &#273;&#432;&#7907;c chu&#7849;n ho&aacute;. &#272;&#7875; c&oacute; <em>normalized confusion matrix</em>, ta l&#7845;y m&#7895;i h&agrave;ng c&#7911;a <em>unnormalized confusion matrix</em> s&#7869; &#273;&#432;&#7907;c chia cho t&#7893;ng c&aacute;c ph&#7847;n t&#7917; tr&ecirc;n h&agrave;ng &#273;&oacute;. Nh&#432; v&#7853;y, ta c&oacute; nh&#7853;n x&eacute;t r&#7857;ng t&#7893;ng c&aacute;c ph&#7847;n t&#7917; tr&ecirc;n m&#7897;t h&agrave;ng c&#7911;a <em>normalized confusion matrix</em> lu&ocirc;n b&#7857;ng 1. &#272;i&#7873;u n&agrave;y th&#432;&#7901;ng kh&ocirc;ng &#273;&uacute;ng tr&ecirc;n m&#7895;i c&#7897;t. D&#432;&#7899;i &#273;&acirc;y l&agrave; c&aacute;ch t&iacute;nh <em>normalized confusion matrix</em>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">normalized_confusion_matrix</span> <span class="o">=</span> <span class="n">cnf_matrix</span><span class="o">/</span><span class="n">cnf_matrix</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">Confusion matrix (with normalizatrion:)'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">normalized_confusion_matrix</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Confusion matrix (with normalizatrion:)
+    [[ 0.5         0.25        0.25      ]
+     [ 0.33333333  0.66666667  0.        ]
+     [ 0.          0.33333333  0.66666667]]
+</code></pre></div></div>
+
+<p>V&agrave; c&aacute;ch t&iacute;nh <a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html">s&#7917; d&#7909;ng th&#432; vi&#7879;n</a>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="n">cnf_matrix</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Confusion matrix:'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cnf_matrix</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Confusion matrix:
+[[2 1 1]
+ [1 2 0]
+ [0 1 2]]
+</code></pre></div></div>
+
+<p>Confusion matrix th&#432;&#7901;ng &#273;&#432;&#7907;c minh ho&#7841; b&#7857;ng m&agrave;u s&#7855;c &#273;&#7875; c&oacute; c&aacute;i nh&igrave;n r&otilde; r&agrave;ng h&#417;n. &#272;o&#7841;n code d&#432;&#7899;i &#273;&acirc;y gi&uacute;p hi&#7875;n th&#7883; confusion matrix &#7903; c&#7843; hai d&#7841;ng (Ngu&#7891;n: <a href="http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html">Confusion matrix</a>):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="k">def</span> <span class="nf">plot_confusion_matrix</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">classes</span><span class="p">,</span>
+                          <span class="n">normalize</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                          <span class="n">title</span><span class="o">=</span><span class="s">'Confusion matrix'</span><span class="p">,</span>
+                          <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="p">.</span><span class="n">cm</span><span class="p">.</span><span class="n">Blues</span><span class="p">):</span>
+    <span class="s">"""
+    This function prints and plots the confusion matrix.
+    Normalization can be applied by setting `normalize=True`.
+    """</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">cm</span> <span class="o">=</span> <span class="n">cm</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="s">'float'</span><span class="p">)</span> <span class="o">/</span> <span class="n">cm</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">'nearest'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">colorbar</span><span class="p">()</span>
+    <span class="n">tick_marks</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">tick_marks</span><span class="p">,</span> <span class="n">classes</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">tick_marks</span><span class="p">,</span> <span class="n">classes</span><span class="p">)</span>
+
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s">'.2f'</span> <span class="k">if</span> <span class="n">normalize</span> <span class="k">else</span> <span class="s">'d'</span>
+    <span class="n">thresh</span> <span class="o">=</span> <span class="n">cm</span><span class="p">.</span><span class="nb">max</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">itertools</span><span class="p">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">cm</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">range</span><span class="p">(</span><span class="n">cm</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">format</span><span class="p">(</span><span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">fmt</span><span class="p">),</span>
+                 <span class="n">horizontalalignment</span><span class="o">=</span><span class="s">"center"</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s">"white"</span> <span class="k">if</span> <span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">thresh</span> <span class="k">else</span> <span class="s">"black"</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="p">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'True label'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Predicted label'</span><span class="p">)</span>
+
+<span class="c1"># Plot non-normalized confusion matrix
+</span><span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plot_confusion_matrix</span><span class="p">(</span><span class="n">cnf_matrix</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="n">class_names</span><span class="p">,</span>
+                      <span class="n">title</span><span class="o">=</span><span class="s">'Confusion matrix, without normalization'</span><span class="p">)</span>
+
+<span class="c1"># Plot normalized confusion matrix
+</span><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plot_confusion_matrix</span><span class="p">(</span><span class="n">cnf_matrix</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="n">class_names</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                      <span class="n">title</span><span class="o">=</span><span class="s">'Normalized confusion matrix'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<hr><div>
+<table width="100%" style="border: 0px solid white"><tr><td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/33_evaluation-ucm.png"></td>
+        <td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/33_evaluation-ncm.png"></td>
+
+    </tr></table><div class="thecap"> H&igrave;nh 1: Minh ho&#7841; <em> unnormalized confusion matrix </em> v&agrave; <em> normalized confusion matrix </em>.
+</div>
+</div>
+<hr><p>V&#7899;i c&aacute;c b&agrave;i to&aacute;n v&#7899;i nhi&#7873;u l&#7899;p d&#7919; li&#7879;u, c&aacute;ch bi&#7875;u di&#7877;n b&#7857;ng m&agrave;u n&agrave;y r&#7845;t h&#7919;u &iacute;ch. C&aacute;c &ocirc; m&agrave;u &#273;&#7853;m th&#7875; hi&#7879;n c&aacute;c gi&aacute; tr&#7883; cao. M&#7897;t m&ocirc; h&igrave;nh t&#7889;t s&#7869; cho m&#7897;t confusion matrix c&oacute; c&aacute;c ph&#7847;n t&#7917; tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o ch&iacute;nh c&oacute; gi&aacute; tr&#7883; l&#7899;n, c&aacute;c ph&#7847;n t&#7917; c&ograve;n l&#7841;i c&oacute; gi&aacute; tr&#7883; nh&#7887;. N&oacute;i c&aacute;ch kh&aacute;c, khi bi&#7875;u di&#7877;n b&#7857;ng m&agrave;u s&#7855;c, &#273;&#432;&#7901;ng ch&eacute;o c&oacute; m&agrave;u c&agrave;ng &#273;&#7853;m so v&#7899;i ph&#7847;n c&ograve;n l&#7841;i s&#7869; c&agrave;ng t&#7889;t. T&#7915; hai h&igrave;nh tr&ecirc;n ta th&#7845;y r&#7857;ng confusion matrix &#273;&atilde; chu&#7849;n ho&aacute; mang nhi&#7873;u th&ocirc;ng tin h&#417;n. S&#7921; kh&aacute;c nhau &#273;&#432;&#7907;c th&#7845;y &#7903; &ocirc; tr&ecirc;n c&ugrave;ng b&ecirc;n tr&aacute;i. L&#7899;p d&#7919; li&#7879;u <code class="language-plaintext highlighter-rouge">0</code> &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i kh&ocirc;ng th&#7921;c s&#7921; t&#7889;t nh&#432;ng trong <em>unnormalized confusion matrix</em>, n&oacute; v&#7851;n c&oacute; m&agrave;u &#273;&#7853;m nh&#432; hai &ocirc; c&ograve;n l&#7841;i tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o ch&iacute;nh.</p>
+
+<p><a name="-truefalse-positivenegative" href="evaluation.html"></a></p>
+
+<h2 id="4-truefalse-positivenegative">4. True/False Positive/Negative</h2>
+<p><a name="-truefalse-positivenegative-1" href="evaluation.html"></a></p>
+
+<h3 id="41-truefalse-positivenegative">4.1. True/False Positive/Negative</h3>
+<p>C&aacute;ch &#273;&aacute;nh gi&aacute; n&agrave;y th&#432;&#7901;ng &#273;&#432;&#7907;c &aacute;p d&#7909;ng cho c&aacute;c b&agrave;i to&aacute;n ph&acirc;n l&#7899;p c&oacute; hai l&#7899;p d&#7919; li&#7879;u. C&#7909; th&#7875; h&#417;n, trong hai l&#7899;p d&#7919; li&#7879;u n&agrave;y c&oacute; m&#7897;t l&#7899;p <em>nghi&ecirc;m tr&#7885;ng</em> h&#417;n l&#7899;p kia v&agrave; c&#7847;n &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n ch&iacute;nh x&aacute;c. V&iacute; d&#7909;, trong b&agrave;i to&aacute;n x&aacute;c &#273;&#7883;nh c&oacute; b&#7879;nh ung th&#432; hay kh&ocirc;ng th&igrave; vi&#7879;c kh&ocirc;ng b&#7883; <em>s&oacute;t</em> (miss) quan tr&#7885;ng h&#417;n l&agrave; vi&#7879;c ch&#7849;n &#273;o&aacute;n nh&#7847;m <em>&acirc;m t&iacute;nh</em> th&agrave;nh <em>d&#432;&#417;ng t&iacute;nh</em>. Trong b&agrave;i to&aacute;n x&aacute;c &#273;&#7883;nh c&oacute; m&igrave;n d&#432;&#7899;i l&ograve;ng &#273;&#7845;t hay kh&ocirc;ng th&igrave; vi&#7879;c <em>b&#7887; s&oacute;t</em> nghi&ecirc;m tr&#7885;ng h&#417;n vi&#7879;c <em>b&aacute;o &#273;&#7897;ng nh&#7847;m</em> r&#7845;t nhi&#7873;u. Hay trong b&agrave;i to&aacute;n l&#7885;c email r&aacute;c th&igrave; vi&#7879;c cho nh&#7847;m email quan tr&#7885;ng v&agrave;o th&ugrave;ng r&aacute;c nghi&ecirc;m tr&#7885;ng h&#417;n vi&#7879;c x&aacute;c &#273;&#7883;nh m&#7897;t email r&aacute;c l&agrave; email th&#432;&#7901;ng.</p>
+
+<p>Trong nh&#7919;ng b&agrave;i to&aacute;n n&agrave;y, ng&#432;&#7901;i ta th&#432;&#7901;ng &#273;&#7883;nh ngh&#297;a l&#7899;p d&#7919; li&#7879;u <em>quan tr&#7885;ng</em> h&#417;n c&#7847;n &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh &#273;&uacute;ng l&agrave; l&#7899;p <em>Positive</em> (P-d&#432;&#417;ng t&iacute;nh), l&#7899;p c&ograve;n l&#7841;i &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Negative</em> (N-&acirc;m t&iacute;nh). Ta &#273;&#7883;nh ngh&#297;a <em>True Positive (TP), False Positive (FP), True Negative (TN), False Negative (FN)</em> d&#7921;a tr&ecirc;n <em>confusion matrix</em> ch&#432;a chu&#7849;n ho&aacute; nh&#432; sau:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                  |      Predicted      |      Predicted      |
+                  |     as Positive     |     as Negative     |
+------------------|---------------------|---------------------|
+ Actual: Positive | True Positive (TP)  | False Negative (FN) |
+------------------|---------------------|---------------------|
+ Actual: Negative | False Positive (FP) | True Negative (TN)  |
+------------------|---------------------|---------------------|
+</code></pre></div></div>
+
+<p>Ng&#432;&#7901;i ta th&#432;&#7901;ng quan t&acirc;m &#273;&#7871;n TPR, FNR, FPR, TNR (R - Rate) d&#7921;a tr&ecirc;n <em>normalized confusion matrix</em> nh&#432; sau:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                  |     Predicted      |     Predicted      |
+                  |    as Positive     |    as Negative     |
+------------------|--------------------|--------------------|
+ Actual: Positive | TPR = TP/(TP + FN) | FNR = FN/(TP + FN) |
+------------------|--------------------|--------------------|
+ Actual: Negative | FPR = FP/(FP + TN) | TNR = TN/(FP + TN) |
+------------------|--------------------|--------------------|
+</code></pre></div></div>
+
+<p><em>False Positive Rate</em> c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>False Alarm Rate</em> (t&#7881; l&#7879; b&aacute;o &#273;&#7897;ng nh&#7847;m), <em>False Negative Rate</em> c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Miss Detection Rate</em> (t&#7881; l&#7879; b&#7887; s&oacute;t). Trong b&agrave;i to&aacute;n d&ograve; m&igrave;n, <em>th&agrave; b&aacute;o nh&#7847;m c&ograve;n h&#417;n b&#7887; s&oacute;t</em>, t&#7913;c l&agrave; ta c&oacute; th&#7875; ch&#7845;p nh&#7853;n <em>False Alarm Rate</em> cao &#273;&#7875; &#273;&#7841;t &#273;&#432;&#7907;c <em>Miss Detection Rate</em> th&#7845;p.</p>
+
+<p><strong>Ch&uacute; &yacute;:</strong>:</p>
+<ul><li>
+    <p>Vi&#7879;c bi&#7871;t m&#7897;t c&#7897;t c&#7911;a confusion matrix n&agrave;y s&#7869; suy ra &#273;&#432;&#7907;c c&#7897;t c&ograve;n l&#7841;i v&igrave; t&#7893;ng c&aacute;c h&agrave;ng lu&ocirc;n b&#7857;ng 1 v&agrave; ch&#7881; c&oacute; hai l&#7899;p d&#7919; li&#7879;u.</p>
+  </li>
+  <li>
+    <p><strong>V&#7899;i c&aacute;c b&agrave;i to&aacute;n c&oacute; nhi&#7873;u l&#7899;p d&#7919; li&#7879;u</strong>, ta c&oacute; th&#7875; x&acirc;y d&#7921;ng b&#7843;ng True/False Positive/Negative cho <strong>m&#7895;i l&#7899;p</strong> n&#7871;u coi l&#7899;p &#273;&oacute; l&agrave; l&#7899;p <em>Positive</em>, c&aacute;c l&#7899;p c&ograve;n l&#7841;i g&#7897;p chung th&agrave;nh l&#7899;p <em>Negative</em>, gi&#7889;ng nh&#432; c&aacute;ch l&agrave;m trong <a href="https://machinelearningcoban.com/2017/02/11/binaryclassifiers/#one-vs-rest-hay-one-hot-coding">one-vs-rest</a>. B&#7841;n c&oacute; th&#7875; xem th&ecirc;m v&iacute; d&#7909; <a href="http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc.html#sphx-glr-auto-examples-model-selection-plot-roc-py">t&#7841;i &#273;&acirc;y</a>.</p>
+  </li>
+</ul><p><a name="-receiver-operating-characteristic-curve" href="evaluation.html"></a></p>
+
+<h3 id="42-receiver-operating-characteristic-curve">4.2. Receiver Operating Characteristic curve</h3>
+<p>Trong m&#7897;t s&#7889; b&agrave;i to&aacute;n, vi&#7879;c t&#259;ng hay gi&#7843;m FNR, FPR c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n b&#7857;ng vi&#7879;c thay &#273;&#7893;i m&#7897;t <em>ng&#432;&#7905;ng</em> (threshold) n&agrave;o &#273;&oacute;. L&#7845;y v&iacute; d&#7909; khi ta s&#7917; d&#7909;ng thu&#7853;t to&aacute;n <a href="logisticregression.html">Logistic Regression</a>, &#273;&#7847;u ra c&#7911;a m&ocirc; h&igrave;nh c&oacute; th&#7875; l&agrave; c&aacute;c <em>l&#7899;p c&#7913;ng</em> <code class="language-plaintext highlighter-rouge">0</code> hay <code class="language-plaintext highlighter-rouge">1</code>, ho&#7863;c c&#361;ng c&oacute; th&#7875; l&agrave; c&aacute;c gi&aacute; tr&#7883; th&#7875; hi&#7879;n x&aacute;c su&#7845;t &#273;&#7875; d&#7919; li&#7879;u &#273;&#7847;u v&agrave;o thu&#7897;c v&agrave;o l&#7899;p <code class="language-plaintext highlighter-rouge">1</code>. Khi s&#7917; d&#7909;ng th&#432; vi&#7879;n <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">sklearn Logistic Regression</a>, ta c&oacute; th&#7875; l&#7845;y &#273;&#432;&#7907;c c&aacute;c gi&aacute; tr&#7883; x&aacute;c xu&#7845;t n&agrave;y b&#7857;ng ph&#432;&#417;ng th&#7913;c <code class="language-plaintext highlighter-rouge">predict_proba()</code>. M&#7863;c &#273;&#7883;nh, ng&#432;&#7905;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave; 0.5, t&#7913;c l&agrave; m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u <code class="language-plaintext highlighter-rouge">x</code> s&#7869; &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n r&#417;i v&agrave;o l&#7899;p <code class="language-plaintext highlighter-rouge">1</code> n&#7871;u gi&aacute; tr&#7883; <code class="language-plaintext highlighter-rouge">predict_proba(x)</code> l&#7899;n h&#417;n 0.5 v&agrave; ng&#432;&#7907;c l&#7841;i.</p>
+
+<p>N&#7871;u b&acirc;y gi&#7901; ta coi l&#7899;p <code class="language-plaintext highlighter-rouge">1</code> l&agrave; l&#7899;p <em>Positive</em>, l&#7899;p <code class="language-plaintext highlighter-rouge">0</code> l&agrave; l&#7899;p <em>Negative</em>, c&acirc;u h&#7887;i &#273;&#7863;t ra l&agrave; l&agrave;m th&#7871; n&agrave;o &#273;&#7875; t&#259;ng m&#7913;c &#273;&#7897; <em>b&aacute;o nh&#7847;m</em> (FPR) &#273;&#7875; gi&#7843;m m&#7913;c &#273;&#7897; <em>b&#7887; s&oacute;t</em> (FNR)? Ch&uacute; &yacute; r&#7857;ng t&#259;ng FNR &#273;&#7891;ng ngh&#297;a v&#7899;i vi&#7879;c gi&#7843;m TPR v&igrave; t&#7893;ng c&#7911;a ch&uacute;ng lu&ocirc;n b&#7857;ng 1.</p>
+
+<p>M&#7897;t k&#7929; thu&#7853;t &#273;&#417;n gi&#7843;n l&agrave; ta thay gi&aacute; tr&#7883; threshold t&#7915; 0.5 xu&#7889;ng m&#7897;t s&#7889; nh&#7887; h&#417;n. Ch&#7859;ng h&#7841;n n&#7871;u ch&#7885;n threshold = 0.3, th&igrave; m&#7885;i &#273;i&#7875;m &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n c&oacute; x&aacute;c su&#7845;t &#273;&#7847;u ra l&#7899;n h&#417;n 0.3 s&#7869; &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n l&agrave; thu&#7897;c l&#7899;p Positive. N&oacute;i c&aacute;ch kh&aacute;c, t&#7881; l&#7879; c&aacute;c &#273;i&#7875;m &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i l&agrave; Positive s&#7869; t&#259;ng l&ecirc;n, k&eacute;o theo c&#7843; False Positive Rate v&agrave; True Positive Rate c&ugrave;ng t&#259;ng l&ecirc;n (c&#7897;t th&#7913; nh&#7845;t trong ma tr&#7853;n t&#259;ng l&ecirc;n). T&#7915; &#273;&acirc;y suy ra c&#7843; FNR v&agrave; TNR &#273;&#7873;u gi&#7843;m.</p>
+
+<p>Ng&#432;&#7907;c l&#7841;i, n&#7871;u ta mu&#7889;n <em>b&#7887; s&oacute;t c&ograve;n h&#417;n b&aacute;o nh&#7847;m</em>, t&#7845;t nhi&ecirc;n l&agrave; &#7903; m&#7913;c &#273;&#7897; n&agrave;o &#273;&oacute;, nh&#432; b&agrave;i to&aacute;n x&aacute;c &#273;&#7883;nh email r&aacute;c ch&#7859;ng h&#7841;n, ta c&#7847;n t&#259;ng threshold l&ecirc;n m&#7897;t s&#7889; l&#7899;n h&#417;n 0.5. Khi &#273;&oacute;, h&#7847;u h&#7871;t c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u s&#7869; &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n thu&#7897;c l&#7899;p <code class="language-plaintext highlighter-rouge">0</code>, t&#7913;c <em>Negative</em>, v&agrave; c&#7843; TNF v&agrave; FNR &#273;&#7873;u t&#259;ng l&ecirc;n, t&#7913;c TPR v&agrave; FPR gi&#7843;m xu&#7889;ng.</p>
+
+<p>Nh&#432; v&#7853;y, &#7913;ng v&#7899;i m&#7895;i gi&aacute; tr&#7883; c&#7911;a threshold, ta s&#7869; thu &#273;&#432;&#7907;c m&#7897;t c&#7863;p (FPR, TPR). Bi&#7875;u di&#7877;n c&aacute;c &#273;i&#7875;m (FPR, TPR) tr&ecirc;n &#273;&#7891; th&#7883; khi thay &#273;&#7893;i threshold t&#7915; 0 t&#7899;i 1 ta s&#7869; thu &#273;&#432;&#7907;c m&#7897;t &#273;&#432;&#7901;ng &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Receiver Operating Characteristic curve</em> hay ROC curve. (<em>Ch&uacute; &yacute; r&#7857;ng kho&#7843;ng gi&aacute; tr&#7883; c&#7911;a threshold kh&ocirc;ng nh&#7845;t thi&#7871;t t&#7915; 0 t&#7899;i 1 trong c&aacute;c b&agrave;i to&aacute;n t&#7893;ng qu&aacute;t. Kho&#7843;ng gi&aacute; tr&#7883; n&agrave;y c&#7847;n &#273;&#432;&#7907;c &#273;&#7843;m b&#7843;o c&oacute; tr&#432;&#7901;ng h&#7907;p TPR/FPR nh&#7853;n gi&aacute; tr&#7883; l&#7899;n nh&#7845;t hay nh&#7887; nh&#7845;t m&agrave; n&oacute; c&oacute; th&#7875; &#273;&#7841;t &#273;&#432;&#7907;c</em>).</p>
+
+<p>D&#432;&#7899;i &#273;&acirc;y l&agrave; m&#7897;t v&iacute; d&#7909; v&#7899;i hai l&#7899;p d&#7919; li&#7879;u. L&#7899;p th&#7913; nh&#7845;t l&agrave; l&#7899;p <em>Negative</em> c&oacute; 20 &#273;i&#7875;m d&#7919; li&#7879;u, 30 &#273;i&#7875;m c&ograve;n l&#7841;i thu&#7897;c l&#7899;p <em>Positive</em>. Gi&#7843; s&#7917; m&ocirc; h&igrave;nh &#273;ang x&eacute;t cho c&aacute;c &#273;&#7847;u ra c&#7911;a d&#7919; li&#7879;u (x&aacute;c su&#7845;t) &#273;&#432;&#7907;c l&#432;u &#7903; bi&#7871;n <code class="language-plaintext highlighter-rouge">scores</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># generate simulated data
+</span><span class="n">n0</span><span class="p">,</span> <span class="n">n1</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span>
+<span class="n">score0</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n0</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">label0</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n0</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+<span class="n">score1</span>  <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="p">.</span><span class="mi">2</span>
+<span class="n">label1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">score0</span><span class="p">,</span> <span class="n">score1</span><span class="p">))</span>
+<span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">label0</span><span class="p">,</span> <span class="n">label1</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'True labels:'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">Scores:'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    True labels:
+    [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+     1 1 1 1 1 1 1 1 1 1 1 1 1]
+    
+    Scores:
+    [ 0.16987517  0.27608323  0.10851568  0.13395249  0.24878687  0.29100097
+      0.21036182  0.48215779  0.01930099  0.30927599  0.26581374  0.15141354
+      0.26298063  0.10405583  0.30773121  0.39830016  0.04868077  0.17290186
+      0.28717646  0.3340749   0.4174846   0.27292017  0.68740357  0.62108568
+      0.20781968  0.43056031  0.67816027  0.47037842  0.23118192  0.68862749
+      0.24559788  0.58645887  0.69637251  0.5247967   0.24265087  0.60485646
+      0.54800088  0.69565411  0.20509934  0.39638029  0.30860676  0.6267616
+      0.42360257  0.5507021   0.50313701  0.67614457  0.60108083  0.25201502
+      0.27830655  0.58669514]
+</code></pre></div></div>
+
+<p>Nh&igrave;n chung, c&aacute;c &#273;i&#7875;m thu&#7897;c l&#7899;p <code class="language-plaintext highlighter-rouge">1</code> c&oacute; <code class="language-plaintext highlighter-rouge">score</code> cao h&#417;n. Th&#432; vi&#7879;n sklearn s&#7869; gi&uacute;p ch&uacute;ng ta t&iacute;nh c&aacute;c thresholds c&#361;ng nh&#432; FPR v&agrave; TPR t&#432;&#417;ng &#7913;ng:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span>
+<span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">pos_label</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Thresholds:'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">thresholds</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Thresholds:
+    [ 0.69637251  0.50313701  0.48215779  0.4174846   0.39830016  0.39638029
+      0.30927599  0.30860676  0.28717646  0.27830655  0.27608323  0.27292017
+      0.26298063  0.25201502  0.24878687  0.23118192  0.21036182  0.20509934
+      0.01930099]
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'False Positive Rate:'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fpr</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    False Positive Rate:
+    [ 0.    0.    0.05  0.05  0.1   0.1   0.2   0.2   0.35  0.35  0.4   0.4
+      0.5   0.5   0.55  0.55  0.6   0.6   1.  ]
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'True Positive Rate:'</span><span class="p">)</span>
+<span class="n">tpr</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    True Positive Rate:
+    array([ 0.03333333,  0.53333333,  0.53333333,  0.66666667,  0.66666667,
+            0.7       ,  0.7       ,  0.73333333,  0.73333333,  0.76666667,
+            0.76666667,  0.8       ,  0.8       ,  0.83333333,  0.83333333,
+            0.93333333,  0.93333333,  1.        ,  1.        ])
+</code></pre></div></div>
+
+<p>Nh&#432; v&#7853;y, &#7913;ng v&#7899;i <code class="language-plaintext highlighter-rouge">threshold = 0.69637251</code>, <code class="language-plaintext highlighter-rouge">fpr = 0</code> v&agrave; <code class="language-plaintext highlighter-rouge">tpr = 0.03</code>. &#272;&acirc;y kh&ocirc;ng ph&#7843;i l&agrave; m&#7897;t ng&#432;&#7905;ng t&#7889;t v&igrave; m&#7863;c d&#7909; False Positive Rate th&#7845;p, True Positive Rate c&#361;ng r&#7845;t th&#7845;p. Ch&uacute;ng ta lu&ocirc;n mu&#7889;n r&#7857;ng FPR th&#7845;p v&agrave; TPR cao.</p>
+
+<p>ROC cho b&agrave;i to&aacute;n n&agrave;y &#273;&#432;&#7907;c minh ho&#7841; nh&#432; d&#432;&#7899;i &#273;&acirc;y:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'darkorange'</span><span class="p">,</span>
+         <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'ROC curve (area = %0.2f)'</span> <span class="o">%</span> <span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s">'navy'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'--'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'False Positive Rate'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'True Positive Rate'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Receiver operating characteristic example'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">"lower right"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<hr><table width="100%" style="border: 0px solid white"><tr><td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/33_evaluation-roc.png"></td>
+        <td width="40%" style="border: 0px solid white">
+        H&igrave;nh 2: V&iacute; d&#7909; v&#7873; Receiver Operating Characteristic curve v&agrave; Area Under the Curve. 
+        </td>
+    </tr></table><hr><p><a name="-area-under-the-curve" href="evaluation.html"></a></p>
+
+<h3 id="43-area-under-the-curve">4.3. Area Under the Curve</h3>
+<p>D&#7921;a tr&ecirc;n ROC curve, ta c&oacute; th&#7875; ch&#7881; ra r&#7857;ng m&#7897;t m&ocirc; h&igrave;nh c&oacute; hi&#7879;u qu&#7843; hay kh&ocirc;ng. M&#7897;t m&ocirc; h&igrave;nh hi&#7879;u qu&#7843; khi c&oacute; FPR th&#7845;p v&agrave; TPR cao, t&#7913;c t&#7891;n t&#7841;i m&#7897;t &#273;i&#7875;m tr&ecirc;n ROC curve g&#7847;n v&#7899;i &#273;i&#7875;m c&oacute; to&#7841; &#273;&#7897; (0, 1) tr&ecirc;n &#273;&#7891; th&#7883; (g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i). Curve c&agrave;ng g&#7847;n th&igrave; m&ocirc; h&igrave;nh c&agrave;ng hi&#7879;u qu&#7843;.</p>
+
+<p>C&oacute; m&#7897;t th&ocirc;ng s&#7889; n&#7919;a d&ugrave;ng &#273;&#7875; &#273;&aacute;nh gi&aacute; m&agrave; t&ocirc;i &#273;&atilde; s&#7917; d&#7909;ng &#7903; tr&ecirc;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Area Under the Curve</em> hay <em>AUC</em>. &#272;&#7841;i l&#432;&#7907;ng n&agrave;y ch&iacute;nh l&agrave; di&#7879;n t&iacute;ch n&#7857;m d&#432;&#7899;i ROC curve m&agrave;u cam. Gi&aacute; tr&#7883; n&agrave;y l&agrave; m&#7897;t s&#7889; d&#432;&#417;ng nh&#7887; h&#417;n ho&#7863;c b&#7857;ng 1. Gi&aacute; tr&#7883; n&agrave;y c&agrave;ng l&#7899;n th&igrave; m&ocirc; h&igrave;nh c&agrave;ng t&#7889;t.</p>
+
+<p><strong>Ch&uacute; &yacute;:</strong> <a href="https://machinelearningcoban.com/2017/03/04/overfitting/#-cross-validation">Cross validation</a> c&#361;ng c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n b&#7857;ng c&aacute;ch x&aacute;c &#273;&#7883;nh ROC curve v&agrave; AUC l&ecirc;n [validation set].</p>
+
+<p><a name="-precision-va-recall" href="evaluation.html"></a></p>
+
+<h2 id="5-precision-v&agrave;-recall">5. Precision v&agrave; Recall</h2>
+
+<p><a name="-dinh-nghia" href="evaluation.html"></a></p>
+
+<h3 id="51-&#273;&#7883;nh-ngh&#297;a">5.1 &#272;&#7883;nh ngh&#297;a</h3>
+<p>V&#7899;i b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i m&agrave; t&#7853;p d&#7919; li&#7879;u c&#7911;a c&aacute;c l&#7899;p l&agrave; ch&ecirc;nh l&#7879;ch nhau r&#7845;t nhi&#7873;u, c&oacute; m&#7897;t ph&eacute;p &#273;&oacute; hi&#7879;u qu&#7843; th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave; Precision-Recall.</p>
+
+<p>Tr&#432;&#7899;c h&#7871;t x&eacute;t b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i nh&#7883; ph&acirc;n. Ta c&#361;ng coi m&#7897;t trong hai l&#7899;p l&agrave; <em>positive</em>, l&#7899;p c&ograve;n l&#7841;i l&agrave; <em>negative</em>.</p>
+
+<p>X&eacute;t H&igrave;nh 3 d&#432;&#7899;i &#273;&acirc;y:</p>
+
+<hr><div class="imgcap">
+<img src="images/33_evaluation-PR.png" align="center" width="800"></div>
+
+<p><br></p>
+<div class="thecap" style="text-align: justify">H&igrave;nh 3: C&aacute;ch t&iacute;nh Precision v&agrave; Recall.</div>
+<hr><p>V&#7899;i m&#7897;t c&aacute;ch x&aacute;c &#273;&#7883;nh m&#7897;t l&#7899;p l&agrave; <em>positive</em>, <strong>Precision</strong> &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a l&agrave; t&#7881;
+l&#7879; s&#7889; &#273;i&#7875;m <strong>true positive</strong> trong s&#7889; nh&#7919;ng &#273;i&#7875;m <strong>&#273;&#432;&#7907;c ph&acirc;n lo&#7841;i l&agrave;
+<em>positive</em></strong> (TP + FP).</p>
+
+<p><strong>Recall</strong> &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a l&agrave; t&#7881; l&#7879; s&#7889; &#273;i&#7875;m <strong>true positive</strong> trong s&#7889; nh&#7919;ng
+&#273;i&#7875;m <strong>th&#7921;c s&#7921; l&agrave; <em>positive</em></strong> (TP + FN).</p>
+
+<p>M&#7897;t c&aacute;ch to&aacute;n h&#7885;c, Precison v&agrave; Recall l&agrave; hai ph&acirc;n s&#7889; c&oacute; t&#7917; s&#7889; b&#7857;ng nhau nh&#432;ng
+m&#7851;u s&#7889; kh&aacute;c nhau:</p>
+
+<p>\[
+\begin{eqnarray}
+\text{Precision} &amp;=&amp; \frac{\text{TP}}{\text{TP} + \text{FP}} \<br>
+\text{Recall} &amp;=&amp; \frac{\text{TP}}{\text{TP} + \text{FN}}
+\end{eqnarray}
+\]</p>
+
+<p>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; nh&#7853;n th&#7845;y r&#7857;ng TPR v&agrave; Recall l&agrave; hai &#273;&#7841;i l&#432;&#7907;ng b&#7857;ng nhau. Ngo&agrave;i
+ra, c&#7843; Precision v&agrave; Recall &#273;&#7873;u l&agrave; c&aacute;c s&#7889; kh&ocirc;ng &acirc;m nh&#7887; h&#417;n ho&#7863;c b&#7857;ng m&#7897;t.</p>
+
+<p>Precision cao &#273;&#7891;ng ngh&#297;a v&#7899;i vi&#7879;c &#273;&#7897; ch&iacute;nh x&aacute;c c&#7911;a c&aacute;c &#273;i&#7875;m t&igrave;m &#273;&#432;&#7907;c l&agrave; cao. Recall cao &#273;&#7891;ng ngh&#297;a v&#7899;i vi&#7879;c True Positive Rate cao, t&#7913;c t&#7881; l&#7879; b&#7887; s&oacute;t c&aacute;c &#273;i&#7875;m th&#7921;c s&#7921; <em>positive</em> l&agrave; th&#7845;p.</p>
+
+<p>V&iacute; d&#7909; nh&#7887; d&#432;&#7899;i &#273;&acirc;y th&#7875; hi&#7879;n c&aacute;ch t&iacute;nh Precision v&agrave; Recall d&#7921;a v&agrave;o Confusion Matrix cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i nh&#7883; ph&acirc;n.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="c1"># confusion matrix to precision + recall
+</span><span class="k">def</span> <span class="nf">cm2pr_binary</span><span class="p">(</span><span class="n">cm</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">cm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">cm</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">cm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+
+<span class="c1"># example of a confusion matrix for binary classification problem 
+</span><span class="n">cm</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">100.</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">70</span><span class="p">]])</span>
+<span class="n">p</span><span class="p">,</span><span class="n">r</span> <span class="o">=</span> <span class="n">cm2pr_binary</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"precition = {0:.2f}, recall = {1:.2f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>precition = 0.83, recall = 0.91
+</code></pre></div></div>
+
+<p>Khi Precision = 1, m&#7885;i &#273;i&#7875;m t&igrave;m &#273;&#432;&#7907;c &#273;&#7873;u th&#7921;c s&#7921; l&agrave; <em>positive</em>, t&#7913;c kh&ocirc;ng c&oacute; &#273;i&#7875;m <em>negative</em> n&agrave;o l&#7851;n v&agrave;o k&#7871;t qu&#7843;. Tuy nhi&ecirc;n, Precision = 1 kh&ocirc;ng &#273;&#7843;m b&#7843;o m&ocirc; h&igrave;nh l&agrave; t&#7889;t, v&igrave; c&acirc;u h&#7887;i &#273;&#7863;t ra l&agrave; li&#7879;u m&ocirc; h&igrave;nh &#273;&atilde; t&igrave;m &#273;&#432;&#7907;c t&#7845;t c&#7843; c&aacute;c &#273;i&#7875;m <em>positive</em> hay ch&#432;a. N&#7871;u m&#7897;t m&ocirc; h&igrave;nh ch&#7881; t&igrave;m &#273;&#432;&#7907;c &#273;&uacute;ng m&#7897;t &#273;i&#7875;m <em>positive</em> m&agrave; n&oacute; ch&#7855;c ch&#7855;n nh&#7845;t th&igrave; ta kh&ocirc;ng th&#7875; g&#7885;i n&oacute; l&agrave; m&#7897;t m&ocirc; h&igrave;nh t&#7889;t.</p>
+
+<p>Khi Recall = 1, m&#7885;i &#273;i&#7875;m <em>positive</em> &#273;&#7873;u &#273;&#432;&#7907;c t&igrave;m th&#7845;y. Tuy nhi&ecirc;n, &#273;&#7841;i l&#432;&#7907;ng n&agrave;y l&#7841;i kh&ocirc;ng &#273;o li&#7879;u c&oacute; bao nhi&ecirc;u &#273;i&#7875;m <em>negative</em> b&#7883; l&#7851;n trong &#273;&oacute;. N&#7871;u m&ocirc; h&igrave;nh ph&acirc;n lo&#7841;i m&#7885;i &#273;i&#7875;m l&agrave; <em>positive</em> th&igrave; ch&#7855;c ch&#7855;n Recall = 1, tuy nhi&ecirc;n d&#7877; nh&#7853;n ra &#273;&acirc;y l&agrave; m&#7897;t m&ocirc; h&igrave;nh c&#7921;c t&#7891;i.</p>
+
+<p>M&#7897;t m&ocirc; h&igrave;nh ph&acirc;n l&#7899;p t&#7889;t l&agrave; m&ocirc; h&igrave;nh c&oacute; c&#7843; Precision v&agrave; Recall &#273;&#7873;u cao, t&#7913;c c&agrave;ng g&#7847;n m&#7897;t c&agrave;ng t&#7889;t. C&oacute; hai c&aacute;ch &#273;o ch&#7845;t l&#432;&#7907;ng c&#7911;a b&#7897; ph&acirc;n l&#7899;p d&#7921;a v&agrave;o Precision v&agrave; Reall: Precision-Recall curve v&agrave; F-score.</p>
+
+<p><a name="-precision-recall-curve-va-average-precision" href="evaluation.html"></a></p>
+
+<h3 id="52-precision-recall-curve-v&agrave;-average-precision">5.2. Precision-Recall curve v&agrave; Average precision</h3>
+<p>T&#432;&#417;ng t&#7921; nh&#432; ROC curve, ch&uacute;ng ta c&#361;ng c&oacute; th&#7875; &#273;&aacute;nh gi&aacute; m&ocirc; h&igrave;nh d&#7921;a tr&ecirc;n vi&#7879;c thay &#273;&#7893;i m&#7897;t ng&#432;&#7905;ng v&agrave; quan s&aacute;t gi&aacute; tr&#7883; c&#7911;a Precision v&agrave; Recall. Kh&aacute;i ni&#7879;m Area Under the Curve (AUC) c&#361;ng &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a t&#432;&#417;ng t&#7921;. V&#7899;i Precision-Recall Curve, AUC c&ograve;n c&oacute; m&#7897;t t&ecirc;n kh&aacute;c l&agrave; <strong>Average precision (AP).</strong></p>
+
+<p>Gi&#7843; s&#7917; c&oacute; \(N\) ng&#432;&#7905;ng &#273;&#7875; t&iacute;nh precision v&agrave; recall, v&#7899;i m&#7895;i ng&#432;&#7905;ng cho m&#7897;t c&#7863;p gi&aacute; tr&#7883; precision, recall l&agrave; \(P_n, R_n,~ n= 1, 2, \dots, N\). Precision-Recall curve &#273;&#432;&#7907;c v&#7869; b&#7857;ng c&aacute;ch v&#7869; t&#7915;ng &#273;i&#7875;m c&oacute; to&#7841; &#273;&#7897; \((R_n, P_n)\) tr&ecirc;n tr&#7909;c to&#7841; &#273;&#7897; v&agrave; n&#7889;i ch&uacute;ng v&#7899;i nhau. AP &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh b&#7857;ng: 
+\[
+\text{AP} = \sum_{n}(R_{n} - R_{n-1})P_n
+\]</p>
+
+<p>&#7903; &#273;&oacute; \((R_{n} - R_{n-1})P_n\) ch&iacute;nh l&agrave; di&#7879;n t&iacute;ch h&igrave;nh ch&#7919; nh&#7853;t c&oacute; chi&#7873;u r&#7897;ng \((R_{n} - R_{n-1})\) v&agrave; chi&#7873;u cao \(P_n\), &#273;&acirc;y c&#361;ng g&#7847;n v&#7899;i c&aacute;ch t&iacute;nh t&iacute;ch ph&acirc;n d&#7921;a tr&ecirc;n c&aacute;ch t&iacute;nh di&#7879;n t&iacute;ch c&#7911;a t&#7915;ng h&igrave;nh ch&#7919; nh&#7853;t nh&#7887;. (N&#7871;u b&#7841;n &#273;&#7885;c c&ograve;n nh&#7899; kh&aacute;i ni&#7879;m <em>di&#7879;n t&iacute;ch h&igrave;nh thang cong</em> th&igrave; s&#7869; t&#432;&#7903;ng t&#432;&#7907;ng ra.)</p>
+
+<p>Xem th&ecirc;m <a href="http://scikit-learn.org/stable/auto_examples/model_selection/plot_precision_recall.html">Precision-Recall&ndash;scikit-learn</a>.</p>
+
+<p><a name="-f-score" href="evaluation.html"></a></p>
+
+<h3 id="53-f1-score">5.3. F1-score</h3>
+<p>$F_1$ score, hay F1-score, l&agrave; <em>harmonic mean</em> c&#7911;a precision v&agrave; recall (gi&#7843; s&#7917; r&#7857;ng hai &#273;&#7841;i l&#432;&#7907;ng n&agrave;y kh&aacute;c kh&ocirc;ng):
+\[
+\frac{2}{F_1} = \frac{1}{\text{precision}} + \frac{1}{\text{recall}} ~ \text{hay} ~ F_1 = 2\frac{1}{\frac{1}{\text{precision}} + \frac{1}{\text{recall}}} = 2\frac{\text{precion}\cdot{recall}}{\text{precision} + \text{recall}}
+\]</p>
+
+<p>\(F-1\)-score c&oacute; gi&aacute; tr&#7883; n&#7857;m trong n&#7917;a kho&#7843;ng \((0, 1]\). \(F_1\) c&agrave;ng cao, b&#7897; ph&acirc;n l&#7899;p c&agrave;ng t&#7889;t. Khi c&#7843; recall v&agrave; precision &#273;&#7873;u b&#7857;ng 1 (t&#7889;t nh&#7845;t c&oacute; th&#7875;), \(F_1 = 1\). Khi c&#7843; recall v&agrave; precision &#273;&#7873;u th&#7845;p, v&iacute; d&#7909; b&#7857;ng 0.1, \(F_1 = 0.1\). D&#432;&#7899;i &#273;&acirc;y l&agrave; m&#7897;t v&agrave;i v&iacute; d&#7909; v&#7873; \(F_1\)</p>
+
+<table><thead><tr><th style="text-align: center">precision</th>
+      <th style="text-align: center">recall</th>
+      <th style="text-align: center">\(F_1\)</th>
+    </tr></thead><tbody><tr><td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr><tr><td style="text-align: center">0.1</td>
+      <td style="text-align: center">0.1</td>
+      <td style="text-align: center">0.1</td>
+    </tr><tr><td style="text-align: center">0.5</td>
+      <td style="text-align: center">0.5</td>
+      <td style="text-align: center">0.5</td>
+    </tr><tr><td style="text-align: center">1</td>
+      <td style="text-align: center">0.1</td>
+      <td style="text-align: center">0.182</td>
+    </tr><tr><td style="text-align: center">0.3</td>
+      <td style="text-align: center">0.8</td>
+      <td style="text-align: center">0.36</td>
+    </tr></tbody></table><p>Nh&#432; v&#7853;y, m&#7897;t b&#7897; ph&acirc;n l&#7899;p v&#7899;i precision = recall = 0.5 t&#7889;t h&#417;n m&#7897;t b&#7897; ph&acirc;n l&#7899;p
+kh&aacute;c v&#7899;i precision = 0.3, recall = 0.8 theo c&aacute;ch &#273;o n&agrave;y.</p>
+
+<p>Tr&#432;&#7901;ng h&#7907;p t&#7893;ng qu&aacute;t c&#7911;a \(F_1\) score l&agrave; \(F_{\beta}\) score: 
+\[
+F_{\beta} = ( 1 + \beta^2)\frac{\text{precision}\cdot\text{recall}}{\beta^2\cdot\text{precision} + \text{recall}}
+\]</p>
+
+<p>\(F_1\) ch&iacute;nh l&agrave; m&#7897;t tr&#432;&#7901;ng h&#7907;p &#273;&#7863;c bi&#7879;t c&#7911;a \(F_{\beta}\) khi \(\beta =
+1\). Khi \(\beta &gt;1\), recall &#273;&#432;&#7907;c coi tr&#7885;ng h&#417;n precision, khi \(\beta &lt;
+1\), precision &#273;&#432;&#7907;c coi tr&#7885;ng h&#417;n. Hai &#273;&#7841;i l&#432;&#7907;ng \(\beta\) th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917;
+d&#7909;ng l&agrave; \(\beta = 2\) v&agrave; \(\beta = 0.5\).</p>
+
+<p><a name="-precision-recall-cho-bai-toan-phan-lop-nhieu-lop" href="evaluation.html"></a></p>
+
+<h3 id="54-precision-recall-cho-b&agrave;i-to&aacute;n-ph&acirc;n-l&#7899;p-nhi&#7873;u-l&#7899;p">5.4. Precision-recall cho b&agrave;i to&aacute;n ph&acirc;n l&#7899;p nhi&#7873;u l&#7899;p</h3>
+<p>C&#361;ng gi&#7889;ng nh&#432; ROC curve, precision-recall curve ban &#273;&#7847;u &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a cho b&agrave;i
+to&aacute;n ph&acirc;n l&#7899;p nh&#7883; ph&acirc;n. &#272;&#7875; c&oacute; th&#7875; &aacute;p d&#7909;ng c&aacute;c ph&eacute;p &#273;o n&agrave;y cho b&agrave;i to&aacute;n
+multi-class classification, c&aacute;c &#273;&#7841;i l&#432;&#7907;ng &#273;&#7847;u ra (ground truth v&agrave; predicted
+output) c&#7847;n &#273;&#432;&#7907;c &#273;&#432;a v&#7873; d&#7841;ng nh&#7883; ph&acirc;n.</p>
+
+<p>B&#7857;ng tr&#7921;c gi&aacute;c, ta c&oacute; th&#7875; &#273;&#432;a b&agrave;i to&aacute;n ph&acirc;n l&#7899;p nhi&#7873;u l&#7899;p v&#7873; b&agrave;i to&aacute;n ph&acirc;n l&#7899;p
+nh&#7883; ph&acirc;n b&#7857;ng c&aacute;ch xem x&eacute;t t&#7915;ng l&#7899;p. V&#7899;i m&#7895;i l&#7899;p, ta coi d&#7919; li&#7879;u thu&#7897;c l&#7899;p &#273;&oacute; c&oacute;
+label l&agrave; <em>positive</em>, t&#7845;t c&#7843; c&aacute;c d&#7919; li&#7879;u c&ograve;n l&#7841;i c&oacute; label l&agrave; <em>negative</em>. Sau &#273;&oacute;,
+gi&aacute; tr&#7883; Precision, Recall, v&agrave; PR curve &#273;&#432;&#7907;c &aacute;p d&#7909;ng l&ecirc;n t&#7915;ng l&#7899;p. V&#7899;i m&#7895;i l&#7899;p,
+ta s&#7869; nh&#7853;n &#273;&#432;&#7907;c m&#7897;t c&#7863;p gi&aacute; tr&#7883;  precision v&agrave; recall. V&#7899;i c&aacute;c b&agrave;i to&aacute;n c&oacute; &iacute;t l&#7899;p
+d&#7919; li&#7879;u, ta c&oacute; th&#7875; minh ho&#7841; PR curve cho t&#7915;ng l&#7899;p tr&ecirc;n c&ugrave;ng m&#7897;t &#273;&#7891; th&#7883;. Tuy
+nhi&ecirc;n, v&#7899;i c&aacute;c b&agrave;i to&aacute;n c&oacute; r&#7845;t nhi&#7873;u l&#7899;p d&#7919; li&#7879;u, vi&#7879;c n&agrave;y &#273;&ocirc;i khi kh&ocirc;ng kh&#7843;
+thi. Thay v&agrave;o &#273;&oacute;, hai ph&eacute;p &#273;&aacute;nh gi&aacute; d&#7921;a tr&ecirc;n Precision-Recall &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave;
+<em>micro-average</em> v&agrave; <em>macro-average</em>.</p>
+
+<p><a name="-micro-average" href="evaluation.html"></a></p>
+
+<h4 id="541-micro-average">5.4.1. Micro-average</h4>
+<p>X&eacute;t v&iacute; d&#7909; b&agrave;i to&aacute;n v&#7899;i 3 l&#7899;p d&#7919; li&#7879;u, b&#7897; ph&acirc;n l&#7899;p cho c&aacute;c tham s&#7889; FP, TP, FN c&#7911;a
+m&#7895;i l&#7899;p l&agrave;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tp1</span><span class="p">,</span> <span class="n">fp1</span><span class="p">,</span> <span class="n">fn1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span>
+<span class="n">tp2</span><span class="p">,</span> <span class="n">fp2</span><span class="p">,</span> <span class="n">fn2</span> <span class="o">=</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span>
+<span class="n">tp3</span><span class="p">,</span> <span class="n">fp3</span><span class="p">,</span> <span class="n">fn3</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span> 
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="k">def</span> <span class="nf">PR</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tp</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tp</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
+
+<span class="p">(</span><span class="n">P1</span><span class="p">,</span> <span class="n">R1</span><span class="p">)</span> <span class="o">=</span> <span class="n">PR</span><span class="p">(</span><span class="n">tp1</span><span class="p">,</span> <span class="n">fp1</span><span class="p">,</span> <span class="n">fn1</span><span class="p">)</span>
+<span class="p">(</span><span class="n">P2</span><span class="p">,</span> <span class="n">R2</span><span class="p">)</span> <span class="o">=</span> <span class="n">PR</span><span class="p">(</span><span class="n">tp2</span><span class="p">,</span> <span class="n">fp2</span><span class="p">,</span> <span class="n">fn2</span><span class="p">)</span>
+<span class="p">(</span><span class="n">P3</span><span class="p">,</span> <span class="n">R3</span><span class="p">)</span> <span class="o">=</span> <span class="n">PR</span><span class="p">(</span><span class="n">tp3</span><span class="p">,</span> <span class="n">fp3</span><span class="p">,</span> <span class="n">fn2</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'(P1, R1) = (%.2f, %.2f)'</span><span class="o">%</span><span class="p">(</span><span class="n">P1</span><span class="p">,</span> <span class="n">R1</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'(P2, R2) = (%.2f, %.2f)'</span><span class="o">%</span><span class="p">(</span><span class="n">P2</span><span class="p">,</span> <span class="n">R2</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'(P3, R3) = (%.2f, %.2f)'</span><span class="o">%</span><span class="p">(</span><span class="n">P3</span><span class="p">,</span> <span class="n">R3</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(P1, R1) = (0.67, 0.77)
+(P2, R2) = (0.71, 0.63)
+(P3, R3) = (0.93, 0.71)
+</code></pre></div></div>
+
+<p>Micro-average precision v&agrave; Micro-average recall &#273;&#417;n gi&#7843;n &#273;&#432;&#7907;c t&iacute;nh b&#7857;ng: 
+\[
+\begin{eqnarray}
+\text{micro-average precision} &amp;=&amp; \frac{\sum_{c=1}^C\text{TP}c}{\sum_{c=1}^C(\text{TP}c + \text{FP}c)}\<br>
+\text{micro-average recall} &amp;=&amp; \frac{\sum_{c=1}^C\text{TP}c}{\sum_{c=1}^C(\text{TP}c + \text{FN}c)}
+\end{eqnarray}
+\]
+v&#7899;i \(\text{TP}c, \text{FP}c, \text{FN}c\) l&#7847;n l&#432;&#7907;t l&agrave; TP, FP, FN c&#7911;a class \(c\).</p>
+
+<p>T&#7913;c TP &#273;&#432;&#7907;c t&iacute;nh l&agrave; t&#7893;ng c&#7911;a to&agrave;n b&#7897; TP c&#7911;a m&#7895;i l&#7899;p. T&#432;&#417;ng t&#7921; v&#7899;i FP v&agrave; FN. V&#7899;i
+v&iacute; d&#7909; tr&ecirc;n, micro-average precision v&agrave; recall t&iacute;nh &#273;&#432;&#7907;c l&agrave;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">total_tp</span> <span class="o">=</span> <span class="n">tp1</span> <span class="o">+</span> <span class="n">tp2</span> <span class="o">+</span> <span class="n">tp3</span>
+<span class="n">total_fp</span> <span class="o">=</span> <span class="n">fp1</span> <span class="o">+</span> <span class="n">fp2</span> <span class="o">+</span> <span class="n">fp3</span> 
+<span class="n">total_fn</span> <span class="o">=</span> <span class="n">fn1</span> <span class="o">+</span> <span class="n">fn2</span> <span class="o">+</span> <span class="n">fn3</span> 
+<span class="n">micro_ap</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_tp</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">total_tp</span> <span class="o">+</span> <span class="n">total_fp</span><span class="p">)</span>
+<span class="n">micro_ar</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_tp</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">total_tp</span> <span class="o">+</span> <span class="n">total_fn</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'(micro_ap, micro_ar) = (%.2f, %.2f)'</span> <span class="o">%</span> <span class="p">(</span><span class="n">micro_ap</span><span class="p">,</span> <span class="n">micro_ar</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(micro_ap, micro_ar) = (0.79, 0.75)
+</code></pre></div></div>
+
+<p>Micro-average F-Score c&#361;ng &#273;&#432;&#7907;c t&iacute;nh t&#432;&#417;ng t&#7921; nh&#432; F-score nh&#432;ng d&#7921;a tr&ecirc;n
+micro-average precision v&agrave; micro-average recall.</p>
+
+<p><a name="-macro-average" href="evaluation.html"></a></p>
+
+<h4 id="542-macro-average">5.4.2. Macro-average</h4>
+<p>Macro-average precision l&agrave; trung b&igrave;nh c&#7897;ng c&#7911;a c&aacute;c precision theo class, t&#432;&#417;ng
+t&#7921; v&#7899;i Macro-average recall. V&#7899;i v&iacute; d&#7909; tr&ecirc;n, ta c&oacute;</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">macro_ap</span> <span class="o">=</span> <span class="p">(</span><span class="n">P1</span> <span class="o">+</span> <span class="n">P2</span> <span class="o">+</span> <span class="n">P3</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span>
+<span class="n">macro_ar</span> <span class="o">=</span> <span class="p">(</span><span class="n">R1</span> <span class="o">+</span> <span class="n">R2</span> <span class="o">+</span> <span class="n">R3</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'(micro_ap, micro_ar) = (%.2f, %.2f)'</span> <span class="o">%</span> <span class="p">(</span><span class="n">macro_ap</span><span class="p">,</span> <span class="n">macro_ar</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(micro_ap, micro_ar) = (0.77, 0.70)
+</code></pre></div></div>
+
+<p>Macro-average F-Score c&#361;ng &#273;&#432;&#7907;c t&iacute;nh t&#432;&#417;ng t&#7921; nh&#432; F-score nh&#432;ng d&#7921;a tr&ecirc;n macro-average precision v&agrave; macro-average recall.</p>
+
+<p><a name="-tom-tat" href="evaluation.html"></a></p>
+
+<h2 id="6-t&oacute;m-t&#7855;t">6. T&oacute;m t&#7855;t</h2>
+<ul><li>
+    <p>Accuracy l&agrave; t&#7881; l&#7879; gi&#7919;a s&#7889; &#273;i&#7875;m &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i &#273;&uacute;ng v&agrave; t&#7893;ng s&#7889; &#273;i&#7875;m. Accuracy ch&#7881; ph&ugrave; h&#7907;p v&#7899;i c&aacute;c b&agrave;i to&aacute;n m&agrave; k&iacute;ch th&#432;&#7899;c c&aacute;c l&#7899;p d&#7919; li&#7879;u l&agrave; t&#432;&#417;ng &#273;&#7889;i nh&#432; nhau.</p>
+  </li>
+  <li>
+    <p>Confusion matrix gi&uacute;p c&oacute; c&aacute;i nh&igrave;n r&otilde; h&#417;n v&#7873; vi&#7879;c c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i &#273;&uacute;ng/sai nh&#432; th&#7871; n&agrave;o.</p>
+  </li>
+  <li>
+    <p>True Positive (TP): s&#7889; l&#432;&#7907;ng &#273;i&#7875;m c&#7911;a l&#7899;p <em>positive</em> &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i &#273;&uacute;ng l&agrave; <em>positive</em>.</p>
+  </li>
+  <li>
+    <p>True Negative (TN): s&#7889; l&#432;&#7907;ng &#273;i&#7875;m c&#7911;a l&#7899;p <em>negative</em> &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i &#273;&uacute;ng l&agrave; <em>negative</em>.</p>
+  </li>
+  <li>
+    <p>False Positive (FP): s&#7889; l&#432;&#7907;ng &#273;i&#7875;m c&#7911;a l&#7899;p <em>negative</em> b&#7883; ph&acirc;n lo&#7841;i nh&#7847;m th&agrave;nh <em>positive</em>.</p>
+  </li>
+  <li>
+    <p>False Negative (FN): s&#7889; l&#432;&#7907;ng &#273;i&#7875;m c&#7911;a l&#7899;p <em>positiv</em> b&#7883; ph&acirc;n lo&#7841;i nh&#7847;m th&agrave;nh <em>negative</em></p>
+  </li>
+  <li>
+    <p>True positive rate (TPR), false negative rate (FNR), false positive rate (FPR), true negative rate (TNR):</p>
+  </li>
+</ul><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                  |     Predicted      |     Predicted      |
+                  |    as Positive     |    as Negative     |
+------------------|--------------------|--------------------|
+ Actual: Positive | TPR = TP/(TP + FN) | FNR = FN/(TP + FN) |
+------------------|--------------------|--------------------|
+ Actual: Negative | FPR = FP/(FP + TN) | TNR = TN/(FP + TN) |
+------------------|--------------------|--------------------|
+</code></pre></div></div>
+
+<ul><li>
+    <p>Khi k&iacute;ch th&#432;&#7899;c c&aacute;c l&#7899;p d&#7919; li&#7879;u l&agrave; ch&ecirc;nh l&#7879;ch (<em>imbalanced data</em> hay <em>skew data</em>), precision v&agrave; recall th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng: 
+\[
+\begin{eqnarray}
+\text{Precision} &amp;=&amp; \frac{\text{TP}}{\text{TP} + \text{FP}} \<br>
+\text{Recall} &amp;=&amp; \frac{\text{TP}}{\text{TP} + \text{FN}}
+\end{eqnarray}
+\]</p>
+  </li>
+  <li>
+    <p>\(F_1\) score: 
+\[
+F_1 = 2\frac{1}{\frac{1}{\text{precision}} + \frac{1}{\text{recall}}} = 2\frac{\text{precion}\cdot\text{recall}}{\text{precision} + \text{recall}}
+\]</p>
+  </li>
+  <li>
+    <p>Micro-average precision, micro-average recall: 
+\[
+\begin{eqnarray}
+\text{micro-average precision} &amp;=&amp; \frac{\sum_{c=1}^C\text{TP}c}{\sum_{c=1}^C(\text{TP}c + \text{FP}c)}\<br>
+\text{micro-average recall} &amp;=&amp; \frac{\sum_{c=1}^C\text{TP}c}{\sum_{c=1}^C(\text{TP}c + \text{FN}c)}
+\end{eqnarray}
+\]
+v&#7899;i \(\text{TP}c, \text{FP}c, \text{FN}c\) l&#7847;n l&#432;&#7907;t l&agrave; TP, FP, FN c&#7911;a class \(c\).</p>
+  </li>
+  <li>
+    <p>Micro-average precision, macro-average recall l&agrave; trung b&igrave;nh c&#7897;ng c&#7911;a c&aacute;c precision, recall cho t&#7915;ng l&#7899;p. Micro-average (macro-average) \(F_1\) scores c&#361;ng &#273;&#432;&#7907;c t&iacute;nh d&#7921;a tr&ecirc;n c&aacute;c micro-average (macro-average) precision, recall t&#432;&#417;ng &#7913;ng.</p>
+  </li>
+</ul><p><a name="-tai-lieu-tham-khao" href="evaluation.html"></a></p>
+
+<h2 id="7-t&agrave;i-li&#7879;u-tham-kh&#7843;o">7. T&agrave;i li&#7879;u tham kh&#7843;o</h2>
+<p>[1] <a href="http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc.html">Sklearn: Receiver Operating Characteristic (ROC) </a></p>
+
+<p>[2] <a href="http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html#sphx-glr-auto-examples-model-selection-plot-roc-crossval-py">Receiver Operating Characteristic (ROC) with cross validation</a></p>
+
+<p>[3] <a href="https://www.sciencedirect.com/science/article/pii/S0306457309000259">A systematic analysis of performance measures for classification tasks</a></p>
+
+</div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="fundaml_vectors.html">&laquo; FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="id3.html">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3 &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2017/08/31/evaluation/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11435469; 
+var sc_invisible=0; 
+var sc_security="4f6cab76"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/4f6cab76-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+                  
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/08/31/evaluation/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2017/08/31/evaluation/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/08/31/evaluation/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p&url=https://machinelearningcoban.com/2017/08/31/evaluation/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2017/08/31/evaluation/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2017/08/31/evaluation/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#fcc3af899e96999f88c1af95918c9099dcaf949d8e99dcbe89888893928fda9d918cc7be939885c1b5d9cecc8f9d8bd9cecc8894958fd9cecc9d9298d9cecc889493899b9488d9cecc939ad9cecc859389ddd9ceccdc9488888c8fc6d3d3919d9f9495929990999d8e9295929b9f939e9d92d29f9391d3cecccdcbd3ccc4d3cfcdd3998a9d90899d88959392d3">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

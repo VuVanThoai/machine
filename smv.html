@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>B&agrave;i 19: Support Vector Machine</title><!-- <script>
+var pageProperties = {
+    
+    category: "Support-Vector-Machine",
+    
+    url: "/2017/04/09/smv/",
+    title: "B&agrave;i 19: Support Vector Machine",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/2017/04/09/smv/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="B&agrave;i 19: Support Vector Machine"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/2017/04/09/smv/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2017-04-09"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="Support-Vector-Machine"><meta property="article:tag" content="Linear-models"><meta property="article:tag" content="Classification"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2017/04/09/smv/',
+'title': 'B&agrave;i 19: Support Vector Machine'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="kernelsmv.html">21. Kernel SVM</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="smv.html">19. Support Vector Machine</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/04/02/duality/">B&agrave;i 18: Duality</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/04/13/softmarginsmv/">B&agrave;i 20: Soft Margin Support Vector Machine</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="duality.html">&laquo; B&agrave;i 18: Duality</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="softmarginsmv.html">B&agrave;i 20: Soft Margin Support Vector Machine &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">B&agrave;i 19: Support Vector Machine</h1>
+
+
+<ul class="tags"><a href="/tags#Linear-models" class="tag">Linear-models</a>
+   
+      <a href="/tags#Classification" class="tag">Classification</a>
+   
+</ul><span class="post-date" style="color: gray; font-style: italic;">Apr 9, 2017
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <p>Trong lo&#7841;t b&agrave;i ti&#7871;p theo, t&ocirc;i s&#7869; tr&igrave;nh b&agrave;y v&#7873; m&#7897;t trong nh&#7919;ng thu&#7853;t to&aacute;n classification ph&#7893; bi&#7871;n nh&#7845;t (c&ugrave;ng v&#7899;i <a href="softmax.html">softmax regression</a>). C&oacute; r&#7845;t nhi&#7873;u suy lu&#7853;n to&aacute;n h&#7885;c trong ph&#7847;n n&agrave;y y&ecirc;u c&#7847;u b&#7841;n c&#7847;n c&oacute; ki&#7871;n th&#7913;c v&#7873; <a href="duality.html">Duality</a> c&#361;ng nh&#432; v&#7873; t&#7889;i &#432;u l&#7891;i. B&#7841;n &#273;&#432;&#7907;c khuy&#7871;n kh&iacute;ch &#273;&#7885;c c&aacute;c B&agrave;i 16, 17, v&agrave; 18 tr&#432;&#7899;c khi &#273;&#7885;c b&agrave;i n&agrave;y.</p>
+
+<p><em>N&#7871;u kh&ocirc;ng mu&#7889;n &#273;i s&acirc;u v&agrave;o ph&#7847;n to&aacute;n, b&#7841;n c&oacute; th&#7875; b&#7887; qua m&#7909;c 3.</em></p>
+
+<p><strong>Trong trang n&agrave;y:</strong> 
+<!-- MarkdownTOC --></p>
+
+<ul><li><a href="#-gioi-thieu">1. Gi&#7899;i thi&#7879;u</a>
+    <ul><li><a href="#-khoang-cach-tu-mot-diem-toi-mot-sieu-mat-phang">1.1. Kho&#7843;ng c&aacute;ch t&#7915; m&#7897;t &#273;i&#7875;m t&#7899;i m&#7897;t si&ecirc;u m&#7863;t ph&#7859;ng</a></li>
+      <li><a href="#-nhac-lai-bai-toan-phan-chia-hai-classes">1.2. Nh&#7855;c l&#7841;i b&agrave;i to&aacute;n ph&acirc;n chia hai classes</a></li>
+    </ul></li>
+  <li><a href="#-xay-dung-bai-toan-toi-uu-cho-svm">2. X&acirc;y d&#7921;ng b&agrave;i to&aacute;n t&#7889;i &#432;u cho SVM</a></li>
+  <li><a href="#-bai-toan-doi-ngau-cho-svm">3. B&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u cho SVM</a>
+    <ul><li><a href="#-kiem-tra-tieu-chuan-slater">3.1. Ki&#7875;m tra ti&ecirc;u chu&#7849;n Slater</a></li>
+      <li><a href="#-lagrangian-cua-bai-toan-svm">3.2. Lagrangian c&#7911;a b&agrave;i to&aacute;n SVM</a></li>
+      <li><a href="#-ham-doi-ngau-lagrange">3.3. H&agrave;m &#273;&#7889;i ng&#7851;u Lagrange</a></li>
+      <li><a href="#-bai-toan-doi-ngau-lagrange">3.4. B&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u Lagrange</a></li>
+      <li><a href="#-dieu-kien-kkt">3.5. &#272;i&#7873;u ki&#7879;n KKT</a></li>
+    </ul></li>
+  <li><a href="#-lap-trinh-tim-nghiem-cho-svm">4. L&#7853;p tr&igrave;nh t&igrave;m nghi&#7879;m cho SVM</a>
+    <ul><li><a href="#-tim-nghiem-theo-cong-thuc">4.1. T&igrave;m nghi&#7879;m theo c&ocirc;ng th&#7913;c</a></li>
+      <li><a href="#-tim-nghiem-theo-thu-vien">4.2. T&igrave;m nghi&#7879;m theo th&#432; vi&#7879;n</a></li>
+    </ul></li>
+  <li><a href="#-tom-tat-va-thao-luan">5. T&oacute;m t&#7855;t v&agrave; th&#7843;o lu&#7853;n</a></li>
+  <li><a href="#-tai-lieu-tham-khao">6. T&agrave;i li&#7879;u tham kh&#7843;o</a></li>
+</ul><!-- /MarkdownTOC --><p><a name="-gioi-thieu" href="smv.html"></a></p>
+
+<h2 id="1-gi&#7899;i-thi&#7879;u">1. Gi&#7899;i thi&#7879;u</h2>
+<p>Tr&#432;&#7899;c khi &#273;i v&agrave;o ph&#7847;n &yacute; t&#432;&#7903;ng ch&iacute;nh c&#7911;a Support Vector Machine, t&ocirc;i xin m&#7897;t l&#7847;n n&#7919;a nh&#7855;c l&#7841;i ki&#7871;n th&#7913;c v&#7873; h&igrave;nh h&#7885;c gi&#7843;i t&iacute;ch m&agrave; ch&uacute;ng ta &#273;&atilde; qu&aacute; quen khi &ocirc;n thi &#273;&#7841;i h&#7885;c.</p>
+
+<p><a name="-khoang-cach-tu-mot-diem-toi-mot-sieu-mat-phang" href="smv.html"></a></p>
+
+<h3 id="11-kho&#7843;ng-c&aacute;ch-t&#7915;-m&#7897;t-&#273;i&#7875;m-t&#7899;i-m&#7897;t-si&ecirc;u-m&#7863;t-ph&#7859;ng">1.1. Kho&#7843;ng c&aacute;ch t&#7915; m&#7897;t &#273;i&#7875;m t&#7899;i m&#7897;t si&ecirc;u m&#7863;t ph&#7859;ng</h3>
+<p>Trong kh&ocirc;ng gian 2 chi&#7873;u, ta bi&#7871;t r&#7857;ng kho&#7843;ng c&aacute;ch t&#7915; m&#7897;t &#273;i&#7875;m c&oacute; to&#7841; &#273;&#7897; \((x_0, y_0)\) t&#7899;i <em>&#273;&#432;&#7901;ng th&#7859;ng</em> c&oacute; ph&#432;&#417;ng tr&igrave;nh \(w_1x + w_2y + b = 0\) &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh b&#7903;i: 
+\[
+\frac{|w_1x_0 + w_2y_0 + b|}{\sqrt{w_1^2 + w_2^2}}
+\]</p>
+
+<p>Trong kh&ocirc;ng gian ba chi&#7873;u, kho&#7843;ng c&aacute;ch t&#7915; m&#7897;t &#273;i&#7875;m c&oacute; to&#7841; &#273;&#7897; \((x_0, y_0, z_0)\) t&#7899;i m&#7897;t <em>m&#7863;t ph&#7859;ng</em> c&oacute; ph&#432;&#417;ng tr&igrave;nh \(w_1x + w_2y + w_3 z + b = 0\) &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh b&#7903;i: 
+\[
+\frac{|w_1x_0 + w_2y_0 + w_3z_0 + b |}{\sqrt{w_1^2 + w_2^2 + w_3^2}}
+\]</p>
+
+<p>H&#417;n n&#7919;a, n&#7871;u ta b&#7887; d&#7845;u tr&#7883; tuy&#7879;t &#273;&#7889;i &#7903; t&#7917; s&#7889;, ch&uacute;ng ta c&oacute; th&#7875; x&aacute;c &#273;&#7883;nh &#273;&#432;&#7907;c &#273;i&#7875;m &#273;&oacute; n&#7857;m v&#7873; ph&iacute;a n&agrave;o c&#7911;a <em>&#273;&#432;&#7901;ng th&#7859;ng</em> hay <em>m&#7863;t ph&#7859;ng</em> &#273;ang x&eacute;t. Nh&#7919;ng &#273;i&#7875;m l&agrave;m cho bi&#7875;u th&#7913;c trong d&#7845;u gi&aacute; tr&#7883; tuy&#7879;t &#273;&#7889;i mang d&#7845;u d&#432;&#417;ng n&#7857;m v&#7873; c&ugrave;ng 1 ph&iacute;a (t&ocirc;i t&#7841;m g&#7885;i &#273;&acirc;y l&agrave; <em>ph&iacute;a d&#432;&#417;ng</em> c&#7911;a &#273;&#432;&#7901;ng th&#7859;ng), nh&#7919;ng &#273;i&#7875;m l&agrave;m cho bi&#7875;u th&#7913;c trong d&#7845;u gi&aacute; tr&#7883; tuy&#7879;t &#273;&#7889;i mang d&#7845;u &acirc;m n&#7857;m v&#7873; ph&iacute;a c&ograve;n l&#7841;i (t&ocirc;i g&#7885; l&agrave; <em>ph&iacute;a &acirc;m</em>). Nh&#7919;ng &#273;i&#7875;m n&#7857;m tr&ecirc;n <em>&#273;&#432;&#7901;ng th&#7859;ng</em>/<em>m&#259;t ph&#7859;ng</em> s&#7869; l&agrave;m cho t&#7917; s&#7889; c&oacute; gi&aacute; tr&#7883; b&#7857;ng 0, t&#7913;c kho&#7843;ng c&aacute;ch b&#7857;ng 0.</p>
+
+<p>Vi&#7879;c n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c t&#7893;ng qu&aacute;t l&ecirc;n kh&ocirc;ng gian nhi&#7873;u chi&#7873;u: Kho&#7843;ng c&aacute;ch t&#7915; m&#7897;t &#273;i&#7875;m (vector) c&oacute; to&#7841; &#273;&#7897; \(\mathbf{x}_0\) t&#7899;i <em>si&ecirc;u m&#7863;t ph&#7859;ng</em> (<em>hyperplane</em>) c&oacute; ph&#432;&#417;ng tr&igrave;nh \(\mathbf{w}^T\mathbf{x} + b = 0\) &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh b&#7903;i: 
+\[
+\frac{|\mathbf{w}^T\mathbf{x}_0 + b|}{||\mathbf{w}||_2}
+\]</p>
+
+<p>V&#7899;i \(||\mathbf{w}||_2 = \sqrt{\sum_{i=1}^d w_i^2}\) v&#7899;i \(d\) l&agrave; s&#7889; chi&#7873;u c&#7911;a kh&ocirc;ng gian.</p>
+
+<p><a name="-nhac-lai-bai-toan-phan-chia-hai-classes" href="smv.html"></a></p>
+
+<h3 id="12-nh&#7855;c-l&#7841;i-b&agrave;i-to&aacute;n-ph&acirc;n-chia-hai-classes">1.2. Nh&#7855;c l&#7841;i b&agrave;i to&aacute;n ph&acirc;n chia hai classes</h3>
+
+<p>Ch&uacute;ng ta c&ugrave;ng quay l&#7841;i v&#7899;i b&agrave;i to&aacute;n trong <a href="perceptron.html">Perceptron Learning Algorithm (PLA)</a>. Gi&#7843; s&#7917; r&#7857;ng c&oacute; hai class kh&aacute;c nhau &#273;&#432;&#7907;c m&ocirc; t&#7843; b&#7903;i c&aacute;c &#273;i&#7875;m trong kh&ocirc;ng gian nhi&#7873;u chi&#7873;u, hai classes n&agrave;y <em>linearly separable</em>, t&#7913;c t&#7891;n t&#7841;i m&#7897;t si&ecirc;u ph&#7859;ng ph&acirc;n chia ch&iacute;nh x&aacute;c hai classes &#273;&oacute;. H&atilde;y t&igrave;m m&#7897;t si&ecirc;u m&#7863;t ph&#7859;ng ph&acirc;n chia hai classes &#273;&oacute;, t&#7913;c t&#7845;t c&#7843; c&aacute;c &#273;i&#7875;m thu&#7897;c m&#7897;t class n&#7857;m v&#7873; c&ugrave;ng m&#7897;t ph&iacute;a c&#7911;a si&ecirc;u m&#7863;t ph&#7859;ng &#273;&oacute; v&agrave; ng&#432;&#7907;c ph&iacute;a v&#7899;i to&agrave;n b&#7897; c&aacute;c &#273;i&#7875;m thu&#7897;c class c&ograve;n l&#7841;i. Ch&uacute;ng ta &#273;&atilde; bi&#7871;t r&#7857;ng, thu&#7853;t to&aacute;n PLA c&oacute; th&#7875; l&agrave;m &#273;&#432;&#7907;c vi&#7879;c n&agrave;y nh&#432;ng n&oacute; c&oacute; th&#7875; cho ch&uacute;ng ta v&ocirc; s&#7889; nghi&#7879;m nh&#432; H&igrave;nh 1 d&#432;&#7899;i &#273;&acirc;y:</p>
+
+<hr><div class="imgcap">
+ <img src="images/19_svm-svm1.png" align="center" width="500"><div class="thecap">H&igrave;nh 1: C&aacute;c m&#7863;t ph&acirc;n c&aacute;ch hai classes linearly separable.</div>
+</div>
+<hr><p>C&acirc;u h&#7887;i &#273;&#7863;t ra l&agrave;: trong v&ocirc; s&#7889; c&aacute;c m&#7863;t ph&acirc;n chia &#273;&oacute;, &#273;&acirc;u l&agrave; m&#7863;t ph&acirc;n chia t&#7889;t nh&#7845;t <em>theo m&#7897;t ti&ecirc;u chu&#7849;n n&agrave;o &#273;&oacute;</em>? Trong ba &#273;&#432;&#7901;ng th&#7859;ng minh h&#7885;a trong H&igrave;nh 1 ph&iacute;a tr&ecirc;n, c&oacute; hai &#273;&#432;&#7901;ng th&#7859;ng kh&aacute; <em>l&#7879;ch</em> v&#7873; ph&iacute;a class h&igrave;nh tr&ograve;n &#273;&#7887;. &#272;i&#7873;u n&agrave;y c&oacute; th&#7875; khi&#7871;n cho l&#7899;p m&agrave;u &#273;&#7887; <em>kh&ocirc;ng vui v&igrave; l&atilde;nh th&#7893; xem ra b&#7883; l&#7845;n nhi&#7873;u qu&aacute;</em>. Li&#7879;u c&oacute; c&aacute;ch n&agrave;o &#273;&#7875; t&igrave;m &#273;&#432;&#7907;c &#273;&#432;&#7901;ng ph&acirc;n chia m&agrave; c&#7843; hai classes &#273;&#7873;u c&#7843;m th&#7845;y <em>c&ocirc;ng b&#7857;ng</em> v&agrave; <em>h&#7841;nh ph&uacute;c</em> nh&#7845;t hay kh&ocirc;ng?</p>
+
+<p>Ch&uacute;ng ta c&#7847;n t&igrave;m m&#7897;t ti&ecirc;u chu&#7849;n &#273;&#7875; &#273;o s&#7921; <em>h&#7841;nh ph&uacute;c</em> c&#7911;a m&#7895;i class. H&atilde;y xem H&igrave;nh 2 d&#432;&#7899;i &#273;&acirc;y:</p>
+<hr><div>
+<table width="100%" style="border: 0px solid white"><tr><td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/19_svm-svm2.png"></td>
+        <td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/19_svm-svm5.png"></td>
+
+    </tr></table><div class="thecap"> H&igrave;nh 2: Margin c&#7911;a hai classes l&agrave; b&#7857;ng nhau v&agrave; l&#7899;n nh&#7845;t c&oacute; th&#7875;.
+</div>
+</div>
+<hr><!-- <hr>
+<div class="imgcap">
+ <img src ="/assets/19_svm/svm2.png" align = "center" width = "500">
+ <div class = "thecap">H&igrave;nh 2: .</div>
+</div>
+<hr> --><p>N&#7871;u ta &#273;&#7883;nh ngh&#297;a <em>m&#7913;c &#273;&#7897; h&#7841;nh ph&uacute;c</em> c&#7911;a m&#7897;t class t&#7881; l&#7879; thu&#7853;n v&#7899;i kho&#7843;ng c&aacute;ch g&#7847;n nh&#7845;t t&#7915; m&#7897;t &#273;i&#7875;m c&#7911;a class &#273;&oacute; t&#7899;i &#273;&#432;&#7901;ng/m&#7863;t ph&acirc;n chia, th&igrave; &#7903; H&igrave;nh 2 tr&aacute;i, class tr&ograve;n &#273;&#7887; s&#7869; <em>kh&ocirc;ng &#273;&#432;&#7907;c h&#7841;nh ph&uacute;c cho l&#7855;m</em> v&igrave; &#273;&#432;&#7901;ng ph&acirc;n chia g&#7847;n n&oacute; h&#417;n class vu&ocirc;ng xanh r&#7845;t nhi&#7873;u. Ch&uacute;ng ta c&#7847;n m&#7897;t &#273;&#432;&#7901;ng ph&acirc;n chia sao cho kho&#7843;ng c&aacute;ch t&#7915; &#273;i&#7875;m g&#7847;n nh&#7845;t c&#7911;a m&#7895;i class (c&aacute;c &#273;i&#7875;m &#273;&#432;&#7907;c khoanh tr&ograve;n) t&#7899;i &#273;&#432;&#7901;ng ph&acirc;n chia l&agrave; nh&#432; nhau, nh&#432; th&#7871; th&igrave; m&#7899;i <em>c&ocirc;ng b&#7857;ng</em>. Kho&#7843;ng c&aacute;ch nh&#432; nhau n&agrave;y &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>margin</em> (<em>l&#7873;</em>).</p>
+
+<p>&#272;&atilde; c&oacute; <em>c&ocirc;ng b&#7857;ng</em> r&#7891;i, ch&uacute;ng ta c&#7847;n <em>v&#259;n minh</em> n&#7919;a. <em>C&ocirc;ng b&#7857;ng</em> m&agrave; c&#7843; hai &#273;&#7873;u <em>k&eacute;m h&#7841;nh ph&uacute;c nh&#432; nhau</em> th&igrave; ch&#432;a ph&#7843;i l&agrave; <em>v&#259;n m&igrave;nh</em> cho l&#7855;m.</p>
+
+<p>Ch&uacute;ng ta x&eacute;t ti&#7871;p H&igrave;nh 2 b&ecirc;n ph&#7843;i khi kho&#7843;ng c&aacute;ch t&#7915; &#273;&#432;&#7901;ng ph&acirc;n chia t&#7899;i c&aacute;c &#273;i&#7875;m g&#7847;n nh&#7845;t c&#7911;a m&#7895;i class l&agrave; nh&#432; nhau. X&eacute;t hai c&aacute;ch ph&acirc;n chia b&#7903;i &#273;&#432;&#7901;ng n&eacute;t li&#7873;n m&agrave;u &#273;en v&agrave; &#273;&#432;&#7901;ng n&eacute;t &#273;&#7913;t m&agrave;u l&#7909;c, &#273;&#432;&#7901;ng n&agrave;o s&#7869; l&agrave;m cho c&#7843; hai class <em>h&#7841;nh ph&uacute;c h&#417;n</em>? R&otilde; r&agrave;ng &#273;&oacute; ph&#7843;i l&agrave; &#273;&#432;&#7901;ng n&eacute;t li&#7873;n m&agrave;u &#273;en v&igrave; n&oacute; t&#7841;o ra m&#7897;t <em>margin</em> r&#7897;ng h&#417;n.</p>
+
+<p>Vi&#7879;c <em>margin</em> r&#7897;ng h&#417;n s&#7869; mang l&#7841;i hi&#7879;u &#7913;ng ph&acirc;n l&#7899;p t&#7889;t h&#417;n v&igrave; <em>s&#7921; ph&acirc;n chia gi&#7919;a hai classes l&agrave; r&#7841;ch r&ograve;i h&#417;n</em>. Vi&#7879;c n&agrave;y, sau n&agrave;y c&aacute;c b&#7841;n s&#7869; th&#7845;y, l&agrave; m&#7897;t &#273;i&#7875;m kh&aacute; quan tr&#7885;ng gi&uacute;p <em>Support Vector Machine</em> mang l&#7841;i k&#7871;t qu&#7843; ph&acirc;n lo&#7841;i t&#7889;t h&#417;n so v&#7899;i <em>Neural Network v&#7899;i 1 layer</em>, t&#7913;c Perceptron Learning Algorithm.</p>
+
+<p>B&agrave;i to&aacute;n t&#7889;i &#432;u trong <em>Support Vector Machine</em> (SVM) ch&iacute;nh l&agrave; b&agrave;i to&aacute;n &#273;i t&igrave;m &#273;&#432;&#7901;ng ph&acirc;n chia sao cho <em>margin</em> l&agrave; l&#7899;n nh&#7845;t. &#272;&acirc;y c&#361;ng l&agrave; l&yacute; do v&igrave; sao SVM c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Maximum Margin Classifier</em>. Ngu&#7891;n g&#7889;c c&#7911;a t&ecirc;n g&#7885;i Support Vector Machine s&#7869; s&#7899;m &#273;&#432;&#7907;c l&agrave;m s&aacute;ng t&#7887;.</p>
+
+<p><a name="-xay-dung-bai-toan-toi-uu-cho-svm" href="smv.html"></a></p>
+
+<h2 id="2-x&acirc;y-d&#7921;ng-b&agrave;i-to&aacute;n-t&#7889;i-&#432;u-cho-svm">2. X&acirc;y d&#7921;ng b&agrave;i to&aacute;n t&#7889;i &#432;u cho SVM</h2>
+<p>Gi&#7843; s&#7917; r&#7857;ng c&aacute;c c&#7863;p d&#7919; li&#7879;u c&#7911;a <em>training set</em> l&agrave; \((\mathbf{x}_1, y_1), (\mathbf{x}_2, y_2), \dots, (\mathbf{x}_N, y_N)\) v&#7899;i vector \(\mathbf{x}_i \in \mathbb{R}^d\) th&#7875; hi&#7879;n <em>&#273;&#7847;u v&agrave;o</em> c&#7911;a m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u v&agrave; \(y_i\) l&agrave; <em>nh&atilde;n</em> c&#7911;a &#273;i&#7875;m d&#7919; li&#7879;u &#273;&oacute;. \(d\) l&agrave; s&#7889; chi&#7873;u c&#7911;a d&#7919; li&#7879;u v&agrave; \(N\) l&agrave; s&#7889; &#273;i&#7875;m d&#7919; li&#7879;u. Gi&#7843; s&#7917; r&#7857;ng <em>nh&atilde;n</em> c&#7911;a m&#7895;i &#273;i&#7875;m d&#7919; li&#7879;u &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh b&#7903;i \(y_i = 1\) (class 1) ho&#7863;c \(y_i = -1\) (class 2) gi&#7889;ng nh&#432; trong PLA.</p>
+
+<p>&#272;&#7875; gi&uacute;p c&aacute;c b&#7841;n d&#7877; h&igrave;nh dung, ch&uacute;ng ta c&ugrave;ng x&eacute;t tr&#432;&#7901;ng h&#7907;p trong kh&ocirc;ng gian hai chi&#7873;u d&#432;&#7899;i &#273;&acirc;y. <em>Kh&ocirc;ng gian hai chi&#7873;u &#273;&#7875; c&aacute;c b&#7841;n d&#7877; h&igrave;nh dung, c&aacute;c ph&eacute;p to&aacute;n ho&agrave;n to&agrave;n c&oacute; th&#7875; &#273;&#432;&#7907;c t&#7893;ng qu&aacute;t l&ecirc;n kh&ocirc;ng gian nhi&#7873;u chi&#7873;u.</em></p>
+
+<hr><div class="imgcap">
+ <img src="images/19_svm-svm6.png" align="center" width="500"><div class="thecap">H&igrave;nh 3: Ph&acirc;n t&iacute;ch b&agrave;i to&aacute;n SVM.</div>
+</div>
+<hr><p>Gi&#7843; s&#7917; r&#7857;ng c&aacute;c &#273;i&#7875;m vu&ocirc;ng xanh thu&#7897;c class 1, c&aacute;c &#273;i&#7875;m tr&ograve;n &#273;&#7887; thu&#7897;c class -1 v&agrave; m&#7863;t \(\mathbf{w}^T\mathbf{x} + b = w_1x_1 + w_2x_2 + b = 0\) l&agrave; m&#7863;t ph&acirc;n chia gi&#7919;a hai classes (H&igrave;nh 3). H&#417;n n&#7919;a, class 1 n&#7857;m v&#7873; <em>ph&iacute;a d&#432;&#417;ng</em>, class -1 n&#7857;m v&#7873; <em>ph&iacute;a &acirc;m</em> c&#7911;a m&#7863;t ph&acirc;n chia. N&#7871;u ng&#432;&#7907;c l&#7841;i, ta ch&#7881; c&#7847;n &#273;&#7893;i d&#7845;u c&#7911;a \(\mathbf{w}\) v&agrave; \(b\). Ch&uacute; &yacute; r&#7857;ng ch&uacute;ng ta c&#7847;n &#273;i t&igrave;m c&aacute;c h&#7879; s&#7889; \(\mathbf{w}\) v&agrave; \(b\).</p>
+
+<p>Ta quan s&aacute;t th&#7845;y m&#7897;t &#273;i&#7875;m quan tr&#7885;ng sau &#273;&acirc;y: v&#7899;i c&#7863;p d&#7919; li&#7879;u \((\mathbf{x}_n, y_n)\) b&#7845;t k&#7923;, kho&#7843;ng c&aacute;ch t&#7915; &#273;i&#7875;m &#273;&oacute; t&#7899;i m&#7863;t ph&acirc;n chia l&agrave;: 
+\[
+\frac{y_n(\mathbf{w}^T\mathbf{x}_n + b)}{||\mathbf{w}||_2}
+\]</p>
+
+<p>&#272;i&#7873;u n&agrave;y c&oacute; th&#7875; d&#7877; nh&#7853;n th&#7845;y v&igrave; theo gi&#7843; s&#7917; &#7903; tr&ecirc;n, \(y_n\) lu&ocirc;n c&ugrave;ng d&#7845;u v&#7899;i <em>ph&iacute;a</em> c&#7911;a \(\mathbf{x}_n\). T&#7915; &#273;&oacute; suy ra \(y_n\) c&ugrave;ng d&#7845;u v&#7899;i \((\mathbf{w}^T\mathbf{x}_n + b)\), v&agrave; t&#7917; s&#7889; lu&ocirc;n l&agrave; 1 s&#7889; kh&ocirc;ng &acirc;m.</p>
+
+<p>V&#7899;i m&#7863;t ph&#7847;n chia nh&#432; tr&ecirc;n, <em>margin</em> &#273;&#432;&#7907;c t&iacute;nh l&agrave; kho&#7843;ng c&aacute;ch g&#7847;n nh&#7845;t t&#7915; 1 &#273;i&#7875;m t&#7899;i m&#7863;t &#273;&oacute; (b&#7845;t k&#7875; &#273;i&#7875;m n&agrave;o trong hai classes):
+\[
+\text{margin} = \min_{n} \frac{y_n(\mathbf{w}^T\mathbf{x}_n + b)}{||\mathbf{w}||_2}
+\]</p>
+
+<p>B&agrave;i to&aacute;n t&#7889;i &#432;u trong SVM ch&iacute;nh l&agrave; b&agrave;i to&aacute;n t&igrave;m \(\mathbf{w}\) v&agrave; \(b\) sao cho <em>margin</em> n&agrave;y &#273;&#7841;t gi&aacute; tr&#7883; l&#7899;n nh&#7845;t: 
+\[
+(\mathbf{w}, b) = \arg\max_{\mathbf{w}, b} \left\{
+    \min_{n} \frac{y_n(\mathbf{w}^T\mathbf{x}_n + b)}{||\mathbf{w}||_2} 
+\right\}
+= \arg\max_{\mathbf{w}, b}\left\{
+    \frac{1}{||\mathbf{w}||_2} \min_{n} y_n(\mathbf{w}^T\mathbf{x}_n + b)
+\right\} ~~~ (1)
+\]</p>
+
+<p>Vi&#7879;c gi&#7843;i tr&#7921;c ti&#7871;p b&agrave;i to&aacute;n n&agrave;y s&#7869; r&#7845;t ph&#7913;c t&#7841;p, nh&#432;ng c&aacute;c b&#7841;n s&#7869; th&#7845;y c&oacute; c&aacute;ch &#273;&#7875; &#273;&#432;a n&oacute; v&#7873; b&agrave;i to&aacute;n &#273;&#417;n gi&#7843;n h&#417;n.</p>
+
+<p>Nh&#7853;n x&eacute;t quan tr&#7885;ng nh&#7845;t l&agrave; n&#7871;u ta thay vector h&#7879; s&#7889; \(\mathbf{w}\) b&#7903;i \(k\mathbf{w}\) v&agrave; \(b\) b&#7903;i \(kb\) trong &#273;&oacute; \(k\) l&agrave; m&#7897;t h&#7857;ng s&#7889; d&#432;&#417;ng th&igrave; m&#7863;t ph&acirc;n chia kh&ocirc;ng thay &#273;&#7893;i, t&#7913;c kho&#7843;ng c&aacute;ch t&#7915; t&#7915;ng &#273;i&#7875;m &#273;&#7871;n m&#7863;t ph&acirc;n chia kh&ocirc;ng &#273;&#7893;i, t&#7913;c <em>margin</em> kh&ocirc;ng &#273;&#7893;i. D&#7921;a tr&ecirc;n t&iacute;nh ch&#7845;t n&agrave;y, ta c&oacute; th&#7875; gi&#7843; s&#7917;: 
+\[
+y_n(\mathbf{w}^T\mathbf{x}_n + b) = 1
+\]</p>
+
+<p><strong>v&#7899;i nh&#7919;ng &#273;i&#7875;m n&#7857;m g&#7847;n m&#7863;t ph&acirc;n chia nh&#7845;t</strong> nh&#432; H&igrave;nh 4 d&#432;&#7899;i &#273;&acirc;y:</p>
+
+<hr><div class="imgcap">
+ <img src="images/19_svm-svm3.png" align="center" width="500"><div class="thecap">H&igrave;nh 4: C&aacute;c &#273;i&#7875;m g&#7847;n m&#7863;t ph&acirc;n c&aacute;ch nh&#7845;t c&#7911;a hai classes &#273;&#432;&#7907;c khoanh tr&ograve;n.</div>
+</div>
+<hr><p>Nh&#432; v&#7853;y, v&#7899;i m&#7885;i \(n\), ta c&oacute;: 
+\[
+y_n(\mathbf{w}^T\mathbf{x}_n + b) \geq 1
+\]</p>
+
+<p>V&#7853;y b&agrave;i to&aacute;n t&#7889;i &#432;u \((1)\) c&oacute; th&#7875; &#273;&#432;a v&#7873; b&agrave;i to&aacute;n t&#7889;i &#432;u c&oacute; r&agrave;ng bu&#7897;c sau &#273;&acirc;y: 
+\[
+\begin{eqnarray}
+    (\mathbf{w}, b) &amp;=&amp; \arg \max_{\mathbf{w}, b} \frac{1}{||\mathbf{w}||_2}   \<br>
+    \text{subject to:}~ &amp;&amp; y_n(\mathbf{w}^T\mathbf{x}_n + b) \geq 1, \forall n = 1, 2, \dots, N ~~~~(2)
+\end{eqnarray}
+\]</p>
+
+<p>B&#7857;ng 1 bi&#7871;n &#273;&#7893;i &#273;&#417;n gi&#7843;n, ta c&oacute; th&#7875; &#273;&#432;a b&agrave;i to&aacute;n n&agrave;y v&#7873; b&agrave;i to&aacute;n d&#432;&#7899;i &#273;&acirc;y:
+\[
+\begin{eqnarray}
+    (\mathbf{w}, b) &amp;=&amp; \arg \min_{\mathbf{w}, b} \frac{1}{2}||\mathbf{w}||_2^2   \<br>
+    \text{subject to:}~ &amp;&amp; 1 - y_n(\mathbf{w}^T\mathbf{x}_n + b) \leq 0, \forall n = 1, 2, \dots, N ~~~~ (3)
+\end{eqnarray}
+\]
+&#7902; &#273;&acirc;y, ch&uacute;ng ta &#273;&atilde; l&#7845;y ngh&#7883;ch &#273;&#7843;o h&agrave;m m&#7909;c ti&ecirc;u, b&igrave;nh ph&#432;&#417;ng n&oacute; &#273;&#7875; &#273;&#432;&#7907;c m&#7897;t h&agrave;m kh&#7843; vi, v&agrave; nh&acirc;n v&#7899;i \(\frac{1}{2}\) &#273;&#7875; bi&#7875;u th&#7913;c &#273;&#7841;o h&agrave;m &#273;&#7865;p h&#417;n.</p>
+
+<p><strong>Quan s&aacute;t quan tr&#7885;ng:</strong> Trong b&agrave;i to&aacute;n \((3)\), <a href="/2017/03/12/convexity/#-norms">h&agrave;m m&#7909;c ti&ecirc;u l&agrave; m&#7897;t norm, n&ecirc;n l&agrave; m&#7897;t h&agrave;m l&#7891;i</a>. C&aacute;c h&agrave;m b&#7845;t &#273;&#7859;ng th&#7913;c r&agrave;ng bu&#7897;c l&agrave; c&aacute;c h&agrave;m tuy&#7871;n t&iacute;nh theo \(\mathbf{w}\) v&agrave; \(b\), n&ecirc;n ch&uacute;ng c&#361;ng l&agrave; c&aacute;c h&agrave;m l&#7891;i. V&#7853;y b&agrave;i to&aacute;n t&#7889;i &#432;u \((3)\) c&oacute; h&agrave;m m&#7909;c ti&ecirc;u l&agrave; l&#7891;i, v&agrave; c&aacute;c h&agrave;m r&agrave;ng bu&#7897;c c&#361;ng l&agrave; l&#7891;i, n&ecirc;n n&oacute; l&agrave; m&#7897;t b&agrave;i to&aacute;n l&#7891;i. H&#417;n n&#7919;a, n&oacute; l&agrave; m&#7897;t <a href="/2017/03/19/convexopt/#-quadratic-programming">Quadratic Programming</a>. Th&#7853;m ch&iacute;, h&agrave;m m&#7909;c ti&ecirc;u l&agrave; <em>strictly convex</em> v&igrave; \(||\mathbf{w}||_2^2 = \mathbf{w}^T\mathbf{I}\mathbf{w}\) v&agrave; \(\mathbf{I}\) l&agrave; ma tr&#7853;n &#273;&#417;n v&#7883; - l&agrave; m&#7897;t ma tr&#7853;n x&aacute;c &#273;&#7883;nh d&#432;&#417;ng. T&#7915; &#273;&acirc;y c&oacute; th&#7875; suy ra nghi&#7879;m cho SVM l&agrave; <em>duy nh&#7845;t</em>.</p>
+
+<p>&#272;&#7871;n &#273;&acirc;y th&igrave; b&agrave;i to&aacute;n n&agrave;y c&oacute; th&#7875; gi&#7843;i &#273;&#432;&#7907;c b&#7857;ng c&aacute;c c&ocirc;ng c&#7909; h&#7895; tr&#7907; t&igrave;m nghi&#7879;m cho Quadratic Programing, v&iacute; d&#7909; <a href="/2017/03/19/convexopt/#-gioi-thieu-thu-vien-cvxopt">CVXOPT</a>.</p>
+
+<p>Tuy nhi&ecirc;n, vi&#7879;c gi&#7843;i b&agrave;i to&aacute;n n&agrave;y tr&#7903; n&ecirc;n ph&#7913;c t&#7841;p khi s&#7889; chi&#7873;u \(d\) c&#7911;a kh&ocirc;ng gian d&#7919; li&#7879;u v&agrave; s&#7889; &#273;i&#7875;m d&#7919; li&#7879;u \(N\) t&#259;ng l&ecirc;n cao.</p>
+
+<p>Ng&#432;&#7901;i ta th&#432;&#7901;ng gi&#7843;i <a href="/2017/04/02/duality/#-bai-toan-doi-ngau-lagrange-the-lagrange-dual-problem">b&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u</a> c&#7911;a b&agrave;i to&aacute;n n&agrave;y. Th&#7913; nh&#7845;t, b&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u c&oacute; nh&#7919;ng t&iacute;nh ch&#7845;t th&uacute; v&#7883; h&#417;n khi&#7871;n n&oacute; &#273;&#432;&#7907;c gi&#7843;i hi&#7879;u qu&#7843; h&#417;n. Th&#7913; hai, trong qu&aacute; tr&igrave;nh x&acirc;y d&#7921;ng b&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u, ng&#432;&#7901;i ta th&#7845;y r&#7857;ng SVM c&oacute; th&#7875; &#273;&#432;&#7907;c &aacute;p d&#7909;ng cho nh&#7919;ng b&agrave;i to&aacute;n m&agrave; d&#7919; li&#7879;u kh&ocirc;ng <em>linearly separable</em>, t&#7913;c c&aacute;c &#273;&#432;&#7901;ng ph&acirc;n chia kh&ocirc;ng ph&#7843;i l&agrave; m&#7897;t m&#7863;t ph&#7859;ng m&agrave; c&oacute; th&#7875; l&agrave; c&aacute;c m&#7863;t c&oacute; h&igrave;nh th&ugrave; ph&#7913;c t&#7841;p h&#417;n.</p>
+
+<p><em>&#272;&#7871;n &#273;&acirc;y, b&#7841;n &#273;&#7885;c c&oacute; th&#7875; b&#7855;t &#273;&#7847;u hi&#7875;u t&#7841;i sao t&ocirc;i c&#7847;n vi&#7871;t 3 b&agrave;i 16-18 tr&#432;&#7899;c khi vi&#7871;t b&agrave;i n&agrave;y. N&#7871;u b&#7841;n mu&#7889;n hi&#7875;u s&acirc;u h&#417;n v&#7873; SVM, t&ocirc;i khuy&#7871;n kh&iacute;ch &#273;&#7885;c M&#7909;c 3 d&#432;&#7899;i &#273;&acirc;y. N&#7871;u kh&ocirc;ng, b&#7841;n c&oacute; th&#7875; sang <a href="#-lap-trinh-tim-nghiem-cho-svm">M&#7909;c 4</a> &#273;&#7875; xem v&iacute; d&#7909; v&#7873; c&aacute;ch s&#7917; d&#7909;ng SVM khi l&#7853;p tr&igrave;nh.</em></p>
+
+<p><strong>X&aacute;c &#273;&#7883;nh class cho m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u m&#7899;i:</strong> Sau khi t&igrave;m &#273;&#432;&#7907;c m&#7863;t ph&acirc;n c&aacute;ch \(\mathbf{w}^T\mathbf{x} + b = 0\), class c&#7911;a b&#7845;t k&#7923; m&#7897;t &#273;i&#7875;m n&agrave;o s&#7869; &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh &#273;&#417;n gi&#7843;n b&#7857;ng c&aacute;ch:</p>
+
+<p>\[
+\text{class}(\mathbf{x}) = \text{sgn} (\mathbf{w}^T\mathbf{x} + b )
+\]
+Trong &#273;&oacute; h&agrave;m \(\text{sgn}\) l&agrave; h&agrave;m x&aacute;c &#273;&#7883;nh d&#7845;u, nh&#7853;n gi&aacute; tr&#7883; 1 n&#7871;u &#273;&#7889;i s&#7889; l&agrave; kh&ocirc;ng &acirc;m v&agrave; -1 n&#7871;u ng&#432;&#7907;c l&#7841;i.</p>
+
+<p><a name="-bai-toan-doi-ngau-cho-svm" href="smv.html"></a></p>
+
+<h2 id="3-b&agrave;i-to&aacute;n-&#273;&#7889;i-ng&#7851;u-cho-svm">3. B&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u cho SVM</h2>
+<p>Nh&#7855;c l&#7841;i r&#7857;ng b&agrave;i to&aacute;n t&#7889;i &#432;u \((3)\) l&agrave; m&#7897;t b&agrave;i to&aacute;n l&#7891;i. Ch&uacute;ng ta bi&#7871;t r&#7857;ng: n&#7871;u m&#7897;t <a href="/2017/04/02/duality/#-strong-duality-va-slaters-constraint-qualification">b&agrave;i to&aacute;n l&#7891;i tho&#7843; m&atilde;n ti&ecirc;u chu&#7849;n Slater th&igrave; <em>strong duality</em> tho&#7843; m&atilde;n</a>. V&agrave; n&#7871;u <em>strong duality</em> tho&#7843; m&atilde;n th&igrave; nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n ch&iacute;nh l&agrave; nghi&#7879;m c&#7911;a h&#7879; <a href="/2017/04/02/duality/#-kkt-optimality-conditions">&#273;i&#7873;u ki&#7879;n KKT</a>.</p>
+
+<p><a name="-kiem-tra-tieu-chuan-slater" href="smv.html"></a></p>
+
+<h3 id="31-ki&#7875;m-tra-ti&ecirc;u-chu&#7849;n-slater">3.1. Ki&#7875;m tra ti&ecirc;u chu&#7849;n Slater</h3>
+<p>B&#432;&#7899;c ti&#7871;p theo, ch&uacute;ng ta s&#7869; ch&#7913;ng minh b&agrave;i to&aacute;n t&#7889;i &#432;u \((3)\) tho&#7843; m&atilde;n &#273;i&#7873;u ki&#7879;n Slater. &#272;i&#7873;u ki&#7879;n Slater n&oacute;i r&#7857;ng, n&#7871;u t&#7891;n t&#7841;i \(\mathbf{w}, b\) tho&#7843; m&atilde;n:
+\[
+1 - y_n(\mathbf{w}^T\mathbf{x}_n + b) &lt; 0, ~~\forall n = 1, 2, \dots, N
+\]
+th&igrave; <em>strong duality</em> tho&#7843; m&atilde;n.</p>
+
+<p>Vi&#7879;c ki&#7875;m tra n&agrave;y t&#432;&#417;ng &#273;&#7889;i &#273;&#417;n gi&#7843;n. V&igrave; ta bi&#7871;t r&#7857;ng lu&ocirc;n lu&ocirc;n c&oacute; m&#7897;t (si&ecirc;u) m&#7863;t ph&#7859;ng ph&acirc;n chia hai classes n&#7871;u hai class &#273;&oacute; l&agrave; <em>linearly separable</em>, t&#7913;c b&agrave;i to&aacute;n c&oacute; nghi&#7879;m, n&ecirc;n <em>feasible set</em> c&#7911;a b&agrave;i to&aacute;n t&#7889;i &#432;u \((3)\) ph&#7843;i kh&aacute;c r&#7895;ng. T&#7913;c lu&ocirc;n lu&ocirc;n t&#7891;n t&#7841;i c&#7863;p \((\mathbf{w}_0, b_0)\) sao cho:
+\[
+\begin{eqnarray}
+1 - y_n(\mathbf{w}_0^T\mathbf{x}_n + b_0) &amp;\leq&amp; 0, ~~\forall n = 1, 2, \dots, N \<br>
+\Leftrightarrow 2 - y_n(2\mathbf{w}_0^T\mathbf{x}_n + 2b_0) &amp;\leq&amp; 0, ~~\forall n = 1, 2, \dots, N 
+\end{eqnarray}
+\]</p>
+
+<p>V&#7853;y ch&#7881; c&#7847;n ch&#7885;n \(\mathbf{w}_1 = 2\mathbf{w}_0\) v&agrave; \(b_1 = 2b_0\), ta s&#7869; c&oacute;: 
+\[
+1 - y_n(\mathbf{w}_1^T\mathbf{x}_n + b_1) \leq -1 &lt; 0, ~~\forall n = 1, 2, \dots, N
+\]</p>
+
+<p>T&#7915; &#273;&oacute; suy ra &#273;i&#7873;u ki&#7879;n Slater tho&#7843; m&atilde;n.</p>
+
+<p><a name="-lagrangian-cua-bai-toan-svm" href="smv.html"></a></p>
+
+<h3 id="32-lagrangian-c&#7911;a-b&agrave;i-to&aacute;n-svm">3.2. Lagrangian c&#7911;a b&agrave;i to&aacute;n SVM</h3>
+<p><a href="/2017/04/02/duality/#-lagrangian">Lagrangian</a> c&#7911;a b&agrave;i to&aacute;n \((3)\) l&agrave;: 
+\[
+\mathcal{L}(\mathbf{w}, b, \lambda) = \frac{1}{2} ||\mathbf{w}||_2^2 + \sum_{n=1}^N \lambda_n(1 - y_n(\mathbf{w}^T\mathbf{x}_n + b) ) ~~~~~~(4)
+\]</p>
+
+<p>v&#7899;i \(\lambda = [\lambda_1, \lambda_2, \dots, \lambda_N]^T\) v&agrave; \(\lambda_n \geq 0, ~\forall n = 1, 2, \dots, N\).
+<a name="-ham-doi-ngau-lagrange" href="smv.html"></a></p>
+
+<h3 id="33-h&agrave;m-&#273;&#7889;i-ng&#7851;u-lagrange">3.3. H&agrave;m &#273;&#7889;i ng&#7851;u Lagrange</h3>
+<p><a href="/2017/04/02/duality/#-ham-doi-ngau-lagrange-the-lagrange-dual-function">H&agrave;m &#273;&#7889;i ng&#7851;u Lagrange</a> &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a l&agrave;: 
+\[
+g(\lambda) = \min_{\mathbf{w}, b} \mathcal{L}(\mathbf{w}, b, \lambda) 
+\]
+v&#7899;i \(\lambda \succeq 0\).</p>
+
+<p>Vi&#7879;c t&igrave;m gi&aacute; tr&#7883; nh&#7887; nh&#7845;t c&#7911;a h&agrave;m n&agrave;y theo \(\mathbf{w}\) v&agrave; \(b\) c&oacute; th&#7875; &#273;&#7921;&#7907;c th&#7921;c hi&#7879;n b&#7857;ng c&aacute;ch gi&#7843;i h&#7879; ph&#432;&#417;ng tr&igrave;nh &#273;&#7841;o h&agrave;m c&#7911;a \(\mathcal{L}(\mathbf{w}, b, \lambda)\) theo \(\mathbf{w}\) v&agrave; \(b\) b&#7857;ng 0:</p>
+
+<p>\[
+\begin{eqnarray}
+\frac{\partial \mathcal{L}(\mathbf{w}, b, \lambda)}{\partial \mathbf{w}} &amp;=&amp; \mathbf{w} - \sum_{n=1}^N \lambda_n y_n \mathbf{x}_n = 0 \Rightarrow \mathbf{w} = \sum_{n=1}^N \lambda_n y_n \mathbf{x}_n  ~~~~~ (5)\<br>
+\frac{\partial \mathcal{L}(\mathbf{w}, b, \lambda)}{\partial b} &amp;=&amp; 
+-\sum_{n=1}^N \lambda_ny_n = 0 ~~~~~~~~~~(6)
+\end{eqnarray}
+\]</p>
+
+<p>Thay \((5)\) v&agrave; \((6)\) v&agrave;o \((4)\) ta thu &#273;&#432;&#7907;c \(g(\lambda)\)(<em>ph&#7847;n n&agrave;y t&ocirc;i r&uacute;t g&#7885;n, coi nh&#432; m&#7897;t b&agrave;i t&#7853;p nh&#7887; cho b&#7841;n n&agrave;o mu&#7889;n hi&#7875;u s&acirc;u</em>):
+\[
+g(\lambda) = \sum_{n=1}^N \lambda_n  -\frac{1}{2}\sum_{n=1}^N \sum_{m=1}^N \lambda_n\lambda_m y_n y_m \mathbf{x}_n^T\mathbf{x}_m~~~~~~~~~(7)
+\]</p>
+
+<p><strong>&#272;&acirc;y l&agrave; h&agrave;m s&#7889; quan tr&#7885;ng nh&#7845;t trong SVM</strong>, c&aacute;c b&#7841;n s&#7869; th&#7845;y r&otilde; h&#417;n &#7903; b&agrave;i sau.</p>
+
+<!-- X&eacute;t ma tr&#7853;n vu&ocirc;ng \\(\mathbf{P} \in \mathbb{R}^{N \times N}\\) v&#7899;i ph&#7847;n t&#7917; &#7903; h&agrave;ng th&#7913; \\(n\\) v&agrave; c&#7897;t th&#7913; \\(m\\): 
+\\[
+p_{nm} =  y_n y_m \mathbf{x}\_n^T\mathbf{x}\_m = p_{mn}
+\\] -->
+
+<p>X&eacute;t ma tr&#7853;n:
+\[
+\mathbf{V} = \left[y_1 \mathbf{x}_1, y_2 \mathbf{x}_2, \dots, y_N \mathbf{x}_N \right]
+\]
+v&agrave; vector \(\mathbf{1} = [1, 1, \dots, 1]^T\), ta c&oacute; th&#7875; vi&#7871;t l&#7841;i \(g(\lambda)\) d&#432;&#7899;i d&#7841;ng: 
+\[
+g(\lambda) = -\frac{1}{2}\lambda^T\mathbf{V}^T\mathbf{V}\mathbf{\lambda} + \mathbf{1}^T\lambda. ~~~~~~~~~~~~~~~(8)
+\]</p>
+
+<p>(<em>N&#7871;u kh&oacute; tin, b&#7841;n c&oacute; th&#7875; vi&#7871;t ra &#273;&#7875; quen d&#7847;n v&#7899;i c&aacute;c bi&#7875;u th&#7913;c &#273;&#7841;i s&#7889; tuy&#7871;n t&iacute;nh.</em>)</p>
+
+<p>&#272;&#7863;t \(\mathbf{K} = \mathbf{V}^T\mathbf{V}\), ta c&oacute; m&#7897;t quan s&aacute;t quan tr&#7885;ng: \(\mathbf{K}\) l&agrave; m&#7897;t <a href="/2017/03/12/convexity/#positive-semidefinite">ma tr&#7853;n n&#7917;a x&aacute;c &#273;&#7883;nh d&#432;&#417;ng</a>. Th&#7853;t v&#7853;y, v&#7899;i m&#7885;i vector \(\lambda\), ta c&oacute;:
+\[
+\lambda^T\mathbf{K}\mathbf{\lambda} = \lambda^T\mathbf{V}^T\mathbf{V}\mathbf{\lambda} = ||\mathbf{V}\lambda||_2^2 \geq 0.
+\]</p>
+
+<p>(<em>&#272;&acirc;y ch&iacute;nh l&agrave; &#273;&#7883;nh ngh&#297;a c&#7911;a ma tr&#7853;n n&#7917;a x&aacute;c &#273;&#7883;nh d&#432;&#417;ng.</em>)</p>
+
+<p>V&#7853;y \(g(\lambda) = -\frac{1}{2}\lambda^T\mathbf{K}\mathbf{\lambda} + \mathbf{1}^T\lambda\) l&agrave; m&#7897;t <a href="/2017/03/12/convexity/#concave-function">h&agrave;m <em>concave</em></a>.</p>
+
+<p><a name="-bai-toan-doi-ngau-lagrange" href="smv.html"></a></p>
+
+<h3 id="34-b&agrave;i-to&aacute;n-&#273;&#7889;i-ng&#7851;u-lagrange">3.4. B&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u Lagrange</h3>
+<p>T&#7915; &#273;&oacute;, k&#7871;t h&#7907;p h&agrave;m &#273;&#7889;i ng&#7851;u Lagrange v&agrave; c&aacute;c &#273;i&#7873;u ki&#7879;n r&agrave;ng bu&#7897;c c&#7911;a \(\lambda\), ta s&#7869; thu &#273;&#432;&#7907;c <a href="/2017/04/02/duality/#-bai-toan-doi-ngau-lagrange-the-lagrange-dual-problem">b&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u Lagrange</a>:</p>
+
+<p>\[
+ \begin{eqnarray}
+     \lambda &amp;=&amp; \arg \max_{\lambda} g(\lambda)   \<br>
+     \text{subject to:}~ &amp;&amp; \lambda \succeq 0~~~~~~~~~~ (9)\<br>
+     &amp;&amp; \sum_{n=1}^N \lambda_ny_n = 0 
+ \end{eqnarray}
+ \] 
+R&agrave;ng bu&#7897;c th&#7913; hai &#273;&#432;&#7907;c l&#7845;y t&#7915; \((6)\).</p>
+
+<p>&#272;&acirc;y l&agrave; m&#7897;t b&agrave;i to&aacute;n l&#7891;i v&igrave; ta &#273;ang &#273;i t&igrave;m gi&aacute; tr&#7883; l&#7899;n nh&#7845;t c&#7911;a m&#7897;t h&agrave;m m&#7909;c ti&ecirc;u l&agrave; <em>concave</em> tr&ecirc;n m&#7897;t <a href="/2017/03/12/convexity/#-giao-cua-cac-tap-loi-la-mot-tap-loi"><em>polyhedron</em></a>.</p>
+
+<p>B&agrave;i to&aacute;n n&agrave;y c&#361;ng &#273;&#432;&#7907;c l&agrave; m&#7897;t Quadratic Programming v&agrave; c&#361;ng c&oacute; th&#7875; &#273;&#432;&#7907;c gi&#7843;i b&#7857;ng c&aacute;c th&#432; vi&#7879;n nh&#432; CVXOPT.</p>
+
+<p>Trong b&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u n&agrave;y, s&#7889; tham s&#7889; (parameters) ph&#7843;i t&igrave;m l&agrave; \(N\), l&agrave; chi&#7873;u c&#7911;a \(\lambda\), t&#7913;c s&#7889; &#273;i&#7875;m d&#7919; li&#7879;u. Trong khi &#273;&oacute;, v&#7899;i b&agrave;i to&aacute;n g&#7889;c \((3)\), s&#7889; tham s&#7889; ph&#7843;i t&igrave;m l&agrave; \(d + 1\), l&agrave; t&#7893;ng s&#7889; chi&#7873;u c&#7911;a \(\mathbf{w}\) v&agrave; \(b\), t&#7913;c s&#7889; chi&#7873;u c&#7911;a m&#7895;i &#273;i&#7875;m d&#7919; li&#7879;u c&#7897;ng v&#7899;i 1. Trong r&#7845;t nhi&#7873;u tr&#432;&#7901;ng h&#7907;p, s&#7889; &#273;i&#7875;m d&#7919; li&#7879;u c&oacute; &#273;&#432;&#7907;c trong <em>training set</em> l&#7899;n h&#417;n s&#7889; chi&#7873;u d&#7919; li&#7879;u r&#7845;t nhi&#7873;u. N&#7871;u gi&#7843;i tr&#7921;c ti&#7871;p b&#7857;ng c&aacute;c c&ocirc;ng c&#7909; gi&#7843;i Quadratic Programming, c&oacute; th&#7875; b&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u c&ograve;n ph&#7913;c t&#7841;p h&#417;n (t&#7889;n th&#7901;i gian h&#417;n) so v&#7899;i b&agrave;i to&agrave;n g&#7889;c. Tuy nhi&ecirc;n, &#273;i&#7873;u h&#7845;p d&#7851;n c&#7911;a b&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u n&agrave;y &#273;&#7871;n t&#7915; ph&#7847;n <em>Kernel Support Vector Machine (Kernel SVM)</em>, t&#7913;c cho c&aacute;c b&agrave;i to&aacute;n m&agrave; d&#7919; li&#7879;u kh&ocirc;ng ph&#7843;i l&agrave; <em>linearly separable</em> ho&#7863;c <em>g&#7847;n linearly separable</em>. Ph&#7847;n <em>Kernel SVM</em> s&#7869; &#273;&#432;&#7907;c t&ocirc;i tr&igrave;nh b&agrave;y sau 1 ho&#7863;c 2 b&agrave;i n&#7919;a. Ngo&agrave;i ra, d&#7921;a v&agrave;o t&iacute;nh ch&#7845;t &#273;&#7863;c bi&#7879;t c&#7911;a h&#7879; &#273;i&#7873;u ki&#7879;n KKT m&agrave; SVM c&oacute; th&#7875; &#273;&#432;&#7907;c gi&#7843;i b&#7857;ng nhi&#7873;u ph&#432;&#417;ng ph&aacute;p hi&#7879;u qu&#7843; h&#417;n.</p>
+
+<p><a name="-dieu-kien-kkt" href="smv.html"></a></p>
+
+<h3 id="35-&#273;i&#7873;u-ki&#7879;n-kkt">3.5. &#272;i&#7873;u ki&#7879;n KKT</h3>
+<p>Quay tr&#7903; l&#7841;i b&agrave;i to&aacute;n, v&igrave; &#273;&acirc;y l&agrave; m&#7897;t b&agrave;i to&aacute;n l&#7891;i v&agrave; <em>strong duality</em> tho&#7843; m&atilde;n, nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n s&#7869; tho&#7843; m&atilde;n h&#7879; <a href="/2017/04/02/duality/#-kkt-optimality-conditions">&#273;i&#7873;u ki&#7879;n KKT</a> sau &#273;&acirc;y v&#7899;i bi&#7871;n s&#7889; l&agrave; \(\mathbf{w}, b\) v&agrave; \(\lambda\): 
+\[
+\begin{eqnarray}
+1 - y_n(\mathbf{w}^T\mathbf{x}_n + b) &amp;\leq&amp; 0, ~ \forall n = 1, 2, \dots, N ~~~~(10) \<br>
+\lambda_n &amp;\geq&amp; 0, ~\forall n = 1, 2, \dots, N  \<br>
+\lambda_n (1 - y_n(\mathbf{w}^T\mathbf{x}_n + b)) &amp;=&amp; 0, ~\forall n = 1, 2, \dots, N ~~~~(11) \<br>
+ \mathbf{w} &amp;=&amp; \sum_{n=1}^N \lambda_n y_n \mathbf{x}_n ~~~~~~~~~~~(12)\\ 
+ \sum_{n=1}^N \lambda_ny_n &amp;=&amp; 0 ~~~~~~~~~~~~~~~~~~~(13)
+\end{eqnarray}
+\]</p>
+
+<p>Trong nh&#7919;ng &#273;i&#7873;u ki&#7879;n tr&ecirc;n, &#273;i&#7873;u ki&#7879;n \((11)\) l&agrave; th&uacute; v&#7883; nh&#7845;t. T&#7915; &#273;&oacute; ta c&oacute; th&#7875; suy ra ngay, v&#7899;i \(n\) b&#7845;t k&#7923;, ho&#7863;c \(\lambda_n =0\) ho&#7863;c \(1 - y_n(\mathbf{w}^T\mathbf{x}_n + b) = 0\). Tr&#432;&#7901;ng h&#7907;p th&#7913; hai ch&iacute;nh l&agrave;:
+\[
+\mathbf{w}^T\mathbf{x}_n + b = y_n~~~~ (14)
+\] 
+v&#7899;i ch&uacute; &yacute; r&#7857;ng \(y_n^2 = 1, ~\forall n\).</p>
+
+<p>Nh&#7919;ng &#273;i&#7875;m tho&#7843; m&atilde;n \((14)\) ch&iacute;nh l&agrave; nh&#7919;ng &#273;i&#7875;m n&#7857;m g&#7847;n m&#7863;t ph&acirc;n chia nh&#7845;t, l&agrave; nh&#7919;ng &#273;i&#7875;m &#273;&#432;&#7907;c khoanh tr&ograve;n trong H&igrave;nh 4 ph&iacute;a tr&ecirc;n. Hai &#273;&#432;&#7901;ng th&#7859;ng \(\mathbf{w}^T\mathbf{x}_n + b = \pm 1\) <em>t&#7921;a</em> l&ecirc;n c&aacute;c &#273;i&#7875;m tho&#7843; m&atilde;n \((14)\). V&#7853;y n&ecirc;n nh&#7919;ng &#273;i&#7875;m (vectors) tho&#7843; m&atilde;n \((14)\) c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; c&aacute;c <em>Support Vectors</em>. V&agrave; t&#7915; &#273;&oacute;, c&aacute;i t&ecirc;n <em>Support Vector Machine</em> ra &#273;&#7901;i.</p>
+
+<p>M&#7897;t quan s&aacute;t kh&aacute;c, s&#7889; l&#432;&#7907;ng nh&#7919;ng &#273;i&#7875;m tho&#7843; m&atilde;n \((14)\) th&#432;&#7901;ng chi&#7871;m s&#7889; l&#432;&#7907;ng r&#7845;t nh&#7887; trong s&#7889; \(N\) &#273;i&#7875;m. Ch&#7881; c&#7847;n d&#7921;a tr&ecirc;n nh&#7919;ng <em>support vectors</em> n&agrave;y, ch&uacute;ng ta ho&agrave;n to&agrave;n c&oacute; th&#7875; x&aacute;c &#273;&#7883;nh &#273;&#432;&#7907;c m&#7863;t ph&acirc;n c&aacute;ch c&#7847;n t&igrave;m. Nh&igrave;n theo m&#7897;t c&aacute;ch kh&aacute;c, h&#7847;u h&#7871;t c&aacute;c \(\lambda_n\) b&#7857;ng 0. V&#7853;y l&agrave; m&#7863;c d&ugrave; vector \(\lambda \in \mathbb{R}^N\) c&oacute; s&#7889; chi&#7873;u c&oacute; th&#7875; r&#7845;t l&#7899;n, s&#7889; l&#432;&#7907;ng c&aacute;c ph&#7847;n t&#7917; kh&aacute;c 0 c&#7911;a n&oacute; r&#7845;t &iacute;t. N&oacute;i c&aacute;ch kh&aacute;c, vector \(\lambda\) l&agrave; m&#7897;t <em>sparse</em> vector. Support Vector Machine v&igrave; v&#7853;y c&ograve;n &#273;&#432;&#7907;c x&#7871;p v&agrave;o <em>Sparse Models</em>. C&aacute;c <em>Sparse Models</em> th&#432;&#7901;ng c&oacute; c&aacute;ch gi&#7843;i hi&#7879;u qu&#7843; (nhanh) h&#417;n c&aacute;c m&ocirc; h&igrave;nh t&#432;&#417;ng t&#7921; v&#7899;i nghi&#7879;m l&agrave; <em>dense</em> (h&#7847;u h&#7871;t kh&aacute;c 0). &#272;&acirc;y ch&iacute;nh l&agrave; l&yacute; do th&#7913; hai c&#7911;a vi&#7879;c b&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u SVM &#273;&#432;&#7907;c quan t&acirc;m nhi&#7873;u h&#417;n l&agrave; b&agrave;i to&aacute;n g&#7889;c.</p>
+
+<p>Ti&#7871;p t&#7909;c ph&acirc;n t&iacute;ch, v&#7899;i nh&#7919;ng b&agrave;i to&aacute;n c&oacute; s&#7889; &#273;i&#7875;m d&#7919; li&#7879;u \(N\) nh&#7887;, ta c&oacute; th&#7875; gi&#7843;i h&#7879; &#273;i&#7873;u ki&#7879;n KKT ph&iacute;a tr&ecirc;n b&#7857;ng c&aacute;ch x&eacute;t c&aacute;c tr&#432;&#7901;ng h&#7907;p \(\lambda_n = 0\) ho&#7863;c \(\lambda_n \neq 0\). T&#7893;ng s&#7889; tr&#432;&#7901;ng h&#7907;p ph&#7843;i x&eacute;t l&agrave; \(2^N\). V&#7899;i \(N &gt; 50\) (th&#432;&#7901;ng l&agrave; nh&#432; th&#7871;), &#273;&acirc;y l&agrave; m&#7897;t con s&#7889; r&#7845;t l&#7899;n, gi&#7843;i b&#7857;ng c&aacute;ch n&agrave;y s&#7869; kh&ocirc;ng kh&#7843; thi. T&ocirc;i s&#7869; kh&ocirc;ng &#273;i s&acirc;u ti&#7871;p v&agrave;o vi&#7879;c gi&#7843;i h&#7879; KKT nh&#432; th&#7871; n&agrave;o, trong ph&#7847;n ti&#7871;p theo ch&uacute;ng ta s&#7869; gi&#7843;i b&agrave;i to&aacute;n t&#7889;i &#432;u \((9)\) b&#7857;ng CVXOPT v&agrave; b&#7857;ng th&#432; vi&#7879;n <code class="language-plaintext highlighter-rouge">sklearn</code>.</p>
+
+<p>Sau khi t&igrave;m &#273;&#432;&#7907;c \(\lambda\) t&#7915; b&agrave;i to&aacute;n \((9)\), ta c&oacute; th&#7875; suy ra &#273;&#432;&#7907;c \(\mathbf{w}\) d&#7921;a v&agrave;o \((12)\) v&agrave; \(b\) d&#7921;a v&agrave;o \((11)\) v&agrave; \((13)\). R&otilde; r&agrave;ng ta ch&#7881; c&#7847;n quan t&acirc;m t&#7899;i \(\lambda_n \neq 0\).</p>
+
+<p>G&#7885;i t&#7853;p h&#7907;p \(\mathcal{S} = \{n: \lambda_n \neq 0\}\) v&agrave; \(N_{\mathcal{S}}\) l&agrave; s&#7889; ph&#7847;n t&#7917; c&#7911;a t&#7853;p \(\mathcal{S}\). V&#7899;i m&#7895;i \(n \in \mathcal{S}\), ta c&oacute;:
+\[
+1 = y_n(\mathbf{w}^T\mathbf{x}_n + b) \Leftrightarrow b + \mathbf{w}^T\mathbf{x}_n = y_n 
+\]
+M&#7863;c d&ugrave; t&#7915; ch&#7881; m&#7897;t c&#7863;p \((\mathbf{x}_n, y_n)\), ta c&oacute; th&#7875; suy ra ngay &#273;&#432;&#7907;c \(b\) n&#7871;u &#273;&atilde; bi&#7871;t \(\mathbf{w}\), m&#7897;t phi&ecirc;n b&#7843;n kh&aacute;c &#273;&#7875; t&iacute;nh \(b\) th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng v&agrave; &#273;&#432;&#7907;c cho l&agrave; <em>&#7893;n &#273;&#7883;nh h&#417;n trong t&iacute;nh to&aacute;n</em> (<em>numerically more stable</em>) l&agrave;:</p>
+
+<p>\[
+b = \frac{1}{N_{\mathcal{S}}} \sum_{n \in \mathcal{S}}(y_n - \mathbf{w}^T\mathbf{x}_n) = \frac{1}{N_{\mathcal{S}}} \sum_{n \in \mathcal{S}} \left(y_n - \sum_{m\in \mathcal{S}} \lambda_m y_m \mathbf{x}_m^T \mathbf{x}_n\right)~~~~~ (15)
+\]</p>
+
+<p>t&#7913;c trung b&igrave;nh c&#7897;ng c&#7911;a m&#7885;i c&aacute;ch t&iacute;nh \(b\).</p>
+
+<p>Tr&#432;&#7899;c &#273;&oacute;, \(\mathbf{w}\) &#273;&atilde; &#273;&#432;&#7907;c t&iacute;nh b&#7857;ng: 
+\[
+\mathbf{w} = \sum_{m \in \mathcal{S}} \lambda_m y_m \mathbf{x}_m ~~~~~~ (16)
+\]
+theo \((12)\).</p>
+
+<p>Quan s&aacute;t quan tr&#7885;ng: &#272;&#7875; x&aacute;c &#273;&#7883;nh m&#7897;t &#273;i&#7875;m \(\mathbf{x}\) m&#7899;i thu&#7897;c v&agrave;o class n&agrave;o, ta c&#7847;n x&aacute;c &#273;&#7883;nh d&#7845;u c&#7911;a bi&#7875;u th&#7913;c: 
+\[
+\mathbf{w}^T\mathbf{x} + b = \sum_{m \in \mathcal{S}} \lambda_m y_m \mathbf{x}_m^T \mathbf{x} + \frac{1}{N_{\mathcal{S}}} \sum_{n \in \mathcal{S}} \left(y_n - \sum_{m\in \mathcal{S}} \lambda_m y_m \mathbf{x}_m^T \mathbf{x}_n\right)
+\]
+Bi&#7875;u th&#7913;c n&agrave;y ph&#7909; thu&#7897;c v&agrave;o c&aacute;ch t&iacute;nh t&iacute;ch v&ocirc; h&#432;&#7899;ng gi&#7919;a c&aacute;c c&#7863;p vector \(\mathbf{x}\) v&agrave; t&#7915;ng \(\mathbf{x}_n \in \mathcal{S}\). Nh&#7853;n x&eacute;t quan tr&#7885;ng n&agrave;y s&#7869; gi&uacute;p &iacute;ch cho ch&uacute;ng ta trong b&agrave;i Kernal SVM.</p>
+
+<p><a name="-lap-trinh-tim-nghiem-cho-svm" href="smv.html"></a></p>
+
+<h2 id="4-l&#7853;p-tr&igrave;nh-t&igrave;m-nghi&#7879;m-cho-svm">4. L&#7853;p tr&igrave;nh t&igrave;m nghi&#7879;m cho SVM</h2>
+<p>Trong m&#7909;c n&agrave;y, t&ocirc;i s&#7869; tr&igrave;nh b&agrave;y hai c&aacute;ch t&iacute;nh nghi&#7879;m cho SVM. C&aacute;ch th&#7913; nh&#7845;t d&#7921;a theo b&agrave;i to&aacute;n \((9)\) v&agrave; c&aacute;c c&ocirc;ng th&#7913;c \((15)\) v&agrave; \((16)\). C&aacute;ch th&#7913; hai s&#7917; d&#7909;ng tr&#7921;c ti&#7871;p th&#432; vi&#7879;n <code class="language-plaintext highlighter-rouge">sklearn</code>. C&aacute;ch th&#7913; nh&#7845;t ch&#7881; l&agrave; &#273;&#7875; ch&#7913;ng minh n&atilde;y gi&#7901; t&ocirc;i kh&ocirc;ng <em>vi&#7871;t nh&#7843;m</em>, b&#7857;ng c&aacute;ch minh ho&#7841; k&#7871;t qu&#7843; t&igrave;m &#273;&#432;&#7907;c v&agrave; so s&aacute;nh v&#7899;i nghi&#7879;m t&igrave;m &#273;&#432;&#7907;c b&#7857;ng c&aacute;ch th&#7913; hai.</p>
+
+<p><a name="-tim-nghiem-theo-cong-thuc" href="smv.html"></a></p>
+
+<h3 id="41-t&igrave;m-nghi&#7879;m-theo-c&ocirc;ng-th&#7913;c">4.1. T&igrave;m nghi&#7879;m theo c&ocirc;ng th&#7913;c</h3>
+<p>Tr&#432;&#7899;c ti&ecirc;n ch&uacute;ng ta g&#7885;i c&aacute;c <em>modules</em> c&#7847;n d&ugrave;ng v&agrave; t&#7841;o d&#7919; li&#7879;u gi&#7843; (d&#7919; li&#7879;u n&agrave;y ch&iacute;nh l&agrave; d&#7919; li&#7879;u t&ocirc;i d&ugrave;ng trong c&aacute;c h&igrave;nh ph&iacute;a tr&ecirc;n n&ecirc;n ch&uacute;ng ta bi&#7871;t ch&#7855;c r&#7857;ng hai classes l&agrave; <em>linearly separable</em>):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">cdist</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">22</span><span class="p">)</span>
+
+<span class="n">means</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="p">[[.</span><span class="mi">3</span><span class="p">,</span> <span class="p">.</span><span class="mi">2</span><span class="p">],</span> <span class="p">[.</span><span class="mi">2</span><span class="p">,</span> <span class="p">.</span><span class="mi">3</span><span class="p">]]</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">X0</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">means</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cov</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="c1"># class 1
+</span><span class="n">X1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">means</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cov</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="c1"># class -1 
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X0</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">X1</span><span class="p">.</span><span class="n">T</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># all data 
+</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)),</span> <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">))),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># labels 
+</span></code></pre></div></div>
+
+<p>Ti&#7871;p theo, ch&uacute;ng ta gi&#7843;i b&agrave;i to&aacute;n \((9)\) b&#7857;ng CVXOPT:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
+<span class="c1"># build K
+</span><span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X0</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="o">-</span><span class="n">X1</span><span class="p">.</span><span class="n">T</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">V</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">V</span><span class="p">))</span> <span class="c1"># see definition of V, K near eq (8)
+</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span> <span class="c1"># all-one vector 
+# build A, b, G, h 
+</span><span class="n">G</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">N</span><span class="p">))</span> <span class="c1"># for all lambda_n &gt;= 0
+</span><span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="c1"># the equality constrain is actually y^T lambda = 0
+</span><span class="n">b</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span> 
+<span class="n">solvers</span><span class="p">.</span><span class="n">options</span><span class="p">[</span><span class="s">'show_progress'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="p">.</span><span class="n">qp</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="n">l</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="s">'x'</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'lambda = '</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>K&#7871;t qu&#7843;:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lambda = 
+ [[  8.54018321e-01   2.89132533e-10   1.37095535e+00   6.36030818e-10
+    4.04317408e-10   8.82390106e-10   6.35001881e-10   5.49567576e-10
+    8.33359230e-10   1.20982928e-10   6.86678649e-10   1.25039745e-10
+    2.22497367e+00   4.05417905e-09   1.26763684e-10   1.99008949e-10
+    2.13742578e-10   1.51537487e-10   3.75329509e-10   3.56161975e-10]]
+</code></pre></div></div>
+
+<p>Ta nh&#7853;n th&#7845;y r&#7857;ng h&#7847;u h&#7871;t c&aacute;c gi&aacute; tr&#7883; c&#7911;a <code class="language-plaintext highlighter-rouge">lambda</code> &#273;&#7873;u r&#7845;t nh&#7887;, t&#7899;i \(10^{-9}\) ho&#7863;c \(10^{-10}\). &#272;&acirc;y ch&iacute;nh l&agrave; c&aacute;c gi&aacute; tr&#7883; b&#7857;ng 0 nh&#432;ng v&igrave; sai s&#7889; t&iacute;nh to&aacute;n n&ecirc;n n&oacute; kh&aacute;c 0 m&#7897;t ch&uacute;t. Ch&#7881; c&oacute; 3 gi&aacute; tr&#7883; kh&aacute;c 0, ta d&#7921; &#273;o&aacute;n l&agrave; s&#7869; c&oacute; 3 &#273;i&#7875;m l&agrave; <em>support vectors</em>.</p>
+
+<p>Ta &#273;i t&igrave;m <em>support set</em> \(\mathcal{S}\) r&#7891;i t&igrave;m nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="c1"># just a small number, greater than 1e-9
+</span><span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">l</span> <span class="o">&gt;</span> <span class="n">epsilon</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">VS</span> <span class="o">=</span> <span class="n">V</span><span class="p">[:,</span> <span class="n">S</span><span class="p">]</span>
+<span class="n">XS</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">S</span><span class="p">]</span>
+<span class="n">yS</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:,</span> <span class="n">S</span><span class="p">]</span>
+<span class="n">lS</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">S</span><span class="p">]</span>
+<span class="c1"># calculate w and b
+</span><span class="n">w</span> <span class="o">=</span> <span class="n">VS</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">lS</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">yS</span><span class="p">.</span><span class="n">T</span> <span class="o">-</span> <span class="n">w</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">XS</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'w = '</span><span class="p">,</span> <span class="n">w</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'b = '</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>w =  [[-2.00984381  0.64068336]]
+b =  4.66856063387
+</code></pre></div></div>
+
+<p>Minh ho&#7841; k&#7871;t qu&#7843;:</p>
+
+<hr><div class="imgcap">
+ <img src="images/19_svm-svm4.png" align="center" width="500"><div class="thecap">H&igrave;nh 5: Minh ho&#7841; nghi&#7879;m t&igrave;m &#273;&#432;&#7907;c b&#7903;i SVM.</div>
+</div>
+<hr><p>&#272;&#432;&#7901;ng m&agrave;u &#273;en &#273;&#7853;m &#7903; gi&#7919;a ch&iacute;nh l&agrave; m&#7863;t ph&acirc;n c&aacute;ch t&igrave;m &#273;&#432;&#7907;c b&#7857;ng SVM. T&#7915; &#273;&acirc;y c&oacute; th&#7875; th&#7845;y <em>nhi&#7873;u kh&#7843; n&#259;ng l&agrave; c&aacute;c t&iacute;nh to&aacute;n c&#7911;a ta l&agrave; ch&iacute;nh x&aacute;c</em>. &#272;&#7875; ki&#7875;m tra xem c&aacute;c t&iacute;nh to&aacute;n ph&iacute;a tr&ecirc;n c&oacute; ch&iacute;nh x&aacute;c kh&ocirc;ng, ta c&#7847;n t&igrave;m nghi&#7879;m b&#7857;ng c&aacute;c c&ocirc;ng c&#7909; c&oacute; s&#7861;n, v&iacute; d&#7909; nh&#432; <code class="language-plaintext highlighter-rouge">sklearn</code>.</p>
+
+<p>Source code cho ph&#7847;n n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c t&igrave;m th&#7845;y <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/19_svm/plt/SVM-example.ipynb">&#7903; &#273;&acirc;y</a>.</p>
+
+<p><a name="-tim-nghiem-theo-thu-vien" href="smv.html"></a></p>
+
+<h3 id="42-t&igrave;m-nghi&#7879;m-theo-th&#432;-vi&#7879;n">4.2. T&igrave;m nghi&#7879;m theo th&#432; vi&#7879;n</h3>
+<p>Ch&uacute;ng ta s&#7869; s&#7917; d&#7909;ng h&agrave;m <a href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html"><code class="language-plaintext highlighter-rouge">sklearn.svm.SVC</code></a> &#7903; &#273;&acirc;y. C&aacute;c b&agrave;i to&aacute;n th&#7921;c t&#7871; th&#432;&#7901;ng s&#7917; d&#7909;ng th&#432; vi&#7879;n <a href="https://www.csie.ntu.edu.tw/~cjlin/libsvm/">libsvm</a> &#273;&#432;&#7907;c vi&#7871;t tr&ecirc;n ng&ocirc;n ng&#7919; C, c&oacute; API cho Python v&agrave; Matlab.</p>
+
+<p>N&#7871;u d&ugrave;ng th&#432; vi&#7879;n th&igrave; s&#7869; nh&#432; sau:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+
+<span class="n">y1</span> <span class="o">=</span> <span class="n">y</span><span class="p">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">N</span><span class="p">,))</span>
+<span class="n">X1</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="n">T</span> <span class="c1"># each sample is one row
+</span><span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span> <span class="o">=</span> <span class="s">'linear'</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="mf">1e5</span><span class="p">)</span> <span class="c1"># just a big number 
+</span>
+<span class="n">clf</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span> 
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">clf</span><span class="p">.</span><span class="n">coef_</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">clf</span><span class="p">.</span><span class="n">intercept_</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'w = '</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'b = '</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>w =  [[-2.00971102  0.64194082]]
+b =  [ 4.66595309]
+</code></pre></div></div>
+
+<p>K&#7871;t qu&#7843; n&agrave;y kh&aacute; gi&#7889;ng v&#7899;i k&#7871;t qu&#7843; ch&uacute;ng ta t&igrave;m &#273;&#432;&#7907;c &#7903; ph&#7847;n tr&ecirc;n. C&oacute; r&#7845;t nhi&#7873;u tu&#7923; ch&#7885;n cho SVM, c&aacute;c b&#7841;n s&#7869; d&#7847;n th&#7845;y trong c&aacute;c b&agrave;i sau.</p>
+
+<p><a name="-tom-tat-va-thao-luan" href="smv.html"></a></p>
+
+<h2 id="5-t&oacute;m-t&#7855;t-v&agrave;-th&#7843;o-lu&#7853;n">5. T&oacute;m t&#7855;t v&agrave; th&#7843;o lu&#7853;n</h2>
+
+<ul><li>
+    <p>V&#7899;i b&agrave;i to&aacute;n binary classification m&agrave; 2 classes l&agrave; <em>linearly separable</em>, c&oacute; v&ocirc; s&#7889; c&aacute;c si&ecirc;u m&#7863;t ph&#7859;ng gi&uacute;p ph&acirc;n bi&#7879;t hai classes, t&#7913;c m&#7863;t ph&acirc;n c&aacute;ch. V&#7899;i m&#7895;i m&#7863;t ph&acirc;n c&aacute;ch, ta c&oacute; m&#7897;t <em>classifier</em>. Kho&#7843;ng c&aacute;ch g&#7847;n nh&#7845;t t&#7915; 1 &#273;i&#7875;m d&#7919; li&#7879;u t&#7899;i m&#7863;t ph&acirc;n c&aacute;ch &#7845;y &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>margin</em> c&#7911;a classifier &#273;&oacute;.</p>
+  </li>
+  <li>
+    <p>Support Vector Machine l&agrave; b&agrave;i to&aacute;n &#273;i t&igrave;m m&#7863;t ph&acirc;n c&aacute;ch sao cho <em>margin</em> t&igrave;m &#273;&#432;&#7907;c l&agrave; l&#7899;n nh&#7845;t, &#273;&#7891;ng ngh&#297;a v&#7899;i vi&#7879;c c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u <em>an to&agrave;n nh&#7845;t</em> so v&#7899;i m&#7863;t ph&acirc;n c&aacute;ch.</p>
+  </li>
+  <li>
+    <p>B&agrave;i to&aacute;n t&#7889;i &#432;u trong SVM l&agrave; m&#7897;t b&agrave;i to&aacute;n l&#7891;i v&#7899;i h&agrave;m m&#7909;c ti&ecirc;u l&agrave; <em>stricly convex</em>, nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n n&agrave;y l&agrave; duy nh&#7845;t. H&#417;n n&#7919;a, b&agrave;i to&aacute;n t&#7889;i &#432;u &#273;&oacute; l&agrave; m&#7897;t Quadratic Programming (QP).</p>
+  </li>
+  <li>
+    <p>M&#7863;c d&ugrave; c&oacute; th&#7875; tr&#7921;c ti&#7871;p gi&#7843;i SVM qua b&agrave;i to&aacute;n t&#7889;i &#432;u g&#7889;c n&agrave;y, th&ocirc;ng th&#432;&#7901;ng ng&#432;&#7901;i ta th&#432;&#7901;ng gi&#7843;i b&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u. B&agrave;i to&aacute;n &#273;&#7889;i ng&#7851;u c&#361;ng l&agrave; m&#7897;t QP nh&#432;ng nghi&#7879;m l&agrave; <em>sparse</em> n&ecirc;n c&oacute; nh&#7919;ng ph&#432;&#417;ng ph&aacute;p gi&#7843;i hi&#7879;u qu&#7843; h&#417;n.</p>
+  </li>
+  <li>
+    <p>V&#7899;i c&aacute;c b&agrave;i to&aacute;n m&agrave; d&#7919; li&#7879;u <em>g&#7847;n linearly separable</em> ho&#7863;c <em>nonlinear separable</em>, c&oacute; nh&#7919;ng c&#7843;i ti&#7873;n kh&aacute;c c&#7911;a SVM &#273;&#7875; th&iacute;ch nghi v&#7899;i d&#7919; li&#7879;u &#273;&oacute;. M&#7901;i b&#7841;n &#273;&oacute;n &#273;&#7885;c b&agrave;i ti&#7871;p theo.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/19_svm/plt/SVM-example.ipynb">Source code</a>.
+<a name="-tai-lieu-tham-khao" href="smv.html"></a></p>
+  </li>
+</ul><h2 id="6-t&agrave;i-li&#7879;u-tham-kh&#7843;o">6. T&agrave;i li&#7879;u tham kh&#7843;o</h2>
+
+<p>[1] Bishop, Christopher M. &ldquo;Pattern recognition and Machine Learning.&rdquo;, Springer  (2006). (<a href="http://users.isr.ist.utl.pt/~wurmd/Livros/school/Bishop%20-%20Pattern%20Recognition%20And%20Machine%20Learning%20-%20Springer%20%202006.pdf">book</a>)</p>
+
+<p>[2] Duda, Richard O., Peter E. Hart, and David G. Stork. Pattern classification. John Wiley &amp; Sons, 2012.</p>
+
+<p>[3] <a href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html"><code class="language-plaintext highlighter-rouge">sklearn.svm.SVC</code></a></p>
+
+<p>[4] <a href="https://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM &ndash; A Library for Support Vector Machines</a></p>
+
+</div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="duality.html">&laquo; B&agrave;i 18: Duality</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="softmarginsmv.html">B&agrave;i 20: Soft Margin Support Vector Machine &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2017/04/09/smv/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11309807; 
+var sc_invisible=0; 
+var sc_security="b69b4cc3"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/b69b4cc3-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/04/28/multiclasssmv/">B&agrave;i 22: Multi-class Support Vector Machine</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/04/22/kernelsmv/">B&agrave;i 21: Kernel Support Vector Machine</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/04/13/softmarginsmv/">B&agrave;i 20: Soft Margin Support Vector Machine</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/04/09/smv/">B&agrave;i 19: Support Vector Machine</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/04/09/smv/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2017/04/09/smv/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/04/09/smv/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=B&agrave;i 19: Support Vector Machine&url=https://machinelearningcoban.com/2017/04/09/smv/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2017/04/09/smv/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2017/04/09/smv/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#754a2600171f10160148261c1805191055261d14071055370001011a1b06531418054e371a110c483c504745061402504745011d1c06504745141b11504745011d1a00121d015047451a135047450c1a0054504745551d010105064f5a5a1814161d1c1b10191014071b1c1b12161a17141b5b161a185a474544425a45415a454c5a0618035a">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/04/02/duality/">B&agrave;i 18: Duality</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2017/04/13/softmarginsmv/">B&agrave;i 20: Soft Margin Support Vector Machine</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

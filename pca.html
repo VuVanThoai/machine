@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>B&agrave;i 27: Principal Component Analysis (ph&#7847;n 1/2)</title><!-- <script>
+var pageProperties = {
+    
+    category: "Dimensionality-reduction",
+    
+    url: "/2017/06/15/pca/",
+    title: "B&agrave;i 27: Principal Component Analysis (ph&#7847;n 1/2)",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/2017/06/15/pca/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="B&agrave;i 27: Principal Component Analysis (ph&#7847;n 1/2)"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/2017/06/15/pca/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2017-06-15"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="Dimensionality-reduction"><meta property="article:tag" content="Dimensionality-reduction"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2017/06/15/pca/',
+'title': 'B&agrave;i 27: Principal Component Analysis (ph&#7847;n 1/2)'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="lda.html">29. Linear Discriminant Analysis</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="svd.html">26. Singular Value Decomposition</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/06/07/svd/">B&agrave;i 26: Singular Value Decomposition</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/06/21/pca2/">B&agrave;i 28: Principal Component Analysis (ph&#7847;n 2/2)</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="svd.html">&laquo; B&agrave;i 26: Singular Value Decomposition</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="pca2.html">B&agrave;i 28: Principal Component Analysis (ph&#7847;n 2/2) &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">B&agrave;i 27: Principal Component Analysis (ph&#7847;n 1/2)</h1>
+
+
+<ul class="tags"><a href="/tags#Dimensionality-reduction" class="tag">Dimensionality-reduction</a>
+   
+</ul><span class="post-date" style="color: gray; font-style: italic;">Jun 15, 2017
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <p><strong>Trong trang n&agrave;y:</strong>
+<!-- MarkdownTOC --></p>
+
+<ul><li><a href="#1-gii-thiu">1. Gi&#7899;i thi&#7879;u</a></li>
+  <li><a href="#2-mt-chut-toan">2. M&#7897;t ch&uacute;t to&aacute;n</a>
+    <ul><li><a href="#21-norm-2-ca-ma-trn">2.1. Norm 2 c&#7911;a ma tr&#7853;n</a></li>
+      <li><a href="#22-biu-din-vector-trong-cac-h-c-s-khac-nhau">2.2. Bi&#7877;u di&#7877;n vector trong c&aacute;c h&#7879; c&#417; s&#7903; kh&aacute;c nhau</a></li>
+      <li><a href="#23-trace">2.3. Trace</a></li>
+      <li><a href="#24-k-vng-va-ma-trn-hip-phng-sai">2.4. K&#7923; v&#7885;ng v&agrave; ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai</a>
+        <ul><li><a href="#241-d-liu-mt-chiu">2.4.1. D&#7919; li&#7879;u m&#7897;t chi&#7873;u</a></li>
+          <li><a href="#242-d-liu-nhiu-chiu">2.4.2. D&#7919; li&#7879;u nhi&#7873;u chi&#7873;u</a></li>
+        </ul></li>
+    </ul></li>
+  <li><a href="#3-principal-component-analysis">3. Principal Component Analysis</a></li>
+  <li><a href="#4-cac-bc-thc-hin-pca">4. C&aacute;c b&#432;&#7899;c th&#7921;c hi&#7879;n PCA</a></li>
+  <li><a href="#5-tho-lun">5. Th&#7843;o lu&#7853;n</a></li>
+  <li><a href="#6-tai-liu-tham-kho">6. T&agrave;i li&#7879;u tham kh&#7843;o</a></li>
+</ul><!-- /MarkdownTOC --><p><a name="-gioi-thieu" href="pca.html"></a></p>
+
+<h2 id="1-gi&#7899;i-thi&#7879;u">1. Gi&#7899;i thi&#7879;u</h2>
+<p>Dimensionality Reduction (gi&#7843;m chi&#7873;u d&#7919; li&#7879;u), nh&#432; &#273;&atilde; &#273;&#432;&#7907;c &#273;&#7873; c&#7853;p m&#7897;t v&agrave;i l&#7847;n trong blog, l&agrave; m&#7897;t trong nh&#7919;ng k&#7929; thu&#7853;t quan tr&#7885;ng trong Machine Learning. C&aacute;c feature vectors trong c&aacute;c b&agrave;i to&aacute;n th&#7921;c t&#7871; c&oacute; th&#7875; c&oacute; s&#7889; chi&#7873;u r&#7845;t l&#7899;n, t&#7899;i v&agrave;i ngh&igrave;n. Ngo&agrave;i ra, s&#7889; l&#432;&#7907;ng c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u c&#361;ng th&#432;&#7901;ng r&#7845;t l&#7899;n. N&#7871;u th&#7921;c hi&#7879;n l&#432;u tr&#7919; v&agrave; t&iacute;nh to&aacute;n tr&#7921;c ti&#7871;p tr&ecirc;n d&#7919; li&#7879;u c&oacute; s&#7889; chi&#7873;u cao n&agrave;y th&igrave; s&#7869; g&#7863;p kh&oacute; kh&#259;n c&#7843; v&#7873; vi&#7879;c l&#432;u tr&#7919; v&agrave; t&#7889;c &#273;&#7897; t&iacute;nh to&aacute;n. V&igrave; v&#7853;y, gi&#7843;m s&#7889; chi&#7873;u d&#7919; li&#7879;u l&agrave; m&#7897;t b&#432;&#7899;c quan tr&#7885;ng trong nhi&#7873;u b&agrave;i to&aacute;n. &#272;&acirc;y c&#361;ng &#273;&#432;&#7907;c coi l&agrave; m&#7897;t ph&#432;&#417;ng ph&aacute;p n&eacute;n d&#7919; li&#7879;u.</p>
+
+<p>Dimensionality Reduction, n&oacute;i m&#7897;t c&aacute;ch &#273;&#417;n gi&#7843;n, l&agrave; vi&#7879;c &#273;i t&igrave;m m&#7897;t h&agrave;m s&#7889;, h&agrave;m s&#7889; n&agrave;y l&#7845;y &#273;&#7847;u v&agrave;o l&agrave; m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u ban &#273;&#7847;u \(\mathbf{x} \in \mathbb{R}^D\) v&#7899;i \(D\) r&#7845;t l&#7899;n, v&agrave; t&#7841;o ra m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u m&#7899;i \(\mathbf{z} \in \mathbb{R}^K\) c&oacute; s&#7889; chi&#7873;u \(K &lt; D\).</p>
+
+<p>V&agrave; nh&#432; th&#432;&#7901;ng l&#7879;, t&ocirc;i s&#7869; tr&igrave;nh b&agrave;y m&#7897;t ph&#432;&#417;ng ph&aacute;p &#273;&#417;n gi&#7843;n nh&#7845;t trong c&aacute;c thu&#7853;t to&aacute;n Dimensionality Reduction d&#7921;a tr&ecirc;n m&#7897;t m&ocirc; h&igrave;nh tuy&#7871;n t&iacute;nh. Ph&#432;&#417;ng ph&aacute;p n&agrave;y c&oacute; t&ecirc;n l&agrave; <em>Principal Component Analysis</em> (PCA), t&#7913;c <em>Ph&acirc;n t&iacute;ch th&agrave;nh ph&#7847;n ch&iacute;nh</em>. Ph&#432;&#417;ng ph&aacute;p n&agrave;y d&#7921;a tr&ecirc;n quan s&aacute;t r&#7857;ng d&#7919; li&#7879;u th&#432;&#7901;ng kh&ocirc;ng ph&acirc;n b&#7889; ng&#7851;u nhi&ecirc;n trong kh&ocirc;ng gian m&agrave; th&#432;&#7901;ng ph&acirc;n b&#7889; g&#7847;n c&aacute;c &#273;&#432;&#7901;ng/m&#7863;t &#273;&#7863;c bi&#7879;t n&agrave;o &#273;&oacute;. PCA xem x&eacute;t m&#7897;t tr&#432;&#7901;ng h&#7907;p &#273;&#7863;c bi&#7879;t khi c&aacute;c m&#7863;t &#273;&#7863;c bi&#7879;t &#273;&oacute; c&oacute; d&#7841;ng tuy&#7871;n t&iacute;nh l&agrave; c&aacute;c kh&ocirc;ng gian con (subspace).</p>
+
+<!-- &#272;&#7875; chuy&#7875;n m&#7897;t vector c&oacute; s&#7889; chi&#7873;u l&agrave; \\(D\\) th&agrave;nh m&#7897;t vector c&oacute; s&#7889; chi&#7873;u l&agrave; \\(K\\), &#273;&#417;n gi&#7843;n nh&#7845;t l&agrave; nh&acirc;n m&#7897;t ma tr&#7853;n c&oacute; s&#7889; chi&#7873;u \\(K \times D\\) v&#7899;i vector &#273;&oacute;, nh&#432; H&igrave;nh 1 d&#432;&#7899;i &#273;&acirc;y. -->
+
+<!--
+<hr>
+<div class="imgcap">
+<img src ="/assets/27_pca/dr1.png" align = "center" width = "800">
+</div>
+
+<div class = "thecap" align = "left">H&igrave;nh 1: Matrix Projection cho Dimensionality Reduction. D&#7919; li&#7879;u ban &#273;&#7847;u l&agrave; c&aacute;c c&#7897;t c&#7911;a ma tr&acirc;n \(\mathbf{X}\). Ma tr&#7853;n \(\mathbf{P}\in \mathbb{R}^{K\times D}\) l&agrave;m nhi&#7879;m v&#7909; <em>chi&#7871;u</em> m&#7895;i c&#7897;t c&#7911;a ma tr&#7853;n d&#7919; li&#7879;u xu&#7889;ng m&#7897;t kh&ocirc;ng gian m&#7899;i c&oacute; s&#7889; chi&#7873;u &iacute;t h&#417;n. D&#7919; li&#7879;u m&#7899;i &#273;&#432;&#7907;c cho trong ma tr&#7853;n \(\mathbf{C}\).</div>
+<hr> -->
+
+<!-- Ma tr&#7853;n \\(\mathbf{P}\in\mathbb{R}^{K \times D}\\) c&oacute; t&aacute;c d&#7909;ng _chi&#7871;u_ m&#7895;i c&#7897;t \(\mathbf{x}\\) c&#7911;a ma tr&#7853;n d&#7919; li&#7879;u ban &#273;&#7847;u xu&#7889;ng m&#7897;t kh&ocirc;ng gian c&oacute; s&#7889; chi&#7873;u &iacute;t h&#417;n. Trong kh&ocirc;ng gian m&#7899;i, m&#7895;i &#273;i&#7875;m d&#7919; li&#7879;u \\(\mathbf{x}\\) &#273;&#432;&#7907;c bi&#7875;u di&#7877;n b&#7903;i m&#7897;t c&#7897;t \\(\mathbf{c}\\) trong ma tr&#7853;n d&#7919; li&#7879;u m&#7899;i \\(\mathbf{C}\\). -->
+
+<!-- Hai c&acirc;u h&#7887;i &#273;&#7863;t ra l&agrave; ma tr&#7853;n \\(\mathbf{P}\\) c&oacute; d&#7841;ng nh&#432; th&#7871; n&agrave;o sao cho l&#432;&#7907;ng th&ocirc;ng tin b&#7883; m&#7845;t &#273;i l&agrave; &iacute;t nh&#7845;t, v&agrave; s&#7889; chi&#7873;u c&#7911;a d&#7919; li&#7879;u m&#7899;i \\(K\\) c&#7847;n &#273;&#432;&#7907;c ch&#7885;n nh&#432; th&#7871; n&agrave;o? PCA s&#7869; gi&uacute;p ch&uacute;ng ta tr&#7843; l&#7901;i c&aacute;c c&acirc;u h&#7887;i n&agrave;y. -->
+
+<p>B&agrave;i vi&#7871;t n&agrave;y d&agrave;nh cho nhi&#7873;u &#273;&#7889;i t&#432;&#7907;ng &#273;&#7897;c gi&#7843; kh&aacute;c nhau:</p>
+
+<ul><li>
+    <p>N&#7871;u b&#7841;n c&#7847;n &ocirc;n t&#7853;p l&#7841;i c&aacute;c ki&#7871;n th&#7913;c v&#7873; h&#7879; &#273;&#7897;c l&#7853;p tuy&#7871;n t&iacute;nh, k&#7923; v&#7885;ng, ph&#432;&#417;ng sai, ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai, b&#7841;n c&oacute; th&#7875; &#273;&#7885;c M&#7909;c 2.</p>
+  </li>
+  <li>
+    <p>N&#7871;u b&#7841;n mu&#7889;n hi&#7875;u ngu&#7891;n g&#7889;c, &yacute; t&#432;&#7903;ng &#273;&#7913;ng sau PCA, t&#7841;i sao PCA l&#7841;i &#273;&#432;&#7907;c th&#7921;c hi&#7879;n nh&#432; v&#7853;y, b&#7841;n c&oacute; th&#7875; t&igrave;m &#273;&#432;&#7907;c &#7903; M&#7909;c 3.</p>
+  </li>
+  <li>
+    <p>N&#7871;u b&#7841;n kh&ocirc;ng mu&#7889;n &#273;i s&acirc;u v&agrave;o to&aacute;n m&agrave; ch&#7881; c&#7847;n hi&#7875;u c&aacute;c b&#432;&#7899;c th&#7921;c hi&#7879;n PCA, b&#7841;n c&oacute; th&#7875; t&#7899;i ngay M&#7909;c 4.</p>
+  </li>
+  <li>
+    <p>N&#7871;u b&#7841;n kh&ocirc;ng mu&#7889;n hi&#7875;u c&aacute;c b&#432;&#7899;c th&#7921;c hi&#7879;n m&agrave; ch&#7881; mu&#7889;n bi&#7871;t h&agrave;m s&#7889; th&#7921;c hi&#7879;n PCA, m&#7897;t v&agrave;i &#7913;ng d&#7909;ng c&#7911;a PCA, v&agrave; c&oacute; th&#7875; th&ecirc;m c&aacute;c ph&#7847;n m&#7903; r&#7897;ng c&#7911;a PCA, b&#7841;n c&oacute; th&#7875; th&#7845;y PCA ph&#7847;n 2 c&oacute; &iacute;ch, d&#7921; t&iacute;nh &#273;&#432;&#7907;c ra m&#7855;t sau &#273;&acirc;y m&#7897;t tu&#7847;n.</p>
+  </li>
+  <li>
+    <p>N&#7871;u t&ocirc;i l&agrave; c&aacute;c b&#7841;n, t&ocirc;i s&#7869; &#273;&#7885;c h&#7871;t c&#7843; b&agrave;i.</p>
+  </li>
+</ul><p>Tr&#432;&#7899;c khi &#273;i v&agrave;o chi ti&#7871;t c&#7911;a PCA, ch&uacute;ng ta c&ugrave;ng &#273;i&#7875;m l&#7841;i m&#7897;t ch&uacute;t v&#7873; &#272;&#7841;i s&#7889; tuy&#7871;n t&iacute;nh v&agrave; Th&#7889;ng k&ecirc;.</p>
+
+<p><a name="-mot-chut-toan" href="pca.html"></a></p>
+
+<h2 id="2-m&#7897;t-ch&uacute;t-to&aacute;n">2. M&#7897;t ch&uacute;t to&aacute;n</h2>
+
+<p><a name="-norm--cua-ma-tran" href="pca.html"></a></p>
+
+<h3 id="21-norm-2-c&#7911;a-ma-tr&#7853;n">2.1. Norm 2 c&#7911;a ma tr&#7853;n</h3>
+<p>Ch&uacute;ng ta v&#7851;n th&#432;&#7901;ng nh&#7855;c nhi&#7873;u &#273;&#7871;n <a href="https://machinelearningcoban.com/math/#-norms-chuan">norm cho vector</a> nh&#432;ng ch&#432;a th&#7921;c s&#7921; l&agrave;m vi&#7879;c nhi&#7873;u v&#7899;i norm c&#7911;a ma tr&#7853;n (ngo&agrave;i <a href="https://machinelearningcoban.com/math/#chuan-cua-ma-tran">Frobenius norm</a>). Trong m&#7909;c n&agrave;y, ch&uacute;ng ta s&#7869; l&agrave;m quen v&#7899;i 1 l&#7899;p c&aacute;c norm cho ma tr&#7853;n &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a d&#7921;a tr&ecirc;n norm c&#7911;a vector. L&#7899;p c&aacute;c norms n&agrave;y c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Induced Norms</em>.</p>
+
+<p>Gi&#7843; s&#7917; h&agrave;m s&#7889; \(||\mathbf{x}||_{\alpha}\) l&agrave; m&#7897;t norm b&#7845;t k&#7923; c&#7911;a vector \(\mathbf{x}\). &#7912;ng v&#7899;i norm n&agrave;y, &#273;&#7883;nh ngh&#297;a norm t&#432;&#417;ng &#7913;ng cho ma tr&#7853;n \(\mathbf{A}\):
+\[
+||\mathbf{A}||_{\alpha} = \max_{\mathbf{x}} \frac{||\mathbf{Ax}||_{\alpha}}{||\mathbf{x}||_{\alpha}}
+\]</p>
+
+<p>ch&uacute; &yacute; r&#7857;ng ma tr&#7853;n \(\mathbf{A}\) c&oacute; th&#7875; kh&ocirc;ng vu&ocirc;ng v&agrave; s&#7889; c&#7897;t c&#7911;a n&oacute; b&#7857;ng v&#7899;i s&#7889; chi&#7873;u c&#7911;a \(\mathbf{x}\). Nh&#432; v&#7853;y, b&#7843;n th&acirc;n vi&#7879;c t&iacute;nh to&aacute;n norm c&#7911;a ma tr&#7853;n l&agrave; vi&#7879;c gi&#7843;i m&#7897;t b&agrave;i to&aacute;n t&#7889;i &#432;u. Ch&uacute; &yacute; r&#7857;ng h&agrave;m t&#7889;i &#432;u c&oacute; c&#7843; t&#7917; s&#7889; v&agrave; m&#7851;u s&#7889; l&agrave; c&aacute;c norm tr&ecirc;n vectors.</p>
+
+<p>Ch&uacute;ng ta s&#7869; quan t&acirc;m nhi&#7873;u h&#417;n t&#7899;i norm 2. Norm 2 c&#7911;a ma tr&#7853;n &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a l&agrave;:
+\[
+||\mathbf{A}||_2 = \max_{\mathbf{x}} \frac{||\mathbf{Ax}||_2}{||\mathbf{x}||_2} ~~~ (1)
+\]</p>
+
+<p>Nh&#7853;n th&#7845;y r&#7857;ng n&#7871;u \(\mathbf{x}\) l&agrave; nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n t&#7889;i &#432;u \((1)\) th&igrave; \(k\mathbf{x}\) c&#361;ng l&agrave; nghi&#7879;m v&#7899;i \(k\) l&agrave; m&#7897;t s&#7889; th&#7921;c kh&aacute;c kh&ocirc;ng b&#7845;t k&#7923;. Kh&ocirc;ng m&#7845;t t&iacute;nh t&#7893;ng qu&aacute;t, ta c&oacute; th&#7875; gi&#7843; s&#7917; m&#7851;u s&#7889; b&#7857;ng 1. Khi &#273;&oacute;, b&agrave;i to&aacute;n t&#7889;i &#432;u \((1)\) c&oacute; th&#7875; &#273;&#432;&#7907;c vi&#7871;t d&#432;&#7899;i d&#7841;ng:
+\[
+||\mathbf{A}||_2 = \max_{||\mathbf{x}||_2 = 1} ||\mathbf{Ax}||_2 ~~~ (2)
+\]
+N&oacute;i c&aacute;ch kh&aacute;c, ta c&#7847;n &#273;i t&igrave;m \(\mathbf{x}\) sao cho:
+\[
+\begin{eqnarray}
+\mathbf{x} &amp;=&amp; \text{argmax}_{\mathbf{x}} ||\mathbf{Ax}||_2^2 &amp; \<br>
+\text{s.t.: } &amp;&amp; ||\mathbf{x}||_2^2 = 1 &amp; (3)
+\end{eqnarray}
+\]
+&#7902; &#273;&acirc;y, c&aacute;c norm 2 &#273;&atilde; &#273;&#432;&#7907;c b&igrave;nh ph&#432;&#417;ng l&ecirc;n &#273;&#7875; tr&aacute;nh d&#7845;u c&#259;n b&#7853;c hai. B&agrave;i to&aacute;n \((3)\) c&oacute; th&#7875; &#273;&#432;&#7907;c gi&#7843;i b&#7857;ng <a href="/2017/04/02/duality/#--phuong-phap-nhan-tu-lagrange">Ph&#432;&#417;ng ph&aacute;p nh&acirc;n t&#7917; Lagrange</a> v&igrave; r&agrave;ng bu&#7897;c l&agrave; m&#7897;t ph&#432;&#417;ng tr&igrave;nh.</p>
+
+<p>Lagrangian c&#7911;a B&agrave;i to&aacute;n \((3)\) l&agrave;:
+\[
+\mathcal{L}(\mathbf{x}, \lambda) = ||\mathbf{Ax}||_2^2 + \lambda (1 - ||\mathbf{x}||_2^2)
+\]</p>
+
+<p>Nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n \((3)\) s&#7869; tho&#7843; m&atilde;n h&#7879; ph&#432;&#417;ng tr&igrave;nh:
+\[
+\begin{eqnarray}
+\frac{\partial \mathcal{L}}{\partial \mathbf{x}} &amp;=&amp; 2\mathbf{A}^T\mathbf{Ax} - 2\lambda \mathbf{x} = \mathbf{0} &amp; (4)\<br>
+\frac{\partial \mathcal{L}}{\partial \lambda} &amp;=&amp; 1 - ||\mathbf{x}||_2^2 = 0 &amp; (5)
+\end{eqnarray}
+\]</p>
+
+<p>T&#7915; \((4)\) ta c&oacute;:
+\[
+\mathbf{A}^T\mathbf{Ax} = \lambda\mathbf{x} ~~~~ (6)
+\]
+&#272;i&#7873;u n&agrave;y suy ra r&#7857;ng \(\lambda\) l&agrave; m&#7897;t tr&#7883; ri&ecirc;ng c&#7911;a \(\mathbf{A}^T\mathbf{A}\) v&agrave; \(\mathbf{x}\) l&agrave; 1 vector ri&ecirc;ng &#7913;ng v&#7899;i tr&#7883; ri&ecirc;ng &#273;&oacute;. Ti&#7871;p t&#7909;c nh&acirc;n hai v&#7871; c&#7911;a \((6)\) v&#7899;i \(\mathbf{x}^T\) v&agrave;o b&ecirc;n tr&aacute;i, ta c&oacute;:
+\[
+\mathbf{x}^T\mathbf{A}^T\mathbf{Ax} = \lambda \mathbf{x}^T\mathbf{x} = \lambda
+\]
+Nh&#7853;n th&#7845;y r&#7857;ng v&#7871; tr&aacute;i ch&iacute;nh l&agrave; \(||\mathbf{Ax}||_2^2\) ch&iacute;nh l&agrave; h&agrave;m m&#7909;c ti&ecirc;u trong \((3)\). V&#7853;y h&agrave;m m&#7909;c ti&ecirc;u &#273;&#7841;t gi&aacute; tr&#7883; l&#7899;n nh&#7845;t khi \(\lambda\) &#273;&#7841;t gi&aacute; tr&#7883; l&#7899;n nh&#7845;t. N&oacute;i c&aacute;ch kh&aacute;c, \(\lambda\) ch&iacute;nh l&agrave; tr&#7883; ri&ecirc;ng l&#7899;n nh&#7845;t c&#7911;a \(\mathbf{A}^T\mathbf{A}\) hay ch&iacute;nh l&agrave; <a href="/2017/06/07/svd/#-nguon-goc-ten-goi-singular-value-decomposition">singular value</a> l&#7899;n nh&#7845;t c&#7911;a ma tr&#7853;n \(\mathbf{A}\).</p>
+
+<p>Nh&#432; v&#7853;y, norm 2 c&#7911;a m&#7897;t ma tr&#7853;n ch&iacute;nh l&agrave; singular value l&#7899;n nh&#7845;t c&#7911;a ma tr&#7853;n &#273;&oacute;. V&agrave; nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n \((3)\) ch&iacute;nh m&#7897;t l&agrave; <em>right-singular vector</em> &#7913;ng v&#7899;i singular value &#273;&oacute;.</p>
+
+<p>V&#7899;i l&yacute; lu&#7853;n t&#432;&#417;ng t&#7921;, ch&uacute;ng ta c&oacute; th&#7875; suy ra r&#7857;ng b&agrave;i to&aacute;n:
+\[
+\min_{||\mathbf{x}||_2 =1} \mathbf{x}^T\mathbf{A}^T\mathbf{A}\mathbf{x}
+\]</p>
+
+<p>c&oacute; nghi&#7879;m l&agrave; vector ri&ecirc;ng &#7913;ng v&#7899;i tr&#7883; ri&ecirc;ng nh&#7887; nh&#7845;t c&#7911;a \(\mathbf{A}^T\mathbf{A}\). Khi &#273;&oacute;, h&agrave;m s&#7889; &#273;&#7841;t gi&aacute; tr&#7883; nh&#7887; nh&#7845;t b&#7857;ng ch&iacute;nh tr&#7883; ri&ecirc;ng nh&#7887; nh&#7845;t n&agrave;y.</p>
+
+<p><a name="ky-vong-va-ma-tran-hiep-phuong-sai" href="pca.html"></a></p>
+
+<p><a name="-bieu-dien-vector-trong-cac-he-co-so-khac-nhau" href="pca.html"></a></p>
+
+<h3 id="22-bi&#7877;u-di&#7877;n-vector-trong-c&aacute;c-h&#7879;-c&#417;-s&#7903;-kh&aacute;c-nhau">2.2. Bi&#7877;u di&#7877;n vector trong c&aacute;c h&#7879; c&#417; s&#7903; kh&aacute;c nhau</h3>
+
+<p>Trong kh&ocirc;ng gian \(D\) chi&#7873;u , to&#7841; &#273;&#7897; c&#7911;a m&#7895;i &#273;i&#7875;m &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh d&#7921;a tr&ecirc;n m&#7897;t h&#7879; to&#7841; &#273;&#7897; n&agrave;o &#273;&oacute;. &#7902; c&aacute;c h&#7879; to&#7841; &#273;&#7897; kh&aacute;c nhau, hi&#7875;n nhi&ecirc;n l&agrave; to&#7841; &#273;&#7897; c&#7911;a m&#7895;i &#273;i&#7875;m c&#361;ng kh&aacute;c nhau.</p>
+
+<p>T&#7853;p h&#7907;p c&aacute;c vector \(\mathbf{e}_1, \dots, \mathbf{e}_D\) m&agrave; m&#7895;i vector \(\mathbf{e}_d\) c&oacute; &#273;&uacute;ng 1 ph&#7847;n t&#7917; kh&aacute;c 0 &#7903; th&agrave;nh ph&#7847;n th&#7913; \(d\) v&agrave; ph&#7847;n t&#7917; &#273;&oacute; b&#7857;ng 1, &#273;&#432;&#7907;c g&#7885;i l&agrave; h&#7879; c&#417; s&#7903; &#273;&#417;n v&#7883; (ho&#7863;c h&#7879; &#273;&#417;n v&#7883;) trong kh&ocirc;ng gian \(D\) chi&#7873;u. N&#7871;u x&#7871;p c&aacute;c vector \(\mathbf{e}_d, d = 1, 2, \dots, D\) theo &#273;&uacute;ng th&#7913; t&#7921; &#273;&oacute;, ta s&#7869; &#273;&#432;&#7907;c ma tr&#7853;n &#273;&#417;n v&#7883; \(D\) chi&#7873;u.</p>
+
+<p>M&#7895;i vector c&#7897;t \(\mathbf{x} = [x_1, x_2, \dots, x_D] \in \mathbb{R}^D\), bi&#7875;u di&#7877;n c&#7911;a n&oacute; trong h&#7879; &#273;&#417;n v&#7883; l&agrave;:</p>
+
+<p>\[
+\mathbf{x} = x_1 \mathbf{e}_1 + x_2 \mathbf{e}_2 + \dots + x_D\mathbf{e}_D
+\]</p>
+
+<p>Gi&#7843; s&#7917; c&oacute; m&#7897;t h&#7879; c&#417; s&#7903; kh&aacute;c \(\mathbf{u}_1, \mathbf{u}_2, \dots, \mathbf{u}_D\) (c&aacute;c vector n&agrave;y &#273;&#7897;c l&#7853;p tuy&#7871;n t&iacute;nh), v&#7853;y th&igrave; bi&#7875;u di&#7877;n c&#7911;a vector \(\mathbf{x}\) trong h&#7879; c&#417; s&#7903; m&#7899;i n&agrave;y c&oacute; d&#7841;ng:</p>
+
+<p>\[
+\mathbf{x} = y_1 \mathbf{u}_1 + y_2 \mathbf{u}_2 + \dots + y_D\mathbf{u}_D  = \mathbf{U}\mathbf{y}
+\]</p>
+
+<p>\(\mathbf{U}\) l&agrave; ma tr&#7853;n m&agrave; c&#7897;t th&#7913; \(d\) c&#7911;a n&oacute; ch&iacute;nh l&agrave; vector \(\mathbf{u}_d\). L&uacute;c n&agrave;y, vector \(\mathbf{y}\) ch&iacute;nh l&agrave; bi&#7875;u di&#7877;n c&#7911;a \(\mathbf{x}\) trong h&#7879; c&#417; s&#7903; m&#7899;i. B&#7897; c&aacute;c s&#7889; \(y_d, d = 1, 2, \dots, D\) l&agrave; duy nh&#7845;t v&igrave; \(\mathbf{y}\) c&oacute; th&#7875; t&iacute;nh &#273;&#432;&#7907;c b&#7857;ng:
+\[
+\mathbf{y} = \mathbf{U}^{-1} \mathbf{x} ~~~ (7)
+\]
+v&#7899;i ch&uacute; &yacute; r&#7857;ng \(\mathbf{U}\) l&agrave; ma tr&#7853;n kh&#7843; ngh&#7883;ch v&igrave; c&aacute;c c&#7897;t c&#7911;a n&oacute; &#273;&#7897;c l&#7853;p tuy&#7871;n t&iacute;nh.</p>
+
+<p>Trong c&aacute;c ma tr&#7853;n &#273;&oacute;ng vai tr&ograve; nh&#432; h&#7879; c&#417; s&#7903; \(\mathbf{U}\), <a href="/2017/06/07/svd/#-he-truc-giao-va-truc-chuan">c&aacute;c ma tr&#7853;n tr&#7921;c giao</a>, t&#7913;c \(\mathbf{U}^T\mathbf{U} = \mathbf{I}\), &#273;&#432;&#7907;c quan t&acirc;m nhi&#7873;u h&#417;n v&igrave; ngh&#7883;ch &#273;&#7843;o c&#7911;a ch&uacute;ng ch&iacute;nh l&agrave; chuy&#7875;n v&#7883; c&#7911;a ch&uacute;ng:</p>
+
+<p>\[
+\mathbf{U}^{-1} = \mathbf{U}^T
+\]
+Khi &#273;&oacute;, \(\mathbf{y}\) trong \((7)\) c&oacute; th&#7875; &#273;&#432;&#7907;c t&iacute;nh m&#7897;t c&aacute;ch nhanh ch&oacute;ng:</p>
+
+<p>\[
+\mathbf{y} = \mathbf{U}^{T} \mathbf{x}
+\]
+t&#7915; &#273;&oacute; suy ra: \(y_i = \mathbf{x}^T \mathbf{u}_i = \mathbf{u}_i^T\mathbf{x}, i= 1, 2, \dots, D\).</p>
+
+<p>C&oacute; th&#7875; nh&#7853;n th&#7845;y r&#7857;ng vector \(\mathbf{0}\) &#273;&#432;&#7907;c bi&#7875;u di&#7877;n nh&#432; nhau trong m&#7885;i h&#7879; c&#417; s&#7903;.
+H&igrave;nh 1 d&#432;&#7899;i &#273;&acirc;y l&agrave; 1 v&iacute; d&#7909; v&#7873; vi&#7879;c chuy&#7875;n h&#7879; c&#417; s&#7903;:</p>
+
+<hr><div>
+<table width="100%" style="border: 0px solid white"><tr><td width="40%" style="border: 0px solid white" align="center">
+        <img style="display:block;" width="100%" src="images/27_pca-changebasis.png"></td>
+        <td width="40%" style="border: 0px solid white" align="justify">
+        H&igrave;nh 1: Chuy&#7875;n &#273;&#7893;i to&#7841; &#273;&#7897; trong c&aacute;c h&#7879; c&#417; s&#7903; kh&aacute;c nhau.
+
+        </td>
+    </tr></table></div>
+<hr><p>Vi&#7879;c chuy&#7875;n &#273;&#7893;i h&#7879; c&#417; s&#7903; s&#7917; d&#7909;ng ma tr&#7853;n tr&#7921;c giao c&oacute; th&#7875; &#273;&#432;&#7907;c coi nh&#432; m&#7897;t ph&eacute;p xoay tr&#7909;c to&#7841; &#273;&#7897;. Nh&igrave;n theo m&#7897;t c&aacute;ch kh&aacute;c, &#273;&acirc;y c&#361;ng ch&iacute;nh l&agrave; m&#7897;t ph&eacute;p xoay vector d&#7919; li&#7879;u theo chi&#7873;u ng&#432;&#7907;c l&#7841;i.
+<a name="-trace" href="pca.html"></a></p>
+<h3 id="23-trace">2.3. Trace</h3>
+
+<p>H&agrave;m s&#7889; trace x&aacute;c &#273;&#7883;nh tr&ecirc;n t&#7853;p c&aacute;c ma tr&#7853;n vu&ocirc;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng r&#7845;t nhi&#7873;u trong t&#7889;i &#432;u v&igrave; nh&#7919;ng t&iacute;nh ch&#7845;t &#273;&#7865;p c&#7911;a n&oacute;. H&agrave;m trace tr&#7843; v&#7873; t&#7893;ng c&aacute;c ph&#7847;n t&#7917; tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o c&#7911;a m&#7897;t ma tr&#7853;n vu&ocirc;ng.</p>
+
+<p>C&aacute;c t&iacute;nh ch&#7845;t quan tr&#7885;ng c&#7911;a h&agrave;m trace, v&#7899;i gi&#7843; s&#7917; r&#7857;ng c&aacute;c ma tr&#7853;n trong h&agrave;m trace l&agrave; vu&ocirc;ng v&agrave; c&aacute;c ph&eacute;p nh&acirc;n ma tr&#7853;n th&#7921;c hi&#7879;n &#273;&#432;&#7907;c:</p>
+
+<ul><li>
+    <p>\(\text{trace}(\mathbf{A}) = \text{trace}(\mathbf{A}^T)\)</p>
+  </li>
+  <li>
+    <p>\(\text{trace}(k\mathbf{A}) = k\text{trace}(\mathbf{A})\) v&#7899;i \(k\) l&agrave; m&#7897;t s&#7889; b&#7845;t k&#7923;.</p>
+  </li>
+  <li>
+    <p>\(\text{trace}(\mathbf{AB}) = \text{trace}(\mathbf{BA})\)</p>
+  </li>
+  <li>
+    <p>\(||\mathbf{A}||_F^2 = \text{trace}(\mathbf{A}^T\mathbf{A}) = \text{trace}(\mathbf{A}\mathbf{A}^T)\) v&#7899;i \(\mathbf{A}\) l&agrave; ma tr&#7853;n b&#7845;t k&#7923;, c&oacute; th&#7875; kh&ocirc;ng vu&ocirc;ng.</p>
+  </li>
+  <li>
+    <p>\(\text{trace}(\mathbf{A}) = \sum_{i = 1}^D \lambda_i \) v&#7899;i \(\mathbf{A}\) l&agrave; m&#7897;t ma tr&#7853;n vu&ocirc;ng v&agrave; \(\lambda_i, i = 1, 2, \dots, N\) l&agrave; to&agrave;n b&#7897; c&aacute;c tr&#7883; ri&ecirc;ng c&#7911;a n&oacute;, c&oacute; th&#7875; ph&#7913;c ho&#7863;c l&#7863;p. Vi&#7879;c ch&#7913;ng minh t&iacute;nh ch&#7845;t n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c d&#7921;a tr&ecirc;n ma tr&#7853;n &#273;&#7863;c tr&#432;ng c&#7911;a \(\mathbf{A}\) v&agrave; &#273;&#7883;nh l&yacute; Vi&egrave;te. T&ocirc;i xin &#273;&#432;&#7907;c b&#7887; qua.</p>
+  </li>
+</ul><p><a name="-ky-vong-va-ma-tran-hiep-phuong-sai" href="pca.html"></a></p>
+
+<h3 id="24-k&#7923;-v&#7885;ng-v&agrave;-ma-tr&#7853;n-hi&#7879;p-ph&#432;&#417;ng-sai">2.4. K&#7923; v&#7885;ng v&agrave; ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai</h3>
+<p><a name="-du-lieu-mot-chieu" href="pca.html"></a></p>
+
+<h4 id="241-d&#7919;-li&#7879;u-m&#7897;t-chi&#7873;u">2.4.1. D&#7919; li&#7879;u m&#7897;t chi&#7873;u</h4>
+
+<p>Cho \(N\) gi&aacute; tr&#7883; \(x_1, x_2, \dots, x_N\). <em>K&#7923; v&#7885;ng</em> v&agrave; <em>ph&#432;&#417;ng sai</em> c&#7911;a b&#7897; d&#7919; li&#7879;u n&agrave;y &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a l&agrave;:</p>
+
+<p>\[
+\begin{eqnarray}
+\bar{x} &amp;=&amp; \frac{1}{N}\sum_{n=1}^N x_n = \frac{1}{N}\mathbf{X1}\<br>
+\sigma^2 &amp;=&amp; \frac{1}{N} \sum_{n=1}^N (x_n - \bar{x})^2
+\end{eqnarray}
+\]
+v&#7899;i \(\mathbf{1} \in \mathbb{R}^N\) l&agrave; vector c&#7897;t ch&#7913;a to&agrave;n ph&#7847;n t&#7917; 1.
+K&#7923; v&#7885;ng &#273;&#417;n gi&#7843;n l&agrave; trung b&igrave;nh c&#7897;ng c&#7911;a to&agrave;n b&#7897; c&aacute;c gi&aacute; tr&#7883;. Ph&#432;&#417;ng sai l&agrave; trung b&igrave;nh c&#7897;ng c&#7911;a b&igrave;nh ph&#432;&#417;ng kho&#7843;ng c&aacute;ch t&#7915; m&#7895;i &#273;i&#7875;m t&#7899;i k&#7923; v&#7885;ng. Ph&#432;&#417;ng sai c&agrave;ng nh&#7887; th&igrave; c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u c&agrave;ng g&#7847;n v&#7899;i k&#7923; v&#7885;ng, t&#7913;c c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u c&agrave;ng gi&#7889;ng nhau. Ph&#432;&#417;ng sai c&agrave;ng l&#7899;n th&igrave; ta n&oacute;i d&#7919; li&#7879;u c&agrave;ng c&oacute; t&iacute;nh ph&acirc;n t&aacute;n. V&iacute; d&#7909; v&#7873; k&#7923; v&#7885;ng v&agrave; ph&#432;&#417;ng sai c&#7911;a d&#7919; li&#7879;u m&#7897;t chi&#7873;u c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7845;y trong H&igrave;nh 2a).</p>
+
+<p>C&#259;n b&#7853;c hai c&#7911;a ph&#432;&#417;ng sai, \(\sigma\) c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; &#273;&#7897; l&#7879;ch chu&#7849;n (standard deviation) c&#7911;a d&#7919; li&#7879;u.</p>
+
+<p><a name="-du-lieu-nhieu-chieu" href="pca.html"></a></p>
+
+<h4 id="242-d&#7919;-li&#7879;u-nhi&#7873;u-chi&#7873;u">2.4.2. D&#7919; li&#7879;u nhi&#7873;u chi&#7873;u</h4>
+
+<p>Cho \(N\) &#273;i&#7875;m d&#7919; li&#7879;u &#273;&#432;&#7907;c bi&#7875;u di&#7877;n b&#7903;i c&aacute;c vector c&#7897;t \(\mathbf{x}_1, \dots, \mathbf{x}_N\), khi &#273;&oacute;, <em>vector k&#7923; v&#7885;ng</em> v&agrave; <em>ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai</em> c&#7911;a to&agrave;n b&#7897; d&#7919; li&#7879;u &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a l&agrave;:</p>
+
+<p>\[
+\begin{eqnarray}
+\bar{\mathbf{x}} &amp;=&amp; \frac{1}{N} \sum_{n=1}^N \mathbf{x}_n \<br>
+\mathbf{S} &amp;=&amp;  \frac{1}{N}\sum_{n=1}^N (\mathbf{x}_n - \bar{\mathbf{x}})(\mathbf{x}_n - \bar{\mathbf{x}})^T = \frac{1}{N}\hat{\mathbf{X}}\hat{\mathbf{X}}^T
+\end{eqnarray}
+\]
+Trong &#273;&oacute; \(\hat{\mathbf{X}}\) &#273;&#432;&#7907;c t&#7841;o b&#7857;ng c&aacute;ch tr&#7915; m&#7895;i c&#7897;t c&#7911;a \(\mathbf{X}\) &#273;i \(\bar{\mathbf{x}}\):
+\[
+\hat{\mathbf{x}}_n = \mathbf{x}_n - \bar{\mathbf{x}}
+\]</p>
+
+<p>C&aacute;c c&ocirc;ng th&#7913;c n&agrave;y kh&aacute; t&#432;&#417;ng &#273;&#7891;ng v&#7899;i c&aacute;c c&ocirc;ng th&#7913;c cho d&#7919; li&#7879;u 1 chi&#7873;u ph&iacute;a tr&ecirc;n. C&oacute; m&#7897;t v&agrave;i &#273;i&#7875;m l&#432;u &yacute;:</p>
+
+<ul><li>
+    <p>Ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai l&agrave; m&#7897;t ma tr&#7853;n &#273;&#7889;i x&#7913;ng, h&#417;n n&#7919;a, n&oacute; l&agrave; m&#7897;t ma tr&#7853;n <a href="https://machinelearningcoban.com/2017/03/12/convexity/#positive-semidefinite">n&#7917;a x&aacute;c &#273;&#7883;nh d&#432;&#417;ng</a>.</p>
+  </li>
+  <li>
+    <p>M&#7885;i ph&#7847;n t&#7917; tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o c&#7911;a ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai l&agrave; c&aacute;c s&#7889; kh&ocirc;ng &acirc;m. Ch&uacute;ng c&#361;ng ch&iacute;nh l&agrave; ph&#432;&#417;ng sai c&#7911;a t&#7915;ng chi&#7873;u c&#7911;a d&#7919; li&#7879;u.</p>
+  </li>
+  <li>
+    <p>C&aacute;c ph&#7847;n t&#7917; ngo&agrave;i &#273;&#432;&#7901;ng ch&eacute;o \(s_{ij}, i \neq j\) th&#7875; hi&#7879;n s&#7921; t&#432;&#417;ng quan gi&#7919;a th&agrave;nh ph&#7847;n th&#7913; \(i\) v&agrave; th&#7913; \(j\) c&#7911;a d&#7919; li&#7879;u, c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; hi&#7879;p ph&#432;&#417;ng sai. Gi&aacute; tr&#7883; n&agrave;y c&oacute; th&#7875; d&#432;&#417;ng, &acirc;m ho&#7863;c b&#7857;ng 0. Khi n&oacute; b&#7857;ng 0, ta n&oacute;i r&#7857;ng hai th&agrave;nh ph&#7847;n \(i, j\) trong d&#7919; li&#7879;u l&agrave; kh&ocirc;ng t&#432;&#417;ng quan (uncorrelated).</p>
+  </li>
+  <li>
+    <p>N&#7871;u ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai l&agrave; ma tr&#7853;n &#273;&#432;&#7901;ng ch&eacute;o, ta c&oacute; d&#7919; li&#7879;u ho&agrave;n to&agrave;n kh&ocirc;ng t&#432;&#417;ng quan gi&#7919;a c&aacute;c chi&#7873;u.</p>
+  </li>
+</ul><p>V&iacute; d&#7909; v&#7873; d&#7919; li&#7879;u kh&ocirc;ng t&#432;&#417;ng quan v&agrave; t&#432;&#417;ng quan &#273;&#432;&#7907;c cho trong H&igrave;nh 2bc).</p>
+<hr><div>
+<table width="100%" style="border: 0px solid white"><tr><td width="40%" style="border: 0px solid white" align="center">
+        <img style="display:block;" width="100%" src="images/27_pca-var_1d.png"><br>
+        a)
+         </td>
+         <td width="40%" style="border: 0px solid white" align="center">
+         <img style="display:block;" width="100%" src="images/27_pca-pca_diagvar.png"><br>
+         b)
+          </td>
+    </tr><tr><td width="40%" style="border: 0px solid white" align="center">
+        <img style="display:block;" width="100%" src="images/27_pca-pca_var0.png"><br>
+        c)
+         </td>
+         <td width="40%" style="border: 0px solid white" align="justify">
+        H&igrave;nh 2: V&iacute; d&#7909; v&#7873; k&#7923; v&#7885;ng v&agrave; ph&#432;&#417;ng sai. a) Trong kh&ocirc;ng gian 1 chi&#7873;u. b) Kh&ocirc;ng gian 2 chi&#7873;u m&agrave; hai chi&#7873;u kh&ocirc;ng t&#432;&#417;ng quan. Trong tr&#432;&#7901;ng h&#7907;p n&agrave;y, ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai l&agrave; ma tr&#7853;n &#273;&#432;&#7901;ng ch&eacute;o v&#7899;i hai ph&#7847;n t&#7917; tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o  l&agrave; \(\sigma_1, \sigma_2\), &#273;&acirc;y c&#361;ng ch&iacute;nh l&agrave; hai tr&#7883; ri&ecirc;ng c&#7911;a ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai v&agrave; l&agrave; ph&#432;&#417;ng sai c&#7911;a m&#7895;i chi&#7873;u d&#7919; li&#7879;u. c) D&#7919; li&#7879;u trong kh&ocirc;ng gian hai chi&#7873;u c&oacute; t&#432;&#417;ng quan. Theo m&#7895;i chi&#7873;u, ta c&oacute; th&#7875; t&iacute;nh &#273;&#432;&#7907;c k&#7923; v&#7885;ng v&agrave; ph&#432;&#417;ng sai. Ph&#432;&#417;ng sai c&agrave;ng l&#7899;n th&igrave; d&#7919; li&#7879;u trong chi&#7873;u &#273;&oacute; c&agrave;ng ph&acirc;n t&aacute;n. Trong v&iacute; d&#7909; n&agrave;y, d&#7919; li&#7879;u theo chi&#7873;u th&#7913; hai ph&acirc;n t&aacute;n nhi&#7873;u h&#417;n so so v&#7899;i chi&#7873;u th&#7913; nh&#7845;t.
+          </td>
+    </tr></table></div>
+<hr><p><a name="-principal-component-analysis" href="pca.html"></a></p>
+
+<h2 id="3-principal-component-analysis">3. Principal Component Analysis</h2>
+<p>C&aacute;ch &#273;&#417;n gi&#7843;n nh&#7845;t &#273;&#7875; gi&#7843;m chi&#7873;u d&#7919; li&#7879;u t&#7915; \(D\) v&#7873; \(K &lt; D\) l&agrave; ch&#7881; gi&#7919; l&#7841;i \(K\) ph&#7847;n t&#7917; <em>quan tr&#7885;ng nh&#7845;t</em>. Tuy nhi&ecirc;n, vi&#7879;c l&agrave;m n&agrave;y ch&#7855;c ch&#7855;n ch&#432;a ph&#7843;i t&#7889;t nh&#7845;t v&igrave; ch&uacute;ng ta ch&#432;a bi&#7871;t x&aacute;c &#273;&#7883;nh th&agrave;nh ph&#7847;n n&agrave;o l&agrave; quan tr&#7885;ng h&#417;n. Ho&#7863;c trong tr&#432;&#7901;ng h&#7907;p x&#7845;u nh&#7845;t, l&#432;&#7907;ng th&ocirc;ng tin m&agrave; m&#7895;i th&agrave;nh ph&#7847;n mang l&agrave; nh&#432; nhau, b&#7887; &#273;i th&agrave;nh ph&#7847;n n&agrave;o c&#361;ng d&#7851;n &#273;&#7871;n vi&#7879;c m&#7845;t m&#7897;t l&#432;&#7907;ng th&ocirc;ng tin l&#7899;n.</p>
+
+<p>Tuy nhi&ecirc;n, n&#7871;u ch&uacute;ng ta c&oacute; th&#7875; bi&#7875;u di&#7877;n c&aacute;c vector d&#7919; li&#7879;u ban &#273;&#7847;u trong m&#7897;t h&#7879; c&#417; s&#7903; m&#7899;i m&agrave; trong h&#7879; c&#417; s&#7903; m&#7899;i &#273;&oacute;, <em>t&#7847;m quan tr&#7885;ng</em> gi&#7919;a c&aacute;c th&agrave;nh ph&#7847;n l&agrave; kh&aacute;c nhau r&otilde; r&#7879;t, th&igrave; ch&uacute;ng ta c&oacute; th&#7875; b&#7887; qua nh&#7919;ng th&agrave;nh ph&#7847;n &iacute;t quan tr&#7885;ng nh&#7845;t.</p>
+
+<p>L&#7845;y m&#7897;t v&iacute; d&#7909; v&#7873; vi&#7879;c c&oacute; hai camera &#273;&#7863;t d&ugrave;ng &#273;&#7875; ch&#7909;p m&#7897;t con ng&#432;&#7901;i, m&#7897;t camera &#273;&#7863;t ph&iacute;a tr&#432;&#7899;c ng&#432;&#7901;i v&agrave; m&#7897;t camera &#273;&#7863;t tr&ecirc;n &#273;&#7847;u. R&otilde; r&agrave;ng l&agrave; h&igrave;nh &#7843;nh thu &#273;&#432;&#7907;c t&#7915; camera &#273;&#7863;t ph&iacute;a tr&#432;&#7899;c ng&#432;&#7901;i mang nhi&#7873;u th&ocirc;ng tin h&#417;n so v&#7899;i h&igrave;nh &#7843;nh nh&igrave;n t&#7915; ph&iacute;a tr&ecirc;n &#273;&#7847;u. V&igrave; v&#7853;y, b&#7913;c &#7843;nh ch&#7909;p t&#7915; ph&iacute;a tr&ecirc;n &#273;&#7847;u c&oacute; th&#7875; &#273;&#432;&#7907;c b&#7887; qua m&agrave; kh&ocirc;ng c&oacute; qu&aacute; nhi&#7873;u th&ocirc;ng tin v&#7873; h&igrave;nh d&aacute;ng c&#7911;a ng&#432;&#7901;i &#273;&oacute; b&#7883; m&#7845;t.</p>
+
+<p>PCA ch&iacute;nh l&agrave; ph&#432;&#417;ng ph&aacute;p &#273;i t&igrave;m m&#7897;t h&#7879; c&#417; s&#7903; m&#7899;i sao cho th&ocirc;ng tin c&#7911;a d&#7919; li&#7879;u ch&#7911; y&#7871;u t&#7853;p trung &#7903; m&#7897;t v&agrave;i to&#7841; &#273;&#7897;, ph&#7847;n c&ograve;n l&#7841;i ch&#7881; mang m&#7897;t l&#432;&#7907;ng nh&#7887; th&ocirc;ng tin. V&agrave; &#273;&#7875; cho &#273;&#417;n gi&#7843;n trong t&iacute;nh to&aacute;n, PCA s&#7869; t&igrave;m m&#7897;t <a href="https://machinelearningcoban.com/2017/06/07/svd/#-he-truc-giao-va-truc-chuan">h&#7879; tr&#7921;c chu&#7849;n</a> &#273;&#7875; l&agrave;m c&#417; s&#7903; m&#7899;i.</p>
+
+<p>Gi&#7843; s&#7917; h&#7879; c&#417; s&#7903; tr&#7921;c chu&#7849;n m&#7899;i l&agrave; \(\mathbf{U}\) v&agrave; ch&uacute;ng ta mu&#7889;n gi&#7919; l&#7841;i \(K\) to&#7841; &#273;&#7897; trong h&#7879; c&#417; s&#7903; m&#7899;i n&agrave;y. Kh&ocirc;ng m&#7845;t t&iacute;nh t&#7893;ng qu&aacute;t, gi&#7843; s&#7917; &#273;&oacute; l&agrave; \(K\) th&agrave;nh ph&#7847;n &#273;&#7847;u ti&ecirc;n. Quan s&aacute;t H&igrave;nh 3 d&#432;&#7899;i &#273;&acirc;y:</p>
+<hr><div class="imgcap">
+<img src="images/27_pca-pca_idea.png" align="center" width="800"></div>
+
+<div class="thecap" align="left">H&igrave;nh 3: &Yacute; t&#432;&#7903;ng ch&iacute;nh c&#7911;a PCA: T&igrave;m m&#7897;t h&#7879; tr&#7921;c chu&#7849;n m&#7899;i sao cho trong h&#7879; n&agrave;y, c&aacute;c th&agrave;nh ph&#7847;n quan tr&#7885;ng nh&#7845;t n&#7857;m trong \(K\) th&agrave;nh ph&#7847;n &#273;&#7847;u ti&ecirc;n. </div>
+<hr><p>Quan s&aacute;t h&igrave;nh v&#7869; tr&ecirc;n v&#7899;i c&#417; s&#7903; m&#7899;i \(\mathbf{U} = [\mathbf{U}_K, \bar{\mathbf{U}}_K]\) l&agrave; m&#7897;t h&#7879; tr&#7921;c chu&#7849;n v&#7899;i \(\mathbf{U}_K\) l&agrave; ma tr&#7853;n con t&#7841;o b&#7903;i \(K\) c&#7897;t &#273;&#7847;u ti&ecirc;n c&#7911;a \(\mathbf{U}\). V&#7899;i c&#417; s&#7903; m&#7899;i n&agrave;y, ma tr&#7853;n d&#7919; li&#7879;u c&oacute; th&#7875; &#273;&#432;&#7907;c vi&#7871;t th&agrave;nh:
+\[
+\mathbf{X} = \mathbf{U}_K \mathbf{Z} + \bar{\mathbf{U}}_K \mathbf{Y} ~~~~ (8)
+\]
+T&#7915; &#273;&acirc;y ta c&#361;ng suy ra:</p>
+
+<p>\[
+\begin{eqnarray}
+\left[
+\begin{matrix}
+\mathbf{Z} \\ \mathbf{Y}
+\end{matrix}
+\right] =
+\left[
+\begin{matrix}
+\mathbf{U}_K^T \\ \bar{\mathbf{U}}_K^T
+\end{matrix}
+\right]\mathbf{X}
+\Rightarrow
+\begin{matrix}
+\mathbf{Z} = \mathbf{U}_K^T \mathbf{X} \<br>
+\mathbf{Y} = \bar{\mathbf{U}}_K^T\mathbf{X}
+\end{matrix}
+\end{eqnarray} ~~~~ (9)
+\]</p>
+
+<p>M&#7909;c &#273;&iacute;ch c&#7911;a PCA l&agrave; &#273;i t&igrave;m ma tr&#7853;n tr&#7921;c giao \(\mathbf{U}\) sao cho ph&#7847;n l&#7899;n th&ocirc;ng tin &#273;&#432;&#7907;c gi&#7919; l&#7841;i &#7903; ph&#7847;n m&agrave;u xanh \(\mathbf{U}_K \mathbf{Z}\) v&agrave; ph&#7847;n m&agrave;u &#273;&#7887; \(\bar{\mathbf{U}}_K\mathbf{Y}\) s&#7869; &#273;&#432;&#7907;c l&#432;&#7907;c b&#7887; v&agrave; thay b&#7857;ng m&#7897;t ma tr&#7853;n kh&ocirc;ng ph&#7909; thu&#7897;c v&agrave;o t&#7915;ng &#273;i&#7875;m d&#7919; li&#7879;u. N&oacute;i c&aacute;ch kh&aacute;c, ta s&#7869; x&#7845;p x&#7881; \(\mathbf{Y}\) b&#7903;i m&#7897;t ma tr&#7853;n c&oacute; to&agrave;n b&#7897; c&aacute;c c&#7897;t l&agrave; nh&#432; nhau. <em>Ch&uacute; &yacute; r&#7857;ng c&aacute;c c&#7897;t n&agrave;y c&oacute; th&#7875; ph&#7909; thu&#7897;c v&agrave;o d&#7919; li&#7879;u training nh&#432;ng kh&ocirc;ng ph&#7909; thu&#7897;c v&agrave;o d&#7919; li&#7879;u test, c&aacute;c b&#7841;n s&#7869; th&#7845;y r&otilde; h&#417;n khi l&#7853;p tr&igrave;nh m&agrave; t&ocirc;i s&#7869; tr&igrave;nh b&agrave;y trong b&agrave;i ti&#7871;p theo</em>. G&#7885;i m&#7895;i c&#7897;t &#273;&oacute; l&agrave; \(\mathbf{b}\) v&agrave; c&oacute; th&#7875; coi n&oacute; l&agrave; bias, khi &#273;&oacute;, ta s&#7869; x&#7845;p x&#7881;:</p>
+
+<p>\[
+\mathbf{Y} \approx \mathbf{b1}^T
+\]
+Trong &#273;&oacute; \(\mathbf{1}^T\in \mathbb{R}^{1 \times N}\) l&agrave; vector h&agrave;ng c&oacute; to&agrave;n b&#7897; c&aacute;c ph&#7847;n t&#7917; b&#7857;ng 1. Gi&#7843; s&#7917; &#273;&atilde; t&igrave;m &#273;&#432;&#7907;c \(\mathbf{U}\), ta c&#7847;n t&igrave;m \(\mathbf{b}\) tho&#7843; m&atilde;n:
+\[
+\mathbf{b} = \text{argmin}_{\mathbf{b}} ||\mathbf{Y} - \mathbf{b1}^T||_F^2 = \text{argmin}_{\mathbf{b}} ||\bar{\mathbf{U}}_K^T\mathbf{X} - \mathbf{b1}^T||_F^2
+\]</p>
+
+<p>Gi&#7843;i ph&#432;&#417;ng tr&igrave;nh &#273;&#7841;o h&agrave;m theo \(\mathbf{b}\) c&#7911;a h&agrave;m m&#7909;c ti&ecirc;u b&#7857;ng 0:
+\[
+(\mathbf{b1}^T - \bar{\mathbf{U}}_K^T\mathbf{X})\mathbf{1} = 0 \Rightarrow N\mathbf{b} = \bar{\mathbf{U}}_K^T \mathbf{X1} \Rightarrow \mathbf{b} = \bar{\mathbf{U}}_K^T \bar{\mathbf{x}}
+\]</p>
+
+<p>Nh&#432; v&#7853;y, <strong>vi&#7879;c t&iacute;nh to&aacute;n s&#7869; thu&#7853;n ti&#7879;n h&#417;n nhi&#7873;u n&#7871;u vector k&#7923; v&#7885;ng \(\bar{\mathbf{x}} = \mathbf{0}\)</strong>. Vi&#7879;c n&agrave;y c&oacute; th&#7875; &#273;&#7841;t &#273;&#432;&#7907;c n&#7871;u ngay t&#7915; &#273;&#7847;u, ch&uacute;ng ta tr&#7915; m&#7895;i vector d&#7919; li&#7879;u &#273;i vector k&#7923; v&#7885;ng c&#7911;a to&agrave;n b&#7897; d&#7919; li&#7879;u. &#272;&acirc;y ch&iacute;nh l&agrave; c&aacute;c b&#432;&#7899;c &#273;&#7847;u ti&ecirc;n c&#7911;a PCA.</p>
+
+<p><a name="eqn10" href="pca.html"></a></p>
+
+<p>V&#7899;i gi&aacute; tr&#7883; \(\mathbf{b}\) t&igrave;m &#273;&#432;&#7907;c n&agrave;y, d&#7919; li&#7879;u ban &#273;&#7847;u s&#7869; &#273;&#432;&#7907;c x&#7845;p x&#7881; v&#7899;i:</p>
+
+<p>\[
+\mathbf{X} \approx \tilde{\mathbf{X}} = \mathbf{U}_K \mathbf{Z} + \bar{\mathbf{U}}_K \bar{\mathbf{U}}_K^T\bar{\mathbf{x}}\mathbf{1}^T ~~~ (10)
+\]</p>
+
+<p>K&#7871;t h&#7907;p \((8), (9), (10)\) ta &#273;&#7883;nh ngh&#297;a h&agrave;m m&#7845;t m&aacute;t ch&iacute;nh nh&#432; sau:
+\[
+J = \frac{1}{N} || \mathbf{X} - \tilde{\mathbf{X}}||_F^2 = \frac{1}{N} ||\bar{\mathbf{U}}_K \bar{\mathbf{U}}_K^T \mathbf{X} -  \bar{\mathbf{U}}_K \bar{\mathbf{U}}_K^T \bar{\mathbf{x}}\mathbf{1}^T||_F^2 ~~~~ (11)
+\]</p>
+
+<p>Ch&uacute; &yacute; r&#7857;ng, n&#7871;u c&aacute;c c&#7897;t c&#7911;a m&#7897;t ma tr&#7853;n \(\mathbf{V}\) t&#7841;o th&agrave;nh m&#7897;t h&#7879; tr&#7921;c chu&#7849;n th&igrave; v&#7899;i m&#7897;t ma tr&#7853;n \(\mathbf{W}\) b&#7845;t k&#7923;, ta lu&ocirc;n c&oacute;:
+\[
+||\mathbf{VW}||_F^2 = \text{trace} (\mathbf{W}^T\mathbf{V}^T\mathbf{V} \mathbf{W}) = \text{trace}(\mathbf{W}^T\mathbf{W}) = ||\mathbf{W}||_F^2
+\]</p>
+
+<p>V&igrave; v&#7853;y h&agrave;m m&#7845;t m&aacute;t trong \((11)\) c&oacute; th&#7875; vi&#7871;t l&#7841;i th&agrave;nh:
+\[
+\begin{eqnarray}
+J &amp;=&amp; \frac{1}{N} || \bar{\mathbf{U}}_K^T (\mathbf{X} -   \bar{\mathbf{x}}\mathbf{1})^T||_F^2 = \frac{1}{N} ||\bar{\mathbf{U}}_K^T\hat{\mathbf{X}} ||_F^2&amp; \<br>
+&amp;=&amp; \frac{1}{N} ||\hat{\mathbf{X}}^T \bar{\mathbf{U}}_K ||_F^2 =
+\frac{1}{N}\sum_{i = K+1}^D ||\hat{\mathbf{X}}^T\mathbf{u}_i ||_2^2&amp; \<br>
+&amp;=&amp; \frac{1}{N} \sum_{i=K+1}^D \mathbf{u}_i^T\hat{\mathbf{X}}\hat{\mathbf{X}}^T \mathbf{u}_i&amp; \<br>
+&amp;=&amp; \sum_{i=K+1}^D \mathbf{u}_i^T\mathbf{S} \mathbf{u}_i &amp; (12)
+\end{eqnarray}
+\]</p>
+
+<p>V&#7899;i \(\hat{\mathbf{X}} = \mathbf{X} - \bar{\mathbf{x}}\mathbf{1}^T\) l&agrave; d&#7919; li&#7879;u &#273;&atilde; chu&#7849;n ho&aacute; v&agrave; v&#7899;i \(\mathbf{S}\) l&agrave; ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai c&#7911;a d&#7919; li&#7879;u.  Ta g&#7885;i ma tr&#7853;n n&agrave;y \(\hat{\mathbf{X}}\) l&agrave; <em>zero-corrected data</em> ho&#7863;c <em>d&#7919; li&#7879;u &#273;&atilde; &#273;&#432;&#7907;c chu&#7849;n ho&aacute;</em>. C&oacute; th&#7875; nh&#7853;n th&#7845;y \(\hat{\mathbf{x}}_n = \mathbf{x}_n - \bar{\mathbf{x}}\).</p>
+
+<p>C&ocirc;ng vi&#7879;c c&ograve;n l&#7841;i l&agrave; t&igrave;m c&aacute;c \(\mathbf{u}_i\) &#273;&#7875; m&#7845;t m&aacute;t l&agrave; nh&#7887; nh&#7845;t. Tr&#432;&#7899;c h&#7871;t, ch&uacute;ng ta c&oacute; m&#7897;t nh&#7853;n x&eacute;t th&uacute; v&#7883;. Nh&#7855;c l&#7841;i &#273;&#7883;nh ngh&#297;a ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai \(\mathbf{S} = \frac{1}{N} \hat{\mathbf{X}}^T\hat{\mathbf{X}}\). V&#7899;i ma tr&#7853;n \(\mathbf{U}\) tr&#7921;c giao b&#7845;t k&#7923;, thay \(K = 0\) v&agrave;o \((12)\) ta c&oacute;:</p>
+
+<p>\[
+\begin{eqnarray}
+L &amp;=&amp; \sum_{i=1}^D \mathbf{u}_i^T\mathbf{Su}_i = \frac{1}{N} ||\hat{\mathbf{X}}^T\mathbf{U}||_F^2 \<br>
+&amp;=&amp; \frac{1}{N} \text{trace}(\hat{\mathbf{X}}^T\mathbf{U} \mathbf{U}^T \hat{\mathbf{X}}) &amp; (12) \<br>
+&amp;=&amp; \frac{1}{N} \text{trace} (\hat{\mathbf{X}}^T \hat{\mathbf{X}}) &amp; (13) \<br>
+&amp;=&amp; \frac{1}{N} \text{trace} (\hat{\mathbf{X}} \hat{\mathbf{X}}^T) &amp; (14) \<br>
+&amp;=&amp; \text{trace} (\mathbf{S}) = \sum_{i=1}^D \lambda_i &amp; (16)
+\end{eqnarray}
+\]</p>
+
+<p>V&#7899;i \(\lambda_1 \geq \lambda_2 \geq \dots \geq \lambda_D \geq 0\) l&agrave; c&aacute;c tr&#7883; ri&ecirc;ng c&#7911;a ma tr&#7853;n n&#7917;a x&aacute;c &#273;&#7883;nh d&#432;&#417;ng \(\mathbf{S}\). Ch&uacute; &yacute; r&#7857;ng c&aacute;c tr&#7883; ri&ecirc;ng n&agrave;y l&agrave; th&#7921;c v&agrave; kh&ocirc;ng &acirc;m.</p>
+
+<p><strong>Nh&#432; v&#7853;y \(L\) kh&ocirc;ng ph&#7909; thu&#7897;c v&agrave;o c&aacute;ch ch&#7885;n ma tr&#7853;n tr&#7921;c giao \(\mathbf{U}\)</strong> v&agrave; b&#7857;ng t&#7893;ng c&aacute;c ph&#7847;n t&#7917; tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o c&#7911;a \(\mathbf{S}\). N&oacute;i c&aacute;ch kh&aacute;c, \(L\) ch&iacute;nh l&agrave; t&#7893;ng c&#7911;a c&aacute;c ph&#432;&#417;ng sai theo t&#7915;ng th&agrave;nh ph&#7847;n c&#7911;a d&#7919; li&#7879;u ban &#273;&#7847;u.</p>
+
+<p>V&igrave; v&#7853;y, vi&#7879;c t&#7889;i thi&#7875;u h&agrave;m m&#7845;t m&aacute;t \(J\) &#273;&#432;&#7907;c cho b&#7903;i \((13)\) t&#432;&#417;ng &#273;&#432;&#417;ng v&#7899;i vi&#7879;c t&#7889;i &#273;a:
+\[
+F  = L - J = \sum_{i=1}^K \mathbf{u}_i \mathbf{S} \mathbf{u}_i^T
+\]</p>
+
+<!-- V&igrave; v&#7853;y, PCA c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; ph&#432;&#417;ng ph&aacute;p gi&#7843;m s&#7889; chi&#7873;u d&#7919; li&#7879;u sao cho _l&#432;&#7907;ng ph&#432;&#417;ng sai gi&#7919; l&#7841;i l&agrave; l&#7899;n nh&#7845;t_ (maximum variance). -->
+
+<p><strong>&#272;&#7883;nh l&yacute; 1:</strong> \(F\) &#273;&#7841;t gi&aacute; tr&#7883; l&#7899;n nh&#7845;t b&#7857;ng \(\sum_{i=1}^K \lambda_i\) khi \(\mathbf{u}_i\) l&agrave; c&aacute;c vector ri&ecirc;ng c&oacute; norm 2 b&#7857;ng 1 &#7913;ng v&#7899;i c&aacute;c tr&#7883; ri&ecirc;ng n&agrave;y. T&#7845;t nhi&ecirc;n, ch&uacute;ng ta kh&ocirc;ng qu&ecirc;n &#273;i&#7873;u ki&#7879;n tr&#7921;c giao gi&#7919;a c&aacute;c \(\mathbf{u}_i\).</p>
+
+<p>Ch&uacute; &yacute; r&#7857;ng \(\lambda_i, i = 1, \dots, K\) ch&iacute;nh l&agrave; \(K\) tr&#7883; ri&ecirc;ng l&#7899;n nh&#7845;t c&#7911;a ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai \(\mathbf{S}\). Tr&#7883; ri&ecirc;ng l&#7899;n nh&#7845;t \(\lambda_1\) c&#7911;a ma tr&#7853;n n&agrave;y c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Th&agrave;nh ph&#7847;n ch&iacute;nh th&#7913; nh&#7845;t</em> (First Principal Component), tr&#7883; ri&ecirc;ng th&#7913; hai \(\lambda_2\) c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Th&agrave;nh ph&#7847;n ch&iacute;nh th&#7913; hai</em>, etc. Ch&iacute;nh v&igrave; v&#7853;y, ph&#432;&#417;ng ph&aacute;p n&agrave;y c&oacute; t&ecirc;n g&#7885;i l&agrave; <em>Ph&acirc;n t&iacute;ch th&agrave;nh ph&#7847;n ch&iacute;nh</em> - Principal Component Analysis. Ta ch&#7881; gi&#7919; l&#7841;i \(K\) th&agrave;nh ph&#7847;n ch&iacute;nh c&#7911;a d&#7919; li&#7879;u khi mu&#7889;n gi&#7843;m s&#7889; chi&#7873;u d&#7919; li&#7879;u. &#272;&#7875; c&oacute; c&aacute;i nh&igrave;n tr&#7921;c quan h&#417;n, ch&uacute;ng ta c&ugrave;ng theo d&otilde;i H&igrave;nh d&#432;&#7899;i &#273;&acirc;y:</p>
+<hr><div>
+<table width="100%" style="border: 0px solid white"><tr><td width="40%" style="border: 0px solid white" align="center">
+        <img style="display:block;" width="100%" src="images/27_pca-pca_var.png"><br></td>
+        <td width="40%" style="border: 0px solid white" align="justify">
+        H&igrave;nh 4: PCA d&#432;&#7899;i g&oacute;c nh&igrave;n Th&#7889;ng k&ecirc;. PCA c&oacute; th&#7875; &#273;&#432;&#7907;c coi l&agrave; ph&#432;&#417;ng ph&aacute;p &#273;i t&igrave;m m&#7897;t h&#7879; c&#417; s&#7903; tr&#7921;c chu&#7849;n &#273;&oacute;ng vai tr&ograve; m&#7897;t ph&eacute;p xoay, sao cho trong h&#7879; c&#417; s&#7903; m&#7899;i n&agrave;y, ph&#432;&#417;ng sai theo m&#7897;t s&#7889; chi&#7873;u n&agrave;o &#273;&oacute; l&agrave; r&#7845;t nh&#7887;, v&agrave; ta c&oacute; th&#7875; b&#7887; qua.
+        </td>
+    </tr></table></div>
+<hr><p>Trong kh&ocirc;ng gian ban &#273;&#7847;u v&#7899;i c&aacute;c vector c&#417; s&#7903; m&agrave;u &#273;en \(\mathbf{e}_1, \mathbf{e}_2\), ph&#432;&#417;ng sai theo m&#7895;i chi&#7873;u d&#7919; li&#7879;u &#273;&#7873;u l&#7899;n. Trong kh&ocirc;ng gian m&#7899;i v&#7899;i c&aacute;c vector c&#417; s&#7903; m&agrave;u &#273;&#7887; \(\mathbf{u}_1, \mathbf{u}_2\), ph&#432;&#417;ng sai theo chi&#7873;u th&#7913; hai \(\hat{\sigma}_2\) r&#7845;t nh&#7887; so v&#7899;i \(\hat{\sigma}_1\). &#272;i&#7873;u n&agrave;y ngh&#297;a l&agrave; khi chi&#7871;u d&#7919; li&#7879;u l&ecirc;n \(\mathbf{u}_2\) ta &#273;&#432;&#7907;c c&aacute;c &#273;i&#7875;m r&#7845;t g&#7847;n nhau v&agrave; g&#7847;n v&#7899;i k&#7923; v&#7885;ng theo chi&#7873;u &#273;&oacute;. Trong tr&#432;&#7901;ng h&#7907;p n&agrave;y, k&#7923; v&#7885;ng theo m&#7885;i chi&#7873;u b&#7857;ng 0 n&ecirc;n ta c&oacute; th&#7875; thay th&#7871; to&#7841; &#273;&#7897; theo chi&#7873;u \(\mathbf{u}_2\) b&#7857;ng 0. R&otilde; r&agrave;ng l&agrave;  n&#7871;u d&#7919; li&#7879;u c&oacute; ph&#432;&#417;ng sai c&agrave;ng nh&#7887; theo m&#7897;t chi&#7873;u n&agrave;o &#273;&oacute; th&igrave; khi x&#7845;p x&#7881; chi&#7873;u &#273;&oacute; b&#7857;ng m&#7897;t h&#7857;ng s&#7889;, sai s&#7889; x&#7843;y ra c&agrave;ng nh&#7887;. PCA th&#7921;c ch&#7845;t l&agrave; &#273;i t&igrave;m m&#7897;t ph&eacute;p xoay t&#432;&#417;ng &#7913;ng v&#7899;i m&#7897;t ma tr&#7853;n tr&#7921;c giao sao cho trong h&#7879; to&#7841; &#273;&#7897; m&#7899;i, t&#7891;n t&#7841;i c&aacute;c chi&#7873;u c&oacute; ph&#432;&#417;ng sai nh&#7887; m&agrave; ta c&oacute; th&#7875; b&#7887; qua; ta ch&#7881; c&#7847;n gi&#7919; l&#7841;i c&aacute;c chi&#7873;u/th&agrave;nh ph&#7847;n kh&aacute;c quan tr&#7885;ng h&#417;n. Nh&#432; &#273;&atilde; ch&#7913;ng minh &#7903; tr&ecirc;n, t&#7893;ng ph&#432;&#417;ng sai theo m&#7885;i chi&#7873;u trong h&#7879; c&#417; s&#7903; n&agrave;o c&#361;ng l&agrave; nh&#432; nhau v&agrave; b&#7857;ng t&#7893;ng c&aacute;c tr&#7883; ri&ecirc;ng c&#7911;a ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai. V&igrave; v&#7853;y, PCA c&ograve;n &#273;&#432;&#7907;c coi l&agrave; ph&#432;&#417;ng ph&aacute;p gi&#7843;m s&#7889; chi&#7873;u d&#7919; li&#7879;u m&agrave; gi&#7919; &#273;&#432;&#7907;c t&#7893;ng ph&#432;&#417;ng sai c&ograve;n l&#7841;i l&agrave; l&#7899;n nh&#7845;t.</p>
+
+<p>T&ocirc;i s&#7869; b&#7887; qua ph&#7847;n ch&#7913;ng minh c&#7911;a &#272;&#7883;nh l&yacute; 1. Tuy nhi&ecirc;n, c&#361;ng n&ecirc;u m&#7897;t v&agrave;i &yacute; &#273;&#7875; b&#7841;n &#273;&#7885;c c&oacute; th&#7875; h&igrave;nh dung:</p>
+
+<p>Khi \(K = 1\). Ta c&#7847;n gi&#7843;i b&agrave;i to&aacute;n:
+\[
+\begin{eqnarray}
+\max_{\mathbf{u}_1} &amp;\mathbf{u}_1^T\mathbf{S} \mathbf{u}_1 \<br>
+\text{s.t.:} &amp;||\mathbf{u}_1||_2 = 1
+\end{eqnarray}
+\]</p>
+
+<p>Nh&#432; &#273;&atilde; &#273;&#7873; c&#7853;p &#7903; ph&iacute;a tr&ecirc;n, h&agrave;m m&#7909;c ti&ecirc;u &#273;&#7841;t gi&aacute; tr&#7883; l&#7899;n nh&#7845;t b&#7857;ng \(\lambda_1\) khi \(\mathbf{u}_1\) l&agrave; m&#7897;t vector ri&ecirc;ng c&#7911;a ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai \(\mathbf{S}\) t&#432;&#417;ng &#7913;ng v&#7899;i tr&#7883; ri&ecirc;ng \(\lambda_1\). V&#7853;y &#273;&#7883;nh l&yacute; &#273;&uacute;ng v&#7899;i \(K = 1\)</p>
+
+<p>Gi&#7843; s&#7917; \(\mathbf{u}_1\) &#273;&atilde; l&agrave; vector ri&ecirc;ng &#7913;ng v&#7899;i tr&#7883; ri&ecirc;ng l&#7899;n nh&#7845;t c&#7911;a \(\mathbf{S}\) th&#7871; th&igrave; nghi&#7879;m \(\mathbf{u}_2\) c&#7911;a b&agrave;i to&aacute;n t&#7889;i &#432;u:
+\[
+\begin{eqnarray}
+\max_{\mathbf{u}_2} &amp;\mathbf{u}_2^T\mathbf{S} \mathbf{u}_2 &amp;\<br>
+\text{s.t.} &amp;||\mathbf{u}_2||_2 = 1 &amp; (21)\<br>
+&amp; \mathbf{u}_2^T \mathbf{u}_1 = 0 &amp;
+\end{eqnarray}
+\]
+l&agrave; m&#7897;t vector ri&ecirc;ng c&#7911;a \(\mathbf{S}\) &#7913;ng v&#7899;i tr&#7883; ri&ecirc;ng l&#7899;n th&#7913; hai \(\lambda_2\) c&#7911;a n&oacute;. Ch&uacute; &yacute; r&#7857;ng \(\lambda_2\) c&oacute; th&#7875; b&#7857;ng \(\lambda_1\) n&#7871;u kh&ocirc;ng gian ri&ecirc;ng &#7913;ng v&#7899;i \(\lambda_1\) c&oacute; s&#7889; rank l&#7899;n h&#417;n 1.</p>
+
+<p>Nh&#7853;n &#273;&#7883;nh n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c ch&#7913;ng minh b&#7857;ng ph&#432;&#417;ng ph&aacute;p nh&acirc;n t&#7917; Lagrange. Th&#7853;t v&#7853;y, Lagrangian c&#7911;a b&agrave;i to&aacute;n \((21)\) l&agrave;:
+\[
+\mathcal{L}( \mathbf{u}_2, \nu_1, \nu_2) = \mathbf{u}_2^T\mathbf{S} \mathbf{u}_2 + \nu_1\mathbf{u}_1^T\mathbf{u}_2 + \nu_2(1 - \mathbf{u}_2^T\mathbf{u}_2)
+\]</p>
+
+<p>Ta c&#7847;n gi&#7843;i h&#7879; ph&#432;&#417;ng tr&igrave;nh &#273;&#7841;o h&agrave;m c&#7911;a \(\mathcal{L}\) theo t&#7915;ng bi&#7871;n b&#7857;ng 0:
+\[
+\begin{eqnarray}
+\frac{\partial \mathcal{L}}{\partial \mathbf{u}_2} &amp;=&amp; 2 \mathbf{Su}_2 + \nu_1 \mathbf{u}_1 - 2\nu_2\mathbf{u}_2 = 0 &amp; (22)\<br>
+\frac{\partial \mathcal{L}}{\partial \nu_1} &amp;=&amp; \mathbf{u}_1^T \mathbf{u}_2 = 0 &amp; (23)\<br>
+\frac{\partial \mathcal{L}}{\partial \nu_2} &amp;=&amp; 1 - \mathbf{u}_2^T \mathbf{u}_2 = 0 &amp;(24)\<br>
+\end{eqnarray}
+\]</p>
+
+<p>Nh&acirc;n c&#7843; hai v&#7871; c&#7911;a \((22)\) v&#7899;i \(\mathbf{u}_1^T\) v&agrave;o b&ecirc;n tr&aacute;i ta c&oacute;:
+\[
+2\mathbf{u}_1^T\mathbf{Su}_2 + \nu_1 = 0
+\]
+V&igrave; \(\mathbf{Su}_1 = \lambda_1 \mathbf{u}_1 \Rightarrow \mathbf{u}_1^T\mathbf{Su}_2 = \lambda_1 \mathbf{u}_1^T\mathbf{u}_2 = 0\). T&#7915; &#273;&oacute; suy ra \(\nu_1 = 0\) v&agrave; \((22)\) l&uacute;c n&agrave;y t&#432;&#417;ng &#273;&#432;&#417;ng v&#7899;i:
+\[
+\mathbf{Su}_2 = \nu_2\mathbf{u}_2 \Rightarrow \mathbf{u}_2^T\mathbf{S} \mathbf{u}_2 = \nu_2
+\]
+V&#7853;y \(\mathbf{u}_2\) l&agrave; m&#7897;t vector ri&ecirc;ng c&#7911;a \(\mathbf{S}\) &#7913;ng v&#7899;i \(\nu_2\). V&agrave; &#273;&#7875; h&agrave;m m&#7909;c ti&ecirc;u &#273;&#7841;t gi&aacute; tr&#7883; l&#7899;n nh&#7845;t, \(\nu_2\) c&#7847;n c&agrave;ng l&#7899;n c&agrave;ng t&#7889;t. &#272;i&#7873;u n&agrave;y d&#7851;n &#273;&#7871;n \(\nu_2\) ph&#7843;i l&agrave; tr&#7883; ri&ecirc;ng th&#7913; hai c&#7911;a \(\mathbf{S}\).</p>
+
+<p>L&#7853;p lu&#7853;n t&#432;&#417;ng t&#7921;, ta c&oacute; th&#7875; ch&#7913;ng minh &#273;&#432;&#7907;c: N&#7871;u \(\mathbf{u}_i, i = 1, 2, \dots, k-1\) l&agrave; c&aacute;c vector ri&ecirc;ng &#7913;ng v&#7899;i tr&#7883; ri&ecirc;ng l&#7899;n th&#7913; \(i\) c&#7911;a ma tr&#7853;n n&#7917;a x&aacute;c &#273;&#7883;nh d&#432;&#417;ng \(\mathbf{S}\), h&#417;n n&#7919;a, \(k-1\) vector ri&ecirc;ng n&agrave;y t&#7841;o th&agrave;nh m&#7897;t h&#7879; tr&#7921;c chu&#7849;n, th&#7871; th&igrave;:</p>
+
+<p>\[
+\begin{eqnarray}
+\max_{\mathbf{u}_k} &amp; \mathbf{u}_k^T\mathbf{Su}_k \<br>
+\text{s.t.} &amp; \mathbf{u}_k^T\mathbf{u}_k = 1; \<br>
+&amp; \mathbf{u}_k^T\mathbf{u}_i = 1, i = 1,\dots, k -1
+\end{eqnarray}
+\]
+b&#7857;ng &#273;&uacute;ng v&#7899;i tr&#7883; ri&ecirc;ng ti&#7871;p theo \(\lambda_k\) t&#7841;i \(\mathbf{u}_k\) l&agrave; vector ri&ecirc;ng &#7913;ng v&#7899;i tr&#7883; ri&ecirc;ng n&agrave;y.</p>
+
+<p><a name="-cac-buoc-thuc-hien-pca" href="pca.html"></a></p>
+
+<h2 id="4-c&aacute;c-b&#432;&#7899;c-th&#7921;c-hi&#7879;n-pca">4. C&aacute;c b&#432;&#7899;c th&#7921;c hi&#7879;n PCA</h2>
+<p>T&#7915; c&aacute;c suy lu&#7853;n ph&iacute;a tr&ecirc;n, ta c&oacute; th&#7875; t&oacute;m t&#7855;t l&#7841;i c&aacute;c b&#432;&#7899;c trong PCA nh&#432; sau:</p>
+
+<ol><li>T&iacute;nh vector k&#7923; v&#7885;ng c&#7911;a to&agrave;n b&#7897; d&#7919; li&#7879;u:
+\[
+\bar{\mathbf{x}} = \frac{1}{N} \sum_{n=1}^N \mathbf{x}_n
+\]</li>
+  <li>Tr&#7915; m&#7895;i &#273;i&#7875;m d&#7919; li&#7879;u &#273;i vector k&#7923; v&#7885;ng c&#7911;a to&agrave;n b&#7897; d&#7919; li&#7879;u:
+\[
+\hat{\mathbf{x}}_n = \mathbf{x}_n - \bar{\mathbf{x}}
+\]</li>
+  <li>T&iacute;nh ma tr&#7853;n hi&#7879;p ph&#432;&#417;ng sai:
+\[
+\mathbf{S} = \frac{1}{N}\hat{\mathbf{X}}\hat{\mathbf{X}}^T
+\]</li>
+  <li>T&iacute;nh c&aacute;c tr&#7883; ri&ecirc;ng v&agrave; vector ri&ecirc;ng c&oacute; norm b&#7857;ng 1 c&#7911;a ma tr&#7853;n n&agrave;y, s&#7855;p x&#7871;p ch&uacute;ng theo th&#7913; t&#7921; gi&#7843;m d&#7847;n c&#7911;a tr&#7883; ri&ecirc;ng.</li>
+  <li>Ch&#7885;n \(K\) vector ri&ecirc;ng &#7913;ng v&#7899;i \(K\) tr&#7883; ri&ecirc;ng l&#7899;n nh&#7845;t &#273;&#7875; x&acirc;y d&#7921;ng ma tr&#7853;n \(\mathbf{U}_K\) c&oacute; c&aacute;c c&#7897;t t&#7841;o th&agrave;nh m&#7897;t h&#7879; tr&#7921;c giao. \(K\) vectors n&agrave;y, c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; c&aacute;c th&agrave;nh ph&#7847;n ch&iacute;nh, t&#7841;o th&agrave;nh m&#7897;t kh&ocirc;ng gian con <em>g&#7847;n</em> v&#7899;i ph&acirc;n b&#7889; c&#7911;a d&#7919; li&#7879;u ban &#273;&#7847;u &#273;&atilde; chu&#7849;n ho&aacute;.</li>
+  <li>Chi&#7871;u d&#7919; li&#7879;u ban &#273;&#7847;u &#273;&atilde; chu&#7849;n ho&aacute; \(\hat{\mathbf{X}}\) xu&#7889;ng kh&ocirc;ng gian con t&igrave;m &#273;&#432;&#7907;c.</li>
+  <li>D&#7919; li&#7879;u m&#7899;i ch&iacute;nh l&agrave; to&#7841; &#273;&#7897; c&#7911;a c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u tr&ecirc;n kh&ocirc;ng gian m&#7899;i.
+\[
+\mathbf{Z} = \mathbf{U}_K^T\hat{\mathbf{X}}
+\]</li>
+</ol><p>D&#7919; li&#7879;u ban &#273;&#7847;u c&oacute; th&#7875; t&iacute;nh &#273;&#432;&#7907;c x&#7845;p x&#7881; theo d&#7919; li&#7879;u m&#7899;i nh&#432; sau:
+\[
+\mathbf{x} \approx \mathbf{U}_K\mathbf{Z} + \bar{\mathbf{x}}
+\]</p>
+
+<p>C&aacute;c b&#432;&#7899;c th&#7921;c hi&#7879;n PCA c&oacute; th&#7875; &#273;&#432;&#7907;c xem trong H&igrave;nh d&#432;&#7899;i &#273;&acirc;y:</p>
+
+<hr><div class="imgcap">
+<img src="images/27_pca-pca_procedure.png" align="center" width="800"></div>
+
+<div class="thecap" align="left">H&igrave;nh 5: C&aacute;c b&#432;&#7899;c th&#7921;c hi&#7879;n PCA. </div>
+<hr><p><a name="-thao-luan" href="pca.html"></a></p>
+
+<h2 id="5-th&#7843;o-lu&#7853;n">5. Th&#7843;o lu&#7853;n</h2>
+<p>V&igrave; b&agrave;i vi&#7871;t &#273;&atilde; kh&aacute; d&agrave;i, t&ocirc;i xin gi&#7919; ph&#7847;n c&ograve;n l&#7841;i c&#7911;a PCA cho b&agrave;i vi&#7871;t ti&#7871;p theo. Trong b&agrave;i t&#7899;i, ch&uacute;ng ta c&ugrave;ng th&#7843;o lu&#7853;n v&#7873; m&#7889;i quan h&#7879; gi&#7919;a PCA v&agrave; SVD, l&#7853;p tr&igrave;nh PCA, m&#7897;t v&agrave;i &#7913;ng d&#7909;ng v&agrave; m&#7903; r&#7897;ng c&#7911;a SVD. M&#7901;i c&aacute;c b&#7841;n &#273;&oacute;n &#273;&#7885;c.</p>
+
+<p><a name="-tai-lieu-tham-khao" href="pca.html"></a></p>
+
+<h2 id="6-t&agrave;i-li&#7879;u-tham-kh&#7843;o">6. T&agrave;i li&#7879;u tham kh&#7843;o</h2>
+
+<p>[1] <a href="https://en.wikipedia.org/wiki/Principal_component_analysis">Principal component analysis - Wikipedia</a></p>
+
+<p>[2] <a href="http://www.cs.otago.ac.nz/cosc453/student_tutorials/principal_components.pdf">A tutorial on Principal Components Analysis</a></p>
+
+<p>[3] Bishop, Christopher M. &ldquo;Pattern recognition and Machine Learning.&rdquo;, Springer (2006). Chapter 12. (<a href="http://users.isr.ist.utl.pt/~wurmd/Livros/school/Bishop%20-%20Pattern%20Recognition%20And%20Machine%20Learning%20-%20Springer%20%202006.pdf">book</a>)</p>
+
+</div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="svd.html">&laquo; B&agrave;i 26: Singular Value Decomposition</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="pca2.html">B&agrave;i 28: Principal Component Analysis (ph&#7847;n 2/2) &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2017/06/15/pca/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11371397; 
+var sc_invisible=0; 
+var sc_security="b24ed93f"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/b24ed93f-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/06/21/pca2/">B&agrave;i 28: Principal Component Analysis (ph&#7847;n 2/2)</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/06/15/pca/">B&agrave;i 27: Principal Component Analysis (ph&#7847;n 1/2)</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/06/07/svd/">B&agrave;i 26: Singular Value Decomposition</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/06/15/pca/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2017/06/15/pca/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/06/15/pca/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=B&agrave;i 27: Principal Component Analysis (ph&#7847;n 1/2)&url=https://machinelearningcoban.com/2017/06/15/pca/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2017/06/15/pca/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2017/06/15/pca/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#dbe488aeb9b1beb8afe688b2b6abb7befb88b3baa9befb99aeafafb4b5a8fdbab6abe099b4bfa2e692fee9eba8baacfee9ebafb3b2a8fee9ebbab5bffee9ebafb3b4aebcb3affee9ebb4bdfee9eba2b4aefafee9ebfbb3afafaba8e1f4f4b6bab8b3b2b5beb7bebaa9b5b2b5bcb8b4b9bab5f5b8b4b6f4e9ebeaecf4ebedf4eaeef4abb8baf4">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/06/07/svd/">B&agrave;i 26: Singular Value Decomposition</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2017/06/21/pca2/">B&agrave;i 28: Principal Component Analysis (ph&#7847;n 2/2)</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

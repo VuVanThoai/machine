@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>B&agrave;i 17: Convex Optimization Problems</title><!-- <script>
+var pageProperties = {
+    
+    category: "Optimization",
+    
+    url: "/2017/03/19/convexopt/",
+    title: "B&agrave;i 17: Convex Optimization Problems",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/2017/03/19/convexopt/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="B&agrave;i 17: Convex Optimization Problems"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/2017/03/19/convexopt/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2017-03-19"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="Optimization"><meta property="article:tag" content="Convex"><meta property="article:tag" content="Optimization"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2017/03/19/convexopt/',
+'title': 'B&agrave;i 17: Convex Optimization Problems'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="duality.html">18. Duality</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="convexopt.html">17. Convex Optimization Problems</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/03/12/convexity/">B&agrave;i 16: Convex sets v&agrave; convex functions</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/04/02/duality/">B&agrave;i 18: Duality</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="convexity.html">&laquo; B&agrave;i 16: Convex sets v&agrave; convex functions</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="duality.html">B&agrave;i 18: Duality &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">B&agrave;i 17: Convex Optimization Problems</h1>
+
+
+<ul class="tags"><a href="/tags#Convex" class="tag">Convex</a>
+   
+      <a href="/tags#Optimization" class="tag">Optimization</a>
+   
+</ul><span class="post-date" style="color: gray; font-style: italic;">Mar 19, 2017
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <!-- MarkdownTOC depth = 3 -->
+
+<ul><li><a href="#-gioi-thieu">1. Gi&#7899;i thi&#7879;u</a>
+    <ul><li><a href="#-bai-toan-nha-xuat-ban">1.1. B&agrave;i to&aacute;n nh&agrave; xu&#7845;t b&#7843;n</a>
+        <ul><li><a href="#bai-toan">B&agrave;i to&aacute;n</a></li>
+          <li><a href="#phan-tich">Ph&acirc;n t&iacute;ch</a></li>
+        </ul></li>
+      <li><a href="#-bai-toan-canh-tac">1.2. B&agrave;i to&aacute;n canh t&aacute;c</a>
+        <ul><li><a href="#bai-toan-1">B&agrave;i to&aacute;n</a></li>
+          <li><a href="#phan-tich-1">Ph&acirc;n t&iacute;ch</a></li>
+        </ul></li>
+      <li><a href="#-bai-toan-dong-thung">1.3. B&agrave;i to&aacute;n &#273;&oacute;ng th&ugrave;ng</a>
+        <ul><li><a href="#bai-toan-2">B&agrave;i to&aacute;n</a></li>
+          <li><a href="#phan-tich-2">Ph&acirc;n t&iacute;ch</a></li>
+        </ul></li>
+    </ul></li>
+  <li><a href="#-nhac-lai-bai-toan-toi-uu">2. Nh&#7855;c l&#7841;i b&agrave;i to&aacute;n t&#7889;i &#432;u</a>
+    <ul><li><a href="#-cac-khai-niem-co-ban">2.1. C&aacute;c kh&aacute;i ni&#7879;m c&#417; b&#7843;n</a></li>
+      <li><a href="#-optimal-and-locally-optimal-points">2.2. Optimal and locally optimal points</a></li>
+      <li><a href="#-mot-vai-luu-y">2.3. M&#7897;t v&agrave;i l&#432;u &yacute;</a></li>
+    </ul></li>
+  <li><a href="#-bai-toan-toi-uu-loi">3. B&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i</a>
+    <ul><li><a href="#-dinh-nghia">3.1. &#272;&#7883;nh ngh&#297;a</a></li>
+      <li><a href="#-cuc-tieu-cua-bai-toan-toi-uu-loi-chinh-la-diem-toi-uu">3.2. C&#7921;c ti&#7875;u c&#7911;a b&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i ch&iacute;nh l&agrave; &#273;i&#7875;m t&#7889;i &#432;u.</a></li>
+      <li><a href="#-dieu-kien-toi-uu-cho-ham-muc-tieu-kha-vi">3.3. &#272;i&#7873;u ki&#7879;n t&#7889;i &#432;u cho h&agrave;m m&#7909;c ti&ecirc;u kh&#7843; vi</a></li>
+      <li><a href="#-gioi-thieu-thu-vien-cvxopt">3.4. Gi&#7899;i thi&#7879;u th&#432; vi&#7879;n CVXOPT</a></li>
+    </ul></li>
+  <li><a href="#-linear-programming">4. Linear Programming</a>
+    <ul><li><a href="#-dang-tong-quat-cua-lp">4.1. D&#7841;ng t&#7893;ng qu&aacute;t c&#7911;a LP</a></li>
+      <li><a href="#-dang-tieu-chuan-cua-lp">4.2. D&#7841;ng ti&ecirc;u chu&#7849;n c&#7911;a LP</a></li>
+      <li><a href="#-minh-hoa-bang-hinh-hoc-cua-bai-toan-lp">4.3. Minh ho&#7841; b&#7857;ng h&igrave;nh h&#7885;c c&#7911;a b&agrave;i to&aacute;n LP</a></li>
+      <li><a href="#giai-lp-bang-cvxopt">Gi&#7843;i LP b&#7857;ng CVXOPT</a></li>
+    </ul></li>
+  <li><a href="#-quadratic-programming">5. Quadratic Programming</a>
+    <ul><li><a href="#-dinh-nghia-bai-toan-quadratic-programming">5.1. &#272;&#7883;nh ngh&#297;a b&agrave;i to&aacute;n Quadratic Programming</a></li>
+      <li><a href="#-vi-du-ve-qp">5.2. V&iacute; d&#7909; v&#7873; QP</a></li>
+      <li><a href="#-vi-du-ve-giai-qp-bang-cvxopt">5.3. V&iacute; d&#7909; v&#7873; gi&#7843;i QP b&#7857;ng CVXOPT</a></li>
+    </ul></li>
+  <li><a href="#-geometric-programming">6. Geometric Programming</a>
+    <ul><li><a href="#-monomials-va-posynomials">6.1. Monomials v&agrave; posynomials</a></li>
+      <li><a href="#-geometric-programming-1">6.2. Geometric Programming</a></li>
+      <li><a href="#-bien-doi-gp-ve-dang-convex">6.3. Bi&#7871;n &#273;&#7893;i GP v&#7873; d&#7841;ng convex</a></li>
+      <li><a href="#-giai-gp-bang-cvxopt">6.4. Gi&#7843;i GP b&#7857;ng CVXOPT</a></li>
+    </ul></li>
+  <li><a href="#-tom-tat">7. T&oacute;m t&#7855;t</a></li>
+  <li><a href="#-tai-lieu-tham-khao">8. T&agrave;i li&#7879;u tham kh&#7843;o</a></li>
+</ul><!-- /MarkdownTOC --><p><strong>B&#7841;n &#273;&#432;&#7907;c khuy&#7871;n kh&iacute;ch &#273;&#7885;c <a href="convexity.html">B&agrave;i 16</a> tr&#432;&#7899;c khi &#273;&#7885;c b&agrave;i n&agrave;y. N&#7897;i dung trong b&agrave;i vi&#7871;t n&agrave;y ch&#7911; y&#7871;u &#273;&#432;&#7907;c d&#7883;ch t&#7915; Ch&#432;&#417;ng 4 c&#7911;a cu&#7889;n <em>Convex Optimization</em> trong ph&#7847;n T&agrave;i li&#7879;u tham kh&#7843;o.</strong>.</p>
+
+<p>B&agrave;i n&agrave;y c&#361;ng c&oacute; r&#7845;t nhi&#7873;u kh&aacute;i ni&#7879;m m&#7899;i v&agrave; nhi&#7873;u l&yacute; thuy&#7871;t n&ecirc;n c&oacute; th&#7875; kh&ocirc;ng h&#7845;p d&#7851;n nh&#432; c&aacute;c b&agrave;i kh&aacute;c. Tuy nhi&ecirc;n, t&ocirc;i kh&ocirc;ng th&#7875; b&#7887; qua v&igrave; kh&ocirc;ng mu&#7889;n c&aacute;c b&#7841;n ho&agrave;n to&agrave;n m&#7845;t ph&#432;&#417;ng h&#432;&#7899;ng khi &#273;&#7885;c c&aacute;c b&agrave;i sau.</p>
+
+<p>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; xem b&#7843;n pdf <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book_CVX.pdf">t&#7841;i &#273;&acirc;y</a>.</p>
+
+<p><a name="-gioi-thieu" href="convexopt.html"></a></p>
+
+<h2 id="1-gi&#7899;i-thi&#7879;u">1. Gi&#7899;i thi&#7879;u</h2>
+<p>T&ocirc;i xin b&#7855;t &#273;&#7847;u b&agrave;i vi&#7871;t n&agrave;y b&#7857;ng ba b&agrave;i to&aacute;n kh&aacute; g&#7847;n v&#7899;i th&#7921;c t&#7871;:
+<a name="-bai-toan-nha-xuat-ban" href="convexopt.html"></a></p>
+
+<h3 id="11-b&agrave;i-to&aacute;n-nh&agrave;-xu&#7845;t-b&#7843;n">1.1. B&agrave;i to&aacute;n nh&agrave; xu&#7845;t b&#7843;n</h3>
+<p><a name="bai-toan" href="convexopt.html"></a></p>
+
+<h4 id="b&agrave;i-to&aacute;n">B&agrave;i to&aacute;n</h4>
+<p>M&#7897;t nh&agrave; xu&#7845;n b&#7843;n (NXB) nh&#7853;n &#273;&#432;&#7907;c &#273;&#417;n h&agrave;ng 600 b&#7843;n c&#7911;a cu&#7889;n &ldquo;Machine Learning c&#417; b&#7843;n&rdquo; t&#7899;i Th&aacute;i B&igrave;nh v&agrave; 400 b&#7843;n t&#7899;i H&#7843;i Ph&ograve;ng. NXB &#273;&oacute; c&oacute; 800 cu&#7889;n &#7903; kho Nam &#272;&#7883;nh v&agrave; 700 cu&#7889;n &#7903; kho H&#7843;i D&#432;&#417;ng. Gi&aacute; chuy&#7875;n ph&aacute;t m&#7897;t cu&#7889;n s&aacute;ch t&#7915; Nam &#272;&#7883;nh t&#7899;i Th&aacute;i B&igrave;nh l&agrave; 50,000 VND (50k), t&#7899;i H&#7843;i Ph&ograve;ng l&agrave; 100k. Gi&aacute; chuy&#7875;n ph&aacute;t m&#7897;t cu&#7889;n t&#7915; H&#7843;i D&#432;&#417;ng  t&#7899;i Th&aacute;i B&igrave;nh l&agrave; 150k, trong khi t&#7899;i H&#7843;i Ph&ograve;ng ch&#7881; l&agrave; 40k. H&#7887;i &#273;&#7875; t&#7889;n &iacute;t chi ph&iacute; chuy&#7875;n ph&aacute;t nh&#7845;t, c&ocirc;ng ty &#273;&oacute; n&ecirc;n ph&acirc;n ph&#7889;i m&#7895;i kho chuy&#7875;n bao nhi&ecirc;u cu&#7889;n t&#7899;i m&#7895;i &#273;&#7883;a &#273;i&#7875;m?</p>
+
+<p><a name="phan-tich" href="convexopt.html"></a></p>
+
+<h4 id="ph&acirc;n-t&iacute;ch">Ph&acirc;n t&iacute;ch</h4>
+<p>&#272;&#7875; cho &#273;&#417;n gi&#7843;n, ta x&acirc;y d&#7921;ng b&#7843;ng s&#7889; l&#432;&#7907;ng chuy&#7875;n s&aacute;ch t&#7915; ngu&#7891;n t&#7899;i &#273;&iacute;ch nh&#432; sau:</p>
+
+<table><thead><tr><th style="text-align: center">Ngu&#7891;n</th>
+      <th style="text-align: center">&#272;&iacute;ch</th>
+      <th style="text-align: center">&#272;&#417;n gi&aacute; (\(\times\)10k)</th>
+      <th style="text-align: center">S&#7889; l&#432;&#7907;ng</th>
+    </tr></thead><tbody><tr><td style="text-align: center">Nam &#272;&#7883;nh</td>
+      <td style="text-align: center">Th&aacute;i B&igrave;nh</td>
+      <td style="text-align: center">5</td>
+      <td style="text-align: center">\(x\)</td>
+    </tr><tr><td style="text-align: center">Nam &#272;&#7883;nh</td>
+      <td style="text-align: center">H&#7843;i Ph&#7887;ng</td>
+      <td style="text-align: center">10</td>
+      <td style="text-align: center">\(y\)</td>
+    </tr><tr><td style="text-align: center">H&#7843;i D&#432;&#417;ng</td>
+      <td style="text-align: center">Th&aacute;i B&igrave;nh</td>
+      <td style="text-align: center">15</td>
+      <td style="text-align: center">\(z\)</td>
+    </tr><tr><td style="text-align: center">H&#7843;i D&#432;&#417;ng</td>
+      <td style="text-align: center">H&#7843;i Ph&ograve;ng</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">\(t\)</td>
+    </tr></tbody></table><p>T&#7893;ng chi ph&iacute; (objective function) s&#7869; l&agrave; \(f(x, y, z, t) = 5x + 10y + 15z + 4t\). C&aacute;c &#273;i&#7873;u ki&#7879;n r&agrave;ng bu&#7897;c (constraints) vi&#7871;t d&#432;&#7899;i d&#7841;ng bi&#7875;u th&#7913;c to&aacute;n h&#7885;c l&agrave;:</p>
+
+<ul><li>
+    <p>Chuy&#7875;n 600 cu&#7889;n t&#7899;i Th&aacute;i B&igrave;nh: \(x + z = 600\).</p>
+  </li>
+  <li>
+    <p>Chuy&#7875;n 400 cu&#7889;n t&#7899;i H&#7843;i Ph&ograve;ng: \(y + t = 400\).</p>
+  </li>
+  <li>
+    <p>L&#7845;y t&#7915; kho Nam &#272;&#7883;nh kh&ocirc;ng qu&aacute; 800: \(x + y \leq 800\).</p>
+  </li>
+  <li>
+    <p>L&#7845;y t&#7915; kho H&#7843;i D&#432;&#417;ng kh&ocirc;ng qu&aacute; 700: \(z + t \leq 700\).</p>
+  </li>
+  <li>
+    <p>\(x, y, z, t\) l&agrave; c&aacute;c s&#7889; t&#7921; nhi&ecirc;n. R&agrave;ng bu&#7897;c l&agrave; s&#7889; t&#7921; nhi&ecirc;n s&#7869; khi&#7871;n cho b&agrave;i to&aacute;n r&#7845;t kh&oacute; gi&#7843;i n&#7871;u s&#7889; l&#432;&#7907;ng bi&#7871;n l&agrave; r&#7845;t l&#7899;n. V&#7899;i b&agrave;i to&aacute;n n&agrave;y, ta gi&#7843; s&#7917; r&#7857;ng \(x, y, z, t\) l&agrave; c&aacute;c s&#7889; th&#7921;c d&#432;&#417;ng. Khi t&igrave;m &#273;&#432;&#7907;c nghi&#7879;m, n&#7871;u ch&uacute;ng kh&ocirc;ng ph&#7843;i l&agrave; s&#7889; t&#7921; nhi&ecirc;n, ta s&#7869; l&#7845;y c&aacute;c gi&aacute; tr&#7883; t&#7921; nhi&ecirc;n g&#7847;n nh&#7845;t.</p>
+  </li>
+</ul><p>V&#7853;y ta c&#7847;n gi&#7843;i b&agrave;i to&aacute;n t&#7889;i &#432;u sau &#273;&acirc;y:</p>
+<hr><p><strong>B&agrave;i to&aacute;n NXB:</strong>
+\[
+\begin{eqnarray}
+    (x, y, z, t) =&amp; \arg\min_{x, y, z, t} 5x + 10y + 15z + 4t ~~~~ (1)\<br>
+    \text{subject to:}~ &amp; x + z = 600 ~~~~ (2)\<br>
+                        &amp; y + t = 400 ~~~~ (3) \<br>
+                        &amp; x + y \leq 800 ~~~(4) \<br>
+                        &amp; z + t \leq 700 ~~~ (5)\<br>
+                        &amp; x, y, z, t \geq 0 ~~~ (6)
+\end{eqnarray}
+\]</p>
+<hr><p>Nh&#7853;n th&#7845;y r&#7857;ng h&agrave;m m&#7909;c ti&ecirc;u (objective function) l&agrave; m&#7897;t h&agrave;m tuy&#7871;n t&iacute;nh c&#7911;a c&aacute;c bi&#7871;n \(x, y, z, t\). C&aacute;c &#273;i&#7873;u ki&#7879;n r&agrave;ng bu&#7897;c &#273;&#7873;u c&oacute; d&#7841;ng <em>hyperplanes</em> ho&#7863;c <em>haflspaces</em>, &#273;&#7873;u l&agrave; c&aacute;c r&agrave;ng bu&#7897;c tuy&#7871;n t&iacute;nh (linear constraints). B&agrave;i to&aacute;n t&#7889;i &#432;u v&#7899;i c&#7843; <em>objective function</em> v&agrave; <em>constraints</em> &#273;&#7873;u l&agrave; <em>linear</em> &#273;&#432;&#7907;c g&#7885;i l&agrave; <strong>Linear Programming (LP)</strong>. D&#7841;ng t&#7893;ng qu&aacute;t v&agrave; c&aacute;ch th&#7913;c l&#7853;p tr&igrave;nh &#273;&#7875; gi&#7843;i m&#7897;t b&agrave;i to&aacute;n thu&#7897;c lo&#7841;i n&agrave;y s&#7869; &#273;&#432;&#7907;c cho trong ph&#7847;n sau c&#7911;a b&agrave;i vi&#7871;t n&agrave;y.</p>
+
+<p><em>Nghi&#7879;m cho b&agrave;i to&aacute;n n&agrave;y c&oacute; th&#7875; nh&#7853;n th&#7845;y ngay l&agrave; \(x = 600, y = 0, z = 0, t = 400\). N&#7871;u r&agrave;ng bu&#7897;c nhi&#7873;u h&#417;n v&agrave; s&#7889; bi&#7871;n nhi&#7873;u h&#417;n, ch&uacute;ng ta c&#7847;n m&#7897;t l&#7901;i gi&#7843;i c&oacute; th&#7875; t&iacute;nh &#273;&#432;&#7907;c b&#7857;ng c&aacute;ch l&#7853;p tr&igrave;nh.</em></p>
+
+<p><a name="-bai-toan-canh-tac" href="convexopt.html"></a></p>
+
+<h3 id="12-b&agrave;i-to&aacute;n-canh-t&aacute;c">1.2. B&agrave;i to&aacute;n canh t&aacute;c</h3>
+<p><a name="bai-toan-1" href="convexopt.html"></a></p>
+
+<h4 id="b&agrave;i-to&aacute;n-1">B&agrave;i to&aacute;n</h4>
+<p>M&#7897;t anh n&ocirc;ng d&acirc;n c&oacute; t&#7893;ng c&#7897;ng 10ha (10 hecta) &#273;&#7845;t canh t&aacute;c. Anh d&#7921; t&iacute;nh tr&#7891;ng c&agrave; ph&ecirc; v&agrave; h&#7891; ti&ecirc;u tr&ecirc;n s&#7889; &#273;&#7845;t n&agrave;y v&#7899;i t&#7893;ng chi ph&iacute; cho vi&#7879;c tr&#7891;ng n&agrave;y l&agrave; kh&ocirc;ng qu&aacute; 16T (tri&#7879;u &#273;&#7891;ng). Chi ph&iacute; &#273;&#7875; tr&#7891;ng c&agrave; ph&ecirc; l&agrave; 2T cho 1ha, &#273;&#7875; tr&#7891;ng h&#7891; ti&ecirc;u l&agrave; 1T/ha/. Th&#7901;i gian tr&#7891;ng c&agrave; ph&ecirc; l&agrave; 1 ng&agrave;y/ha v&agrave; h&#7891; ti&ecirc;u l&agrave; 4 ng&agrave;y/ha; trong khi anh ch&#7881; c&oacute; th&#7901;i gian t&#7893;ng c&#7897;ng l&agrave; 32 ng&agrave;y. Sau khi tr&#7915; t&#7845;t c&#7843; c&aacute;c chi ph&iacute; (bao g&#7891;m chi ph&iacute; tr&#7891;ng c&acirc;y), m&#7895;i ha c&agrave; ph&ecirc; mang l&#7841;i l&#7907;i nhu&#7853;n 5T, m&#7895;i ha h&#7891; ti&ecirc;u mang l&#7841;i l&#7907;i nhu&#7853;n 3T. H&#7887;i anh ph&#7843;i tr&#7891;ng nh&#432; th&#7871; n&agrave;o &#273;&#7875; t&#7889;i &#273;a l&#7907;i nhu&#7853;n? (<em>C&aacute;c s&#7889; li&#7879;u c&oacute; th&#7875; v&ocirc; l&yacute; v&igrave; ch&uacute;ng &#273;&atilde; &#273;&#432;&#7907;c ch&#7885;n &#273;&#7875; b&agrave;i to&aacute;n ra nghi&#7879;m &#273;&#7865;p</em>)</p>
+
+<p><a name="phan-tich-1" href="convexopt.html"></a></p>
+
+<h4 id="ph&acirc;n-t&iacute;ch-1">Ph&acirc;n t&iacute;ch</h4>
+<p>G&#7885;i \(x\) v&agrave; \(y\) l&#7847;n l&#432;&#7907;t l&agrave; s&#7889; ha c&agrave; ph&ecirc; v&agrave; h&#7891; ti&ecirc;u m&agrave; anh n&ocirc;ng d&acirc;n n&ecirc;n tr&#7891;ng. L&#7907;i nhu&#7853;n anh &#7845;y thu &#273;&#432;&#7907;c l&agrave; \(f(x, y) = 5x + 3y\) (tri&#7879;u &#273;&#7891;ng).</p>
+
+<p>C&aacute;c r&agrave;ng bu&#7897;c trong b&agrave;i to&aacute;n n&agrave;y l&agrave;:</p>
+
+<ul><li>
+    <p>T&#7893;ng di&#7879;n t&iacute;ch tr&#7891;ng kh&ocirc;ng v&#432;&#7907;t qu&aacute; 10: \(x + y \leq 10\).</p>
+  </li>
+  <li>
+    <p>T&#7893;ng chi ph&iacute; tr&#7891;ng kh&ocirc;ng v&#432;&#7907;t qu&aacute; 16T: \(2x + y \leq 16\).</p>
+  </li>
+  <li>
+    <p>T&#7893;ng th&#7901;i gian tr&#7891;ng kh&ocirc;ng v&#432;&#7907;t qu&aacute; 32 ng&agrave;y: \(x + 4y \leq 32\).</p>
+  </li>
+  <li>
+    <p>Di&#7879;n t&iacute;ch c&agrave; ph&ecirc; v&agrave; h&#7891; ti&ecirc;u l&agrave; c&aacute;c s&#7889; kh&ocirc;ng &acirc;m: \(x, y \geq 0\).</p>
+  </li>
+</ul><p>V&#7853;y ta c&oacute; b&agrave;i to&aacute;n t&#7889;i &#432;u sau &#273;&acirc;y:</p>
+<hr><p><strong>B&agrave;i to&aacute;n canh t&aacute;c:</strong>
+\[
+\begin{eqnarray}
+    (x, y) =&amp; \arg\max_{x, y} 5x + 3y ~~~~ (7)\<br>
+    \text{subject to:}~ &amp; x + y \leq 10 ~~~~ (8)\<br>
+                        &amp; 2x + y \leq 16 ~~~(9) \<br>
+                        &amp; x + 4y \leq 32 ~~~ (10)\<br>
+                        &amp; x, y \geq 0 ~~~ (11)
+\end{eqnarray}
+\]</p>
+<hr><p>B&agrave;i to&aacute;n n&agrave;y h&#417;i kh&aacute;c m&#7897;t ch&uacute;t l&agrave; ta c&#7847;n <em>t&#7889;i &#273;a h&agrave;m m&#7909;c ti&ecirc;u</em> thay v&igrave; t&#7889;i thi&#7875;u n&oacute;. Vi&#7879;c chuy&#7875;n b&agrave;i to&aacute;n n&agrave;y v&#7873; b&agrave;i to&aacute;n <em>t&#7889;i thi&#7875;u</em> c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n &#273;&#417;n gi&#7843;n b&#7857;ng c&aacute;ch &#273;&#7893;i d&#7845;u h&agrave;m m&#7909;c ti&ecirc;u. Khi &#273;&oacute; h&agrave;m m&#7909;c ti&ecirc;u v&#7851;n l&agrave; <em>linear</em>, c&aacute;c r&agrave;ng bu&#7897;c v&#7851;n l&agrave; c&aacute;c <em>linear constraints</em>, ta l&#7841;i c&oacute; m&#7897;t b&agrave;i to&aacute;n <strong>Linear Programming (LP)</strong> n&#7919;a.</p>
+
+<p>B&#7841;n c&#361;ng c&oacute; th&#7875; d&#7921;a v&agrave;o h&igrave;nh minh ho&#7841; d&#432;&#7899;i &#273;&acirc;y &#273;&#7875; suy ra nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n:</p>
+<hr><div class="imgcap">
+ <img src="images/17_convexopt-planting.png" align="center" width="400"><div class="thecap">H&igrave;nh 1. Minh ho&#7841; nghi&#7879;m cho b&agrave;i to&aacute;n canh t&aacute;c.</div>
+</div>
+<hr><p>V&ugrave;ng m&agrave;u x&aacute;m c&oacute; d&#7841;ng <em>polyhedron</em> (trong tr&#432;&#7901;ng h&#7907;p n&agrave;y l&agrave; &#273;a gi&aacute;c) ch&iacute;nh l&agrave; t&#7853;p h&#7907;p c&aacute;c &#273;i&#7875;m tho&#7843; m&atilde;n c&aacute;c r&agrave;ng bu&#7897;c t&#7915; \(8)\) &#273;&#7871;n \((11)\). C&aacute;c &#273;&#432;&#7901;ng n&eacute;t &#273;&#7913;t c&oacute; m&agrave;u ch&iacute;nh l&agrave; c&aacute;c &#273;&#432;&#7901;ng &#273;&#7891;ng m&#7913;c c&#7911;a h&agrave;m m&#7909;c ti&ecirc;u \(5x + 3y\), m&#7895;i &#273;&#432;&#7901;ng &#7913;ng v&#7899;i m&#7897;t gi&aacute; tr&#7883; kh&aacute;c nhau v&#7899;i &#273;&#432;&#7901;ng c&agrave;ng &#273;&#7887; &#7913;ng v&#7899;i gi&aacute; tr&#7883; c&agrave;ng cao. M&#7897;t c&aacute;ch tr&#7921;c quan, nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n c&oacute; th&#7875; t&igrave;m &#273;&#432;&#7907;c b&#7857;ng c&aacute;ch di chuy&#7875;n &#273;&#432;&#7901;ng n&eacute;t &#273;&#7913;t m&agrave;u xanh v&#7873; ph&iacute;a b&ecirc;n ph&#7843;i (ph&iacute;a l&agrave;m cho gi&aacute; tr&#7883; c&#7911;a h&agrave;m m&#7909;c ti&ecirc;u l&#7899;n h&#417;n) &#273;&#7871;n khi n&oacute; kh&ocirc;ng c&ograve;n &#273;i&#7875;m chung v&#7899;i ph&#7847;n &#273;a gi&aacute;c m&agrave;u x&aacute;m n&#7919;a.</p>
+
+<p>C&oacute; th&#7875; nh&#7853;n th&#7845;y nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n ch&iacute;nh l&agrave; &#273;i&#7875;m m&agrave;u xanh l&agrave; giao &#273;i&#7875;m c&#7911;a hai &#273;&#432;&#7901;ng th&#7859;ng \(x + y = 10\) v&agrave; \(2x + y = 16\). Gi&#7843;i h&#7879; ph&#432;&#417;ng tr&igrave;nh n&agrave;y ta c&oacute; \(x^* = 6\) v&agrave; \(y^* = 4\). T&#7913;c anh n&ocirc;ng d&acirc;n n&ecirc;n tr&#7891;ng 6ha c&agrave; ph&ecirc; v&agrave; 4ha h&#7891; ti&ecirc;u. L&uacute;c &#273;&oacute; l&#7907;i nhu&#7853;n thu &#273;&#432;&#7907;c l&agrave; \(5x^* + 3y^* = 42 \) tri&#7879;u &#273;&#7891;ng, trong khi anh ch&#7881; m&#7845;t th&#7901;i gian l&agrave; 22 ng&agrave;y. (<em>Ch&#7883;u t&iacute;nh to&aacute;n c&aacute;i l&agrave; kh&aacute;c ngay, l&agrave;m &iacute;t, h&#432;&#7903;ng nhi&#7873;u</em>).</p>
+
+<p>&#272;&acirc;y ch&iacute;nh l&agrave; c&aacute;ch gi&#7843;i trong s&aacute;ch to&aacute;n l&#7899;p 10 (ng&agrave;y t&ocirc;i h&#7885;c l&#7899;p 10).</p>
+
+<p>V&#7899;i nhi&#7873;u bi&#7871;n h&#417;n v&agrave; nhi&#7873;u r&agrave;ng bu&#7897;c h&#417;n, ch&uacute;ng ta li&#7879;u c&oacute; th&#7875; v&#7869; &#273;&#432;&#7907;c h&igrave;nh nh&#432; th&#7871; n&agrave;y &#273;&#7875; nh&igrave;n ra nghi&#7879;m hay kh&ocirc;ng? C&acirc;u tr&#7843; l&#7901;i c&#7911;a t&ocirc;i l&agrave; n&ecirc;n t&igrave;m m&#7897;t c&ocirc;ng c&#7909; &#273;&#7875; v&#7899;i nhi&#7873;u bi&#7871;n h&#417;n v&agrave; v&#7899;i c&aacute;c r&agrave;ng bu&#7897;c kh&aacute;c nhau, ch&uacute;ng ta c&oacute; th&#7875; t&igrave;m ra nghi&#7879;m g&#7847;n nh&#432; ngay l&#7853;p t&#7913;c.
+<a name="-bai-toan-dong-thung" href="convexopt.html"></a></p>
+
+<h3 id="13-b&agrave;i-to&aacute;n-&#273;&oacute;ng-th&ugrave;ng">1.3. B&agrave;i to&aacute;n &#273;&oacute;ng th&ugrave;ng</h3>
+<p><a name="bai-toan-2" href="convexopt.html"></a></p>
+
+<h4 id="b&agrave;i-to&aacute;n-2">B&agrave;i to&aacute;n</h4>
+<p>M&#7897;t c&ocirc;ng ty ph&#7843;i chuy&#7875;n 400 \(m^3\) c&aacute;t t&#7899;i &#273;&#7883;a &#273;i&#7875;m x&acirc;y d&#7921;ng &#7903; b&ecirc;n kia s&ocirc;ng b&#7857;ng c&aacute;ch thu&ecirc; m&#7897;t chi&#7871;c x&agrave; lan. Ngo&agrave;i chi ph&iacute; v&#7853;n chuy&#7875;n m&#7897;t l&#432;&#7907;t &#273;i v&#7873; l&agrave; 100k c&#7911;a chi&#7871;c x&agrave; lan, c&ocirc;ng ty &#273;&oacute; ph&#7843;i thi&#7871;t k&#7871; m&#7897;t th&ugrave;ng h&igrave;nh h&#7897;p ch&#7919; nh&#7853;t &#273;&#7863;t tr&ecirc;n x&agrave; lan &#273;&#7875; &#273;&#7921;ng c&aacute;t. Chi&#7871;c th&ugrave;ng n&agrave;y kh&ocirc;ng c&#7847;n n&#7855;p, chi ph&iacute; cho c&aacute;c m&#7863;t xung quanh l&agrave; 1T/\(m^2\), cho m&#7863;t &#273;&aacute;y l&agrave; 2T/\(m^2\). H&#7887;i k&iacute;ch th&#432;&#7899;c c&#7911;a chi&#7871;c th&ugrave;ng &#273;&oacute; nh&#432; th&#7871; n&agrave;o &#273;&#7875; t&#7893;ng chi ph&iacute; v&#7853;n chuy&#7875;n l&agrave; nh&#7887; nh&#7845;t. &#272;&#7875; cho &#273;&#417;n gi&#7843;n, gi&#7843; s&#7917; c&aacute;t ch&#7881; &#273;&#432;&#7907;c &#273;&#7893; ngang ho&#7863;c th&#7845;p h&#417;n v&#7899;i ph&#7847;n tr&ecirc;n c&#7911;a th&agrave;nh th&ugrave;ng, kh&ocirc;ng c&oacute; ng&#7885;n. Gi&#7843; s&#7917; th&ecirc;m r&#7857;ng x&agrave; lan <em>r&#7897;ng v&ocirc; h&#7841;n</em> v&agrave; ch&#7913;a &#273;&#432;&#7907;c s&#7913;c n&#7863;ng v&ocirc; h&#7841;n, gi&#7843; s&#7917; n&agrave;y khi&#7871;n b&agrave;i to&aacute;n d&#7877; gi&#7843;i h&#417;n.</p>
+
+<p><a name="phan-tich-2" href="convexopt.html"></a></p>
+
+<h4 id="ph&acirc;n-t&iacute;ch-2">Ph&acirc;n t&iacute;ch</h4>
+<p>Gi&#7843; s&#7917; chi&#7871;c th&ugrave;ng c&#7847;n l&agrave;m c&oacute; chi&#7873;u d&agrave;i l&agrave; \(x\) (\(m\)), chi&#7873;u r&#7897;ng l&agrave; \(y\) v&agrave; chi&#7873;u cao l&agrave; \(z\). Th&#7875; t&iacute;ch c&#7911;a th&ugrave;ng l&agrave; \(xyz\) (&#273;&#417;n v&#7883; l&agrave; \(m^3\)). C&oacute; hai lo&#7841;i chi ph&iacute; l&agrave;:</p>
+
+<ul><li>
+    <p><em>Chi ph&iacute; thu&ecirc; x&agrave; lan:</em> s&#7889; chuy&#7871;n x&agrave; lan ph&#7843;i thu&ecirc; l&agrave; \(\frac{400}{xyz}\) (ta h&atilde;y t&#7841;m gi&#7843; s&#7917; r&#7857;ng &#273;&acirc;y l&agrave; m&#7897;t s&#7889; t&#7921; nhi&ecirc;n, vi&#7879;c l&agrave;m tr&ograve;n n&agrave;y s&#7869; kh&ocirc;ng thay &#273;&#7893;i k&#7871;t qu&#7843; &#273;&aacute;ng k&#7875; v&igrave; chi ph&iacute; v&#7853;n chuy&#7875;n m&#7897;t chuy&#7871;n l&agrave; nh&#7887; so v&#7899;i chi ph&iacute; l&agrave;m th&ugrave;ng). S&#7889; ti&#7873;n ph&#7843;i tr&#7843; cho x&agrave; lan s&#7869; l&agrave; \(0.1\frac{400}{xyz} = \frac{40}{xyz}\).</p>
+  </li>
+  <li>
+    <p><em>Chi ph&iacute; l&agrave;m th&ugrave;ng:</em> Di&#7879;n t&iacute;ch xung quanh c&#7911;a th&ugrave;ng l&agrave; \(2 (x + y)z \). Di&#7879;n t&iacute;ch &#273;&aacute;y l&agrave; \(xy\). V&#7853;y t&#7893;ng chi ph&iacute; l&agrave;m th&ugrave;ng l&agrave; \(2(x +y)z + 2xy = 2(xy + yz + zx)\).</p>
+  </li>
+</ul><p>T&#7893;ng to&agrave;n b&#7897; chi ph&iacute; l&agrave; \(f(x, y, z) = 40x^{-1}y^{-1}z^{-1} + 2(xy + yz + zx)\). &#272;i&#7873;u ki&#7879;n r&agrave;ng bu&#7897;c duy nh&#7845;t l&agrave; k&iacute;ch th&#432;&#7899;c th&ugrave;ng ph&#7843;i l&agrave; c&aacute;c s&#7889; d&#432;&#417;ng. V&#7853;y ta c&oacute; b&agrave;i to&aacute;n t&#7889;i &#432;u sau:</p>
+<hr><p><strong>B&agrave;i to&aacute;n v&#7853;n chuy&#7875;n:</strong>
+\[
+\begin{eqnarray}
+    (x, y) =&amp; \arg\min_{x, y, z} 40x^{-1}y^{-1}z^{-1} + 2(xy + yz + zx) ~~~~ (13)\<br>
+    \text{subject to:}~ &amp; x, y, z &gt; 0 ~~~~ (14)\<br>
+\end{eqnarray}
+\]</p>
+<hr><p>B&agrave;i to&aacute;n n&agrave;y thu&#7897;c lo&#7841;i <strong>Geometric Programming (GP)</strong>. &#272;&#7883;nh ngh&#297;a c&#7911;a GP v&agrave; c&aacute;ch d&ugrave;ng c&ocirc;ng c&#7909; t&#7889;i &#432;u s&#7869; &#273;&#432;&#7907;c tr&igrave;nh b&agrave;y trong ph&#7847;n sau c&#7911;a b&agrave;i vi&#7871;t.</p>
+
+<p><em>Nh&#7853;n th&#7845;y r&#7857;ng b&agrave;i n&agrave;y ho&agrave;n to&agrave;n c&oacute; th&#7875; d&ugrave;ng b&#7845;t &#273;&#7859;ng th&#7913;c Cauchy &#273;&#7875; gi&#7843;i &#273;&#432;&#7907;c, nh&#432;ng t&ocirc;i v&#7851;n mu&#7889;n m&#7897;t l&#7901;i gi&#7843;i cho b&agrave;i to&aacute;n t&#7893;ng qu&aacute;t sao cho c&oacute; th&#7875; l&#7853;p tr&igrave;nh &#273;&#432;&#7907;c.</em></p>
+
+<p>(L&#7901;i gi&#7843;i:
+\[
+\begin{eqnarray}
+    f(x, y, z) &amp;=&amp; \frac{20}{xyz} + \frac{20}{xyz} + 2xy + 2yz + 2zx \<br>
+               &amp;\geq &amp; 5\sqrt[5]{3200}
+\end{eqnarray}
+\]
+d&#7845;u b&#7857;ng x&#7843;y ra khi v&agrave; ch&#7881; khi \(x = y = z = \sqrt[5]{10}\). B&agrave;i n&agrave;y c&oacute; l&#7869; h&#7907;p v&#7899;i c&aacute;c k&#7923; thi v&igrave; d&#7919; ki&#7879;n qu&aacute; &#273;&#7865;p. C&aacute; nh&acirc;n t&ocirc;i th&iacute;ch c&aacute;c &#273;&#7873; b&agrave;i ra ki&#7875;u n&agrave;y h&#417;n l&agrave; y&ecirc;u c&#7847;u &#273;i t&igrave;m gi&aacute; tr&#7883; nh&#7887; nh&#7845;t c&#7911;a m&#7897;t bi&#7875;u th&#7913;c nh&agrave;m ch&aacute;n, nhi&#7873;u h&#7885;c sinh cho r&#7857;ng kh&ocirc;ng bi&#7871;t h&#7885;c b&#7845;t &#273;&#7859;ng th&#7913;c &#273;&#7875; l&agrave;m g&igrave;!)
+<!-- http://www.pitt.edu/~jrclass/opt/notes6.pdf --></p>
+
+<p>N&#7871;u c&oacute; c&aacute;c r&agrave;ng bu&#7897;c v&#7873; k&iacute;ch th&#432;&#7899;c c&#7911;a th&ugrave;ng v&agrave; tr&#7885;ng l&#432;&#7907;ng m&agrave; x&agrave; lan t&#7843;i &#273;&#432;&#7907;c th&igrave; c&oacute; th&#7875; t&igrave;m &#273;&#432;&#7907;c l&#7901;i gi&#7843;i &#273;&#417;n gi&#7843;n nh&#432; th&#7871; n&agrave;y kh&ocirc;ng?</p>
+
+<p>Nh&#7919;ng b&agrave;i to&aacute;n tr&ecirc;n &#273;&acirc;y &#273;&#7873;u l&agrave; c&aacute;c b&agrave;i to&aacute;n t&#7889;i &#432;u. Ch&iacute;nh x&aacute;c h&#417;n n&#7919;a, ch&uacute;ng &#273;&#7873;u l&agrave; c&aacute;c b&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i (<em>convex optimization problems</em>) nh&#432; c&aacute;c b&#7841;n s&#7869; th&#7845;y &#7903; ph&#7847;n sau. V&agrave; vi&#7879;c t&igrave;m l&#7901;i gi&#7843;i c&oacute; th&#7875; kh&ocirc;ng m&#7845;y kh&oacute; kh&#259;n, th&#7853;m ch&iacute; gi&#7843;i b&#7857;ng tay c&#361;ng c&oacute; th&#7875; ra k&#7871;t qu&#7843;. Tuy nhi&ecirc;n, m&#7909;c &#273;&iacute;ch c&#7911;a b&agrave;i vi&#7871;t n&agrave;y kh&ocirc;ng ph&#7843;i l&agrave; h&#432;&#7899;ng d&#7851;n c&aacute;c b&#7841;n gi&#7843;i c&aacute;c b&agrave;i to&aacute;n tr&ecirc;n <em>b&#7857;ng tay</em>, m&agrave; l&agrave; c&aacute;ch nh&#7853;n di&#7879;n c&aacute;c b&agrave;i to&aacute;n v&agrave; &#273;&#432;a ch&uacute;ng v&#7873; c&aacute;c d&#7841;ng m&agrave; c&aacute;c toolboxes s&#7861;n c&oacute; c&oacute; th&#7875; gi&uacute;p ch&uacute;ng ta. Tr&ecirc;n th&#7921;c t&#7871;, l&#432;&#7907;ng d&#7919; ki&#7879;n v&agrave; s&#7889; bi&#7871;n c&#7847;n t&#7889;i &#432;u l&#7899;n h&#417;n nhi&#7873;u, ch&uacute;ng ta kh&ocirc;ng th&#7875; gi&#7843;i c&aacute;c b&agrave;i to&aacute;n tr&ecirc;n <em>b&#7857;ng tay</em> &#273;&#432;&#7907;c.</p>
+
+<p>Tr&#432;&#7899;c h&#7871;t, ch&uacute;ng ta c&#7847;n hi&#7875;u c&aacute;c kh&aacute;i ni&#7879;m v&#7873; <em>convex optimization problems</em> v&agrave; t&#7841;i sao <em>convex</em> l&#7841;i quan tr&#7885;ng. (B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#273;&#7885;c t&#7899;i <a href="/2017/03/19/convexopt/#-linear-programming">ph&#7847;n 4</a> n&#7871;u kh&ocirc;ng mu&#7889;n bi&#7871;t c&aacute;c kh&aacute;i ni&#7879;m v&agrave; &#273;&#7883;nh l&yacute; to&aacute;n  trong ph&#7847;n 2 v&agrave; 3.)</p>
+
+<p><a name="-nhac-lai-bai-toan-toi-uu" href="convexopt.html"></a></p>
+
+<h2 id="2-nh&#7855;c-l&#7841;i-b&agrave;i-to&aacute;n-t&#7889;i-&#432;u">2. Nh&#7855;c l&#7841;i b&agrave;i to&aacute;n t&#7889;i &#432;u</h2>
+<p><a name="-cac-khai-niem-co-ban" href="convexopt.html"></a></p>
+
+<h3 id="21-c&aacute;c-kh&aacute;i-ni&#7879;m-c&#417;-b&#7843;n">2.1. C&aacute;c kh&aacute;i ni&#7879;m c&#417; b&#7843;n</h3>
+<p>T&ocirc;i xin nh&#7855;c l&#7841;i b&agrave;i to&aacute;n t&#7889;i &#432;u &#7903; d&#7841;ng t&#7893;ng qu&aacute;t:
+\[
+\begin{eqnarray}
+\mathbf{x}^* &amp;=&amp; \arg\min_{\mathbf{x}} f_0(\mathbf{x}) \<br>
+\text{subject to:}~ &amp;&amp; f_i(\mathbf{x}) \leq 0, ~~ i = 1, 2, \dots, m ~~~(15)\<br>
+&amp;&amp; h_j(\mathbf{x}) = 0, ~~ j = 1, 2, \dots, p
+\end{eqnarray}
+\]</p>
+
+<p>Ph&aacute;t bi&#7875;u b&#7857;ng l&#7901;i: T&igrave;m gi&aacute; tr&#7883; c&#7911;a bi&#7871;n \(\mathbf{x}\) &#273;&#7875; t&#7889;i thi&#7875;u h&agrave;m \(f_0(\mathbf{x})\) trong s&#7889; c&aacute;c gi&aacute; tr&#7883; c&#7911;a \(\mathbf{x}\) tho&#7843; m&atilde;n c&aacute;c &#273;i&#7879;u hi&#7879;n r&agrave;ng bu&#7897;c. Ta c&oacute; b&#7843;ng c&aacute;c t&ecirc;n g&#7885;i ti&#7871;ng Anh v&agrave; ti&#7871;ng Vi&#7879;t nh&#432; sau:</p>
+
+<hr><table><thead><tr><th>K&yacute; hi&#7879;u</th>
+      <th>Ti&#7871;ng Anh</th>
+      <th>Ti&#7871;ng Vi&#7879;t</th>
+    </tr></thead><tbody><tr><td>\(\mathbf{x} \in \mathbb{R}^n\)</td>
+      <td>optimization variable</td>
+      <td>bi&#7871;n t&#7889;i &#432;u</td>
+    </tr><tr><td>\(f_0: \mathbb{R}^n \rightarrow \mathbb{R}\)</td>
+      <td>objective/los/cost function</td>
+      <td>h&agrave;m m&#7909;c ti&ecirc;u</td>
+    </tr><tr><td>\(f_i(\mathbf{x}) \leq 0 \)</td>
+      <td>inequality constraints</td>
+      <td>b&#7845;t &#273;&#7859;ng th&#7913;c r&agrave;ng bu&#7897;c</td>
+    </tr><tr><td>\(f_i: \mathbb{R}^n \rightarrow \mathbb{R}\)</td>
+      <td>inequality constraint functions</td>
+      <td>-</td>
+    </tr><tr><td>\(h_j(\mathbf{x}) = 0 \)</td>
+      <td>equality constraints</td>
+      <td>&#273;&#7859;ng th&#7913;c r&agrave;ng bu&#7897;c</td>
+    </tr><tr><td>\(h_j: \mathbb{R}^n \rightarrow \mathbb{R}\)</td>
+      <td>equality constraint functions</td>
+      <td>-</td>
+    </tr><tr><td>\(\mathcal{D} = \bigcap_{i=0}^m \text{dom}f_i \cap \bigcap_{pj=1}^p \text{dom}h_i \)</td>
+      <td>domain</td>
+      <td>t&#7853;p x&aacute;c &#273;&#7883;nh</td>
+    </tr></tbody></table><hr><p>Ngo&agrave;i ra:</p>
+
+<ul><li>
+    <p>Khi \(m = p = 0\), b&agrave;i to&aacute;n \((15)\) &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>unconstrained optimization problem</em> (b&agrave;i to&aacute;n t&#7889;i &#432;u kh&ocirc;ng r&agrave;ng bu&#7897;c).</p>
+  </li>
+  <li>
+    <p>\(\mathcal{D}\) ch&#7881; l&agrave; t&#7853;p x&aacute;c &#273;&#7883;nh, t&#7913;c giao c&#7911;a t&#7845;t c&#7843; c&aacute;c t&#7853;p x&aacute;c &#273;&#7883;nh c&#7911;a m&#7885;i h&agrave;m s&#7889; xu&#7845;t hi&#7879;n trong b&agrave;i to&aacute;n. T&#7853;p h&#7907;p c&aacute;c &#273;i&#7875;m tho&#7843; m&atilde;n m&#7885;i &#273;i&#7873;u ki&#7879;n r&agrave;ng bu&#7897;c, th&ocirc;ng th&#432;&#7901;ng, l&agrave; m&#7897;t t&#7853;p con c&#7911;a \(\mathcal{D}\) &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>feasible set</em> ho&#7863;c <em>constraint set</em>. Khi <em>feasible set</em> l&agrave; m&#7897;t t&#7853;p r&#7895;ng th&igrave; ta n&oacute;i b&agrave;i to&aacute;n t&#7889;i &#432;u \((15)\) l&agrave; <em>infeasible</em>. N&#7871;u m&#7897;t &#273;i&#7875;m n&#7857;m trong <em>feasible set</em>, ta g&#7885;i &#273;i&#7875;m &#273;&oacute; l&agrave; <em>feasible</em>.</p>
+  </li>
+  <li>
+    <p><em>Optimal value</em> (<em>gi&aacute; tr&#7883; t&#7889;i &#432;u</em>) c&#7911;a b&agrave;i to&aacute;n t&#7889;i &#432;u \((15)\) &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a l&agrave;:
+\[
+p^* = \text{inf}\{f_0(\mathbf{x}) | f_i(\mathbf{x}) \leq 0, i = 1, \dots, m; h_j(\mathbf{x}) = 0, j = 1, \dots, p\}
+\]
+trong &#273;&oacute; \(\text{inf}\) l&agrave; vi&#7871;t t&#7855;t c&#7911;a h&agrave;m <a href="http://mathworld.wolfram.com/Infimum.html">infimum</a>. \(p^*\) c&oacute; th&#7875; nh&#7853;n c&aacute;c gi&aacute; tr&#7883; \(\pm \infty\). N&#7871;u b&agrave;i to&aacute;n l&agrave; <em>infeasible</em>, ta coi \(p^* = + \infty\), N&#7871;u h&agrave;m m&#7909;c ti&ecirc;u kh&ocirc;ng b&#7883; ch&#7863;n d&#432;&#7899;i (<em>unbounded below</em>) trong t&#7853;p x&aacute;c &#273;&#7883;nh, ta coi \(p^* = - \infty\).</p>
+  </li>
+</ul><p><a name="-optimal-and-locally-optimal-points" href="convexopt.html"></a></p>
+
+<h3 id="22-optimal-and-locally-optimal-points">2.2. Optimal and locally optimal points</h3>
+<!-- _M&#7897;t v&agrave;i kh&aacute;i ni&#7879;m trong n&agrave;y c&aacute;c b&#7841;n c&oacute; th&#7875; &#273;&atilde; g&#7863;p trong ch&#432;&#417;ng tr&igrave;nh to&aacute;n c&#7845;p ba &#7903; Vi&#7879;t Nam_. -->
+
+<p>M&#7897;t &#273;i&#7875;m \(\mathbf{x}^*\) &#273;&#432;&#7907;c g&#7885;i l&agrave; m&#7897;t &#273;i&#7875;m <em>optimal point</em> (<em>&#273;i&#7875;m t&#7889;i &#432;u</em>), ho&#7863;c l&agrave; <em>nghi&#7879;m</em> c&#7911;a b&agrave;i to&aacute;n \((15)\) n&#7871;u \(\mathbf{x}^*\) l&agrave; <em>feasible</em> v&agrave; \(f_0(\mathbf{x}^*) = p^*\). T&#7845;t h&#7907;p t&#7845;t c&#7843; c&aacute;c <em>optimal points</em> &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>optimal set</em>.</p>
+
+<p>N&#7871;u <em>optimal set</em> l&agrave; m&#7897;t t&#7853;p <em>kh&ocirc;ng</em> r&#7895;ng, ta n&oacute;i b&agrave;i to&aacute;n \((15)\) l&agrave; <em>solvable</em> (<em>gi&#7843;i &#273;&#432;&#7907;c</em>). Ng&#432;&#7907;c l&#7841;i, n&#7871;u <em>optimal set</em> l&agrave; m&#7897;t t&#7853;p r&#7895;ng, ta n&oacute;i <em>optimal value</em> l&agrave; <em>kh&ocirc;ng th&#7875; &#273;&#7841;t &#273;&#432;&#7907;c</em> (<em>not attained/ not achieved</em>).</p>
+
+<p>V&iacute; d&#7909;: x&eacute;t h&agrave;m m&#7909;c ti&ecirc;u \(f(x) = 1/x\) v&#7899;i r&agrave;ng bu&#7897;c \(x &gt; 0\). <em>Optimal value</em> c&#7911;a b&agrave;i to&aacute;n n&agrave;y l&agrave; \(p^* = 0\) nh&#432;ng <em>optimal set</em> l&agrave; m&#7897;t t&#7853;p r&#7895;ng v&igrave; kh&ocirc;ng c&oacute; gi&aacute; tr&#7883; n&agrave;o c&#7911;a \(x\) &#273;&#7875; h&agrave;m m&#7909;c ti&ecirc;u &#273;&#7841;t gi&aacute; tr&#7883; 0. L&uacute;c n&agrave;y ta n&oacute;i <em>gi&aacute; tr&#7883; t&#7889;i &#432;u</em> l&agrave; <em>kh&ocirc;ng &#273;&#7841;t &#273;&#432;&#7907;c</em>.</p>
+
+<p>V&#7899;i h&agrave;m m&#7897;t bi&#7871;n, m&#7897;t &#273;i&#7875;m l&agrave; <em>c&#7921;c ti&#7875;u</em> c&#7911;a m&#7897;t h&agrave;m s&#7889; n&#7871;u t&#7841;i &#273;&oacute;, h&agrave;m s&#7889; &#273;&#7841;t gi&aacute; tr&#7883; nh&#7887; nh&#7845;t trong m&#7897;t l&acirc;n c&#7853;n (v&agrave; l&acirc;n c&#7853;n n&agrave;y thu&#7897;c t&#7853;p x&aacute;c &#273;&#7883;nh c&#7911;a h&agrave;m s&#7889;). Trong kh&ocirc;ng gian 1 chi&#7873;u, <em>l&acirc;n c&#7853;n</em> &#273;&#432;&#7907;c hi&#7875;u l&agrave; tr&#7883; tuy&#7879;t t&#7889;i c&#7911;a hi&#7879;u 2 &#273;i&#7875;m nh&#7887; h&#417;n m&#7897;t gi&aacute; tr&#7883; n&agrave;o &#273;&oacute;.</p>
+
+<p>Trong to&aacute;n t&#7889;i &#432;u (th&#432;&#7901;ng l&agrave; kh&ocirc;ng gian nhi&#7873;u chi&#7873;u), ta g&#7885;i m&#7897;t &#273;i&#7875;m \(\mathbf{x}\) l&agrave; <strong>locally optimal</strong> (c&#7921;c ti&#7875;u) n&#7871;u t&#7891;n t&#7841;i m&#7897;t gi&aacute; tr&#7883; (th&#432;&#7901;ng &#273;&#432;&#7907;c g&#7885;i l&agrave; b&aacute;n kinh) \(R\) sao cho:
+\[
+\begin{eqnarray}
+    f_0(\mathbf{x}) = &amp;\text{inf}\{f_0(\mathbf{z}) | f_i(\mathbf{z}) \leq 0, i = 1, \dots, m, \<br>
+                 &amp; h_j(\mathbf{z}) = 0, j = 1, \dots, p, ||\mathbf{z} - \mathbf{x}||_2 \leq R\}
+\end{eqnarray}
+\]</p>
+
+<p>N&#7871;u m&#7897;t &#273;i&#7875;m <em>feasible</em> \(\mathbf{x}\) tho&#7843; m&atilde;n \(f_i(\mathbf{x}) = 0\), ta n&oacute;i r&#7857;ng b&#7845;t &#273;&#7859;ng th&#7913;c r&agrave;ng bu&#7897;c th&#7913; \(i: f_i(\mathbf{x}) = 0\) l&agrave; <em>active</em>. N&#7871;u \(f_i(\mathbf{x}) &lt; 0\), ta n&oacute;i r&#7857;ng r&agrave;ng bu&#7897;c n&agrave;y l&agrave; <em>inactive</em> t&#7841;i \(\mathbf{x}\).</p>
+
+<p><a name="-mot-vai-luu-y" href="convexopt.html"></a></p>
+
+<h3 id="23-m&#7897;t-v&agrave;i-l&#432;u-&yacute;">2.3. M&#7897;t v&agrave;i l&#432;u &yacute;</h3>
+<p>M&#7863;c d&ugrave; trong &#273;&#7883;nh ngh&#297;a b&agrave;i to&aacute;n t&#7889;i &#432;u \((15)\) l&agrave; cho b&agrave;i to&aacute;n <em>t&#7889;i thi&#7875;u h&agrave;m m&#7909;c ti&ecirc;u</em> v&#7899;i c&aacute;c r&agrave;ng bu&#7897;c tho&#7843; m&atilde;n c&aacute;c &#273;i&#7873;u ki&#7879;n nh&#7887; h&#417;n ho&#7863;c b&#7857;ng 0, c&aacute;c b&agrave;i to&aacute;n t&#7889;i &#432;u v&#7899;i <em>t&#7889;i &#273;a h&agrave;m m&#7909;c ti&ecirc;u</em> v&agrave; &#273;i&#7873;u ki&#7879;n r&agrave;ng bu&#7897;c &#7903; d&#7841;ng kh&aacute;c &#273;&#7873;u c&oacute; th&#7875; &#273;&#432;a v&#7873; &#273;&#432;&#7907;c d&#7841;ng n&agrave;y:</p>
+
+<ul><li>
+    <p>\(\max f_0(\mathbf{x}) \Leftrightarrow\min -f_0(\mathbf{x}) \).</p>
+  </li>
+  <li>
+    <p>\(f_i(\mathbf{x}) \leq g(\mathbf{x}) \Leftrightarrow\ f_i(\mathbf{x}) - g(\mathbf{x}) \leq 0\).</p>
+  </li>
+  <li>
+    <p>\(f_i(\mathbf{x}) \geq 0 \Leftrightarrow\ -f_i(\mathbf{x}) \leq 0 \).</p>
+  </li>
+  <li>
+    <p>\(a \leq f_i(\mathbf{x}) \leq b \Leftrightarrow\ f_i(\mathbf{x}) -b \leq 0\) v&agrave; \(a - f_i(\mathbf{x}) \leq 0\).</p>
+  </li>
+  <li>
+    <p>\(f_i(\mathbf{x}) \leq 0 \Leftrightarrow f_i(\mathbf{x}) + s_i = 0 \) v&agrave; \(s_i \geq 0\). \(s_i\) &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>slack variable</em>. Ph&eacute;p bi&#7871;n &#273;&#7893;i &#273;&#417;n gi&#7843;n n&agrave;y trong nhi&#7873;u tr&#432;&#7901;ng h&#7907;p l&#7841;i t&#7887; ra hi&#7879;u qu&#7843; v&igrave; b&#7845;t &#273;&#7859;ng th&#7913;c \(s_i \geq 0\) th&#432;&#7901;ng d&#7877; gi&#7843;i quy&#7871;t h&#417;n l&agrave; \(f_i(\mathbf{x}) \leq 0\).</p>
+  </li>
+</ul><p><a name="-bai-toan-toi-uu-loi" href="convexopt.html"></a></p>
+
+<h2 id="3-b&agrave;i-to&aacute;n-t&#7889;i-&#432;u-l&#7891;i">3. B&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i</h2>
+
+<p>Trong to&aacute;n t&#7889;i &#432;u, ch&uacute;ng ta &#273;&#7863;c bi&#7879;t quan t&acirc;m t&#7899;i nh&#7919;ng b&agrave;i to&aacute;n m&agrave; h&agrave;m m&#7909;c ti&ecirc;u l&agrave; m&#7897;t h&agrave;m l&#7891;i, v&agrave; <em>feasible set</em> c&#361;ng l&agrave; m&#7897;t t&#7853;p l&#7891;i.
+<a name="-dinh-nghia" href="convexopt.html"></a></p>
+
+<h3 id="31-&#273;&#7883;nh-ngh&#297;a">3.1. &#272;&#7883;nh ngh&#297;a</h3>
+<p>M&#7897;t <em>b&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i</em> (<em>convex optimization problem</em>) l&agrave; m&#7897;t b&agrave;i to&aacute;n t&#7889;i &#432;u c&oacute; d&#7841;ng:
+\[
+\begin{eqnarray}
+\mathbf{x}^* &amp;=&amp; \arg\min_{\mathbf{x}} f_0(\mathbf{x}) \<br>
+\text{subject to:}~ &amp;&amp; f_i(\mathbf{x}) \leq 0, ~~ i = 1, 2, \dots, m ~~~(16)\<br>
+&amp;&amp; \mathbf{a}_j^T\mathbf{x} - b_j = 0, j = 1, \dots,
+\end{eqnarray}
+\]
+trong &#273;&oacute; \(f_0, f_1, \dots, f_m\) l&agrave; c&aacute;c h&agrave;m l&#7891;i.</p>
+
+<p>So v&#7899;i b&agrave;i to&aacute;n t&#7889;i &#432;u \((15)\), b&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i \((16)\) c&oacute; th&ecirc;m ba &#273;i&#7873;u ki&#7879;n n&#7919;a:</p>
+
+<ul><li>
+    <p><em>H&agrave;m m&#7909;c ti&ecirc;u</em> l&agrave; m&#7897;t <em>h&agrave;m l&#7891;i</em>.</p>
+  </li>
+  <li>
+    <p>C&aacute;c h&agrave;m b&#7845;t &#273;&#7859;ng th&#7913;c r&agrave;ng bu&#7897;c \(f_i\) l&agrave; c&aacute;c h&agrave;m l&#7891;i.</p>
+  </li>
+  <li>
+    <p>H&agrave;m &#273;&#7859;ng th&#7913;c r&agrave;ng bu&#7897;c \(h_j\) l&agrave; <em>affine</em> (h&agrave;m <em>linear</em> c&#7897;ng v&#7899;i m&#7897;t h&#7859;ng s&#7889; n&#7919;a &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>affine</em>).</p>
+  </li>
+</ul><p>M&#7897;t v&agrave;i nh&#7853;n x&eacute;t:</p>
+
+<ul><li>
+    <p>T&#7853;p h&#7907;p c&aacute;c &#273;i&#7875;m tho&#7843; m&atilde;n \(h_j(\mathbf{x}) = 0\) l&agrave; m&#7897;t t&#7853;p l&#7891;i v&igrave; n&oacute; c&oacute; d&#7841;ng m&#7897;t <em>hyperplane</em>.</p>
+  </li>
+  <li>
+    <p>Khi \(f_i\) l&agrave; m&#7897;t <em>h&agrave;m l&#7891;i</em> th&igrave; t&#7853;p h&#7907;p c&aacute;c &#273;i&#7875;m tho&#7843; m&atilde;n \(f_i(\mathbf{x}) \leq 0 \) ch&iacute;nh l&agrave; <a href="/2017/03/12/convexity/#-%5C%5C%5Calpha-%5C%5C-sublevel-sets">0-sublevel set c&#7911;a \(f_i\) v&agrave; l&agrave; m&#7897;t t&#7853;p l&#7891;i</a>.</p>
+  </li>
+  <li>
+    <p>Nh&#432; v&#7853;y t&#7853;p h&#7907;p c&aacute;c &#273;i&#7875;m tho&#7843; m&atilde;n m&#7885;i &#273;i&#7873;u ki&#7879;n r&agrave;ng bu&#7897;c ch&iacute;nh l&agrave; <a href="/2017/03/12/convexity/#-giao-cua-cac-tap-loi-la-mot-tap-loi">giao &#273;i&#7875;m c&#7911;a c&aacute;c <em>t&#7853;p l&#7891;i</em>, v&igrave; v&#7853;y n&oacute; l&agrave; m&#7897;t <em>t&#7853;p l&#7891;i</em></a>.</p>
+  </li>
+</ul><p><strong>V&#7853;y, trong m&#7897;t b&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i, ta <em>t&#7889;i thi&#7875;u m&#7897;t h&agrave;m m&#7909;c ti&ecirc;u l&#7891;i</em> tr&ecirc;n m&#7897;t <em>t&#7853;p l&#7891;i</em></strong>.</p>
+
+<p><a name="-cuc-tieu-cua-bai-toan-toi-uu-loi-chinh-la-diem-toi-uu" href="convexopt.html"></a></p>
+
+<h3 id="32-c&#7921;c-ti&#7875;u-c&#7911;a-b&agrave;i-to&aacute;n-t&#7889;i-&#432;u-l&#7891;i-ch&iacute;nh-l&agrave;-&#273;i&#7875;m-t&#7889;i-&#432;u">3.2. C&#7921;c ti&#7875;u c&#7911;a b&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i ch&iacute;nh l&agrave; &#273;i&#7875;m t&#7889;i &#432;u.</h3>
+<p>T&Iacute;nh ch&#7845;t quan tr&#7885;ng nh&#7845;t c&#7911;a b&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i ch&iacute;nh l&agrave; b&#7845;t k&#7923; <em>locally optimal point</em> ch&iacute;nh l&agrave; m&#7897;t &#273;i&#7875;m <em>(globally) optimal point</em>.</p>
+
+<p>T&iacute;nh ch&#7845;t quan tr&#7885;ng n&agrave;y c&oacute; th&#7875; ch&#7913;ng minh b&#7857;ng ph&#7843;n ch&#7913;ng nh&#432; sau. G&#7885;i  \(\mathbf{x}_0\) l&agrave; m&#7897;t &#273;i&#7875;m <em>locally optimal</em>, t&#7913;c:</p>
+
+<p>\[
+f_0(\mathbf{x}_0) = \text{inf} \{f_0(\mathbf{x}) | \mathbf{x} ~\text{is feasible}, ||\mathbf{x} - \mathbf{x}_0||_2 \leq R\}
+\]</p>
+
+<p>v&#7899;i \(R &gt; 0\) n&agrave;o &#273;&oacute;. Gi&#7843; s&#7917; \(\mathbf{x}_0\) kh&ocirc;ng ph&#7843;i l&agrave; <em>globally optimal point</em>, t&#7913;c t&#7891;n t&#7841;i m&#7897;t <em>feasible point</em> \(\mathbf{y}\) sao cho \(f(\mathbf{y}) &lt; f(\mathbf{x}_0)\) (hi&#7875;n nhi&ecirc;n r&#7857;ng \(\mathbf{y}\) kh&ocirc;ng n&#7857;m trong l&acirc;n c&#7853;n &#273;ang x&eacute;t). Ta c&oacute; th&#7875; t&igrave;m &#273;&#432;&#7907;c \(\theta \in [0, 1]\) &#273;&#7911; nh&#7887; sao cho \(\mathbf{z} = (1 - \theta)\mathbf{x}_0 + \theta\mathbf{y}\) n&#7857;m trong l&acirc;n c&#7853;n c&#7911;a \(\mathbf{x}_0\), t&#7913;c \(||\mathbf{z} - \mathbf{x}_0||_2 &lt; R\). Ch&uacute; &yacute; r&#7857;ng \(\mathbf{z}\) c&#361;ng l&agrave; m&#7897;t <em>feasible point</em> v&igrave; <em>feasible set</em> l&agrave; m&#7897;t <em>t&#7853;p l&#7891;i</em>. H&#417;n n&#7919;a, v&igrave; <em>h&agrave;m m&#7909;c ti&ecirc;u</em> \(f_0\) l&agrave; m&#7897;t h&agrave;m l&#7891;i, ta c&oacute;:</p>
+
+<p>\[
+\begin{eqnarray}
+    f_0(\mathbf{z}) &amp;=&amp; f_0((1 - \theta)\mathbf{x}_0 + \theta \mathbf{y})  \<br>
+                    &amp;\leq&amp; (1 - \theta)f_0(\mathbf{x}_0) + \theta f_0(\mathbf{y})\<br>
+                    &amp; &lt; &amp; (1 - \theta)f_0(\mathbf{x}_0) + \theta f_0(\mathbf{x}_0) \<br>
+                    &amp;=&amp; f_0(\mathbf{x}_0)
+\end{eqnarray}
+\]</p>
+
+<p>&#273;i&#7873;u n&agrave;y m&acirc;u thu&#7851;n v&#7899;i gi&#7843; thi&#7871;t \(\mathbf{x}_0\) l&agrave; m&#7897;t &#273;i&#7875;m c&#7921;c ti&#7875;u. V&#7853;y gi&#7843; s&#7917; sai, t&#7913;c \(\mathbf{x}_0\) ch&iacute;nh l&agrave; <em>globally optimal point</em> v&agrave; ta c&oacute; &#273;i&#7873;u ph&#7843;i ch&#7913;ng minh.</p>
+
+<p>Ch&#7913;ng minh b&#7857;ng l&#7901;i: gi&#7843; s&#7917; m&#7897;t &#273;i&#7875;m c&#7921;c ti&#7875;u kh&ocirc;ng ph&#7843;i l&agrave; &#273;i&#7875;m l&agrave;m cho h&agrave;m s&#7889; &#273;&#7841;t gi&aacute; tr&#7883; nh&#7887; nh&#7845;t. V&#7899;i &#273;i&#7873;u ki&#7879;n <em>feasible set</em> v&agrave; <em>h&agrave;m m&#7909;c ti&ecirc;u</em> l&agrave; l&#7891;i, ta lu&ocirc;n t&igrave;m &#273;&#432;&#7907;c m&#7897;t &#273;i&#7875;m kh&aacute;c trong l&acirc;n c&#7853;n c&#7911;a &#273;i&#7875;m c&#7921;c ti&#7875;u &#273;&oacute; sao cho gi&aacute; tr&#7883; c&#7911;a h&agrave;m m&#7909;c ti&ecirc;u t&#7841;i &#273;i&#7875;m m&#7899;i n&agrave;y nh&#7887; h&#417;n gi&aacute; tr&#7883; c&#7911;a h&agrave;m m&#7909;c ti&ecirc;u t&#7841;i &#273;i&#7875;m c&#7921;c ti&#7875;u. S&#7921; m&acirc;u thu&#7851;n n&agrave;y ch&#7881; ra r&#7857;ng v&#7899;i m&#7897;t b&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i, &#273;i&#7875;m c&#7921;c ti&#7875;u ph&#7843;i l&agrave; &#273;i&#7875;m l&agrave;m cho h&agrave;m s&#7889; &#273;&#7841;t gi&aacute; tr&#7883; nh&#7887; nh&#7845;t.</p>
+
+<p><a name="-dieu-kien-toi-uu-cho-ham-muc-tieu-kha-vi" href="convexopt.html"></a></p>
+
+<h3 id="33-&#273;i&#7873;u-ki&#7879;n-t&#7889;i-&#432;u-cho-h&agrave;m-m&#7909;c-ti&ecirc;u-kh&#7843;-vi">3.3. &#272;i&#7873;u ki&#7879;n t&#7889;i &#432;u cho h&agrave;m m&#7909;c ti&ecirc;u kh&#7843; vi</h3>
+
+<p>N&#7871;u h&agrave;m m&#7909;c ti&ecirc;u \(f_0\) l&agrave; kh&#7843; vi (differentiable), theo <a href="/2017/03/12/convexity/#-first-order-condition">first-order condition</a>, v&#7899;i m&#7885;i \(\mathbf{x}, \mathbf{y} \in \text{dom}f_0\), ta c&oacute;:
+\[
+f_0(\mathbf{x}) \geq f_0(\mathbf{x}_0) + \nabla f_0(\mathbf{x}_0)^T (\mathbf{x} - \mathbf{x}_0)~~~(17)
+\]</p>
+
+<p>&#272;&#7863;t \(\mathcal{X}\) l&agrave; <em>feasible set</em>. <strong>&#272;i&#7873;u ki&#7879;n c&#7847;n v&agrave; &#273;&#7911;</strong> &#273;&#7875; m&#7897;t &#273;i&#7875;m \(\mathbf{x}_0 \in \mathcal{X}\) l&agrave; <em>optimal point</em> l&agrave;:
+\[
+\nabla f_0(\mathbf{x}_0)^T(\mathbf{x} - \mathbf{x}_0) \geq 0, ~\forall \mathbf{x} \in \mathcal{X} ~~~(18)
+\]
+T&ocirc;i xin &#273;&#432;&#7907;c b&#7887; qua vi&#7879;c ch&#7913;ng minh &#273;i&#7873;u ki&#7879;n c&#7847;n v&agrave; &#273;&#7911; n&agrave;y, b&#7841;n &#273;&#7885;c c&oacute; th&#7875; t&igrave;m trong trang 139-140 c&#7911;a cu&#7889;n Convex Optimization trong T&agrave;i li&#7879;u tham kh&#7843;o.</p>
+
+<p>Xem h&igrave;nh v&#7869; d&#432;&#7899;i &#273;&acirc;y:</p>
+<hr><div class="imgcap">
+ <img src="images/17_convexopt-optimalitycondition.png" align="center" width="600"><div class="thecap">H&igrave;nh 2. Bi&#7875;u di&#7877;n h&igrave;nh h&#7885;c c&#7911;a &#273;i&#7873;u ki&#7879;n t&#7889;i &#432;u cho h&agrave;m m&#7909;c ti&ecirc;u kh&#7843; vi. C&aacute;c &#273;&#432;&#7901;ng n&eacute;t &#273;&#7913;t c&oacute; m&agrave;u t&#432;&#417;ng &#7913;ng v&#7899;i c&aacute;c level sets (&#273;&#432;&#7901;ng &#273;&#7891;ng m&#7913;c).</div>
+</div>
+<hr><p>M&#7897;t c&aacute;ch h&igrave;nh h&#7885;c, &#273;i&#7873;u ki&#7879;n n&agrave;y n&oacute;i r&#7857;ng: N&#7871;u \(\mathbf{x}_0\) l&agrave; &#273;i&#7875;m <em>optimal</em> th&igrave; v&#7899;i m&#7885;i \(\mathbf{x} \in \mathcal{X}\), vector &#273;i t&#7915; \(\mathbf{x}_0\) t&#7899;i \(\mathbf{x}\) h&#7907;p v&#7899;i vector \(-\nabla f_0 (\mathbf{x}_0)\) m&#7897;t g&oacute;c t&ugrave;. N&oacute;i c&aacute;ch kh&aacute;c, n&#7871;u ta v&#7869; <em>m&#7863;t ti&#7871;p tuy&#7871;n</em> c&#7911;a h&agrave;m m&#7909;c ti&ecirc;u t&#7841;i \(\mathbf{x}_0\) th&igrave; m&#7885;i &#273;i&#7875;m <em>feasible</em> n&#7857;m v&#7873; m&#7897;t ph&iacute;a so v&#7899;i <em>m&#7863;t ti&#7871;p tuy&#7871;n n&agrave;y</em>. H&#417;n n&#7919;a, <em>feasible set</em> n&#7857;m v&#7873; ph&iacute;a l&agrave;m cho h&agrave;m m&#7909;c ti&ecirc;u &#273;&#7841;t gi&aacute; tr&#7883; cao h&#417;n \(f_0(\mathbf{x}_0)\). M&#7863;t ti&#7871;p tuy&#7871;n n&agrave;y ch&iacute;nh l&agrave; <em>supporting hyperplane</em> c&#7911;a <em>feasible set</em> t&#7841;i &#273;i&#7875;m \(\mathbf{x}_0\). Nh&#7855;c l&#7841;i r&#7857;ng khi v&#7869; c&aacute;c <em>level set</em>, t&ocirc;i th&#432;&#7901;ng d&ugrave;ng m&agrave;u lam &#273;&#7875; ch&#7881; gi&aacute; tr&#7883; nh&#7887;, m&agrave;u &#273;&#7887; &#273;&#7875; ch&#7881; gi&aacute; tr&#7883; l&#7899;n c&#7911;a h&agrave;m s&#7889;.</p>
+
+<p>(M&#7897;t m&#7863;t ph&#7859;ng &#273;i qua m&#7897;t &#273;i&#7875;m tr&ecirc;n bi&ecirc;n c&#7911;a m&#7897;t t&#7853;p h&#7907;p sao cho m&#7885;i &#273;i&#7875;m trong t&#7853;p h&#7907;p &#273;&oacute; n&#7857;m v&#7873; m&#7897;t ph&iacute;a (ho&#7863;c n&#7857;m tr&ecirc;n) so v&#7899;i m&#7863;t ph&#7859;ng &#273;&oacute; &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>supporting hyperplane</em> (<em>si&ecirc;u ph&#7859;ng h&#7895; tr&#7907;</em>). N&#7871;u m&#7897;t t&#7853;p h&#7907;p l&agrave; <em>l&#7891;i</em>, t&#7891;n t&#7841;i <em>supporting hyperplane</em> t&#7841;i m&#7885;i &#273;i&#7875;m tr&ecirc;n bi&ecirc;n c&#7911;a n&oacute;.)</p>
+
+<p>N&#7871;u t&#7891;n t&#7841;i m&#7897;t &#273;i&#7875;m \(\mathbf{x}_0\) trong <em>feasible set</em> sao cho \(\nabla f_0(\mathbf{x}_0) = 0\), &#273;&acirc;y ch&iacute;nh l&agrave; <em>optimal point</em>. &#272;i&#7873;u n&agrave;y d&#7877; hi&#7875;u v&igrave; &#273;&oacute; ch&iacute;nh l&agrave; &#273;i&#7875;m l&agrave;m cho gradient b&#7857;ng 0, t&#7913;c &#273;i&#7875;m c&#7921;c ti&#7875;u c&#7911;a h&agrave;m m&#7909;c ti&ecirc;u. N&#7871;u \(\nabla f_0(\mathbf{x}_0) \neq 0\), vector \(-\nabla f_0 (\mathbf{x}_0)\) ch&iacute;nh l&agrave; <em>vector ph&aacute;p tuy&#7871;n</em> c&#7911;a <em>supporting hyperplane</em> t&#7841;i \(\mathbf{x}_0\).</p>
+
+<p><a name="-gioi-thieu-thu-vien-cvxopt" href="convexopt.html"></a></p>
+
+<h3 id="34-gi&#7899;i-thi&#7879;u-th&#432;-vi&#7879;n-cvxopt">3.4. Gi&#7899;i thi&#7879;u th&#432; vi&#7879;n CVXOPT</h3>
+<p><a href="http://cvxopt.org/">CVXOPT</a> l&agrave; m&#7897;t th&#432; vi&#7879;n mi&#7877;n ph&iacute; tr&ecirc;n Python gi&uacute;p gi&#7843;i r&#7845;t nhi&#7873;u c&aacute;c b&agrave;i to&aacute;n trong cu&#7889;n s&aacute;ch Convex Optimization &#7903; ph&#7847;n T&agrave;i li&#7879;u tham kh&#7843;o. T&aacute;c gi&#7843; th&#7913; hai c&#7911;a cu&#7889;n s&aacute;ch n&agrave;y, Lieven Vandenberghe, ch&iacute;nh l&agrave; &#273;&#7891;ng t&aacute;c gi&#7843; c&#7911;a th&#432; vi&#7879;n n&agrave;y. H&#432;&#7899;ng d&#7851;n c&agrave;i &#273;&#7863;t, t&agrave;i li&#7879;u h&#432;&#7899;ng d&#7851;n, v&agrave; c&aacute;c v&iacute; d&#7909; m&#7851;u c&#7911;a th&#432; vi&#7879;n n&agrave;y c&#361;ng c&oacute; &#273;&#7847;y &#273;&#7911; tr&ecirc;n trang web <a href="http://cvxopt.org/">CVXOPT</a>.</p>
+
+<p>Trong ph&#7847;n c&ograve;n l&#7841;i c&#7911;a b&agrave;i vi&#7871;t, t&ocirc;i s&#7869; gi&#7899;i thi&#7879;u 3 b&agrave;i to&aacute;n r&#7845;t c&#417; b&#7843;n trong Convex Optimization: Linear Programming, Quadratic Programming, v&agrave; Geometric Programming. T&ocirc;i c&#361;ng s&#7869; c&ugrave;ng c&aacute;c b&#7841;n l&#7853;p tr&igrave;nh &#273;&#7875; gi&#7843;i c&aacute;c v&iacute; d&#7909; &#273;&atilde; n&ecirc;u &#7903; ph&#7847;n &#273;&#7847;u b&agrave;i vi&#7871;t d&#7921;a tr&ecirc;n th&#432; vi&#7879;n CVXOPT n&agrave;y.</p>
+
+<p><a name="-linear-programming" href="convexopt.html"></a></p>
+
+<h2 id="4-linear-programming">4. Linear Programming</h2>
+<p>Ch&uacute;ng ta c&ugrave;ng b&#7855;t &#273;&#7847;u v&#7899;i l&#7899;p c&aacute;c b&agrave;i to&aacute;n &#273;&#417;n gi&#7843;n nh&#7845;t trong Convex Optimization - Linear Programming (LP, m&#7897;t s&#7889; t&agrave;i li&#7879;u c&#361;ng g&#7885;i l&agrave; <em>Linear Program</em>), trong &#273;&oacute; h&agrave;m m&#7909;c ti&ecirc;u \(f_0\) v&agrave; h&agrave;m b&#7845;t &#273;&#7859;ng th&#7913;c r&agrave;ng bu&#7897;c \(f_i, i = 1, \dots, m\) &#273;&#7873;u l&agrave; c&aacute;c h&agrave;m tuy&#7871;n t&iacute;nh c&#7897;ng v&#7899;i m&#7897;t h&#7857;ng s&#7889; (t&#7913;c <a href="/2017/03/19/convexopt/#-linear-programming">h&agrave;m <em>affine</em></a>).</p>
+
+<p><a name="-dang-tong-quat-cua-lp" href="convexopt.html"></a></p>
+
+<h3 id="41-d&#7841;ng-t&#7893;ng-qu&aacute;t-c&#7911;a-lp">4.1. D&#7841;ng t&#7893;ng qu&aacute;t c&#7911;a LP</h3>
+<hr><p><strong>A general LP:</strong>
+\[
+\begin{eqnarray}
+\mathbf{x} &amp;=&amp; \arg\min_{\mathbf{x}} \mathbf{c}^T\mathbf{x} + d \<br>
+\text{subject to:}~ &amp;&amp; \mathbf{Gx} \preceq \mathbf{h} ~~~~~~~~~~~~~~~~~~~~(19)\<br>
+&amp;&amp; \mathbf{Ax} = \mathbf{b}
+\end{eqnarray}
+\]</p>
+<hr><p>Trong &#273;&oacute; \(\mathbf{G} \in \mathbb{R}^{m\times n}, \mathbf{h} \in \mathbb{R}^m\) v&agrave;, \(\mathbf{A}\in \mathbb{R}^{p\times n}, \mathbf{b} \in\mathbb{R}^p\). \(\mathbf{c}, \mathbf{x} \in\mathbb{R}^n\) v&agrave; \(d\) l&agrave; m&#7897;t s&#7889; v&ocirc; h&#432;&#7899;ng (s&#7889; v&ocirc; h&#432;&#7899;ng n&agrave;y c&oacute; th&#7875; b&#7887; qua v&igrave; n&oacute; kh&ocirc;ng &#7843;nh h&#432;&#7903;ng t&#7899;i nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n t&#7889;i &#432;u, n&oacute; ch&#7881; l&agrave;m thay &#273;&#7893;i gi&aacute; tr&#7883; c&#7911;a h&agrave;m m&#7909;c ti&ecirc;u). Nh&#7855;c l&#7841;i r&#7857;ng k&yacute; hi&#7879;u \(\preceq\) ngh&#297;a l&agrave; m&#7895;i ph&#7847;n t&#7917; trong vector (ma tr&#7853;n) &#7903; v&#7871; tr&aacute;i nh&#7887; h&#417;n ho&#7863;c b&#7857;ng ph&#7847;n t&#7917; t&#432;&#417;ng &#7913;ng trong vector (ma tr&acirc;n) &#7903; v&#7873; ph&#7843;i.</p>
+
+<p>Ch&uacute; &yacute; r&#7857;ng nhi&#7873;u b&#7845;t &#273;&#7859;ng th&#7913;c d&#7841;ng \(\mathbf{g}_i\mathbf{x} \leq h_i\), v&#7899;i \(\mathbf{g}_i\) l&agrave; c&aacute;c vector h&agrave;ng, c&oacute; th&#7875; vi&#7871;t g&#7897;p d&#432;&#7899;i d&#7841;ng \(\mathbf{Gx} \preceq \mathbf{h}\) trong &#273;&oacute; m&#7895;i h&agrave;ng c&#7911;a \(\mathbf{G}\) &#7913;ng v&#7899;i m&#7897;t \(\mathbf{g}_i\), m&#7895;i ph&#7847;n t&#7917; c&#7911;a \(\mathbf{h}\) t&#432;&#417;ng &#7913;ng v&#7899;i m&#7897;t \(h_i\).</p>
+
+<p><a name="-dang-tieu-chuan-cua-lp" href="convexopt.html"></a></p>
+
+<h3 id="42-d&#7841;ng-ti&ecirc;u-chu&#7849;n-c&#7911;a-lp">4.2. D&#7841;ng ti&ecirc;u chu&#7849;n c&#7911;a LP</h3>
+<p>Trong d&#7841;ng ti&ecirc;u chu&#7849;n (<em>standard form</em>) LP, c&aacute;c b&#7845;t &#273;&#7859;ng th&#7913;c r&agrave;ng bu&#7897;c ch&#7881; l&agrave; &#273;i&#7873;u ki&#7879;n c&aacute;c nghi&#7879;m c&oacute; th&agrave;nh ph&#7847;n kh&ocirc;ng &acirc;m:</p>
+<hr><p><strong>A standard form LP:</strong>
+\[
+\begin{eqnarray}
+\mathbf{x} &amp;=&amp; \arg\min_{\mathbf{x}} \mathbf{c}^T\mathbf{x} \<br>
+\text{subject to:}~ &amp;&amp; \mathbf{Ax} = \mathbf{b} ~~~~~~~~~~~~~~~~~~~~(20)\<br>
+&amp;&amp; \mathbf{x} \succeq \mathbf{0}
+\end{eqnarray}
+\]</p>
+<hr><p>B&agrave;i to&aacute;n \((19)\) c&oacute; th&#7875; &#273;&#432;a v&#7873; b&agrave;i to&aacute;n \((20)\) b&#7857;ng c&aacute;ch &#273;&#7863;t th&ecirc;m bi&#7871;n <em>slack</em> \(\mathbf{s}\)</p>
+<hr><p>\[
+\begin{eqnarray}
+\mathbf{x} &amp;=&amp; \arg\min_{\mathbf{x}, \mathbf{s}} \mathbf{c}^T\mathbf{x} \<br>
+\text{subject to:}~ &amp;&amp; \mathbf{Ax} = \mathbf{b} ~~~~~~~~~~~~~~~~~~~~(21)\<br>
+&amp;&amp; \mathbf{Gx} + \mathbf{s} = \mathbf{h} \<br>
+&amp;&amp; \mathbf{s} \succeq \mathbf{0}
+\end{eqnarray}
+\]</p>
+<hr><p>Ti&#7871;p theo, n&#7871;u ta bi&#7875;u di&#7877;n \(\mathbf{x}\) d&#432;&#7899;i d&#7841;ng hi&#7879;u c&#7911;a hai vector m&agrave; th&agrave;nh ph&#7847;n c&#7911;a n&oacute; &#273;&#7873;u kh&ocirc;ng &acirc;m, t&#7913;c: \(\mathbf{x} = \mathbf{x}^+ - \mathbf{x}^-\), v&#7899;i \(\mathbf{x}^+, \mathbf{x}^- \succeq 0\). Ta c&oacute; th&#7875; ti&#7871;p t&#7909;c vi&#7871;t l&#7841;i \((21)\) d&#432;&#7899;i d&#7841;ng:</p>
+<hr><p>\[
+\begin{eqnarray}
+\mathbf{x} &amp;=&amp; \arg\min_{\mathbf{x}^+,\mathbf{x}^-, \mathbf{s}} \mathbf{c}^T\mathbf{x}^+ - \mathbf{c}^T\mathbf{x}^- \<br>
+\text{subject to:}~ &amp;&amp; \mathbf{Ax}^+ - \mathbf{Ax}^- = \mathbf{b} ~~~~~~~~~~~~~~~~~~~~(22)\<br>
+&amp;&amp; \mathbf{Gx}^+ - \mathbf{Gx}^- + \mathbf{s} = \mathbf{h} \<br>
+&amp;&amp; \mathbf{x}^+ \succeq 0, \mathbf{x}^- \succeq 0, \mathbf{s} \succeq \mathbf{0}
+\end{eqnarray}
+\]</p>
+<hr><p>T&#7899;i &#273;&acirc;y, b&#7841;n &#273;&#7885;c c&oacute; th&#7875; th&#7845;y r&#7857;ng \((22)\) c&oacute; th&#7875; vi&#7871;t g&#7885;n l&#7841;i nh&#432; \((20)\).</p>
+
+<p>B&agrave;i to&aacute;n nh&agrave; xu&#7845;t b&#7843;n v&agrave; B&agrave;i to&aacute;n canh t&aacute;c trong ph&#7847;n &#273;&#7847;u c&#7911;a b&agrave;i vi&#7871;t n&agrave;y ch&iacute;nh l&agrave; c&aacute;c LP.</p>
+
+<p><a name="-minh-hoa-bang-hinh-hoc-cua-bai-toan-lp" href="convexopt.html"></a></p>
+
+<h3 id="43-minh-ho&#7841;-b&#7857;ng-h&igrave;nh-h&#7885;c-c&#7911;a-b&agrave;i-to&aacute;n-lp">4.3. Minh ho&#7841; b&#7857;ng h&igrave;nh h&#7885;c c&#7911;a b&agrave;i to&aacute;n LP</h3>
+<p>C&aacute;c b&agrave;i to&aacute;n LP c&oacute; th&#7875; &#273;&#432;&#7907;c minh ho&#7841; nh&#432; h&igrave;nh d&#432;&#7899;i &#273;&acirc;y:</p>
+
+<hr><div class="imgcap">
+ <img src="images/17_convexopt-lp.png" align="center" width="600"><div class="thecap">H&igrave;nh 3. Bi&#7875;u di&#7877;n h&igrave;nh h&#7885;c c&#7911;a Linear Programming.</div>
+</div>
+<hr><p>&#272;i&#7875;m \(\mathbf{x}_0\) ch&iacute;nh l&agrave; &#273;i&#7875;m l&agrave;m cho h&agrave;m m&#7909;c ti&ecirc;u &#273;&#7841;t gi&aacute; tr&#7883; nh&#7887; nh&#7845;t, &#273;i&#7875;m \(\mathbf{x}_1\) ch&iacute;nh l&agrave; &#273;i&#7875;m l&agrave;m cho h&agrave;m m&#7909;c ti&ecirc;u &#273;&#7841;t gi&aacute; tr&#7883; l&#7899;n nh&#7845;t. V&#7899;i c&aacute;c b&agrave;i to&aacute;n LP, nghi&#7879;m, n&#7871;u c&oacute;, th&#432;&#7901;ng l&agrave; m&#7897;t &#273;i&#7875;m &#7903; <em>&#273;&#7881;nh</em> c&#7911;a polyheron ho&#7863;c l&agrave; m&#7897;t <em>m&#7863;t</em> c&#7911;a polyhedron &#273;&oacute; (trong tr&#432;&#7901;ng h&#7907;p c&aacute;c &#273;&#432;&#7901;ng level sets c&#7911;a h&agrave;m m&#7909;c ti&ecirc;u song song v&#7899;i m&#7863;t &#273;&oacute;, v&agrave; tr&ecirc;n m&#7863;t &#273;&oacute;, h&agrave;m m&#7909;c ti&ecirc;u &#273;&#7841;t gi&aacute; tr&#7883; t&#7889;i &#432;u).</p>
+
+<p>V&#7873; LP, c&aacute;c b&#7841;n c&oacute; th&#7875; t&igrave;m th&#7845;y r&#7845;t nhi&#7873;u t&agrave;i li&#7879;u c&#7843; ti&#7871;ng Vi&#7879;t (Quy ho&#7841;ch tuy&#7871;n t&iacute;nh) v&agrave; ti&#7871;ng Anh. C&oacute; r&#7845;t nhi&#7873;u c&aacute;c b&agrave;i to&aacute;n trong th&#7921;c t&#7871; c&oacute; th&#7875; &#273;&#432;a v&#7873; d&#7841;ng LP. Ph&#432;&#417;ng ph&aacute;p th&#432;&#7901;ng &#273;&#432;&#7907;c d&ugrave;ng &#273;&#7875; gi&#7843;i b&agrave;i to&aacute;n n&agrave;y c&oacute; t&ecirc;n l&agrave; <em>simplex</em> (<em>&#273;&#417;n h&igrave;nh</em>). T&ocirc;i s&#7869; kh&ocirc;ng &#273;&#7873; c&#7853;p &#273;&#7871;n c&aacute;c ph&#432;&#417;ng ph&aacute;p n&agrave;y, thay v&agrave;o &#273;&oacute;, t&ocirc;i s&#7869; h&#432;&#7899;ng d&#7851;n c&aacute;c b&#7841;n d&ugrave;ng th&#432; vi&#7879;n CVXOPT &#273;&#7875; gi&#7843;i quy&#7871;t c&aacute;c b&agrave;i to&aacute;n thu&#7897;c d&#7841;ng n&agrave;y.</p>
+
+<p><a name="giai-lp-bang-cvxopt" href="convexopt.html"></a></p>
+
+<h3 id="gi&#7843;i-lp-b&#7857;ng-cvxopt">Gi&#7843;i LP b&#7857;ng CVXOPT</h3>
+
+<p>T&ocirc;i s&#7869; d&ugrave;ng th&#432; vi&#7879;n CVPOPT &#273;&#7875; gi&#7843;i B&agrave;i to&aacute;n canh t&aacute;c &#7903; ph&iacute;a tr&ecirc;n. Nh&#7855;c l&#7841;i b&agrave;i to&aacute;n canh t&aacute;c:</p>
+<hr><p><strong>B&agrave;i to&aacute;n canh t&aacute;c:</strong>
+\[
+\begin{eqnarray}
+(x, y) =&amp; \arg\max_{x, y} 5x + 3y \<br>
+\text{subject to:}~ &amp; x + y \leq 10 \<br>
+                    &amp; 2x + y \leq 16  \<br>
+                    &amp; x + 4y \leq 32 \<br>
+                    &amp; x, y \geq 0
+\end{eqnarray}
+\]</p>
+<hr><p>C&aacute;c &#273;i&#7873;u ki&#7879;n r&agrave;ng bu&#7897;c c&oacute; th&#7875; vi&#7871;t l&#7841;i d&#432;&#7899;i d&#7841;ng \( \mathbf{Gx} \preceq \mathbf{h}\), trong &#273;&oacute;:</p>
+
+<p>\[
+\mathbf{G} = \left[\begin{matrix}
+1 &amp; 1 \<br>
+2 &amp; 1 \<br>
+1 &amp; 4 \<br>
+-1 &amp; 0 \<br>
+0 &amp; -1
+\end{matrix}\right], ~~~~
+\mathbf{h} = \left[\begin{matrix}
+10\<br>
+16 \<br>
+32 \<br>
+0 \<br>
+0
+\end{matrix}\right]
+\]</p>
+
+<p>L&#7901;i gi&#7843;i cho b&agrave;i to&aacute;n n&agrave;y khi d&ugrave;ng CVXOPT l&agrave;:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">])</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]])</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">10.</span><span class="p">,</span> <span class="mf">16.</span><span class="p">,</span> <span class="mf">32.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])</span>
+
+<span class="n">solvers</span><span class="p">.</span><span class="n">options</span><span class="p">[</span><span class="s">'show_progress'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="p">.</span><span class="n">lp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'Solution"'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="s">'x'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Solution:
+[ 6.00e+00]
+[ 4.00e+00]
+</code></pre></div></div>
+<p>Nghi&#7879;m n&agrave;y ch&iacute;nh l&agrave; nghi&#7879;m m&agrave; t&ocirc;i &#273;&atilde; t&igrave;m &#273;&#432;&#7907;c trong ph&#7847;n &#273;&#7847;u c&#7911;a b&agrave;i vi&#7871;t.</p>
+
+<p>M&#7897;t v&agrave;i l&#432;u &yacute;:</p>
+
+<ul><li>
+    <p>H&agrave;m <code class="language-plaintext highlighter-rouge">solvers.lp</code> c&#7911;a <code class="language-plaintext highlighter-rouge">cvxopt</code> gi&#7843;i b&agrave;i to&aacute;n \((21)\).</p>
+  </li>
+  <li>
+    <p>Trong b&agrave;i to&aacute;n c&#7911;a ch&uacute;ng ta, v&igrave; ta c&#7847;n t&igrave;m gi&aacute; tr&#7883; l&#7899;n nh&#7845;t n&ecirc;n ta ph&#7843;i &#273;&#7893;i h&agrave;m m&#7909;c ti&ecirc;u v&#7873; d&#7841;ng \(-5x - 3y\). Ch&iacute;nh v&igrave; v&#7853;y m&agrave; <code class="language-plaintext highlighter-rouge">c = matrix([-5., -3.])</code>.</p>
+  </li>
+  <li>
+    <p>H&agrave;m <code class="language-plaintext highlighter-rouge">matrix</code> nh&#7853;n &#273;&#7847;u v&agrave;o l&agrave; m&#7897;t <code class="language-plaintext highlighter-rouge">list</code> (trong Python), <code class="language-plaintext highlighter-rouge">list</code> n&agrave;y th&#7875; hi&#7879;n m&#7897;t vector c&#7897;t. N&#7871;u mu&#7889;n bi&#7875;u di&#7877;n m&#7897;t ma tr&#7853;n, &#273;&#7847;u v&agrave;o c&#7911;a <code class="language-plaintext highlighter-rouge">matrix</code> l&agrave; m&#7897;t <code class="language-plaintext highlighter-rouge">list</code> c&#7911;a <code class="language-plaintext highlighter-rouge">list</code>, trong &#273;&oacute; m&#7895;i <code class="language-plaintext highlighter-rouge">list</code> b&ecirc;n trong th&#7875; hi&#7879;n m&#7897;t vector c&#7897;t c&#7911;a ma tr&#7853;n &#273;&oacute;.</p>
+  </li>
+  <li>
+    <p>C&aacute;c h&#7857;ng s&#7889; trong b&agrave;i to&aacute;n c&#7847;n &#7903; d&#7841;ng s&#7889; th&#7921;c. N&#7871;u ch&uacute;ng l&agrave; c&aacute;c s&#7889; nguy&ecirc;n, ta c&#7847;n th&ecirc;m d&#7845;u <code class="language-plaintext highlighter-rouge">.</code> v&agrave;o sau c&aacute;c s&#7889; &#273;&oacute; th&#7875; th&#7875; hi&#7879;n &#273;&oacute; l&agrave; s&#7889; th&#7921;c. (T&ocirc;i th&#7845;y &#273;i&#7875;m n&agrave;y h&#417;i th&#7915;a, nh&#432;ng n&#7871;u kh&ocirc;ng c&oacute; d&#7845;u <code class="language-plaintext highlighter-rouge">.</code> th&igrave; ch&#432;&#417;ng tr&igrave;nh s&#7869; b&aacute;o l&#7895;i.)</p>
+  </li>
+  <li>
+    <p>V&#7899;i &#273;&#7859;ng th&#7913;c r&agrave;ng bu&#7897;c \(\mathbf{Ax} = \mathbf{b}\), <code class="language-plaintext highlighter-rouge">solvers.lp</code> l&#7845;y gi&aacute; tr&#7883; m&#7863;c &#273;&#7883;nh c&#7911;a <code class="language-plaintext highlighter-rouge">A</code> v&agrave; <code class="language-plaintext highlighter-rouge">b</code> l&agrave; <code class="language-plaintext highlighter-rouge">None</code>, t&#7913;c n&#7871;u kh&ocirc;ng kh&aacute;i b&aacute;o th&igrave; ngh&#297;a l&agrave; kh&ocirc;ng c&oacute; &#273;&#7859;ng th&#7913;c r&agrave;ng bu&#7897;c n&agrave;o.</p>
+  </li>
+  <li>
+    <p>V&#7899;i c&aacute;c tu&#7923; ch&#7885;n kh&aacute;c, b&#7841;n &#273;&#7885;c c&oacute; th&#7875; t&igrave;m trong T&agrave;i li&#7879;u c&#7911;a CVXOPT.</p>
+  </li>
+</ul><p>Vi&#7879;c gi&#7843;i B&agrave;i to&aacute;n nh&agrave; xu&#7845;t b&#7843;n b&#7857;ng CVXOPT xin nh&#432;&#7901;ng l&#7841;i cho b&#7841;n &#273;&#7885;c nh&#432; m&#7897;t b&agrave;i t&#7853;p &#273;&#417;n gi&#7843;n.</p>
+
+<p><a name="-quadratic-programming" href="convexopt.html"></a></p>
+
+<h2 id="5-quadratic-programming">5. Quadratic Programming</h2>
+<p><a name="-dinh-nghia-bai-toan-quadratic-programming" href="convexopt.html"></a></p>
+
+<h3 id="51-&#273;&#7883;nh-ngh&#297;a-b&agrave;i-to&aacute;n-quadratic-programming">5.1. &#272;&#7883;nh ngh&#297;a b&agrave;i to&aacute;n Quadratic Programming</h3>
+<p>M&#7897;t d&#7841;ng Convex Optimization m&agrave; c&aacute;c b&#7841;n s&#7869; g&#7863;p r&#7845;t nhi&#7873;u trong c&aacute;c b&agrave;i sau c&#7911;a blog l&agrave; <em>Quadratic Programming</em> (QP, ho&#7863;c <em>Quadratic Program</em>). Kh&aacute;c bi&#7879;t duy nh&#7845;t c&#7911;a QP so v&#7899;i LP l&agrave; h&agrave;m m&#7909;c ti&ecirc;u c&oacute; d&#7841;ng <em>Quadratic form</em>:</p>
+
+<hr><p>\[
+\begin{eqnarray}
+\mathbf{x} &amp;=&amp; \arg\min_{\mathbf{x}} \frac{1}{2} \mathbf{x}^T\mathbf{P}\mathbf{x} + \mathbf{q}^T\mathbf{x} + \mathbf{r} \<br>
+\text{subject to:} &amp;&amp;\mathbf{Gx} \preceq \mathbf{h} ~~~~~~~~~~~~~(23)\<br>
+&amp;&amp; \mathbf{Ax} = \mathbf{b}
+\end{eqnarray}
+\]</p>
+<hr><p>Trong &#273;&oacute; \(\mathbf{P} \in \mathbb{S}_+^n\) (t&#7853;p c&aacute;c ma tr&#7853;n vu&ocirc;ng n&#7917;a x&aacute;c &#273;&#7883;nh d&#432;&#417;ng c&oacute; s&#7889; c&#7897;t l&agrave; \(n\)), \(\mathbf{G}\in \mathbb{R}^{m\times n}, \mathbf{A}\in\mathbb{R}^{p \times n}\). <a href="https://machinelearningcoban.com/2017/03/12/convexity/#-quadratic-forms">&#272;i&#7873;u ki&#7879;n \(\mathbf{P}\) l&agrave; <em>n&#7917;a x&aacute;c &#273;&#7883;nh d&#432;&#417;ng</em> &#273;&#7875; &#273;&#7843;m b&#7843;o h&agrave;m m&#7909;c ti&ecirc;u l&agrave; <em>convex</em></a>.</p>
+
+<p>Ch&uacute;ng ta c&oacute; th&#7875; th&#7845;y r&#7857;ng LP ch&iacute;nh l&agrave; m&#7897;t tr&#432;&#7901;ng h&#7907;p &#273;&#7863;c bi&#7879;t c&#7911;a QP v&#7899;i \(\mathbf{P} = \mathbf{0}\).</p>
+
+<p>Di&#7877;n &#273;&#7841;t b&#7857;ng l&#7901;i: trong QP, ch&uacute;ng ta t&#7889;i thi&#7875;u m&#7897;t h&agrave;m quadratic l&#7891;i tr&ecirc;n m&#7897;t <em>polyhedron</em>. Xem h&igrave;nh d&#432;&#7899;i &#273;&acirc;y:</p>
+<hr><div class="imgcap">
+ <img src="images/17_convexopt-qp.png" align="center" width="600"><div class="thecap">H&igrave;nh 4. Bi&#7875;u di&#7877;n h&igrave;nh h&#7885;c c&#7911;a Quadratic Programming.</div>
+</div>
+<hr><p><a name="-vi-du-ve-qp" href="convexopt.html"></a></p>
+
+<h3 id="52-v&iacute;-d&#7909;-v&#7873;-qp">5.2. V&iacute; d&#7909; v&#7873; QP</h3>
+<p>B&agrave;i to&aacute;n vui: C&oacute; m&#7897;t h&ograve;n &#273;&#7843;o m&agrave; h&igrave;nh d&#7841;ng c&#7911;a n&oacute; c&oacute; d&#7841;ng m&#7897;t &#273;a gi&aacute;c l&#7891;i. M&#7897;t con thuy&#7873;n &#7903; ngo&agrave;i bi&#7875;n th&igrave; c&#7847;n &#273;i theo h&#432;&#7899;ng n&agrave;o &#273;&#7875; t&#7899;i &#273;&#7843;o nhanh nh&#7845;t, gi&#7843; s&#7917; r&#7857;ng t&#7889;c &#273;&#7897; c&#7911;a s&oacute;ng v&agrave; gi&oacute; b&#7857;ng 0.</p>
+
+<!-- (_polyhedron_ - &#273;a gi&aacute;c trong kh&ocirc;ng gian nhi&#7873;u chi&#7873;u, _polyhedra_ - s&#7889; nhi&#7873;u c&#7911;a _polyhedron_.) -->
+
+<p>B&agrave;i to&aacute;n kho&#7843;ng c&aacute;ch t&#7915; m&#7897;t &#273;i&#7875;m t&#7899;i m&#7897;t polyhedron &#273;&#432;&#7907;c ph&aacute;t bi&#7875;u nh&#432; sau:</p>
+
+<p>Cho m&#7897;t polyhedron &#273;&#432;&#7907;c bi&#7875;u di&#7877;n b&#7903;i \(\mathbf{Ax} \preceq \mathbf{b}\) v&agrave; m&#7897;t &#273;i&#7875;m \(\mathbf{u}\), t&igrave;m &#273;i&#7875;m \(\mathbf{x}\) thu&#7897;c polyhedron &#273;&oacute; sao cho kho&#7843;ng c&aacute;ch Euclidean gi&#7919;a \(\mathbf{x}\) v&agrave; \(\mathbf{u}\) l&agrave; nh&#7887; nh&#7845;t.</p>
+
+<p>B&agrave;i to&aacute;n n&agrave;y c&oacute; th&#7875; ph&aacute;t bi&#7875;u nh&#432; sau:
+\[
+\begin{eqnarray}
+\mathbf{x} &amp;=&amp; \arg\min_{\mathbf{x}} \frac{1}{2}||\mathbf{x} - \mathbf{u}||_2^2 \<br>
+\text{subject to:} &amp;&amp;\mathbf{Gx} \preceq \mathbf{h}\<br>
+\end{eqnarray}
+\]
+H&agrave;m m&#7909;c ti&ecirc;u &#273;&#7841;t gi&aacute; tr&#7883; nh&#7887; nh&#7845;t b&#7857;ng 0 n&#7871;u \(\mathbf{u}\) n&#7857;m trong polyheron &#273;&oacute; v&agrave; <em>optimal point</em> ch&iacute;nh l&agrave; \(\mathbf{x} = \mathbf{u}\). Khi \(\mathbf{u}\) kh&ocirc;ng n&#7857;m trong polyhedron, ta vi&#7871;t:
+\[
+\frac{1}{2} ||\mathbf{x} - \mathbf{u}||_2^2 = \frac{1}{2} (\mathbf{x} - \mathbf{u})^T(\mathbf{x} - \mathbf{u}) = \frac{1}{2} \mathbf{x}^T\mathbf{x} - \mathbf{u}^T\mathbf{x} + \frac{1}{2} \mathbf{u}^T\mathbf{u}
+\]</p>
+
+<p>Bi&#7875;u th&#7913;c n&agrave;y c&oacute; d&#7841;ng h&agrave;m m&#7909;c ti&ecirc;u nh&#432; trong \((23)\) v&#7899;i \(\mathbf{P = I}, \mathbf{q} = - \mathbf{u}, \mathbf{r} = \frac{1}{2} \mathbf{u}^T\mathbf{u}\), trong &#273;&oacute; \(\mathbf{I}\) l&agrave; ma tr&#7853;n &#273;&#417;n v&#7883;.</p>
+
+<p><a name="-vi-du-ve-giai-qp-bang-cvxopt" href="convexopt.html"></a></p>
+
+<h3 id="53-v&iacute;-d&#7909;-v&#7873;-gi&#7843;i-qp-b&#7857;ng-cvxopt">5.3. V&iacute; d&#7909; v&#7873; gi&#7843;i QP b&#7857;ng CVXOPT</h3>
+
+<p>X&eacute;t b&agrave;i to&aacute;n sau &#273;&acirc;y:</p>
+
+<p>\[
+\begin{eqnarray}
+(x, y) &amp;=&amp; \arg\min_{x, y} (x - 10)^2 + (y - 10)^2 \<br>
+\text{subject to:}~&amp;&amp;
+\left[\begin{matrix}
+1 &amp; 1 \<br>
+2 &amp; 1 \<br>
+1 &amp; 4 \<br>
+-1 &amp; 0 \<br>
+0 &amp; -1
+\end{matrix}\right]
+\left[
+\begin{matrix}
+x \<br>
+y
+\end{matrix}
+\right]
+\preceq
+\left[\begin{matrix}
+10\<br>
+16 \<br>
+32 \<br>
+0 \<br>
+0
+\end{matrix}\right]
+\end{eqnarray}
+\]</p>
+
+<hr><div class="imgcap">
+ <img src="images/17_convexopt-qp_ex.png" align="center" width="400"><div class="thecap">H&igrave;nh 5. V&iacute; d&#7909; v&#7873; kho&#7843;ng c&aacute;ch gi&#7919;a m&#7897;t &#273;i&#7875;m v&agrave; m&#7897;t polyhedron.</div>
+</div>
+<hr><p><em>Feasible set</em> trong b&agrave;i to&aacute;n n&agrave;y t&ocirc;i l&#7845;y tr&#7921;c ti&#7871;p t&#7915; B&agrave;i to&aacute;n canh t&aacute;c v&agrave; \(\mathbf{u} = [10, 10]^T\).
+B&agrave;i to&aacute;n n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c gi&#7843;i b&#7857;ng CVXOPT nh&#432; sau:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="mf">10.</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.</span><span class="p">])</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]])</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">10.</span><span class="p">,</span> <span class="mf">16.</span><span class="p">,</span> <span class="mf">32.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+<span class="n">solvers</span><span class="p">.</span><span class="n">options</span><span class="p">[</span><span class="s">'show_progress'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="p">.</span><span class="n">qp</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'Solution:'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="s">'x'</span><span class="p">])</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Solution:
+[ 5.00e+00]
+[ 5.00e+00]
+</code></pre></div></div>
+
+<p>Trong c&aacute;c thu&#7853;t to&aacute;n Machine Learning, c&aacute;c b&#7841;n s&#7869; g&#7863;p c&aacute;c b&agrave;i to&aacute;n v&#7873; t&igrave;m <em>h&igrave;nh chi&#7871;u</em> (projection) c&#7911;a m&#7897;t &#273;i&#7875;m l&ecirc;n m&#7897;t <em>t&#7853;p l&#7891;i</em> n&oacute;i chung r&#7845;t nhi&#7873;u. T&#7899;i t&#7915;ng ph&#7847;n, t&ocirc;i s&#7869; &#273;&#7873; c&#7853;p h&#432;&#7899;ng gi&#7843;i quy&#7871;t c&#7911;a c&aacute;c b&agrave;i to&aacute;n &#273;&oacute;.</p>
+
+<p><a name="-geometric-programming" href="convexopt.html"></a></p>
+
+<h2 id="6-geometric-programming">6. Geometric Programming</h2>
+<p>Trong m&#7909;c n&agrave;y, ch&uacute;ng ta s&#7869; th&#7845;y m&#7897;t l&#7899;p c&aacute;c b&agrave;i to&aacute;n <em>kh&ocirc;ng l&#7891;i</em> khi nh&igrave;n v&agrave;o h&agrave;m m&#7909;c ti&ecirc;u v&agrave; c&aacute;c h&agrave;m r&agrave;ng bu&#7897;c, nh&#432;ng c&oacute; th&#7875; &#273;&#432;&#7907;c bi&#7871;n &#273;&#7893;i v&#7873; d&#7841;ng <em>l&#7891;i</em> b&#7857;ng m&#7897;t v&agrave;i k&#7929; thu&#7853;t.</p>
+
+<p>Tr&#432;&#7899;c h&#7871;t, ch&uacute;ng ta c&#7847;n c&oacute; m&#7897;t v&agrave;i &#273;&#7883;nh ngh&#297;a:</p>
+
+<p><a name="-monomials-va-posynomials" href="convexopt.html"></a></p>
+
+<h3 id="61-monomials-v&agrave;-posynomials">6.1. Monomials v&agrave; posynomials</h3>
+
+<p>M&#7897;t h&agrave;m s&#7889; \(f: \mathbb{R}^n \rightarrow \mathbb{R}\) v&#7899;i t&#7853;p x&aacute;c &#273;inh \(\text{dom}f = \mathbf{R}_{++}^n\) (t&#7845;t c&#7843; c&aacute;c ph&#7847;n t&#7917; &#273;&#7873;u l&agrave; s&#7889; d&#432;&#417;ng) c&oacute; d&#7841;ng:
+\[
+f(\mathbf{x}) = c x_1^{a_1} x_2^{a_2} \dots x_n^{a_n}~~~~~~~~(24)
+\]
+trong &#273;&oacute; \(c &gt; 0\) v&agrave; \(a_i \in \mathbb{R}\), &#273;&#432;&#7907;c g&#7885;i l&agrave; m&#7897;t <em>monomial function</em> (kh&aacute;i ni&#7879;m n&agrave;y kh&aacute; gi&#7889;ng v&#7899;i <em>&#273;&#417;n th&#7913;c</em> khi t&ocirc;i h&#7885;c l&#7899;p 8, nh&#432;ng khi &#273;&oacute; SGK &#273;&#7883;nh ngh&#297;a v&#7899;i \(c\) b&#7845;t k&#7923; v&agrave; \(a_i\) l&agrave; c&aacute;c s&#7889; t&#7921; nhi&ecirc;n).</p>
+
+<p>T&#7893;ng c&#7911;a c&aacute;c monomials:
+\[
+f(\mathbf{x}) = \sum_{k=1}^K c_k x_1^{a_{1k}}x_2^{a_{2k}}\dots x_n^{a_{nk}}~~~~~~~~~~(24)
+\]
+trong &#273;&oacute; c&aacute;c \(c_k &gt; 0\) &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>posynomial function</em> (<em>&#273;a th&#7913;c</em>), ho&#7863;c &#273;&#417;n gi&#7843;n l&agrave; <em>posynomial</em>.</p>
+
+<p><a name="-geometric-programming-1" href="convexopt.html"></a></p>
+
+<h3 id="62-geometric-programming">6.2. Geometric Programming</h3>
+
+<p>M&#7897;t b&agrave;i to&aacute;n t&#7889;i &#432;u c&oacute; d&#7841;ng:</p>
+
+<hr><p>\[
+\begin{eqnarray}
+\mathbf{x}   &amp;=&amp; \arg\min_{\mathbf{x}} f_0(\mathbf{x}) \<br>
+\text{subject to:}~ &amp;&amp; f_i(x) \leq 1,  ~~ i = 1, 2, \dots, m ~~~~~~~~~~~(25)\<br>
+                    &amp;&amp; h_j(x) = 1, ~~ j = 1, 2, \dots, p
+\end{eqnarray}
+\]</p>
+<hr><p>trong &#273;&oacute; \(f_0, f_1, \dots, f_m\) l&agrave; c&aacute;c <em>posynomials</em> v&agrave; \(h_1, \dots, h_p\) l&agrave; c&aacute;c <em>monomials</em>, &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Geometric Programming</em> (GP). &#272;i&#7873;u ki&#7879;n \(\mathbf{x} \succ 0\) &#273;&#432;&#7907;c &#7849;n &#273;i.</p>
+
+<p>Ch&uacute; &yacute; r&#7857;ng n&#7871;u \(f\) l&agrave; m&#7897;t <em>posynomial</em>, \(h\) l&agrave; m&#7897;t <em>monomial</em> th&igrave; \(f/h\) l&agrave; m&#7897;t <em>posynomial</em>.</p>
+
+<p><strong>V&iacute; d&#7909;:</strong>
+\[
+\begin{eqnarray}
+    (x, y, z)    &amp;=&amp; \arg\min_{x, y, z} x/y                          \<br>
+\text{subject to:}~ &amp;&amp; 1 \leq x \leq 2 \<br>
+ &amp;&amp; x^3 + 2y/z \leq \sqrt{y} \<br>
+ &amp;&amp; x/y = z
+\end{eqnarray}
+\]
+C&oacute; th&#7875; &#273;&#432;&#7907;c vi&#7871;t l&#7841;i d&#432;&#7899;i d&#7841;ng GP:
+\[
+\begin{eqnarray}
+    (x, y, z)    &amp;=&amp; \arg\min_{x, y, z} xy ^{-1}                        \<br>
+\text{subject to:}~ &amp;&amp; x^{-1} \leq 1 \<br>
+&amp;&amp; (1/2)x \leq 1 \<br>
+&amp;&amp; x^3y^{-1/2} + 2y^{1/2}z^{-1} \leq 1 \<br>
+&amp;&amp; xy^{-1}z^{-1} = 1
+\end{eqnarray}
+\]
+B&agrave;i to&aacute;n n&agrave;y r&otilde; r&agrave;ng l&agrave; <em>nonconvex</em> v&igrave; c&#7843; h&agrave;m m&#7909;c ti&ecirc;u v&agrave; &#273;i&#7873;u ki&#7875;n r&agrave;ng bu&#7897;c &#273;&#7873;u kh&ocirc;ng l&#7891;i.</p>
+
+<p><a name="-bien-doi-gp-ve-dang-convex" href="convexopt.html"></a></p>
+
+<h3 id="63-bi&#7871;n-&#273;&#7893;i-gp-v&#7873;-d&#7841;ng-convex">6.3. Bi&#7871;n &#273;&#7893;i GP v&#7873; d&#7841;ng convex</h3>
+<p>GP c&oacute; th&#7875; &#273;&#432;&#7907;c bi&#7871;n &#273;&#7893;i v&#7873; d&#7841;ng l&#7891;i nh&#432; sau:</p>
+
+<p>&#272;&#7863;t \(y_i = \log(x_i)\), t&#7913;c \(x_i = \exp({y_i})\). N&#7871;u \(f\) l&agrave; m&#7897;t <em>monomial function</em> c&#7911;a \(\mathbf{x}\) th&igrave;:
+\[
+f(\mathbf{x}) = c(\exp({y_1}))^{a_1} \dots (\exp({y_n}))^{a_n} = \exp({\mathbf{a}^T\mathbf{y} + b})
+\]
+v&#7899;i \(b = \log(c)\). L&uacute;c n&agrave;y, h&agrave;m s&#7889; \(g(y) = \exp({\mathbf{a}^T\mathbf{y} + b})\) l&agrave; m&#7897;t h&agrave;m l&#7891;i theo \(\mathbf{y}\). (B&#7841;n &#273;&#7885;c c&oacute; th&#7875; ch&#7913;ng minh theo &#273;&#7883;nh ngh&#297;a r&#7857;ng h&#7907;p c&#7911;a hai h&agrave;m l&#7891;i l&agrave; m&#7897;t h&agrave;m l&#7891;i. Trong tr&#432;&#7901;ng h&#7907;p n&agrave;y, h&agrave;m \(\exp\) v&agrave; h&agrave;m <em>affine</em> tr&ecirc;n &#273;&#7873;u l&agrave; c&aacute;c h&agrave;m l&#7891;i.)</p>
+
+<p>T&#432;&#417;ng t&#7921; nh&#432; th&#7871;, <em>posynomial</em> trong &#273;&#7859;ng th&#7913;c \((24)\) c&oacute; th&#7875; vi&#7871;t d&#432;&#7899;i d&#7841;ng:
+\[
+f(\mathbf{x}) = \sum_{k = 1}^K \exp(\mathbf{a}_k^T\mathbf{y} + b_k)
+\]
+trong &#273;&oacute; \(\mathbf{a}_k = [a_{1k}, \dots, a_{nk}]^T\) v&agrave; \(b_k = \log(c_k)\). L&uacute;c n&agrave;y, <em>posynomial</em> &#273;&atilde; &#273;&#432;&#7907;c vi&#7871;t d&#432;&#7899;i d&#7841;ng t&#7893;ng c&#7911;a c&aacute;c h&agrave;m \(\exp\) c&#7911;a c&aacute;c h&agrave;m <em>affine</em> (v&agrave; v&igrave; v&#7853;y l&agrave; m&#7897;t h&agrave;m l&#7891;i, nh&#7899; l&#7841;i r&#7857;ng t&#7893;ng c&#7911;a c&aacute;c h&agrave;m l&#7891;i l&agrave; m&#7897;t h&agrave;m l&#7891;i).</p>
+
+<p>B&agrave;i to&aacute;n GP \((25)\) &#273;&#432;&#7907;c vi&#7871;t l&#7841;i d&#432;&#7899;i d&#7841;ng:
+\[
+\begin{eqnarray}
+    \mathbf{y}    &amp;=&amp; \arg\min_{\mathbf{y}} \sum_{k=1}^{K_0} \exp(\mathbf{a}_{0k}^T\mathbf{y} + b_{0k})                      \<br>
+\text{subject to:}~ &amp;&amp; \sum_{k=1}^{K_i} \exp(\mathbf{a}_{ik}^T\mathbf{y} + b_{ik}) \leq 1, ~~, i = 1, \dots, m ~~~~~~(26)\<br>
+&amp;&amp; \exp(\mathbf{g}_j^T\mathbf{y} + h_j) = 1, ~ j= 1, \dots, p
+\end{eqnarray}
+\]</p>
+
+<p>v&#7899;i \(\mathbf{a}_{ik} \in \mathbb{R}^n, i = 1, \dots, p\) v&agrave; \(\mathbf{g}_i \in \mathbb{R}^n\).</p>
+
+<p>V&#7899;i ch&uacute; &yacute; r&#7857;ng h&agrave;m s&#7889; \(\log \sum_{i=1}^m \exp(g_i(\mathbf{x}))\) l&agrave; m&ocirc;t h&agrave;m <em>l&#7891;i</em> n&#7871;u \(g_i\) l&agrave; c&aacute;c h&agrave;m <em>l&#7891;i</em> (t&ocirc;i xin b&#7887; qua ph&#7847;n ch&#7913;ng minh), ta c&oacute; th&#7875; vi&#7871;t l&#7841;i b&agrave;i to&aacute;n \((26)\) d&#432;&#7899;i d&#7841;ng <em>l&#7891;i</em> b&#7857;ng c&aacute;ch l&#7845;y \(\log\) c&#7911;a c&aacute;c h&agrave;m nh&#432; sau:</p>
+<hr><p>GP in convex form:
+\[
+\begin{eqnarray}
+    \text{minimize}_{\mathbf{y}} \tilde{f}_0(\mathbf{y}) &amp;=&amp; \log\left(\sum_{k=1}^{K_0} \exp(\mathbf{a}_{0k}^T \mathbf{y} + b_{i0})\right)                          \<br>
+\text{subject to:}~ \tilde{f}_i(\mathbf{y}) &amp;=&amp; \log \left(\sum_{k=1}^{K_i} \exp(\mathbf{a}_{ik}^T \mathbf{y} + b_{ik})\right) \leq 0, ~~ i = 1, \dots, m ~~~~ (27)\<br>
+\tilde{h}_j(\mathbf{y}) &amp;=&amp; \mathbf{g}_j^T\mathbf{y} + h_j = 0,~~ j = 1, \dots, p
+\end{eqnarray}
+\]</p>
+<hr><p>L&uacute;c n&agrave;y, ta c&oacute; th&#7875; n&oacute;i r&#7857;ng GP t&#432;&#417;ng &#273;&#432;&#417;ng v&#7899;i m&#7897;t b&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i v&igrave; h&agrave;m m&#7909;c ti&ecirc;u v&agrave; c&aacute;c h&agrave;m b&#7845;t &#273;&#7859;ng th&#7913;c r&agrave;ng bu&#7897;c trong \((27)\) &#273;&#7873;u l&agrave; h&agrave;m l&#7891;i, &#273;&#7891;ng th&#7901;i &#273;i&#7873;u hi&#7879;n &#273;&#7859;ng th&#7913;c cu&#7889;i c&ugrave;ng ch&iacute;nh l&agrave; d&#7841;ng <em>affine</em>. D&#7841;ng n&agrave;y th&#432;&#7901;ng &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>geometric program in convex form</em> (&#273;&#7875; ph&acirc;n bi&#7879;t n&oacute; v&#7899;i &#273;&#7883;nh ngh&#297;a c&#7911;a GP).</p>
+
+<p><a name="-giai-gp-bang-cvxopt" href="convexopt.html"></a></p>
+
+<h3 id="64-gi&#7843;i-gp-b&#7857;ng-cvxopt">6.4. Gi&#7843;i GP b&#7857;ng CVXOPT</h3>
+<p>Ch&uacute;ng ta quay l&#7841;i v&iacute; d&#7909; v&#7873; B&agrave;i to&aacute;n &#273;&oacute;ng th&ugrave;ng <em>kh&ocirc;ng c&oacute; r&agrave;ng bu&#7897;c</em> v&agrave; h&agrave;m m&#7909;c ti&ecirc;u l&agrave; \(f(x, y, z) = 40x^{-1}y^{-1}z^{-1} + 2xy + 2yz + 2zx\) l&agrave; m&#7897;t posynomial. V&#7853;y &#273;&acirc;y l&agrave; m&#7897;t GP.</p>
+
+<p>Code cho vi&#7879;c t&igrave;m <em>optimal point</em> c&#7911;a b&agrave;i to&aacute;n n&agrave;y b&#7857;ng CVXOPT nh&#432; sau:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">exp</span><span class="c1"># gp
+</span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">K</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">F</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+            <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+            <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="n">log</span><span class="p">(</span><span class="mf">40.</span><span class="p">),</span> <span class="n">log</span><span class="p">(</span><span class="mf">2.</span><span class="p">),</span> <span class="n">log</span><span class="p">(</span><span class="mf">2.</span><span class="p">),</span> <span class="n">log</span><span class="p">(</span><span class="mf">2.</span><span class="p">)])</span>
+<span class="n">solvers</span><span class="p">.</span><span class="n">options</span><span class="p">[</span><span class="s">'show_progress'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="p">.</span><span class="n">gp</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'Solution:'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="s">'x'</span><span class="p">])))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">checking sol^5'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="s">'x'</span><span class="p">]))</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Solution:
+[[ 1.58489319]
+ [ 1.58489319]
+ [ 1.58489319]]
+
+checking sol^5
+[[ 9.9999998]
+ [ 9.9999998]
+ [ 9.9999998]]
+</code></pre></div></div>
+
+<p>Nghi&#7879;m thu &#273;&#432;&#7907;c ch&iacute;nh l&agrave; \(x = y = z = \sqrt[5]{10}\). B&#7841;n &#273;&#7885;c &#273;&#432;&#7907;c khuy&#7871;n kh&iacute;ch &#273;&#7885;c th&ecirc;m ch&#7881; d&#7851;n c&#7911;a h&agrave;m <code class="language-plaintext highlighter-rouge">solvers.gp</code> &#273;&#7875; hi&#7875;u c&aacute;ch thi&#7871;t l&#7853;p b&agrave;i to&aacute;n.</p>
+
+<p><a name="-tom-tat" href="convexopt.html"></a></p>
+
+<h2 id="7-t&oacute;m-t&#7855;t">7. T&oacute;m t&#7855;t</h2>
+
+<ul><li>
+    <p>C&aacute;c b&agrave;i to&aacute;n t&#7889;i &#432;u xu&#7845;t hi&#7879;n r&#7845;t nhi&#7873;u trong th&#7921;c t&#7871;, trong &#273;&oacute; T&#7889;i &#431;u L&#7891;i &#273;&oacute;ng m&#7897;t vai tr&ograve; quan tr&#7885;ng. Trong b&agrave;i to&aacute;n T&#7889;i &#431;u L&#7891;i, n&#7871;u t&igrave;m &#273;&#432;&#7907;c c&#7921;c tr&#7883; th&igrave; c&#7921;c tr&#7883; &#273;&oacute; ch&iacute;nh l&agrave; m&#7897;t &#273;i&#7875;m <em>optimal</em> c&#7911;a b&agrave;i to&aacute;n (nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n).</p>
+  </li>
+  <li>
+    <p>C&oacute; nhi&#7873;u b&agrave;i to&aacute;n t&#7889;i &#432;u kh&ocirc;ng &#273;&#432;&#7907;c vi&#7871;t d&#432;&#7899;i d&#7841;ng <em>convex</em> nh&#432;ng c&oacute; th&#7875; bi&#7871;n &#273;&#7893;i v&#7873; d&#7841;ng <em>convex</em>, v&iacute; d&#7909; nh&#432; b&agrave;i to&aacute;n Geometric Programming.</p>
+  </li>
+  <li>
+    <p>Linear Programming v&agrave; Quadratic Programming &#273;&oacute;ng m&#7897;t v&agrave;i tr&ograve; quan tr&#7885;ng trong to&aacute;n t&#7889;i &#432;u, &#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u trong c&aacute;c thu&#7853;t to&aacute;n Machine Learning.</p>
+  </li>
+  <li>
+    <p>Th&#432; vi&#7879;n CVXOPT &#273;&#432;&#7907;c d&ugrave;ng &#273;&#7875; t&#7889;i &#432;u nhi&#7873;u b&agrave;i to&aacute;n t&#7889;i &#432;u l&#7891;i, r&#7845;t d&#7877; s&#7917; d&#7909;ng v&agrave; th&#7901;i gian ch&#7841;y t&#432;&#417;ng &#273;&#7889;i nhanh.</p>
+  </li>
+</ul><p><a name="-tai-lieu-tham-khao" href="convexopt.html"></a></p>
+
+<h2 id="8-t&agrave;i-li&#7879;u-tham-kh&#7843;o">8. T&agrave;i li&#7879;u tham kh&#7843;o</h2>
+<p>[1] <a href="http://stanford.edu/~boyd/cvxbook/">Convex Optimization</a> &ndash; Boyd and Vandenberghe, Cambridge University Press, 2004.</p>
+
+<p>[2] <a href="http://cvxopt.org/">CVXOPT</a>.</p>
+
+</div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="convexity.html">&laquo; B&agrave;i 16: Convex sets v&agrave; convex functions</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="duality.html">B&agrave;i 18: Duality &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2017/03/19/convexopt/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11288928; 
+var sc_invisible=0; 
+var sc_security="0edaf8bc"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/0edaf8bc-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/04/02/duality/">B&agrave;i 18: Duality</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/03/19/convexopt/">B&agrave;i 17: Convex Optimization Problems</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/03/12/convexity/">B&agrave;i 16: Convex sets v&agrave; convex functions</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/01/16/gradientdescent2/">B&agrave;i 8: Gradient Descent (ph&#7847;n 2/2)</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/01/12/gradientdescent/">B&agrave;i 7: Gradient Descent (ph&#7847;n 1/2)</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/03/19/convexopt/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2017/03/19/convexopt/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/03/19/convexopt/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=B&agrave;i 17: Convex Optimization Problems&url=https://machinelearningcoban.com/2017/03/19/convexopt/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2017/03/19/convexopt/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2017/03/19/convexopt/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#47781432252d2224337a142e2a372b2267142f263522670532333328293461262a377c0528233e7a0e627577342630627577332f2e34627577262923627577332f2832202f3362757728216275773e283266627577672f333337347d68682a26242f2e29222b222635292e292024282526296924282a687577767068777468767e6824282931223f28373368">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/03/12/convexity/">B&agrave;i 16: Convex sets v&agrave; convex functions</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2017/04/02/duality/">B&agrave;i 18: Duality</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

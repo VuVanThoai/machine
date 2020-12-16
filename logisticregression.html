@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>B&agrave;i 10: Logistic Regression</title><!-- <script>
+var pageProperties = {
+    
+    category: "Neural-nets",
+    
+    url: "/2017/01/27/logisticregression/",
+    title: "B&agrave;i 10: Logistic Regression",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/2017/01/27/logisticregression/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="B&agrave;i 10: Logistic Regression"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/2017/01/27/logisticregression/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2017-01-27"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="Neural-nets"><meta property="article:tag" content="Neural-nets"><meta property="article:tag" content="Supervised-learning"><meta property="article:tag" content="Regression"><meta property="article:tag" content="Classification"><meta property="article:tag" content="GD"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2017/01/27/logisticregression/',
+'title': 'B&agrave;i 10: Logistic Regression'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="softmax.html">13. Softmax Regression</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="logisticregression.html">10. Logistic Regression</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/01/21/perceptron/">B&agrave;i 9: Perceptron Learning Algorithm</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/02/02/howdoIcreatethisblog/">Blog v&agrave; c&aacute;c b&agrave;i vi&#7871;t &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="perceptron.html">&laquo; B&agrave;i 9: Perceptron Learning Algorithm</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="howdoIcreatethisblog.html">Blog v&agrave; c&aacute;c b&agrave;i vi&#7871;t &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">B&agrave;i 10: Logistic Regression</h1>
+
+
+<ul class="tags"><a href="/tags#Neural-nets" class="tag">Neural-nets</a>
+   
+      <a href="/tags#Supervised-learning" class="tag">Supervised-learning</a>
+   
+      <a href="/tags#Regression" class="tag">Regression</a>
+   
+      <a href="/tags#Classification" class="tag">Classification</a>
+   
+      <a href="/tags#GD" class="tag">GD</a>
+   
+</ul><span class="post-date" style="color: gray; font-style: italic;">Jan 27, 2017
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <p><strong>Trong trang n&agrave;y:</strong>
+<!-- MarkdownTOC --></p>
+
+<ul><li><a href="#-gioi-thieu">1. Gi&#7899;i thi&#7879;u</a>
+    <ul><li><a href="#nhac-lai-hai-mo-hinh-tuyen-tinh">Nh&#7855;c l&#7841;i hai m&ocirc; h&igrave;nh tuy&#7871;n t&iacute;nh</a></li>
+      <li><a href="#mot-vi-du-nho">M&#7897;t v&iacute; d&#7909; nh&#7887;</a></li>
+      <li><a href="#mo-hinh-logistic-regression">M&ocirc; h&igrave;nh Logistic Regression</a></li>
+      <li><a href="#sigmoid-function">Sigmoid function</a></li>
+    </ul></li>
+  <li><a href="#-ham-mat-mat-va-phuong-phap-toi-uu">2. H&agrave;m m&#7845;t m&aacute;t v&agrave; ph&#432;&#417;ng ph&aacute;p t&#7889;i &#432;u</a>
+    <ul><li><a href="#xay-dung-ham-mat-mat">X&acirc;y d&#7921;ng h&agrave;m m&#7845;t m&aacute;t</a></li>
+      <li><a href="#toi-uu-ham-mat-mat">T&#7889;i &#432;u h&agrave;m m&#7845;t m&aacute;t</a></li>
+      <li><a href="#cong-thuc-cap-nhat-cho-logistic-sigmoid-regression">C&ocirc;ng th&#7913;c c&#7853;p nh&#7853;t cho logistic sigmoid regression</a></li>
+    </ul></li>
+  <li><a href="#-vi-du-voi-python">3. V&iacute; d&#7909; v&#7899;i Python</a>
+    <ul><li><a href="#vi-du-voi-du-lieu--chieu">V&iacute; d&#7909; v&#7899;i d&#7919; li&#7879;u 1 chi&#7873;u</a></li>
+      <li><a href="#cac-ham-can-thiet-cho-logistic-sigmoid-regression">C&aacute;c h&agrave;m c&#7847;n thi&#7871;t cho logistic sigmoid regression</a></li>
+      <li><a href="#vi-du-voi-du-lieu--chieu-1">V&iacute; d&#7909; v&#7899;i d&#7919; li&#7879;u 2 chi&#7873;u</a></li>
+    </ul></li>
+  <li><a href="#-mot-vai-tinh-chat-cua-logistic-regression">4. M&#7897;t v&agrave;i t&iacute;nh ch&#7845;t c&#7911;a Logistic Regression</a>
+    <ul><li><a href="#logistic-regression-thuc-ra-duoc-su-dung-nhieu-trong-cac-bai-toan-classification">Logistic Regression th&#7921;c ra &#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u trong c&aacute;c b&agrave;i to&aacute;n Classification.</a></li>
+      <li><a href="#boundary-tao-boi-logistic-regression-co-dang-tuyen-tinh">Boundary t&#7841;o b&#7903;i Logistic Regression c&oacute; d&#7841;ng tuy&#7871;n t&iacute;nh</a></li>
+    </ul></li>
+  <li><a href="#-thao-luan">5. Th&#7843;o lu&#7853;n</a></li>
+  <li><a href="#-tai-lieu-tham-khao">6. T&agrave;i li&#7879;u tham kh&#7843;o</a></li>
+</ul><!-- /MarkdownTOC --><p><a name="-gioi-thieu" href="logisticregression.html"></a></p>
+
+<h2 id="1-gi&#7899;i-thi&#7879;u">1. Gi&#7899;i thi&#7879;u</h2>
+
+<p><a name="nhac-lai-hai-mo-hinh-tuyen-tinh" href="logisticregression.html"></a></p>
+
+<h3 id="nh&#7855;c-l&#7841;i-hai-m&ocirc;-h&igrave;nh-tuy&#7871;n-t&iacute;nh">Nh&#7855;c l&#7841;i hai m&ocirc; h&igrave;nh tuy&#7871;n t&iacute;nh</h3>
+<p>Hai m&ocirc; h&igrave;nh tuy&#7871;n t&iacute;nh (linear models) <a href="linearregression.html">Linear Regression</a> v&agrave; <a href="perceptron.html">Perceptron Learning Algorithm</a> (PLA) ch&uacute;ng ta &#273;&atilde; bi&#7871;t &#273;&#7873;u c&oacute; chung m&#7897;t d&#7841;ng:
+\[
+y = f(\mathbf{w}^T\mathbf{x})
+\]</p>
+
+<p>trong &#273;&oacute; \(f()\) &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>activation function</em>, v&agrave; \(\mathbf{x}\) &#273;&#432;&#7907;c hi&#7875;u l&agrave; d&#7919; li&#7879;u m&#7903; r&#7897;ng v&#7899;i \(x_0 = 1\) &#273;&#432;&#7907;c th&ecirc;m v&agrave;o &#273;&#7875; thu&#7853;n ti&#7879;n cho vi&#7879;c t&iacute;nh to&aacute;n. V&#7899;i linear regression th&igrave; \(f(s) = s\), v&#7899;i PLA th&igrave; \(f(s) = \text{sgn}(s)\). Trong linear regression, t&iacute;ch v&ocirc; h&#432;&#7899;ng \(\mathbf{w}^T\mathbf{x}\) &#273;&#432;&#7907;c tr&#7921;c ti&#7871;p s&#7917; d&#7909;ng &#273;&#7875; d&#7921; &#273;o&aacute;n output \(y\), lo&#7841;i n&agrave;y ph&ugrave; h&#7907;p n&#7871;u ch&uacute;ng ta c&#7847;n d&#7921; &#273;o&aacute;n m&#7897;t gi&aacute; tr&#7883; th&#7921;c c&#7911;a &#273;&#7847;u ra kh&ocirc;ng b&#7883; ch&#7863;n tr&ecirc;n v&agrave; d&#432;&#7899;i. Trong PLA, &#273;&#7847;u ra ch&#7881; nh&#7853;n m&#7897;t trong hai gi&aacute; tr&#7883; \(1\) ho&#7863;c \(-1 \), ph&ugrave; h&#7907;p v&#7899;i c&aacute;c b&agrave;i to&aacute;n <em>binary classification</em>.</p>
+
+<p>Trong b&agrave;i n&agrave;y, t&ocirc;i s&#7869; gi&#7899;i thi&#7879;u m&ocirc; h&igrave;nh th&#7913; ba v&#7899;i m&#7897;t activation kh&aacute;c, &#273;&#432;&#7907;c s&#7917; d&#7909;ng cho c&aacute;c b&agrave;i to&aacute;n <em>flexible</em> h&#417;n. Trong d&#7841;ng n&agrave;y, &#273;&#7847;u ra c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7875; hi&#7879;n d&#432;&#7899;i d&#7841;ng x&aacute;c su&#7845;t (probability). V&iacute; d&#7909;: x&aacute;c su&#7845;t thi &#273;&#7895; n&#7871;u bi&#7871;t th&#7901;i gian &ocirc;n thi, x&aacute;c su&#7845;t ng&agrave;y mai c&oacute; m&#432;a d&#7921;a tr&ecirc;n nh&#7919;ng th&ocirc;ng tin &#273;o &#273;&#432;&#7907;c trong ng&agrave;y h&ocirc;m nay,&hellip; M&ocirc; h&igrave;nh m&#7899;i n&agrave;y c&#7911;a ch&uacute;ng ta c&oacute; t&ecirc;n l&agrave; <em>logistic regression</em>. M&ocirc; h&igrave;nh n&agrave;y gi&#7889;ng v&#7899;i linear regression &#7903; kh&iacute;a c&#7841;nh &#273;&#7847;u ra l&agrave; s&#7889; th&#7921;c, v&agrave; gi&#7889;ng v&#7899;i PLA &#7903; vi&#7879;c &#273;&#7847;u ra b&#7883; ch&#7863;n (trong &#273;o&#7841;n \([0, 1]\)). M&#7863;c d&ugrave; trong t&ecirc;n c&oacute; ch&#7913;a t&#7915; <em>regression</em>, logistic regression th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u h&#417;n cho c&aacute;c b&agrave;i to&aacute;n classification.</p>
+
+<p><a name="mot-vi-du-nho" href="logisticregression.html"></a></p>
+
+<h3 id="m&#7897;t-v&iacute;-d&#7909;-nh&#7887;">M&#7897;t v&iacute; d&#7909; nh&#7887;</h3>
+<p>T&ocirc;i xin &#273;&#432;&#7907;c s&#7917; d&#7909;ng <a href="https://en.wikipedia.org/wiki/Logistic_regression">m&#7897;t v&iacute; d&#7909; tr&ecirc;n Wikipedia</a>:</p>
+
+<blockquote>
+  <p>M&#7897;t nh&oacute;m 20 sinh vi&ecirc;n d&agrave;nh th&#7901;i gian trong kho&#7843;ng t&#7915; 0 &#273;&#7871;n 6 gi&#7901; cho vi&#7879;c &ocirc;n thi. Th&#7901;i gian &ocirc;n thi n&agrave;y &#7843;nh h&#432;&#7903;ng &#273;&#7871;n x&aacute;c su&#7845;t sinh vi&ecirc;n v&#432;&#7907;t qua k&#7923; thi nh&#432; th&#7871; n&agrave;o?</p>
+</blockquote>
+
+<p>K&#7871;t qu&#7843; thu &#273;&#432;&#7907;c nh&#432; sau:</p>
+
+<table><thead><tr><th style="text-align: center">Hours</th>
+      <th style="text-align: center">Pass</th>
+      <th style="text-align: center">Hours</th>
+      <th style="text-align: center">Pass</th>
+    </tr></thead><tbody><tr><td style="text-align: center">.5</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">2.75</td>
+      <td style="text-align: center">1</td>
+    </tr><tr><td style="text-align: center">.75</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">0</td>
+    </tr><tr><td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3.25</td>
+      <td style="text-align: center">1</td>
+    </tr><tr><td style="text-align: center">1.25</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">3.5</td>
+      <td style="text-align: center">0</td>
+    </tr><tr><td style="text-align: center">1.5</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">1</td>
+    </tr><tr><td style="text-align: center">1.75</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">4.25</td>
+      <td style="text-align: center">1</td>
+    </tr><tr><td style="text-align: center">1.75</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">4.5</td>
+      <td style="text-align: center">1</td>
+    </tr><tr><td style="text-align: center">2</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">4.75</td>
+      <td style="text-align: center">1</td>
+    </tr><tr><td style="text-align: center">2.25</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">5</td>
+      <td style="text-align: center">1</td>
+    </tr><tr><td style="text-align: center">2.5</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">5.5</td>
+      <td style="text-align: center">1</td>
+    </tr></tbody></table><p>M&#7863;c d&ugrave; c&oacute; m&#7897;t ch&uacute;t <em>b&#7845;t c&ocirc;ng</em> khi h&#7885;c 3.5 gi&#7901; th&igrave; tr&#432;&#7907;t, c&ograve;n h&#7885;c 1.75 gi&#7901; th&igrave; l&#7841;i &#273;&#7895;, nh&igrave;n chung, h&#7885;c c&agrave;ng nhi&#7873;u th&igrave; kh&#7843; n&#259;ng &#273;&#7895; c&agrave;ng cao. PLA kh&ocirc;ng th&#7875; &aacute;p d&#7909;ng &#273;&#432;&#7907;c cho b&agrave;i to&aacute;n n&agrave;y v&igrave; kh&ocirc;ng th&#7875; n&oacute;i m&#7897;t ng&#432;&#7901;i h&#7885;c bao nhi&ecirc;u gi&#7901; th&igrave; 100% tr&#432;&#7907;t hay &#273;&#7895;, v&agrave; th&#7921;c t&#7871; l&agrave; d&#7919; li&#7879;u n&agrave;y c&#361;ng kh&ocirc;ng <em>linearly separable</em> (&#273;i&#7879;u ki&#7879;n &#273;&#7875; PLA c&oacute; th&#7875; l&agrave;m vi&#7879;c). Ch&uacute; &yacute; r&#7857;ng c&aacute;c &#273;i&#7875;m m&agrave;u &#273;&#7887; v&agrave; xanh &#273;&#432;&#7907;c v&#7869; &#7903; hai tung &#273;&#7897; kh&aacute;c nhau &#273;&#7875; ti&#7879;n cho vi&#7879;c minh h&#7885;a. C&aacute;c &#273;i&#7875;m n&agrave;y &#273;&#432;&#7907;c v&#7869; d&ugrave;ng c&#7843; d&#7919; li&#7879;u &#273;&#7847;u v&agrave;o \(\mathbf{x}\) v&agrave; &#273;&#7847;u ra \(y). Khi ta n&oacute;i <em>linearly seperable</em> l&agrave; khi ta ch&#7881; d&ugrave;ng d&#7919; li&#7879;u &#273;&#7847;u v&agrave;o \(\mathbf{x}\).</p>
+
+<p>Ch&uacute;ng ta bi&#7875;u di&#7877;n c&aacute;c &#273;i&#7875;m n&agrave;y tr&ecirc;n &#273;&#7891; th&#7883; &#273;&#7875; th&#7845;y r&otilde; h&#417;n:</p>
+
+<div class="imgcap">
+<img src="images/logisticregression-%5Cassets%5CLogisticRegression%5Cex1.png" align="center" width="800"><div class="thecap">H&igrave;nh 1: V&iacute; d&#7909; v&#7873; k&#7871;t qu&#7843; thi d&#7921;a tr&ecirc;n s&#7889; gi&#7901; &ocirc;n t&#7853;p.</div>
+</div>
+
+<p>Nh&#7853;n th&#7845;y r&#7857;ng c&#7843; linear regression v&agrave; PLA &#273;&#7873;u kh&ocirc;ng ph&ugrave; h&#7907;p v&#7899;i b&agrave;i to&aacute;n n&agrave;y, ch&uacute;ng ta c&#7847;n m&#7897;t m&ocirc; h&igrave;nh <em>flexible</em> h&#417;n.</p>
+
+<p><a name="mo-hinh-logistic-regression" href="logisticregression.html"></a></p>
+
+<h3 id="m&ocirc;-h&igrave;nh-logistic-regression">M&ocirc; h&igrave;nh Logistic Regression</h3>
+<p>&#272;&#7847;u ra d&#7921; &#273;o&aacute;n c&#7911;a:</p>
+
+<ul><li>Linear Regression: 
+\[
+f(\mathbf{x}) = \mathbf{w}^T \mathbf{x}
+\]</li>
+  <li>PLA:
+\[
+f(\mathbf{x}) = \text{sgn}(\mathbf{w}^T\mathbf{x})
+\]</li>
+</ul><p>&#272;&#7847;u ra d&#7921; &#273;o&aacute;n c&#7911;a logistic regression th&#432;&#7901;ng &#273;&#432;&#7907;c vi&#7871;t chung d&#432;&#7899;i d&#7841;ng:
+\[
+f(\mathbf{x}) = \theta(\mathbf{w}^T\mathbf{x})
+\]</p>
+
+<p>Trong &#273;&oacute; \(\theta\) &#273;&#432;&#7907;c g&#7885;i l&agrave; logistic function. M&#7897;t s&#7889; activation cho m&ocirc; h&igrave;nh tuy&#7871;n t&iacute;nh &#273;&#432;&#7907;c cho trong h&igrave;nh d&#432;&#7899;i &#273;&acirc;y:</p>
+
+<div class="imgcap">
+<img src="images/logisticregression-%5Cassets%5CLogisticRegression%5Cactivation.png" align="center" width="800"><div class="thecap">H&igrave;nh 2: C&aacute;c activation function kh&aacute;c nhau.</div>
+</div>
+
+<ul><li>&#272;&#432;&#7901;ng m&agrave;u v&agrave;ng bi&#7875;u di&#7877;n linear regression. &#272;&#432;&#7901;ng n&agrave;y kh&ocirc;ng b&#7883; ch&#7863;n n&ecirc;n kh&ocirc;ng ph&ugrave; h&#7907;p cho b&agrave;i to&aacute;n n&agrave;y. C&oacute; m&#7897;t <em>trick</em> nh&#7887; &#273;&#7875; &#273;&#432;a n&oacute; v&#7873; d&#7841;ng b&#7883; ch&#7863;n: <em>c&#7855;t</em> ph&#7847;n nh&#7887; h&#417;n 0 b&#7857;ng c&aacute;ch cho ch&uacute;ng b&#7857;ng 0, <em>c&#7855;t</em> c&aacute;c ph&#7847;n l&#7899;n h&#417;n 1 b&#7857;ng c&aacute;ch cho ch&uacute;ng b&#7857;ng 1. Sau &#273;&oacute; l&#7845;y &#273;i&#7875;m tr&ecirc;n &#273;&#432;&#7901;ng th&#7859;ng n&agrave;y c&oacute; tung &#273;&#7897; b&#7857;ng 0.5 l&agrave;m &#273;i&#7875;m ph&acirc;n chia hai <em>class</em>, &#273;&acirc;y c&#361;ng kh&ocirc;ng ph&#7843;i l&agrave; m&#7897;t l&#7921;a ch&#7885;n t&#7889;t. Gi&#7843; s&#7917; c&oacute; th&ecirc;m v&agrave;i b&#7841;n <em>sinh vi&ecirc;n ti&ecirc;u bi&#7875;u</em> &ocirc;n t&#7853;p &#273;&#7871;n 20 gi&#7901; v&agrave;, t&#7845;t nhi&ecirc;n, thi &#273;&#7895;. Khi &aacute;p d&#7909;ng m&ocirc; h&igrave;nh linear regression nh&#432; h&igrave;nh d&#432;&#7899;i &#273;&acirc;y v&agrave; l&#7845;y m&#7889;c 0.5 &#273;&#7875; ph&acirc;n l&#7899;p, to&agrave;n b&#7897; sinh vi&ecirc;n thi tr&#432;&#7907;t v&#7851;n &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n l&agrave; tr&#432;&#7907;t, nh&#432;ng r&#7845;t nhi&#7873;u sinh vi&ecirc;n thi &#273;&#7895; c&#361;ng &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n l&agrave; tr&#432;&#7907;t (n&#7871;u ta coi &#273;i&#7875;m x m&agrave;u xanh l&#7909;c l&agrave; <em>ng&#432;&#7905;ng c&#7913;ng</em> &#273;&#7875; &#273;&#432;a ra k&#7871;t lu&#7853;n). R&otilde; r&agrave;ng &#273;&acirc;y l&agrave; m&#7897;t m&ocirc; h&igrave;nh kh&ocirc;ng t&#7889;t. Anh ch&agrave;ng sinh vi&ecirc;n ti&ecirc;u bi&#7875;u n&agrave;y &#273;&atilde; <em>k&eacute;o theo</em> r&#7845;t nhi&#7873;u b&#7841;n kh&aacute;c b&#7883; tr&#432;&#7907;t.</li>
+</ul><div class="imgcap">
+<img src="images/logisticregression-%5Cassets%5CLogisticRegression%5Cex1_lr.png" align="center" width="800"><div class="thecap">H&igrave;nh 3: T&#7841;i sao Linear Regression kh&ocirc;ng ph&ugrave; h&#7907;p?</div>
+</div>
+
+<ul><li>&#272;&#432;&#7901;ng m&agrave;u &#273;&#7887; (ch&#7881; kh&aacute;c v&#7899;i activation function c&#7911;a PLA &#7903; ch&#7895;  hai class l&agrave; 0 v&agrave; 1 thay v&igrave; -1 v&agrave; 1) c&#361;ng thu&#7897;c d&#7841;ng <em>ng&#432;&#7905;ng c&#7913;ng</em> (hard threshold). PLA kh&ocirc;ng ho&#7841;t &#273;&#7897;ng trong b&agrave;i to&aacute;n n&agrave;y v&igrave; d&#7919; li&#7879;u &#273;&atilde; cho kh&ocirc;ng <em>linearly separable</em>.</li>
+  <li>
+    <p>C&aacute;c &#273;&#432;&#7901;ng m&agrave;u xanh lam v&agrave; xanh l&#7909;c ph&ugrave; h&#7907;p v&#7899;i b&agrave;i to&aacute;n c&#7911;a ch&uacute;ng ta h&#417;n. Ch&uacute;ng c&oacute; m&#7897;t v&agrave;i t&iacute;nh ch&#7845;t quan tr&#7885;ng sau:</p>
+
+    <ul><li>L&agrave; h&agrave;m s&#7889; li&ecirc;n t&#7909;c nh&#7853;n gi&aacute; tr&#7883; th&#7921;c, b&#7883; ch&#7863;n trong kho&#7843;ng \((0, 1)\).</li>
+      <li>N&#7871;u coi &#273;i&#7875;m c&oacute; tung &#273;&#7897; l&agrave; 1/2 l&agrave;m &#273;i&#7875;m ph&acirc;n chia th&igrave; c&aacute;c &#273;i&#7875;m c&agrave;ng xa &#273;i&#7875;m n&agrave;y v&#7873; ph&iacute;a b&ecirc;n tr&aacute;i c&oacute; gi&aacute; tr&#7883; c&agrave;ng g&#7847;n 0. Ng&#432;&#7907;c l&#7841;i, c&aacute;c &#273;i&#7875;m c&agrave;ng xa &#273;i&#7875;m n&agrave;y v&#7873; ph&iacute;a ph&#7843;i c&oacute; gi&aacute; tr&#7883; c&agrave;ng g&#7847;n 1. &#272;i&#7873;u n&agrave;y <em>kh&#7899;p</em> v&#7899;i nh&#7853;n x&eacute;t r&#7857;ng h&#7885;c c&agrave;ng nhi&#7873;u th&igrave; x&aacute;c su&#7845;t &#273;&#7895; c&agrave;ng cao v&agrave; ng&#432;&#7907;c l&#7841;i.</li>
+      <li><em>M&#432;&#7907;t</em> (smooth) n&ecirc;n c&oacute; &#273;&#7841;o h&agrave;m m&#7885;i n&#417;i, c&oacute; th&#7875; &#273;&#432;&#7907;c l&#7907;i trong vi&#7879;c t&#7889;i &#432;u.</li>
+    </ul></li>
+</ul><p><a name="sigmoid-function" href="logisticregression.html"></a></p>
+
+<h3 id="sigmoid-function">Sigmoid function</h3>
+
+<p>Trong s&#7889; c&aacute;c h&agrave;m s&#7889; c&oacute; 3 t&iacute;nh ch&#7845;t n&oacute;i tr&ecirc;n th&igrave; h&agrave;m <em>sigmoid</em>:
+\[
+f(s) = \frac{1}{1 + e^{-s}} \triangleq \sigma(s)
+\]
+&#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u nh&#7845;t, v&igrave; n&oacute; b&#7883; ch&#7863;n trong kho&#7843;ng \((0, 1)\). Th&ecirc;m n&#7919;a:
+\[
+\lim_{s \rightarrow -\infty}\sigma(s) = 0; ~~ \lim_{s \rightarrow +\infty}\sigma(s) = 1 
+\]
+&#272;&#7863;c bi&#7879;t h&#417;n n&#7919;a:
+\[
+\begin{eqnarray}
+\sigma&rsquo;(s) &amp;=&amp; \frac{e^{-s}}{(1 + e^{-s})^2} \<br>
+&amp;=&amp; \frac{1}{1 + e^{-s}} \frac{e^{-s}}{1 + e^{-s}} \<br>
+&amp;=&amp; \sigma(s)(1 - \sigma(s))
+\end{eqnarray}
+\]
+C&ocirc;ng th&#7913;c &#273;&#7841;o h&agrave;m &#273;&#417;n gi&#7843;n th&#7871; n&agrave;y gi&uacute;p h&agrave;m s&#7889; n&agrave;y &#273;&#432;&#7907;c s&#7917; d&#7909;ng r&#7897;ng r&atilde;i. &#7902; ph&#7847;n sau, t&ocirc;i s&#7869; l&yacute; gi&#7843;i vi&#7879;c <em>ng&#432;&#7901;i ta &#273;&atilde; t&igrave;m ra h&agrave;m s&#7889; &#273;&#7863;c bi&#7879;t n&agrave;y nh&#432; th&#7871; n&agrave;o</em>.</p>
+
+<p><a name="tanh-function" href="logisticregression.html"></a></p>
+
+<p>Ngo&agrave;i ra, h&agrave;m <em>tanh</em> c&#361;ng hay &#273;&#432;&#7907;c s&#7917; d&#7909;ng: 
+\[
+\text{tanh}(s) = \frac{e^{s} - e^{-s}}{e^s + e^{-s}}
+\]</p>
+
+<p>H&agrave;m s&#7889; n&agrave;y nh&#7853;n gi&aacute; tr&#7883; trong kho&#7843;ng \((-1, 1)\) nh&#432;ng c&oacute; th&#7875; d&#7877; d&agrave;ng &#273;&#432;a n&oacute; v&#7873; kho&#7843;ng \((0, 1)\). B&#7841;n &#273;&#7885;c c&oacute; th&#7875; ch&#7913;ng minh &#273;&#432;&#7907;c:
+\[
+\text{tanh}(s) = 2\sigma(2s) - 1
+\]</p>
+
+<p><a name="-ham-mat-mat-va-phuong-phap-toi-uu" href="logisticregression.html"></a></p>
+
+<h2 id="2-h&agrave;m-m&#7845;t-m&aacute;t-v&agrave;-ph&#432;&#417;ng-ph&aacute;p-t&#7889;i-&#432;u">2. H&agrave;m m&#7845;t m&aacute;t v&agrave; ph&#432;&#417;ng ph&aacute;p t&#7889;i &#432;u</h2>
+
+<p><a name="xay-dung-ham-mat-mat" href="logisticregression.html"></a></p>
+
+<h3 id="x&acirc;y-d&#7921;ng-h&agrave;m-m&#7845;t-m&aacute;t">X&acirc;y d&#7921;ng h&agrave;m m&#7845;t m&aacute;t</h3>
+
+<p>V&#7899;i m&ocirc; h&igrave;nh nh&#432; tr&ecirc;n (c&aacute;c activation m&agrave;u xanh lam v&agrave; l&#7909;c), ta c&oacute; th&#7875; gi&#7843; s&#7917; r&#7857;ng x&aacute;c su&#7845;t &#273;&#7875; m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u \(\mathbf{x}\) r&#417;i v&agrave;o class 1 l&agrave; \(f(\mathbf{w}^T\mathbf{x})\) v&agrave; r&#417;i v&agrave;o class 0 l&agrave; \(1 - f(\mathbf{w}^T\mathbf{x})\). V&#7899;i m&ocirc; h&igrave;nh &#273;&#432;&#7907;c gi&#7843; s&#7917; nh&#432; v&#7853;y, v&#7899;i c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u training (&#273;&atilde; bi&#7871;t &#273;&#7847;u ra \(y\)), ta c&oacute; th&#7875; vi&#7871;t nh&#432; sau:</p>
+
+<p>\[
+\begin{eqnarray}
+P(y_i = 1 | \mathbf{x}_i; \mathbf{w}) &amp;=&amp; &amp;f(\mathbf{w}^T\mathbf{x}_i)  ~~(1) \<br>
+P(y_i = 0 | \mathbf{x}_i; \mathbf{w}) &amp;=&amp; 1 - &amp;f(\mathbf{w}^T\mathbf{x}_i)  ~~(2) \<br>
+\end{eqnarray}
+\]
+trong &#273;&oacute; \( P(y_i = 1 | \mathbf{x}_i; \mathbf{w})\) &#273;&#432;&#7907;c hi&#7875;u l&agrave; x&aacute;c su&#7845;t x&#7843;y ra s&#7921; ki&#7879;n &#273;&#7847;u ra \(y_i = 1\) khi bi&#7871;t tham s&#7889; m&ocirc; h&igrave;nh \(\mathbf{w}\) v&agrave; d&#7919; li&#7879;u &#273;&#7847;u v&agrave;o \(\mathbf{x}_i\). B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#273;&#7885;c th&ecirc;m <a href="https://vi.wikipedia.org/wiki/X%C3%A1c_su%E1%BA%A5t_c%C3%B3_%C4%91i%E1%BB%81u_ki%E1%BB%87n">X&aacute;c su&#7845;t c&oacute; &#273;i&#7873;u ki&#7879;n</a>. M&#7909;c &#273;&iacute;ch c&#7911;a ch&uacute;ng ta l&agrave; t&igrave;m c&aacute;c h&#7879; s&#7889; \(\mathbf{w}\) sao cho \(f(\mathbf{w}^T\mathbf{x}_i)\) c&agrave;ng g&#7847;n v&#7899;i 1 c&agrave;ng t&#7889;t v&#7899;i c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u thu&#7897;c class 1 v&agrave; c&agrave;ng g&#7847;n v&#7899;i 0 c&agrave;ng t&#7889;t v&#7899;i nh&#7919;ng &#273;i&#7875;m thu&#7897;c class 0.</p>
+
+<p>K&yacute; hi&#7879;u \(z_i = f(\mathbf{w}^T\mathbf{x}_i)\) v&agrave; vi&#7871;t g&#7897;p l&#7841;i hai bi&#7875;u th&#7913;c b&ecirc;n tr&ecirc;n ta c&oacute;:
+\[
+P(y_i| \mathbf{x}_i; \mathbf{w}) = z_i^{y_i}(1 - z_i)^{1- y_i}
+\]</p>
+
+<p>Bi&#7875;u th&#7913;c n&agrave;y l&agrave; t&#432;&#417;ng &#273;&#432;&#417;ng v&#7899;i hai bi&#7875;u th&#7913;c \((1)\) v&agrave; \((2)\) &#7903; tr&ecirc;n v&igrave; khi \(y_i=1\), ph&#7847;n th&#7913; hai c&#7911;a v&#7871; ph&#7843;i s&#7869; tri&#7879;t ti&ecirc;u, khi \(y_i = 0\), ph&#7847;n th&#7913; nh&#7845;t s&#7869; b&#7883; tri&#7879;t ti&ecirc;u! Ch&uacute;ng ta mu&#7889;n m&ocirc; h&igrave;nh g&#7847;n v&#7899;i d&#7919; li&#7879;u &#273;&atilde; cho nh&#7845;t, t&#7913;c x&aacute;c su&#7845;t n&agrave;y &#273;&#7841;t gi&aacute; tr&#7883; cao nh&#7845;t.</p>
+
+<p>X&eacute;t to&agrave;n b&#7897; training set v&#7899;i \(\mathbf{X} = [\mathbf{x}_1,\mathbf{x}_2, \dots, \mathbf{x}_N] \in \mathbb{R}^{d \times N}\) v&agrave; \(\mathbf{y} = [y_1, y_2, \dots, y_N]\), ch&uacute;ng ta c&#7847;n t&igrave;m \(\mathbf{w}\) &#273;&#7875; bi&#7875;u th&#7913;c sau &#273;&acirc;y &#273;&#7841;t gi&aacute; tr&#7883; l&#7899;n nh&#7845;t:
+\[
+P(\mathbf{y}|\mathbf{X}; \mathbf{w})
+\]
+&#7903; &#273;&acirc;y, ta c&#361;ng k&yacute; hi&#7879;u \(\mathbf{X, y}\) nh&#432; c&aacute;c <a href="https://vi.wikipedia.org/wiki/Bi%E1%BA%BFn_ng%E1%BA%ABu_nhi%C3%AAn">bi&#7871;n ng&#7851;u nhi&ecirc;n</a> (random variables). N&oacute;i c&aacute;ch kh&aacute;c:
+\[
+\mathbf{w} = \arg\max_{\mathbf{w}} P(\mathbf{y}|\mathbf{X}; \mathbf{w})
+\]</p>
+
+<p><a name="maximun%20likelihood%20estimation" href="logisticregression.html"></a></p>
+
+<p>B&agrave;i to&aacute;n t&igrave;m tham s&#7889; &#273;&#7875; m&ocirc; h&igrave;nh g&#7847;n v&#7899;i d&#7919; li&#7879;u nh&#7845;t tr&ecirc;n &#273;&acirc;y c&oacute; t&ecirc;n g&#7885;i chung l&agrave; b&agrave;i to&aacute;n <a href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation"><em>maximum likelihood estimation</em></a> v&#7899;i h&agrave;m s&#7889; ph&iacute;a sau \(\arg\max\) &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>likelihood function</em>. Khi l&agrave;m vi&#7879;c v&#7899;i c&aacute;c b&agrave;i to&aacute;n Machine Learning s&#7917; d&#7909;ng c&aacute;c m&ocirc; h&igrave;nh x&aacute;c su&#7845;t th&#7889;ng k&ecirc;, ch&uacute;ng ta s&#7869; g&#7863;p l&#7841;i c&aacute;c b&agrave;i to&aacute;n thu&#7897;c d&#7841;ng n&agrave;y, ho&#7863;c <a href="https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation"><em>maximum a posteriori estimation</em></a>, r&#7845;t nhi&#7873;u. T&ocirc;i s&#7869; d&agrave;nh 1 b&agrave;i kh&aacute;c &#273;&#7875; n&oacute;i v&#7873; hai d&#7841;ng b&agrave;i to&aacute;n n&agrave;y.</p>
+
+<p>Gi&#7843; s&#7917; th&ecirc;m r&#7857;ng c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u &#273;&#432;&#7907;c sinh ra m&#7897;t c&aacute;ch ng&#7851;u nhi&ecirc;n &#273;&#7897;c l&#7853;p v&#7899;i nhau (independent), ta c&oacute; th&#7875; vi&#7871;t:
+\[
+\begin{eqnarray}
+P(\mathbf{y}|\mathbf{X}; \mathbf{w}) &amp;=&amp; \prod_{i=1}^N P(y_i| \mathbf{x}_i; \mathbf{w}) \<br>
+&amp;=&amp; \prod_{i=1}^N z_i^{y_i}(1 - z_i)^{1- y_i}
+\end{eqnarray}
+\]
+v&#7899;i \(\prod\) l&agrave; k&yacute; hi&#7879;u c&#7911;a t&iacute;ch. B&#7841;n &#273;&#7885;c c&oacute; th&#7875; mu&#7889;n &#273;&#7885;c th&ecirc;m v&#7873; <a href="https://vi.wikipedia.org/wiki/%C4%90%E1%BB%99c_l%E1%BA%ADp_th%E1%BB%91ng_k%C3%AA">&#272;&#7897;c l&#7853;p th&#7889;ng k&ecirc;</a>.</p>
+
+<p>Tr&#7921;c ti&#7871;p t&#7889;i &#432;u h&agrave;m s&#7889; n&agrave;y theo \(\mathbf{w}\) nh&igrave;n qua kh&ocirc;ng &#273;&#417;n gi&#7843;n! H&#417;n n&#7919;a, khi \(N\) l&#7899;n, t&iacute;ch c&#7911;a \(N\) s&#7889; nh&#7887; h&#417;n 1 c&oacute; th&#7875; d&#7851;n t&#7899;i sai s&#7889; trong t&iacute;nh to&aacute;n (numerial error) v&igrave; t&iacute;ch l&agrave; m&#7897;t s&#7889; qu&aacute; nh&#7887;. M&#7897;t ph&#432;&#417;ng ph&aacute;p th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng &#273;&oacute; l&agrave; l&#7845;y logarit t&#7921; nhi&ecirc;n (c&#417; s&#7889; \(e\)) c&#7911;a  <em>likelihood function</em> bi&#7871;n ph&eacute;p nh&acirc;n th&agrave;nh ph&eacute;p c&#7897;ng v&agrave; &#273;&#7875; tr&aacute;nh vi&#7879;c s&#7889; qu&aacute; nh&#7887;. Sau &#273;&oacute; l&#7845;y ng&#432;&#7907;c d&#7845;u &#273;&#7875; &#273;&#432;&#7907;c m&#7897;t h&agrave;m v&agrave; coi n&oacute; l&agrave; h&agrave;m m&#7845;t m&aacute;t. L&uacute;c n&agrave;y b&agrave;i to&aacute;n t&igrave;m gi&aacute; tr&#7883; l&#7899;n nh&#7845;t (maximum likelihood) tr&#7903; th&agrave;nh b&agrave;i to&aacute;n t&igrave;m gi&aacute; tr&#7883; nh&#7887; nh&#7845;t c&#7911;a h&agrave;m m&#7845;t m&aacute;t (h&agrave;m n&agrave;y c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; negative log likelihood):
+\[
+\begin{eqnarray}
+J(\mathbf{w}) = -\log P(\mathbf{y}|\mathbf{X}; \mathbf{w}) \<br>
+= -\sum_{i=1}^N(y_i \log {z}_i + (1-y_i) \log (1 - {z}_i))
+\end{eqnarray}
+\]
+v&#7899;i ch&uacute; &yacute; r&#7857;ng \(z_i\) l&agrave; m&#7897;t h&agrave;m s&#7889; c&#7911;a \(\mathbf{w}\). B&#7841;n &#273;&#7885;c t&#7841;m nh&#7899; bi&#7875;u th&#7913;c v&#7871; ph&#7843;i c&oacute; t&ecirc;n g&#7885;i l&agrave; <em>cross entropy</em>, th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng &#273;&#7875; &#273;o <em>kho&#7843;ng c&aacute;ch</em> gi&#7919;a hai ph&acirc;n ph&#7889;i (distributions). Trong b&agrave;i to&aacute;n &#273;ang x&eacute;t, m&#7897;t ph&acirc;n ph&#7889;i l&agrave; d&#7919; li&#7879;u &#273;&#432;&#7907;c cho, v&#7899;i x&aacute;c su&#7845;t ch&#7881; l&agrave; 0 ho&#7863;c 1; ph&acirc;n ph&#7889;i c&ograve;n l&#7841;i &#273;&#432;&#7907;c t&iacute;nh theo m&ocirc; h&igrave;nh logistic regression. <em>Kho&#7843;ng c&aacute;ch</em> gi&#7919;a hai ph&acirc;n ph&#7889;i nh&#7887; &#273;&#7891;ng ngh&#297;a v&#7899;i vi&#7879;c (<em>c&oacute; v&#7867; hi&#7875;n nhi&ecirc;n l&agrave;</em>) hai ph&acirc;n ph&#7889;i &#273;&oacute; r&#7845;t g&#7847;n nhau. T&iacute;nh ch&#7845;t c&#7909; th&#7875; c&#7911;a h&agrave;m s&#7889; n&agrave;y s&#7869; &#273;&#432;&#7907;c &#273;&#7873; c&#7853;p trong m&#7897;t b&agrave;i kh&aacute;c m&agrave; t&#7847;m quan tr&#7885;ng c&#7911;a kho&#7843;ng c&aacute;ch gi&#7919;a hai ph&acirc;n ph&#7889;i l&agrave; l&#7899;n h&#417;n.</p>
+
+<p><strong>Ch&uacute; &yacute;:</strong> Trong machine learning, logarit th&#7853;p ph&acirc;n &iacute;t &#273;&#432;&#7907;c d&ugrave;ng, v&igrave; v&#7853;y \(\log\) th&#432;&#7901;ng &#273;&#432;&#7907;c d&ugrave;ng &#273;&#7875; k&yacute; hi&#7879;u logarit t&#7921; nhi&ecirc;n.</p>
+
+<p><a name="toi-uu-ham-mat-mat" href="logisticregression.html"></a></p>
+
+<h3 id="t&#7889;i-&#432;u-h&agrave;m-m&#7845;t-m&aacute;t">T&#7889;i &#432;u h&agrave;m m&#7845;t m&aacute;t</h3>
+
+<!-- V&#7899;i h&agrave;m _sigmoid_ \\(\sigma\\), nh&#7855;c l&#7841;i t&iacute;nh ch&#7845;t &#273;&#7863;t bi&#7879;t &#273;&atilde; ch&#7913;ng minh &#7903; tr&ecirc;n: \\(\sigma'(s) = \sigma(s) ( 1 - \sigma(s))\\) v&agrave; \\(z\_i = \sigma(\mathbf{w}^T\mathbf{x}\_i)\\), ta c&oacute;:
+
+\\[
+\frac{\partial z\_i}{\partial \mathbf{w}} = z\_i (1 - z\_i)\mathbf{x}\_i
+\\]
+v&agrave;:
+
+\\[
+\frac{\partial \log z\_i}{\partial \mathbf{w}} = \frac{1}{z\_i}\frac{\partial z\_i}{\partial \mathbf{w}} = (1-z\_i)\mathbf{x}\_i
+\\]
+
+\\[
+\frac{\partial \log(1 - z\_i)}{\partial \mathbf{w}} = -\frac{1}{1 - z\_i}\frac{\partial z\_i}{\partial \mathbf{w}} = -z\_i\mathbf{x}\_i
+\\]
+ -->
+
+<p>Ch&uacute;ng ta l&#7841;i s&#7917; d&#7909;ng ph&#432;&#417;ng ph&aacute;p <a href="/2017/01/16/gradientdescent2/#-stochastic-gradient-descent">Stochastic Gradient Descent</a> (SGD) &#7903; &#273;&acirc;y (<em>B&#7841;n &#273;&#7885;c &#273;&#432;&#7907;c khuy&#7871;n kh&iacute;ch &#273;&#7885;c SGD tr&#432;&#7899;c khi &#273;&#7885;c ph&#7847;n n&agrave;y</em>) . H&agrave;m m&#7845;t m&aacute;t v&#7899;i ch&#7881; m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u \((\mathbf{x}_i, y_i)\) l&agrave;:
+\[
+J(\mathbf{w}; \mathbf{x}_i, y_i) = -(y_i \log {z}_i + (1-y_i) \log (1 - {z}_i))
+\]</p>
+
+<p>V&#7899;i &#273;&#7841;o h&agrave;m:
+\[
+\begin{eqnarray}
+\frac{\partial J(\mathbf{w}; \mathbf{x}_i, y_i)}{\partial \mathbf{w}} &amp;=&amp; -(\frac{y_i}{z_i} - \frac{1- y_i}{1 - z_i} ) \frac{\partial z_i}{\partial \mathbf{w}} \<br>
+&amp;=&amp; \frac{z_i - y_i}{z_i(1 - z_i)} \frac{\partial z_i}{\partial \mathbf{w}} ~~~~~~ (3)
+\end{eqnarray}
+\]</p>
+
+<p>&#272;&#7875; cho bi&#7875;u th&#7913;c n&agrave;y tr&#7903; n&ecirc;n <em>g&#7885;n</em> v&agrave; <em>&#273;&#7865;p</em> h&#417;n, ch&uacute;ng ta s&#7869; t&igrave;m h&agrave;m \(z = f(\mathbf{w}^T\mathbf{x})\) sao cho m&#7851;u s&#7889; b&#7883; tri&#7879;t ti&ecirc;u. N&#7871;u &#273;&#7863;t \(s = \mathbf{w}^T\mathbf{x}\), ch&uacute;ng ta s&#7869; c&oacute;:
+\[
+\frac{\partial z_i}{\partial \mathbf{w}} = \frac{\partial z_i}{\partial s} \frac{\partial s}{\partial \mathbf{w}} = \frac{\partial z_i}{\partial s} \mathbf{x}
+\]
+M&#7897;t c&aacute;ch tr&#7921;c quan nh&#7845;t, ta s&#7869; t&igrave;m h&agrave;m s&#7889; \(z = f(s)\) sao cho:
+\[
+\frac{\partial z}{\partial s} = z(1 - z) ~~ (4)
+\]
+&#273;&#7875; tri&#7879;t ti&ecirc;u m&#7851;u s&#7889; trong bi&#7875;u th&#7913;c \((3)\). Ch&uacute;ng ta c&ugrave;ng kh&#7903;i &#273;&#7897;ng m&#7897;t ch&uacute;t v&#7899;i ph&#432;&#417;ng tr&igrave;nh vi ph&acirc;n &#273;&#417;n gi&#7843;n n&agrave;y. Ph&#432;&#417;ng tr&igrave;nh \((4)\) t&#432;&#417;ng &#273;&#432;&#417;ng v&#7899;i:
+\[
+\begin{eqnarray}
+&amp;\frac{\partial z}{z(1-z)} &amp;=&amp; \partial s \<br>
+\Leftrightarrow &amp; (\frac{1}{z} + \frac{1}{1 - z})\partial z &amp;=&amp;\partial s \<br>
+\Leftrightarrow &amp; \log z - \log(1 - z) &amp;=&amp; s \<br>
+\Leftrightarrow &amp; \log \frac{z}{1 - z} &amp;=&amp; s \<br>
+\Leftrightarrow &amp; \frac{z}{1 - z} &amp;=&amp; e^s \<br>
+\Leftrightarrow &amp; z &amp;=&amp; e^s (1 - z) \<br>
+\Leftrightarrow &amp; z = \frac{e^s}{1 +e^s} &amp;=&amp;\frac{1}{1 + e^{-s}} = \sigma(s)
+\end{eqnarray}
+\]
+&#272;&#7871;n &#273;&acirc;y, t&ocirc;i hy v&#7885;ng c&aacute;c b&#7841;n &#273;&atilde; hi&#7875;u h&agrave;m s&#7889; <em>sigmoid</em> &#273;&#432;&#7907;c t&#7841;o ra nh&#432; th&#7871; n&agrave;o.</p>
+
+<p><em>Ch&uacute; &yacute;: Trong vi&#7879;c gi&#7843;i ph&#432;&#417;ng tr&igrave;nh vi ph&acirc;n &#7903; tr&ecirc;n, t&ocirc;i &#273;&atilde; b&#7887; qua h&#7857;ng s&#7889; khi l&#7845;y nguy&ecirc;n h&agrave;m hai v&#7871;. Tuy v&#7853;y, vi&#7879;c n&agrave;y kh&ocirc;ng &#7843;nh h&#432;&#7903;ng nhi&#7873;u t&#7899;i k&#7871;t qu&#7843;.</em></p>
+
+<p><a name="cong-thuc-cap-nhat-cho-logistic-sigmoid-regression" href="logisticregression.html"></a></p>
+
+<h3 id="c&ocirc;ng-th&#7913;c-c&#7853;p-nh&#7853;t-cho-logistic-sigmoid-regression">C&ocirc;ng th&#7913;c c&#7853;p nh&#7853;t cho logistic sigmoid regression</h3>
+<p>T&#7899;i &#273;&acirc;y, b&#7841;n &#273;&#7885;c c&oacute; th&#7875; ki&#7875;m tra r&#7857;ng:
+\[
+\frac{\partial J(\mathbf{w}; \mathbf{x}_i, y_i)}{\partial \mathbf{w}} = (z_i - y_i)\mathbf{x}_i
+\]
+Q&uacute;a &#273;&#7865;p!</p>
+
+<p>V&agrave; c&ocirc;ng th&#7913;c c&#7853;p nh&#7853;t (theo thu&#7853;t to&aacute;n <a href="/2017/01/16/gradientdescent2/#-stochastic-gradient-descent">SGD</a>) cho logistic regression l&agrave;: 
+\[
+\mathbf{w} = \mathbf{w} + \eta(y_i - z_i)\mathbf{x}_i
+\]
+Kh&aacute; &#273;&#417;n gi&#7843;n! V&agrave;, nh&#432; th&#432;&#7901;ng l&#7879;, ch&uacute;ng ta s&#7869; c&oacute; v&agrave;i v&iacute; d&#7909; v&#7899;i Python.</p>
+
+<p><a name="-vi-du-voi-python" href="logisticregression.html"></a></p>
+
+<h2 id="3-v&iacute;-d&#7909;-v&#7899;i-python">3. V&iacute; d&#7909; v&#7899;i Python</h2>
+
+<p><a name="vi-du-voi-du-lieu--chieu" href="logisticregression.html"></a></p>
+
+<h3 id="v&iacute;-d&#7909;-v&#7899;i-d&#7919;-li&#7879;u-1-chi&#7873;u">V&iacute; d&#7909; v&#7899;i d&#7919; li&#7879;u 1 chi&#7873;u</h3>
+
+<p>Quay tr&#7903; l&#7841;i v&#7899;i v&iacute; d&#7909; n&ecirc;u &#7903; ph&#7847;n Gi&#7899;i thi&#7879;u. Tr&#432;&#7899;c ti&ecirc;n ta c&#7847;n khai b&aacute;o v&agrave;i th&#432; vi&#7879;n v&agrave; d&#7919; li&#7879;u:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># To support both python 2 and python 3
+</span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.50</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">,</span> <span class="mf">2.25</span><span class="p">,</span> <span class="mf">2.50</span><span class="p">,</span> 
+              <span class="mf">2.75</span><span class="p">,</span> <span class="mf">3.00</span><span class="p">,</span> <span class="mf">3.25</span><span class="p">,</span> <span class="mf">3.50</span><span class="p">,</span> <span class="mf">4.00</span><span class="p">,</span> <span class="mf">4.25</span><span class="p">,</span> <span class="mf">4.50</span><span class="p">,</span> <span class="mf">4.75</span><span class="p">,</span> <span class="mf">5.00</span><span class="p">,</span> <span class="mf">5.50</span><span class="p">]])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># extended data 
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="n">X</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a name="cac-ham-can-thiet-cho-logistic-sigmoid-regression" href="logisticregression.html"></a></p>
+
+<h3 id="c&aacute;c-h&agrave;m-c&#7847;n-thi&#7871;t-cho-logistic-sigmoid-regression">C&aacute;c h&agrave;m c&#7847;n thi&#7871;t cho logistic sigmoid regression</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">s</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">logistic_sigmoid_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w_init</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_count</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="p">[</span><span class="n">w_init</span><span class="p">]</span>    
+    <span class="n">it</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">check_w_after</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="k">while</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">max_count</span><span class="p">:</span>
+        <span class="c1"># mix data 
+</span>        <span class="n">mix_id</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mix_id</span><span class="p">:</span>
+            <span class="n">xi</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">].</span><span class="n">reshape</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">yi</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">zi</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">T</span><span class="p">,</span> <span class="n">xi</span><span class="p">))</span>
+            <span class="n">w_new</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">eta</span><span class="o">*</span><span class="p">(</span><span class="n">yi</span> <span class="o">-</span> <span class="n">zi</span><span class="p">)</span><span class="o">*</span><span class="n">xi</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># stopping criteria
+</span>            <span class="k">if</span> <span class="n">count</span><span class="o">%</span><span class="n">check_w_after</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>                
+                <span class="k">if</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w_new</span> <span class="o">-</span> <span class="n">w</span><span class="p">[</span><span class="o">-</span><span class="n">check_w_after</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">w</span>
+            <span class="n">w</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_new</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w</span>
+<span class="n">eta</span> <span class="o">=</span> <span class="p">.</span><span class="mi">05</span> 
+<span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">w_init</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">logistic_sigmoid_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w_init</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[-4.092695  ]
+ [ 1.55277242]]
+</code></pre></div></div>
+
+<p>V&#7899;i k&#7871;t qu&#7843; t&igrave;m &#273;&#432;&#7907;c, &#273;&#7847;u ra \(y\) c&oacute; th&#7875; &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n theo c&ocirc;ng th&#7913;c: <code class="language-plaintext highlighter-rouge">y = sigmoid(-4.1 + 1.55*x)</code>. V&#7899;i d&#7919; li&#7879;u trong t&#7853;p training, k&#7871;t qu&#7843; l&agrave;:</p>
+
+<!-- 
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+</pre></td><td class="code"><pre> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+</pre></td></tr></tbody></table></code></pre></figure>
+ -->
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">T</span><span class="p">,</span> <span class="n">X</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[ 0.03281144  0.04694533  0.06674738  0.09407764  0.13102736  0.17961209
+   0.17961209  0.24121129  0.31580406  0.40126557  0.49318368  0.58556493
+   0.67229611  0.74866712  0.86263755  0.90117058  0.92977426  0.95055357
+   0.96541314  0.98329067]]
+</code></pre></div></div>
+
+<p>Bi&#7875;u di&#7877;n k&#7871;t qu&#7843; n&agrave;y tr&ecirc;n &#273;&#7891; th&#7883; ta c&oacute;:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X0</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">y0</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span>
+<span class="n">X1</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="s">'ro'</span><span class="p">,</span> <span class="n">markersize</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="s">'bs'</span><span class="p">,</span> <span class="n">markersize</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span>
+
+<span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">w0</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">w1</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="o">-</span><span class="n">w0</span><span class="o">/</span><span class="n">w1</span>
+<span class="n">yy</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">w0</span> <span class="o">+</span> <span class="n">w1</span><span class="o">*</span><span class="n">xx</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="s">'g-'</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">threshold</span><span class="p">,</span> <span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="s">'y^'</span><span class="p">,</span> <span class="n">markersize</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'studying hours'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'predicted probability of pass'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="imgcap">
+<img src="images/logisticregression-%5Cassets%5CLogisticRegression%5Clg_results.png" align="center" width="600"><div class="thecap">H&igrave;nh 4: D&#7919; li&#7879;u v&agrave; h&agrave;m sigmoid t&igrave;m &#273;&#432;&#7907;c.</div>
+</div>
+
+<p>N&#7871;u nh&#432; ch&#7881; c&oacute; hai output l&agrave; &lsquo;fail&rsquo; ho&#7863;c &lsquo;pass&rsquo;, &#273;i&#7875;m tr&ecirc;n &#273;&#7891; th&#7883; c&#7911;a h&agrave;m sigmoid t&#432;&#417;ng &#7913;ng v&#7899;i x&aacute;c su&#7845;t 0.5 &#273;&#432;&#7907;c ch&#7885;n l&agrave;m <em>hard threshold</em> (ng&#432;&#7905;ng c&#7913;ng). Vi&#7879;c n&agrave;y c&oacute; th&#7875; ch&#7913;ng minh kh&aacute; d&#7877; d&agrave;ng (t&ocirc;i s&#7869; b&agrave;n &#7903; ph&#7847;n d&#432;&#7899;i).</p>
+
+<p><a name="vi-du-voi-du-lieu--chieu-1" href="logisticregression.html"></a></p>
+
+<h3 id="v&iacute;-d&#7909;-v&#7899;i-d&#7919;-li&#7879;u-2-chi&#7873;u">V&iacute; d&#7909; v&#7899;i d&#7919; li&#7879;u 2 chi&#7873;u</h3>
+<p>Ch&uacute;ng ta x&eacute;t th&ecirc;m m&#7897;t v&iacute; d&#7909; nh&#7887; n&#7919;a trong kh&ocirc;ng gian hai chi&#7873;u. Gi&#7843; s&#7917; ch&uacute;ng ta c&oacute; hai class xanh-&#273;&#7887; v&#7899;i d&#7919; li&#7879;u &#273;&#432;&#7907;c ph&acirc;n b&#7889; nh&#432; h&igrave;nh d&#432;&#7899;i.</p>
+<div class="imgcap">
+<img src="images/logisticregression-%5Cassets%5CLogisticRegression%5Clogistic_2d.png" align="center" width="400"><div class="thecap">H&igrave;nh 5: Hai class v&#7899;i d&#7919; li&#7879;u hai chi&#7873;u.</div>
+</div>
+<p>V&#7899;i d&#7919; li&#7879;u &#273;&#7847;u v&agrave;o n&#7857;m trong kh&ocirc;ng gian hai chi&#7873;u, h&agrave;m sigmoid c&oacute; d&#7841;ng nh&#432; th&aacute;c n&#432;&#7899;c d&#432;&#7899;i &#273;&acirc;y:</p>
+<div class="imgcap">
+<img src="images/img-plaszczyzna.gif" align="center" width="400"><div class="thecap">H&igrave;nh 6: H&agrave;m sigmoid v&#7899;i d&#7919; li&#7879;u c&oacute; chi&#7873;u l&agrave; 2. (Ngu&#7891;n: <a href="http://galaxy.agh.edu.pl/~vlsi/AI/bias/bias_eng.html">Biased and non biased neurons</a>)</div>
+</div>
+
+<p>K&#7871;t qu&#7843; t&igrave;m &#273;&#432;&#7907;c khi &aacute;p d&#7909;ng m&ocirc; h&igrave;nh logistic regression &#273;&#432;&#7907;c minh h&#7885;a nh&#432; h&igrave;nh d&#432;&#7899;i v&#7899;i m&agrave;u n&#7873;n kh&aacute;c nhau th&#7875; hi&#7879;n x&aacute;c su&#7845;t &#273;i&#7875;m &#273;&oacute; thu&#7897;c class &#273;&#7887;. &#272;&#7887; h&#417;n t&#7913;c g&#7847;n 1 h&#417;n, xanh h&#417;n t&#7913;c g&#7847;n 0 h&#417;n.</p>
+<div class="imgcap">
+<img src="images/logisticregression-%5Cassets%5CLogisticRegression%5Clogistic_2d_2.png" align="center" width="400"><div class="thecap">H&igrave;nh 7: Logistic Regression v&#7899;i d&#7919; li&#7879;u hai chi&#7873;u.</div>
+</div>
+
+<p>N&#7871;u ph&#7843;i l&#7921;a ch&#7885;n m&#7897;t <em>ng&#432;&#7905;ng c&#7913;ng</em> (ch&#7913; kh&ocirc;ng ch&#7845;p nh&#7853;n x&aacute;c su&#7845;t) &#273;&#7875; ph&acirc;n chia hai class, ch&uacute;ng ta quan s&aacute;t th&#7845;y &#273;&#432;&#7901;ng th&#7859;ng n&#7857;m n&#7857;m trong khu v&#7921;c xanh l&#7909;c l&agrave; m&#7897;t l&#7921;a ch&#7885;n h&#7907;p l&yacute;. T&ocirc;i s&#7869; ch&#7913;ng minh &#7903; ph&#7847;n d&#432;&#7899;i r&#7857;ng, &#273;&#432;&#7901;ng ph&acirc;n chia gi&#7919;a hai class t&igrave;m &#273;&#432;&#7907;c b&#7903;i logistic regression c&oacute; d&#7841;ng m&#7897;t &#273;&#432;&#7901;ng ph&#7859;ng, t&#7913;c v&#7851;n l&agrave; linear.</p>
+
+<p><a name="-mot-vai-tinh-chat-cua-logistic-regression" href="logisticregression.html"></a></p>
+
+<h2 id="4-m&#7897;t-v&agrave;i-t&iacute;nh-ch&#7845;t-c&#7911;a-logistic-regression">4. M&#7897;t v&agrave;i t&iacute;nh ch&#7845;t c&#7911;a Logistic Regression</h2>
+
+<p><a name="logistic-regression-thuc-ra-duoc-su-dung-nhieu-trong-cac-bai-toan-classification" href="logisticregression.html"></a></p>
+
+<h3 id="logistic-regression-th&#7921;c-ra-&#273;&#432;&#7907;c-s&#7917;-d&#7909;ng-nhi&#7873;u-trong-c&aacute;c-b&agrave;i-to&aacute;n-classification">Logistic Regression th&#7921;c ra &#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u trong c&aacute;c b&agrave;i to&aacute;n Classification.</h3>
+<p>M&#7863;c d&ugrave; c&oacute; t&ecirc;n l&agrave; Regression, t&#7913;c m&#7897;t m&ocirc; h&igrave;nh cho fitting, Logistic Regression l&#7841;i &#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u trong c&aacute;c b&agrave;i to&aacute;n Classification. Sau khi t&igrave;m &#273;&#432;&#7907;c m&ocirc; h&igrave;nh, vi&#7879;c x&aacute;c &#273;&#7883;nh class \(y\) cho m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u \(\mathbf{x}\) &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh b&#7857;ng vi&#7879;c so s&aacute;nh hai bi&#7875;u th&#7913;c x&aacute;c su&#7845;t:
+\[
+P(y = 1| \mathbf{x}; \mathbf{w}); ~~ P(y = 0| \mathbf{x}; \mathbf{w}) 
+\]
+N&#7871;u bi&#7875;u th&#7913;c th&#7913; nh&#7845;t l&#7899;n h&#417;n th&igrave; ta k&#7871;t lu&#7853;n &#273;i&#7875;m d&#7919; li&#7879;u thu&#7897;c class 1, ng&#432;&#7907;c l&#7841;i th&igrave; n&oacute; thu&#7897;c class 0. V&igrave; t&#7893;ng hai bi&#7875;u th&#7913;c n&agrave;y lu&ocirc;n b&#7857;ng 1 n&ecirc;n m&#7897;t c&aacute;ch g&#7885;n h&#417;n, ta ch&#7881; c&#7847;n x&aacute;c &#273;&#7883;nh xem \(P(y = 1| \mathbf{x}; \mathbf{w})\) l&#7899;n h&#417;n 0.5 hay kh&ocirc;ng. N&#7871;u c&oacute;, class 1. N&#7871;u kh&ocirc;ng, class 0.</p>
+
+<p><a name="boundary-tao-boi-logistic-regression-co-dang-tuyen-tinh" href="logisticregression.html"></a></p>
+
+<h3 id="boundary-t&#7841;o-b&#7903;i-logistic-regression-c&oacute;-d&#7841;ng-tuy&#7871;n-t&iacute;nh">Boundary t&#7841;o b&#7903;i Logistic Regression c&oacute; d&#7841;ng tuy&#7871;n t&iacute;nh</h3>
+<p>Th&#7853;t v&#7853;y, theo l&#7853;p lu&#7853;n &#7903; ph&#7847;n tr&ecirc;n th&igrave; ch&uacute;ng ta c&#7847;n ki&#7875;m tra:</p>
+
+<p>\[
+\begin{eqnarray}
+P(y = 1| \mathbf{x}; \mathbf{w}) &amp;&gt;&amp; 0.5 \<br>
+\Leftrightarrow \frac{1}{1 + e^{-\mathbf{w}^T\mathbf{x}}} &amp;&gt;&amp; 0.5 \<br>
+\Leftrightarrow e^{-\mathbf{w}^T\mathbf{x}} &amp;&lt;&amp; 1 \<br>
+\Leftrightarrow \mathbf{w}^T\mathbf{x} &amp;&gt;&amp; 0
+\end{eqnarray}
+\]</p>
+
+<p>N&oacute;i c&aacute;ch kh&aacute;c, boundary gi&#7919;a hai class l&agrave; &#273;&#432;&#7901;ng c&oacute; ph&#432;&#417;ng tr&igrave;nh \(\mathbf{w}^T\mathbf{x}\). &#272;&acirc;y ch&iacute;nh l&agrave; ph&#432;&#417;ng tr&igrave;nh c&#7911;a m&#7897;t si&ecirc;u m&#7863;t ph&#7859;ng. V&#7853;y Logistic Regression t&#7841;o ra boundary c&oacute; d&#7841;ng tuy&#7871;n t&iacute;nh.</p>
+
+<p><a name="-thao-luan" href="logisticregression.html"></a></p>
+
+<h2 id="5-th&#7843;o-lu&#7853;n">5. Th&#7843;o lu&#7853;n</h2>
+
+<ul><li>M&#7897;t &#273;i&#7875;m c&#7897;ng cho Logistic Regression so v&#7899;i PLA l&agrave; n&oacute; kh&ocirc;ng c&#7847;n c&oacute; gi&#7843; thi&#7871;t d&#7919; li&#7879;u hai class l&agrave; linearly separable. Tuy nhi&ecirc;n, boundary t&igrave;m &#273;&#432;&#7907;c v&#7851;n c&oacute; d&#7841;ng tuy&#7871;n t&iacute;nh. V&#7853;y n&ecirc;n m&ocirc; h&igrave;nh n&agrave;y ch&#7881; ph&ugrave; h&#7907;p v&#7899;i lo&#7841;i d&#7919; li&#7879;u m&agrave; hai class l&agrave; g&#7847;n v&#7899;i linearly separable. M&#7897;t ki&#7875;u d&#7919; li&#7879;u m&agrave; Logistic Regression kh&ocirc;ng l&agrave;m vi&#7879;c &#273;&#432;&#7907;c l&agrave; d&#7919; li&#7879;u m&agrave;
+m&#7897;t class ch&#7913;a c&aacute;c &#273;i&#7875;m n&#7857;m trong 1 v&ograve;ng tr&ograve;n, class kia ch&#7913;a c&aacute;c &#273;i&#7875;m b&ecirc;n ngo&agrave;i &#273;&#432;&#7901;ng tr&ograve;n &#273;&oacute;. Ki&#7875;u d&#7919; li&#7879;u n&agrave;y &#273;&#432;&#7907;c g&#7885;i l&agrave; phi tuy&#7871;n (non-linear). Sau m&#7897;t v&agrave;i b&agrave;i n&#7919;a, t&ocirc;i s&#7869; gi&#7899;i thi&#7879;u v&#7899;i c&aacute;c b&#7841;n c&aacute;c m&ocirc; h&igrave;nh kh&aacute;c ph&ugrave; h&#7907;p h&#417;n v&#7899;i lo&#7841;i d&#7919; li&#7879;u n&agrave;y h&#417;n.</li>
+  <li>M&#7897;t h&#7841;n ch&#7871; n&#7919;a c&#7911;a Logistic Regression l&agrave; n&oacute; y&ecirc;u c&#7847;u c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u &#273;&#432;&#7907;c t&#7841;o ra m&#7897;t c&aacute;ch <em>&#273;&#7897;c l&#7853;p</em> v&#7899;i nhau. Tr&ecirc;n th&#7921;c t&#7871;, c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u c&oacute; th&#7875; b&#7883; <em>&#7843;nh h&#432;&#7903;ng</em> b&#7903;i nhau. V&iacute; d&#7909;: c&oacute; m&#7897;t nh&oacute;m &ocirc;n t&#7853;p v&#7899;i nhau trong 4 gi&#7901;, c&#7843; nh&oacute;m &#273;&#7873;u thi &#273;&#7895; (gi&#7843; s&#7917; c&aacute;c b&#7841;n n&agrave;y h&#7885;c r&#7845;t t&#7853;p trung), nh&#432;ng c&oacute; m&#7897;t sinh vi&ecirc;n h&#7885;c m&#7897;t m&igrave;nh c&#361;ng trong 4 gi&#7901; th&igrave; x&aacute;c su&#7845;t thi &#273;&#7895; th&#7845;p h&#417;n. M&#7863;c d&ugrave; v&#7853;y, &#273;&#7875; cho &#273;&#417;n gi&#7843;n, khi x&acirc;y d&#7921;ng m&ocirc; h&igrave;nh, ng&#432;&#7901;i ta v&#7851;n th&#432;&#7901;ng gi&#7843; s&#7917; c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u l&agrave; &#273;&#7897;c l&#7853;p v&#7899;i nhau.</li>
+  <li>Khi bi&#7875;u di&#7877;n theo Neural Networks, Linear Regression, PLA, v&agrave; Logistic Regression c&oacute; d&#7841;ng nh&#432; sau:</li>
+</ul><div class="imgcap">
+<img src="images/logisticregression-%5Cassets%5CLogisticRegression%5C3models.png" align="center" width="800"><div class="thecap">H&igrave;nh 8: Bi&#7875;u di&#7877;n Linear Regression, PLA, v&agrave; Logistic Regression theo Neural network.</div>
+</div>
+
+<ul><li>
+    <p>N&#7871;u h&agrave;m m&#7845;t m&aacute;t c&#7911;a Logistic Regression &#273;&#432;&#7907;c vi&#7871;t d&#432;&#7899;i d&#7841;ng:
+\[
+J(\mathbf{w}) = \sum_{i=1}^N (y_i - z_i)^2
+\]
+th&igrave; kh&oacute; kh&#259;n g&igrave; s&#7869; x&#7843;y ra? C&aacute;c b&#7841;n h&atilde;y coi &#273;&acirc;y nh&#432; m&#7897;t b&agrave;i t&#7853;p nh&#7887;.</p>
+  </li>
+  <li>
+    <p>Source code cho c&aacute;c v&iacute; d&#7909; trong b&agrave;i n&agrave;y c&oacute; th&#7875; <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/LogisticRegression/LogisticRegression_post.ipynb">t&igrave;m th&#7845;y &#7903; &#273;&acirc;y</a>.</p>
+  </li>
+</ul><p><a name="-tai-lieu-tham-khao" href="logisticregression.html"></a></p>
+
+<h2 id="6-t&agrave;i-li&#7879;u-tham-kh&#7843;o">6. T&agrave;i li&#7879;u tham kh&#7843;o</h2>
+
+<p>[1] Cox, David R. &ldquo;The regression analysis of binary sequences.&rdquo; Journal of the Royal Statistical Society. Series B (Methodological) (1958): 215-242.</p>
+
+<p>[2] Cramer, Jan Salomon. &ldquo;The origins of logistic regression.&rdquo; (2002).</p>
+
+<p>[3] Abu-Mostafa, Yaser S., Malik Magdon-Ismail, and Hsuan-Tien Lin. Learning from data. Vol. 4. New York, NY, USA:: AMLBook, 2012. (<a href="http://work.caltech.edu/telecourse.html">link to course</a>)</p>
+
+<p>[4] Bishop, Christopher M. &ldquo;Pattern recognition and Machine Learning.&rdquo;, Springer  (2006). (<a href="http://users.isr.ist.utl.pt/~wurmd/Livros/school/Bishop%20-%20Pattern%20Recognition%20And%20Machine%20Learning%20-%20Springer%20%202006.pdf">book</a>)</p>
+
+<p>[5] Duda, Richard O., Peter E. Hart, and David G. Stork. Pattern classification. John Wiley &amp; Sons, 2012.</p>
+
+<p>[6] Andrer Ng. CS229 Lecture notes. <a href="https://datajobs.com/data-science-repo/Generalized-Linear-Models-%5BAndrew-Ng%5D.pdf">Part II: Classification and logistic regression</a></p>
+
+<p>[7] Jerome H. Friedman, Robert Tibshirani, and Trevor Hastie. <a href="https://statweb.stanford.edu/~tibs/">The Elements of Statistical Learning</a>.</p>
+
+</div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="perceptron.html">&laquo; B&agrave;i 9: Perceptron Learning Algorithm</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="howdoIcreatethisblog.html">Blog v&agrave; c&aacute;c b&agrave;i vi&#7871;t &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2017/01/27/logisticregression/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11234220; 
+var sc_invisible=0; 
+var sc_security="f6ce29d2"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/f6ce29d2-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/02/24/mlp/">B&agrave;i 14: Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/02/17/softmax/">B&agrave;i 13: Softmax Regression</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/02/11/binaryclassifiers/">B&agrave;i 12: Binary Classifiers cho c&aacute;c b&agrave;i to&aacute;n Classification</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/01/27/logisticregression/">B&agrave;i 10: Logistic Regression</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/01/21/perceptron/">B&agrave;i 9: Perceptron Learning Algorithm</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/01/27/logisticregression/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2017/01/27/logisticregression/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/01/27/logisticregression/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=B&agrave;i 10: Logistic Regression&url=https://machinelearningcoban.com/2017/01/27/logisticregression/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2017/01/27/logisticregression/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2017/01/27/logisticregression/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#6d523e180f07080e19503e04001d01084d3e050c1f084d2f18191902031e4b0c001d562f0209145024485f5d1e0c1a485f5d1905041e485f5d0c0309485f5d190502180a0519485f5d020b485f5d1402184c485f5d4d0519191d1e574242000c0e0504030801080c1f0304030a0e020f0c03430e0200425f5d5c5a425d5c425f5a4201020a041e19040e1f080a1f081e1e04020342">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/01/21/perceptron/">B&agrave;i 9: Perceptron Learning Algorithm</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2017/02/02/howdoIcreatethisblog/">Blog v&agrave; c&aacute;c b&agrave;i vi&#7871;t &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

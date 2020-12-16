@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</title><!-- <script>
+var pageProperties = {
+    
+    category: "Deep Learning",
+    
+    url: "/2018/10/03/conv2d",
+    title: "B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/2018/10/03/conv2d"><meta name="author" content="Tiep Vu "><meta property="og:title" content="B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/2018/10/03/conv2d"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2018-10-03"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="Deep Learning"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2018/10/03/conv2d',
+'title': 'B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="deeplearning.html">36. Keras</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+                  
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="forum.html">&laquo; Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</h1>
+
+
+<ul class="tags"></ul><span class="post-date" style="color: gray; font-style: italic;">Oct 3, 2018
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <!-- MarkdownTOC -->
+
+<ul><li><a href="#-tich-chap-mot-chieu">1. T&iacute;ch ch&#7853;p m&#7897;t chi&#7873;u</a>
+    <ul><li><a href="#-dinh-nghia">1.1. &#272;&#7883;nh ngh&#297;a</a></li>
+      <li><a href="#-them-le">1.2. Th&ecirc;m l&#7873;</a></li>
+      <li><a href="#-buoc-truot">1.3. B&#432;&#7899;c tr&#432;&#7907;t</a></li>
+    </ul></li>
+  <li><a href="#-tich-chap-hai-chieu">2. T&iacute;ch ch&#7853;p hai chi&#7873;u</a>
+    <ul><li><a href="#-tin-hieu-don-kenh">2.1. T&iacute;n hi&#7879;u &#273;&#417;n k&ecirc;nh</a></li>
+    </ul></li>
+  <li><a href="#-tich-chap-hai-chieu-tong-quat">3. T&iacute;ch ch&#7853;p hai chi&#7873;u t&#7893;ng qu&aacute;t</a></li>
+  <li><a href="#-ket-luan">4. K&#7871;t lu&#7853;n</a></li>
+  <li><a href="#-tai-lieu-tham-khao">5. T&agrave;i li&#7879;u tham kh&#7843;o</a></li>
+</ul><!-- /MarkdownTOC --><p>T&iacute;ch ch&#7853;p &#273;&oacute;ng m&#7897;t vai tr&ograve; quan tr&#7885;ng v&agrave; xu&#7845;t hi&#7879;n t&#7915; s&#7899;m 
+trong l&#7883;ch s&#7917; x&#7917; l&yacute; t&iacute;n hi&#7879;u s&#7889;. Vi&#7879;c t&igrave;m ra c&aacute;c b&#7897; l&#7885;c ph&ugrave; h&#7907;p cho m&#7895;i lo&#7841;i t&iacute;n hi&#7879;u 
+v&agrave; m&#7895;i b&agrave;i to&aacute;n &#273;&atilde; &#273;&#432;&#7907;c nghi&ecirc;n c&#7913;u v&agrave; gi&#7843;ng d&#7841;y r&#7845;t nhi&#7873;u trong c&aacute;c gi&aacute;o tr&igrave;nh k&#7929; thu&#7853;t.</p>
+
+<p>Cu&#7889;i nh&#7919;ng n&#259;m 1980s, Yann Lecunn &#273;&#7873; xu&#7845;t m&#7897;t m&ocirc; h&igrave;nh t&iacute;ch ch&#7853;p hai chi&#7873;u cho d&#7919;
+li&#7879;u &#7843;nh v&agrave; thu l&#7841;i th&agrave;nh c&ocirc;ng l&#7899;n trong b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i ch&#7919; s&#7889; vi&#7871;t tay.
+B&#7857;ng vi&#7879;c s&#7917; d&#7909;ng r&#7845;t nhi&#7873;u d&#7919; li&#7879;u v&agrave; thay c&aacute;c <em>t&#7847;ng n&#7889;i k&iacute;n</em> (fully connected
+layer) trong m&#7841;ng perceptron &#273;a t&#7847;ng b&#7903;i t&iacute;ch ch&#7853;p hai chi&#7873;u, c&aacute;c b&#7897; l&#7885;c ph&ugrave; h&#7907;p
+v&#7899;i b&agrave;i to&aacute;n v&agrave; d&#7919; li&#7879;u c&oacute; th&#7875; &#273;&#432;&#7907;c <em>h&#7885;c</em> &#273;&#7875; mang l&#7841;i k&#7871;t qu&#7843; ph&acirc;n l&#7899;p t&#7889;t nh&#7845;t.</p>
+
+<p>Trong b&agrave;i vi&#7871;t n&agrave;y, t&ocirc;i s&#7869; tr&igrave;nh b&agrave;y c&#417; s&#7903; to&aacute;n h&#7885;c c&#7911;a t&iacute;ch ch&#7853;p m&#7897;t chi&#7873;u v&agrave;
+t&iacute;ch ch&#7853;p hai chi&#7873;u. Ki&#7871;n tr&#7909;c m&#7841;ng neuron t&iacute;ch ch&#7853;p s&#7869; &#273;&#432;&#7907;c tr&igrave;nh b&agrave;y c&#7909; th&#7875; trong b&agrave;i ti&#7871;p theo.</p>
+
+<p><a name="-tich-chap-mot-chieu" href="03.html"></a></p>
+
+<h2 id="1-t&iacute;ch-ch&#7853;p-m&#7897;t-chi&#7873;u">1. T&iacute;ch ch&#7853;p m&#7897;t chi&#7873;u</h2>
+
+<p><a name="-dinh-nghia" href="03.html"></a></p>
+
+<h3 id="11-&#273;&#7883;nh-ngh&#297;a">1.1. &#272;&#7883;nh ngh&#297;a</h3>
+
+<p>X&eacute;t t&iacute;n hi&#7879;u m&#7897;t chi&#7873;u <code class="language-plaintext highlighter-rouge">x_clean</code> c&oacute; d&#7841;ng h&igrave;nh sin nh&#432; trong H&igrave;nh 1a):</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+N = 200
+x_clean = np.sin(np.arange(N)/20.)
+</code></pre></div></div>
+
+<hr><div class="imgcap">
+<div>
+    <img src="images/python-conv1d.png" width="800"></div>
+<div class="thecap">H&igrave;nh 1: (a) T&iacute;n hi&#7879;u ban &#273;&#7847;u. (b) T&iacute;n hi&#7879;u c&oacute; nhi&#7877;u Gauss. (c) T&iacute;n hi&#7879;u sau khi kh&#7917; nhi&#7877;u b&#7857;ng t&iacute;ch ch&#7853;p v&#7899;i b&#7897; l&#7885;c trung b&igrave;nh.</div>
+</div>
+<hr><p>T&iacute;n hi&#7879;u n&agrave;y b&#7883; t&aacute;c &#273;&#7897;ng b&#7903;i nhi&#7877;u Gauss:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x_noisy</span> <span class="o">=</span> <span class="n">x_clean</span> <span class="o">+</span> <span class="p">.</span><span class="mi">05</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</code></pre></div></div>
+<p>L&uacute;c n&agrave;y, t&iacute;n hi&#7879;u kh&ocirc;ng m&#432;&#7907;t n&#7919;a m&agrave; c&oacute; d&#7841;ng r&#259;ng c&#432;a nh&#432; H&igrave;nh 1b).</p>
+
+<p>Ch&#7881; v&#7899;i m&#7897;t b&#7897; l&#7885;c trung b&igrave;nh &#273;&#417;n gi&#7843;n, ta c&oacute; th&#7875; thu &#273;&#432;&#7907;c t&iacute;n hi&#7879;u &iacute;t nhi&#7877;u h&#417;n
+nh&#432; trong H&igrave;nh 1c):</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">w</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">x_filtered</span> <span class="o">=</span> <span class="n">conv1d</span><span class="p">(</span><span class="n">x_noisy</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> 
+</code></pre></div></div>
+<p>&#7902; &#273;&acirc;y, h&agrave;m <code class="language-plaintext highlighter-rouge">conv1d</code> th&#7921;c hi&#7879;n vi&#7879;c l&#7845;y t&iacute;ch ch&#7853;p gi&#7919;a t&iacute;n hi&#7879;u <code class="language-plaintext highlighter-rouge">x_noisy</code> v&agrave; b&#7897;
+l&#7885;c trung b&igrave;nh <code class="language-plaintext highlighter-rouge">w</code>. H&agrave;m s&#7889; n&agrave;y s&#7869; &#273;&#432;&#7907;c tr&igrave;nh b&agrave;y &#7903; ph&#7847;n d&#432;&#7899;i. Tr&#432;&#7899;c h&#7871;t, ch&uacute;ng
+ta nh&#7855;c l&#7841;i c&ocirc;ng th&#7913;c t&iacute;nh t&iacute;ch ch&#7853;p m&#7897;t chi&#7873;u trong x&#7917; l&yacute; t&iacute;n hi&#7879;u s&#7889;.</p>
+
+<p>X&eacute;t t&iacute;n hi&#7879;u m&#7897;t chi&#7873;u \(a(n)\) v&agrave; <em>b&#7897; l&#7885;c</em> (filter) \(w(n)\). T&iacute;ch ch&#7853;p c&#7911;a t&iacute;n hi&#7879;u v&agrave; b&#7897; l&#7885;c
+l&agrave; m&#7897;t t&iacute;n hi&#7879;u m&#7897;t chi&#7873;u m&#7899;i \(b(n)\) &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh theo c&ocirc;ng th&#7913;c:</p>
+
+\[b(n) = a(n)*w(n) = \sum_{k=-\infty}^{\infty}a(k)w(n-k)\quad \quad (1)\]
+
+<p>Trong m&#7841;ng neuron t&iacute;ch ch&#7853;p, t&iacute;ch ch&#7853;p &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a kh&aacute;c &#273;i m&#7897;t ch&uacute;t. Cho t&iacute;n
+hi&#7879;u &#273;&#7847;u v&agrave;o v&agrave; b&#7897; l&#7885;c l&#7847;n l&#432;&#7907;t l&agrave; c&aacute;c vector \(\mathbf{a}\in \mathbb{R}^N\) v&agrave;
+\(\mathbf{w} \in \mathbb{R}^f\) (\(f\) c&oacute; th&#7875; l&agrave; m&#7897;t s&#7889; t&#7921; nhi&ecirc;n b&#7845;t k&#7923; nh&#432;ng th&#432;&#7901;ng
+l&agrave; s&#7889; l&#7867;). Khi &#273;&oacute; &#273;&#7847;u ra l&agrave; m&#7897;t vector \(\mathbf{y}\) v&#7899;i t&#7915;ng ph&#7847;n t&#7917; &#273;&#432;&#7907;c t&iacute;nh b&#7903;i:</p>
+
+\[y_n = \sum_{i=0}^{f-1}a_{n+i}w_i\quad \quad (2)\]
+
+<p>v&#7899;i \(n\) th&#7887;a m&atilde;n \(0 \leq n+i &lt; N, ~\forall i = 0, 1, \dots, f-1\). &#272;i&#7873;u n&agrave;y t&#432;&#417;ng
+&#273;&#432;&#417;ng v&#7899;i \(0 \leq n &lt; N - f + 1\). V&#7853;y \(\mathbf{y} \in \mathbb{R}^{N-f + 1}\).</p>
+
+<p>T&#7915; &#273;&acirc;y, khi &#273;&#7873; c&#7853;p t&#7899;i kh&aacute;i ni&#7879;m <em>t&iacute;ch ch&#7853;p</em>, ch&uacute;ng ta s&#7869; ng&#7847;m hi&#7875;u c&ocirc;ng th&#7913;c
+(2) &#273;ang &#273;&#432;&#7907;c s&#7917; d&#7909;ng.</p>
+
+<p>C&aacute;ch t&iacute;nh t&iacute;n hi&#7879;u &#273;&#7847;u ra \(\mathbf{y}\) &#273;&#432;&#7907;c minh h&#7885;a trong H&igrave;nh 2.</p>
+
+<hr><div class="imgcap">
+<div>
+    <img src="images/37_conv2d-conv1d_viz.png" width="800"></div>
+<div class="thecap">H&igrave;nh 2: C&aacute;ch t&iacute;nh t&iacute;ch ch&#7853;p m&#7897;t chi&#7873;u</div>
+</div>
+<hr><p>Qu&aacute; tr&igrave;nh t&iacute;nh &#273;&#7847;u ra \(\mathbf{y}\) c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n nh&#432; sau:</p>
+<ol><li>
+    <p>&#272;&#7863;t b&#7897; l&#7885;c \(\mathbf{w}\) v&agrave;o v&#7883; tr&iacute; t&#432;&#417;ng &#7913;ng v&#7899;i \(f\) ph&#7847;n t&#7917; &#273;&#7847;u ti&ecirc;n c&#7911;a
+\(\mathbf{a}\).</p>
+  </li>
+  <li>
+    <p>Nh&acirc;n t&#7915;ng ph&#7847;n t&#7917; t&#432;&#417;ng &#7913;ng c&#7911;a \(\mathbf{w}\) v&agrave; \(\mathbf{a}\) r&#7891;i c&#7897;ng c&aacute;c k&#7871;t
+qu&#7843; l&#7841;i &#273;&#7875; &#273;&#432;&#7907;c ph&#7849;n t&#7917; t&#432;&#417;ng &#7913;ng c&#7911;a \(\mathbf{y}\).</p>
+  </li>
+  <li>
+    <p><em>Tr&#432;&#7907;t</em> b&#7897; l&#7885;c \(\mathbf{w}\) m&#7897;t b&#432;&#7899;c sang b&ecirc;n ph&#7843;i. N&#7871;u ph&#7847;n t&#7917; cu&#7889;i c&ugrave;ng c&#7911;a
+b&#7897; l&#7885;c kh&ocirc;ng v&#432;&#7907;t ra ngo&agrave;i ph&#7847;n t&#7917; cu&#7889;i c&ugrave;ng c&#7911;a t&iacute;n hi&#7879;u, quay l&#7841;i B&#432;&#7899;c 2.
+Ng&#432;&#7907;c l&#7841;i, d&#7915;ng c&aacute;c b&#432;&#7899;c t&iacute;nh to&aacute;n.</p>
+  </li>
+</ol><p>Trong v&iacute; d&#7909; n&agrave;y:</p>
+
+\[y_0 = a_0w_0 + a_1w_1 + a_2w_2 = 1 - (-1) = 2,\\\ y_1 = a_1w_0 + a_2w_1 + a_3w_2
+= 3 - 2 = 1\]
+
+<p><a name="-them-le" href="03.html"></a></p>
+
+<h3 id="12-th&ecirc;m-l&#7873;">1.2. Th&ecirc;m l&#7873;</h3>
+
+<p>Nh&#7853;n th&#7845;y r&#7857;ng k&iacute;ch th&#432;&#7899;c c&#7911;a &#273;&#7847;u ra \(\mathbf{y}\) nh&#7887; h&#417;n k&iacute;ch th&#432;&#7899;c c&#7911;a &#273;&#7847;u v&agrave;o
+\(\mathbf{x}\) v&igrave; ta &#273;ang gi&#7843; s&#7917; c&#7843; b&#7897; l&#7885;c ph&#7843;i n&#7857;m tr&#7885;n v&#7865;n trong t&iacute;n hi&#7879;u &#273;&#7847;u
+v&agrave;o.</p>
+
+<p>Trong tr&#432;&#7901;ng h&#7907;p mu&#7889;n t&iacute;n hi&#7879;u &#273;&#7847;u ra c&oacute; k&iacute;ch th&#432;&#7899;c b&#7857;ng t&iacute;n hi&#7879;u &#273;&#7847;u v&agrave;o, ta
+c&oacute; th&#7875; gi&#7843; s&#7917; gi&#7843; s&#7917; t&iacute;n hi&#7879;u &#273;&#7847;u v&agrave;o c&oacute; th&ecirc;m c&aacute;c gi&aacute; tr&#7883; b&#7857;ng kh&ocirc;ng &#7903; hai ph&iacute;a.
+K&#7929; thu&#7853;t n&agrave;y &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>th&ecirc;m l&#7873;</em> (padding). &#272;&#7875; c&oacute; k&iacute;ch th&#432;&#7899;c b&#7857;ng nhau, t&iacute;n
+hi&#7879;u &#273;&#7847;u v&agrave;o c&#7847;n &#273;&#432;&#7907;c th&ecirc;m \(f-1\) gi&aacute; tr&#7883; b&#7857;ng kh&ocirc;ng. Khi \(f\) l&agrave; m&#7897;t s&#7889; l&#7867;, m&#7895;i
+ph&iacute;a c&#7911;a t&iacute;n hi&#7879;u v&agrave;o th&#432;&#7901;ng &#273;&#432;&#7907;c th&ecirc;m \(P = (f-1)/2\) gi&aacute; tr&#7883; b&#7857;ng kh&ocirc;ng.</p>
+
+<p>Gi&aacute; tr&#7883; \(P\) c&oacute; th&#7875; l&agrave; m&#7897;t s&#7889; t&#7921; nhi&ecirc;n b&#7845;t k&#7923; t&ugrave;y thu&#7897;c v&agrave;o t&#7915;ng tr&#432;&#7901;ng h&#7907;p, \(P\)
+kh&ocirc;ng nh&#7845;t thi&#7871;t ph&#7843;i &#273;&#7843;m b&#7843;o k&iacute;ch th&#432;&#7899;c &#273;&#7847;u ra v&agrave; &#273;&#7847;u v&agrave;o c&#7911;a t&iacute;n hi&#7879;u l&agrave; nh&#432;
+nhau. Khi kh&ocirc;ng s&#7917; d&#7909;ng th&ecirc;m l&#7873;, \(P = 0\).</p>
+
+<p>Vi&#7879;c th&ecirc;m l&#7873; &#273;&#432;&#7907;c minh h&#7885;a trong H&igrave;nh 3. Khi \(f = 3\), ta th&ecirc;m \(P=1\) &ocirc; b&#7857;ng kh&ocirc;ng v&agrave;o m&#7895;i ph&iacute;a c&#7911;a \(\mathbf{a}\). Khi &#273;&oacute; \(\mathbf{y}\) v&agrave; \(\mathbf{a}\) c&oacute; k&iacute;ch th&#432;&#7899;c nh&#432; nhau.</p>
+
+<hr><div class="imgcap">
+<div>
+    <img src="images/37_conv2d-conv1d_padding.png" width="800"></div>
+<div class="thecap">H&igrave;nh 3: T&iacute;ch ch&#7853;p v&#7899;i th&ecirc;m l&#7873;</div>
+</div>
+<hr><p><a name="-buoc-truot" href="03.html"></a></p>
+
+<h3 id="13-b&#432;&#7899;c-tr&#432;&#7907;t">1.3. B&#432;&#7899;c tr&#432;&#7907;t</h3>
+<p>Trong H&igrave;nh 2, b&#7897; l&#7885;c \(\mathbf{w}\) &#273;&#432;&#7907;c d&#7883;ch sang ph&#7843;i m&#7897;t &ocirc; sau m&#7895;i ph&eacute;p t&iacute;nh.
+Trong m&#7897;t s&#7889; tr&#432;&#7901;ng h&#7907;p, ta c&oacute; th&#7875; d&#7883;ch b&#7897; l&#7885;c &#273;i nhi&#7873;u &ocirc; sau m&#7895;i ph&eacute;p t&iacute;nh. S&#7889;
+l&#432;&#7907;ng &ocirc; &#273;&#432;&#7907;c d&#7883;ch n&agrave;y &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>b&#432;&#7899;c tr&#432;&#7907;t</em> (stride), k&yacute; hi&#7879;u l&agrave; \(S\). L&uacute;c
+n&agrave;y, c&ocirc;ng th&#7913;c t&#7893;ng qu&aacute;t c&#7911;a (2) tr&#7903; th&agrave;nh:</p>
+
+\[y_n = \sum_{i=0}^{f-1}a_{nS + i}w_i \quad \quad (3)\]
+
+<p>Trong tr&#432;&#7901;ng h&#7907;p c&oacute; s&#7917; d&#7909;ng th&ecirc;m l&#7873; v&#7899;i &#273;&#7897; r&#7897;ng l&#7873; m&#7895;i ph&iacute;a l&agrave; \(P\), k&iacute;ch th&#432;&#7899;c
+&#273;&#7847;u v&agrave;o l&agrave; \(N + 2P\), gi&aacute; tr&#7883; \(n\) trong \((3)\) c&#7847;n th&#7887;a m&atilde;n:</p>
+
+\[0 \leq nS + i &lt; N+2P, ~\forall i = 0, 1, \dots, f-1 \Leftrightarrow n \leq
+\frac{N + 2P -f}{S}\]
+
+<p>Th&ocirc;ng th&#432;&#7901;ng, \(P\) v&agrave; \(S\) &#273;&#432;&#7907;c ch&#7885;n sao cho \(\frac{N+2P - f}{S}\) l&agrave; s&#7889; nguy&ecirc;n.
+&#272;i&#7873;u n&agrave;y k&eacute;o theo k&iacute;ch th&#432;&#7899;c t&#7893;ng qu&aacute;t c&#7911;a &#273;&#7847;u ra khi c&oacute; th&ecirc;m l&#7873; \(P\) v&agrave; b&#432;&#7899;c tr&#432;&#7907;t
+\(S\) l&agrave;:</p>
+
+<hr>
+
+\[N_1 = \frac{N + 2P - f}{S} + 1 \quad \quad \quad (4)\]
+
+<hr><p>C&ocirc;ng th&#7913;c (4) r&#7845;t quan tr&#7885;ng, ch&uacute;ng ta c&#7847;n nh&#7899; &#273;&#7875; thi&#7871;t k&#7871; k&iacute;ch th&#432;&#7899;c c&#7911;a c&aacute;c b&#7897;
+l&#7885;c, k&iacute;ch th&#432;&#7899;c l&#7873; v&agrave; b&#432;&#7899;c tr&#432;&#7907;t trong c&aacute;c m&#7841;ng neuron t&iacute;ch ch&#7853;p.</p>
+
+<p>T&iacute;ch ch&#7853;p m&#7897;t chi&#7873;u c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n b&#7857;ng numpy nh&#432; d&#432;&#7899;i &#273;&acirc;y. &#7902; &#273;&acirc;y, h&#7879; s&#7889;
+&#273;i&#7873;u ch&#7881;nh <code class="language-plaintext highlighter-rouge">b</code> &#273;&#432;&#7907;c th&ecirc;m v&agrave;o cho tr&#432;&#7901;ng h&#7907;p t&#7893;ng qu&aacute;t:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">conv1d</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pad</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="s">"""
+    compute 1d convolutional (with bias)
+    """</span>
+    <span class="n">w_old</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">w</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">a_pad</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">pad</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="n">pad</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s">'constant'</span><span class="p">,</span> <span class="n">constant_values</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">w_new</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">w_old</span> <span class="o">-</span> <span class="n">f</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">pad</span><span class="p">)</span><span class="o">/</span><span class="n">stride</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> 
+    <span class="n">a_res</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">w_new</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">w_new</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="n">stride</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">f</span>
+        <span class="n">a_res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">a_pad</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">*</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span> 
+    <span class="k">return</span> <span class="n">a_res</span> 
+</code></pre></div></div>
+
+<p><a name="-tich-chap-hai-chieu" href="03.html"></a></p>
+
+<h2 id="2-t&iacute;ch-ch&#7853;p-hai-chi&#7873;u">2. T&iacute;ch ch&#7853;p hai chi&#7873;u</h2>
+
+<p>T&iacute;ch ch&#7853;p &#273;&#432;&#7907;c m&#7903; r&#7897;ng ra cho tr&#432;&#7901;ng h&#7907;p d&#7919; li&#7879;u nhi&#7873;u chi&#7873;u. Trong ph&#7841;m vi b&agrave;i
+vi&#7871;t, 
+ch&uacute;ng ta s&#7869; d&#7915;ng l&#7841;i &#7903; ph&eacute;p t&iacute;nh t&iacute;ch ch&#7853;p hai chi&#7873;u v&#7899;i d&#7919; li&#7879;u &#273;&#7847;u v&agrave;o ch&#7911; y&#7871;u
+l&agrave; &#7843;nh.</p>
+
+<p>C&aacute;ch t&iacute;nh t&iacute;ch ch&#7853;p hai chi&#7873;u v&#7899;i c&aacute;c tr&#432;&#7901;ng h&#7907;p th&ecirc;m l&#7873; v&agrave; b&#432;&#7899;c tr&#432;&#7907;t kh&aacute;c nhau
+&#273;&#432;&#7907;c minh h&#7885;a tr&ecirc;n H&igrave;nh 4. C&aacute;c &#7843;nh &#273;&#7897;ng n&agrave;y &#273;&#432;&#7907;c l&#7845;y t&#7915; t&agrave;i kho&#7843;n <a href="https://github.com/vdumoulin/conv_arithmetic">Github
+vdumoulin</a>.</p>
+
+<hr><table style="width:100%; table-layout:fixed;"><tr><td><img width="150px" src="images/gif-no_padding_no_strides.gif"></td>
+    <td><img width="150px" src="images/gif-arbitrary_padding_no_strides.gif"></td>
+    <td><img width="150px" src="images/gif-same_padding_no_strides.gif"></td>
+  </tr><tr><td>\(P = 0, S = 1\)</td>
+    <td>\(P\) b&#7845;t k&#7923;, \(S = 1\)</td>
+    <td>\(P = (f-1)/2, S =1\)</td>
+  </tr><tr><td><img width="150px" src="images/gif-no_padding_strides.gif"></td>
+    <td><img width="150px" src="images/gif-padding_strides.gif"></td>
+    <td><img width="150px" src="images/gif-padding_strides_odd.gif"></td>
+  </tr><tr><td>\(P = 0, S = 2\)</td>
+    <td>\(P = (f-1)/2, S = 2\)</td>
+    <td>\(\frac{N + 2P - f}{S} \notin \mathbb{N}\)</td>
+  </tr></table><div class="thecap">H&igrave;nh 4: Minh h&#7885;a t&iacute;ch ch&#7853;p hai chi&#7873;u &#273;&#417;n k&ecirc;nh v&#7899;i c&aacute;c c&#7863;p \((P, S)\).</div>
+<hr><p>V&#7873; c&#417; b&#7843;n, b&#7897; l&#7885;c (m&agrave;u x&aacute;m) tr&#432;&#7907;t kh&#7855;p t&iacute;n hi&#7879;u hai chi&#7873;u &#273;&#7847;u v&agrave;o (m&agrave;u lam) theo th&#7913; t&#7921; t&#7915;
+tr&aacute;i qua ph&#7843;i, t&#7915; tr&ecirc;n xu&#7889;ng d&#432;&#7899;i. T&#7841;i m&#7895;i v&#7883; tr&iacute;, c&aacute;c gi&aacute; tr&#7883; c&#7911;a b&#7897; l&#7885;c v&agrave; &#273;&#7847;u
+v&agrave;o t&#432;&#417;ng &#7913;ng &#273;&#432;&#7907;c nh&acirc;n v&#7899;i nhau r&#7891;i c&#7897;ng l&#7841;i &#273;&#7875; thu &#273;&#432;&#7907;c k&#7871;t qu&#7843; &#273;&#7847;u ra. H&#7879; s&#7889;
+&#273;i&#7873;u ch&#7881;nh c&#361;ng c&oacute; th&#7875; &#273;&#432;&#7907;c th&ecirc;m v&agrave;o.</p>
+
+<p><a name="-tin-hieu-don-kenh" href="03.html"></a></p>
+
+<h3 id="21-t&iacute;n-hi&#7879;u-&#273;&#417;n-k&ecirc;nh">2.1. T&iacute;n hi&#7879;u &#273;&#417;n k&ecirc;nh</h3>
+<p>Trong tr&#432;&#7901;ng h&#7907;p t&iacute;n hi&#7879;u &#273;&#7847;u v&agrave;o v&agrave; b&#7897; l&#7885;c l&agrave; c&aacute;c ma tr&#7853;n hai chi&#7873;u &#273;&#417;n k&ecirc;nh
+(&#7843;nh m&agrave;u c&oacute; th&#7875; &#273;&#432;&#7907;c c&#7885;i l&agrave; t&iacute;n hi&#7879;u hai chi&#7873;u v&#7899;i ba k&ecirc;nh, &#7843;nh x&aacute;m l&agrave; t&iacute;n hi&#7879;u
+hai chi&#7873;u &#273;&#417;n k&ecirc;nh). 
+C&aacute;ch t&iacute;nh t&iacute;ch ch&#7853;p c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n nh&#432; sau:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">conv2d_11</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pad</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="s">"""
+    A: input, A.shape = (n_H_old, n_W_old)
+    W: filter, W.shape = (f, f)
+    """</span>
+    <span class="n">n_H_old</span><span class="p">,</span> <span class="n">n_W_old</span> <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">shape</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">W</span><span class="p">.</span><span class="n">shape</span>
+    <span class="n">A_pad</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">pad</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="n">pad</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s">'constant'</span><span class="p">,</span> <span class="n">constant_values</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># new shape 
+</span>    <span class="n">n_H_new</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">n_H_old</span> <span class="o">-</span> <span class="n">f</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">pad</span><span class="p">)</span><span class="o">/</span><span class="n">stride</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> 
+    <span class="n">n_W_new</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">n_W_old</span> <span class="o">-</span> <span class="n">f</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">pad</span><span class="p">)</span><span class="o">/</span><span class="n">stride</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> 
+    <span class="c1"># result
+</span>    <span class="n">A_res</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_H_new</span><span class="p">,</span> <span class="n">n_W_new</span><span class="p">))</span>
+    <span class="c1"># compute 
+</span>    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_H_new</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_W_new</span><span class="p">):</span>
+            <span class="n">h_start</span> <span class="o">=</span> <span class="n">h</span><span class="o">*</span><span class="n">stride</span> 
+            <span class="n">h_end</span> <span class="o">=</span> <span class="n">h_start</span> <span class="o">+</span> <span class="n">f</span>
+            <span class="n">v_start</span> <span class="o">=</span> <span class="n">v</span><span class="o">*</span><span class="n">stride</span> 
+            <span class="n">v_end</span> <span class="o">=</span> <span class="n">v_start</span> <span class="o">+</span> <span class="n">f</span>
+            <span class="n">A_res</span><span class="p">[</span><span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">A_pad</span><span class="p">[</span><span class="n">h_start</span><span class="p">:</span><span class="n">h_end</span><span class="p">,</span> <span class="n">v_start</span><span class="p">:</span><span class="n">v_end</span><span class="p">]</span> <span class="o">*</span> <span class="n">W</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span> 
+    <span class="k">return</span> <span class="n">A_res</span> 
+
+</code></pre></div></div>
+
+<p>&#7902; &#273;&acirc;y ta gi&#7843; s&#7917; r&#7857;ng m&#7895;i ph&iacute;a c&#7911;a t&iacute;n hi&#7879;u hai chi&#7873;u &#273;&#432;&#7907;c th&ecirc;m m&#7897;t &#273;&#7841;i l&#432;&#7907;ng l&#7873; <code class="language-plaintext highlighter-rouge">pad</code> b&#7857;ng nhau. &#272;o&#7841;n m&atilde; n&agrave;y c&oacute; th&#7875; d&#7877; 
+d&agrave;ng &#273;&#432;&#7907;c m&#7903; r&#7897;ng ra cho tr&#432;&#7901;ng h&#7907;p th&ecirc;m l&#7873; kh&ocirc;ng &#273;&#7873;u. T&#432;&#417;ng t&#7921;, b&#7897; 
+l&#7885;c kh&ocirc;ng nh&#7845;t thi&#7871;t vu&ocirc;ng. Tuy nhi&ecirc;n, c&aacute;c tr&#432;&#7901;ng h&#7907;p n&agrave;y &iacute;t xu&#7845;t hi&#7879;n tr&ecirc;n th&#7921;c t&#7871;.</p>
+
+<p><strong>Gi&#7843;m nhi&#7877;u, l&agrave;m m&#7901; &#7843;nh</strong></p>
+
+<p>Ti&#7871;p theo, ch&uacute;ng ta c&ugrave;ng xem vi&#7879;c &aacute;p d&#7909;ng c&aacute;c b&#7897; l&#7885;c kh&aacute;c nhau v&agrave;o b&#7913;c &#7843;nh trong
+H&igrave;nh 4b). H&igrave;nh 4b) l&agrave; &#7843;nh x&aacute;m t&#432;&#417;ng &#7913;ng v&#7899;i H&igrave;nh 4a).</p>
+
+<hr><div class="imgcap">
+<div>
+    <img src="images/python-mylady3_rgbgray.png" width="800"></div>
+<div class="thecap">H&igrave;nh 4. (a) &#7842;nh m&agrave;u. (b) &#7842;nh x&aacute;m t&#432;&#417;ng &#7913;ng.</div>
+</div>
+<hr><p>Quan s&aacute;t m&#7897;t v&iacute; d&#7909; v&#7899;i vi&#7879;c kh&#7917; nhi&#7877;u trong H&igrave;nh 5.</p>
+
+<hr><div class="imgcap">
+<div>
+    <img src="images/python-mylady3_denoise.png" width="800"></div>
+<div class="thecap">H&igrave;nh 5. (a) &#7842;nh c&oacute; nhi&#7877;u. (b) Gi&#7843;m nhi&#7877;u b&#7857;ng b&#7897; l&#7885;c trung b&igrave;nh \(f = 3\). (c) Gi&#7843;m nhi&#7877;u v&agrave; l&agrave;m m&#7901; v&#7899;i b&#7897; l&#7885;c trung b&igrave;nh \(f = 7\)</div>
+</div>
+<hr><p>H&igrave;nh 5a) &#273;&#432;&#7907;c t&#7841;o b&#7857;ng c&aacute;ch th&ecirc;m nhi&#7877;u Gauss v&agrave;o &#7843;nh x&aacute;m:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">img_noisy</span> <span class="o">=</span> <span class="n">img_gray</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">img_gray</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span>
+</code></pre></div></div>
+
+<p>H&igrave;nh 5b) thu &#273;&#432;&#7907;c b&#7857;ng c&aacute;ch s&#7917; d&#7909;ng b&#7897; l&#7885;c trung b&igrave;nh v&#7899;i \(f = 3\):</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>f = 3
+w = 1./k**2*np.ones((f, f))
+img_denoised = conv2d_11(img_noisy, w)
+</code></pre></div></div>
+
+<p>B&#7897; l&#7885;c &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave; \(w = \frac{1}{9}\left[\begin{matrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \<br>
+1&amp; 1 &amp; 1\end{matrix}\right]\). &#272;i&#7873;u n&agrave;y ngh&#297;a l&agrave; gi&aacute; tr&#7883; c&#7911;a m&#7897;t &#273;i&#7875;m &#7843;nh &#273;&#7847;u ra
+b&#7857;ng trung b&igrave;nh c&#7897;ng c&#7911;a h&igrave;nh vu&ocirc;ng \(3\times3\) c&oacute; t&acirc;m t&#7841;i v&#7883; tr&iacute; t&#432;&#417;ng &#7913;ng c&#7911;a
+&#273;i&#7875;m &#7843;nh &#273;&#7847;u v&agrave;o. Vi&#7879;c l&#7845;y trung b&igrave;nh gi&uacute;p m&#7895;i &#273;i&#7875;m &#7843;nh &#273;&#7847;u ra c&oacute; gi&aacute; tr&#7883; kh&ocirc;ng
+qu&aacute; kh&aacute;c bi&#7879;t so v&#7899;i c&aacute;c gi&aacute; tr&#7883; xung quanh. &#272;i&#7873;u n&agrave;y gi&aacute;n ti&#7871;p gi&uacute;p <em>gi&#7843;m
+nhi&#7877;u</em> (denoise). M&#7897;t hi&#7879;u &#7913;ng ph&#7909; c&#7911;a b&#7897; l&#7885;c trung b&igrave;nh l&agrave; n&oacute; khi&#7871;n b&#7913;c &#7843;nh ban &#273;&#7847;u b&#7883; m&#7901;
+&#273;i.</p>
+
+<p>N&#7871;u thay m&#7897;t b&#7897; l&#7885;c l&#7899;n h&#417;n v&#7899;i \(f = 7\), ta s&#7869; thu &#273;&#432;&#7907;c k&#7871;t qu&#7843; nh&#432; H&igrave;nh 5c). Ta
+quan s&aacute;t th&#7845;y r&#7857;ng c&aacute;c &#273;&#432;&#7901;ng n&eacute;t tr&ecirc;n khu&ocirc;n m&#7863;t kh&ocirc;ng c&ograve;n r&otilde; r&agrave;ng nh&#432; h&igrave;nh 4b).
+B&#7897; l&#7885;c n&agrave;y gi&aacute;n ti&#7871;p l&agrave;m m&#7901; th&ecirc;m h&#7853;u c&#7843;nh &#7903; v&#7883; tr&iacute; &aacute;nh &#273;&egrave;n ph&iacute;a sau c&ocirc; g&aacute;i.</p>
+
+<p><strong>D&ograve; c&#7841;nh</strong></p>
+
+<p>D&ograve; c&#7841;nh c&#7911;a v&#7853;t th&#7875; l&agrave; m&#7897;t nhi&#7879;m v&#7909; quan tr&#7885;ng trong x&#7917; l&yacute; &#7843;nh. H&igrave;nh 6 bi&#7875;u di&#7877;n
+k&#7871;t qu&#7843; d&ograve; c&#7841;nh th&#7859;ng &#273;&#7913;ng v&agrave; n&#7857;m ngang trong &#7843;nh b&#7857;ng hai b&#7897; l&#7885;c &#273;&#417;n gi&#7843;n.</p>
+
+<hr><div class="imgcap">
+<div>
+    <img src="images/python-mylady2_edge.png" width="800"></div>
+<div class="thecap">H&igrave;nh 6. (a) &#7842;nh x&aacute;m g&#7889;c. (b) D&ograve; t&igrave;m c&aacute;c c&#7841;nh th&#7859;ng &#273;&#7913;ng trong &#7843;nh. (c) D&ograve; t&igrave;m c&aacute;c c&#7841;nh n&#7857;m ngang. </div>
+</div>
+<hr><p>B&#7897; l&#7885;c &#273;&#432;&#7907;c s&#7917; d&#7909;ng trong H&igrave;nh 6b) l&agrave; \(w = \left[\begin{matrix} -1 &amp; 0 &amp; 1 \\ -1
+&amp; 0 &amp; 1 \\ -1 &amp; 0 &amp; 1\end{matrix}\right]\). Gi&aacute; tr&#7883; &#273;i&#7875;m &#7843;nh &#273;&#7847;u ra (&#273;i&#7875;m t&#432;&#417;ng &#7913;ng v&#7899;i
+v&#7883; tr&iacute; ch&iacute;nh gi&#7919;a b&#7897; l&#7885;c) b&#7857;ng t&#7893;ng c&aacute;c &#273;i&#7875;m li&#7873;n k&#7873; &#7903; b&ecirc;n ph&#7843;i tr&#7915; &#273;i t&#7893;ng c&aacute;c
+&#273;i&#7875;m li&#7873;n k&#7873; &#7903; b&ecirc;n tr&aacute;i. Gi&aacute; tr&#7883; n&agrave;y s&#7869; c&oacute; tr&#7883; tuy&#7879;t &#273;&#7889;i l&#7899;n n&#7871;u s&#7921; ch&ecirc;nh l&#7879;ch
+gi&#7919;a c&aacute;c &#273;i&#7875;m hai b&ecirc;n l&#7899;n. &#272;i&#7873;u n&agrave;y &#273;&#7891;ng ngh&#297;a v&#7899;i vi&#7879;c gi&aacute; tr&#7883; &#7843;nh &#273;&#7847;u ra l&#7899;n
+t&#7841;i c&#7841;nh th&#7859;ng &#273;&#7913;ng c&#7911;a v&#7853;t th&#7875;. &#272;&#7891;ng th&#7901;i, n&#7871;u b&#7897; l&#7885;c &#273;ang &#7903; v&#7883; tr&iacute; m&agrave; c&aacute;c &#273;i&#7875;m trong h&igrave;nh
+vu&ocirc;ng \(3\times 3\) x&#7845;p x&#7881; nhau, gi&aacute; tr&#7883; &#273;i&#7875;m &#7843;nh &#273;&#7847;u ra t&#432;&#417;ng &#7913;ng s&#7869; x&#7845;p x&#7881;
+kh&ocirc;ng. Trong H&igrave;nh 6, c&aacute;c b&#7913;c &#7843;nh &#273;&#432;&#7907;c hi&#7875;n th&#7883; sau khi l&#7845;y tr&#7883; tuy&#7879;t &#273;&#7889;i c&#7911;a &#7843;nh
+&#273;&#7847;u ra. C&aacute;c &#273;i&#7875;m &#7843;nh m&agrave;u &#273;en (gi&aacute; tr&#7883; g&#7847;n kh&ocirc;ng) t&#432;&#417;ng &#7913;ng v&#7899;i c&aacute;c khu v&#7921;c &#273;&#7891;ng
+nh&#7845;t. C&aacute;c &#273;i&#7875;m &#7843;nh m&agrave;u tr&#7855;ng (gi&aacute; tr&#7883; l&#7899;n) t&#432;&#417;ng &#7913;ng v&#7899;i c&aacute;c c&#7841;nh th&#7859;ng &#273;&#7913;ng. Trong tr&#432;&#7901;ng
+h&#7907;p n&agrave;y, ch&#7881; c&aacute;c c&#7841;nh c&oacute; ph&#432;&#417;ng th&#7859;ng &#273;&#7913;ng &#273;&#432;&#7907;c t&igrave;m th&#7845;y.</p>
+
+<p>&#272;&#7875; t&igrave;m c&aacute;c c&#7841;nh c&oacute; ph&#432;&#417;ng n&#7857;m ngang, ta s&#7917; d&#7909;ng b&#7897; l&#7885;c \(w = \left[\begin{matrix}
+-1 &amp; -1 &amp; -1 \\ 0 &amp; 0 &amp; 0 \\ 1 &amp; 1 &amp; 1\end{matrix}\right]\) &#273;&#7875; thu &#273;&#432;&#7907;c k&#7871;t qu&#7843;
+nh&#432; H&igrave;nh 6c).</p>
+
+<p>Vi&#7879;c t&igrave;m c&aacute;c c&#7841;nh c&oacute; h&#432;&#7899;ng b&#7845;t k&#7923; c&#361;ng c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n b&#7857;ng c&aacute;c b&#7897; l&#7885;c ph&ugrave; h&#7907;p.</p>
+
+<p>Nh&#432; v&#7853;y, ch&uacute;ng ta c&oacute; th&#7875; thu &#273;&#432;&#7907;c c&aacute;c ph&eacute;p bi&#7871;n &#273;&#7893;i v&#7899;i &#7843;nh th&ocirc;ng qua c&aacute;c b&#7897; l&#7885;c
+&#273;&#417;n gi&#7843;n &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh t&#7915; tr&#432;&#7899;c. C&aacute;c b&#7897; l&#7885;c n&agrave;y ho&agrave;n to&agrave;n c&oacute; th&#7875; &#273;&#432;&#7907;c t&#7889;i &#432;u t&ugrave;y
+theo d&#7919; li&#7879;u v&agrave; b&agrave;i to&aacute;n.</p>
+
+<p><a name="-tich-chap-hai-chieu-tong-quat" href="03.html"></a></p>
+
+<h2 id="3-t&iacute;ch-ch&#7853;p-hai-chi&#7873;u-t&#7893;ng-qu&aacute;t">3. T&iacute;ch ch&#7853;p hai chi&#7873;u t&#7893;ng qu&aacute;t</h2>
+
+<p>Trong tr&#432;&#7901;ng h&#7907;p t&iacute;n hi&#7879;u &#273;&#7847;u v&agrave;o &#273;a k&ecirc;nh, v&iacute; d&#7909; &#7843;nh m&agrave;u bao g&#7891;m ba k&ecirc;nh: &#273;&#7887;,
+l&#7909;c, lam; m&#7895;i k&ecirc;nh l&agrave; m&#7897;t ma tr&#7853;n hai chi&#7873;u. Gi&#7843; s&#7917; k&iacute;ch th&#432;&#7899;c c&#7911;a &#273;&#7847;u v&agrave;o l&agrave;
+\((H_0, W_0, C_0)\) v&#7899;i \(C_0\) l&agrave; s&#7889; k&ecirc;nh. Khi &#273;&oacute;, b&#7897; l&#7885;c c&#361;ng c&oacute; th&#7875; &#273;&#432;&#7907;c m&#7903; r&#7897;ng
+ra v&#7899;i s&#7889; k&ecirc;nh t&#432;&#417;ng &#7913;ng &#273;&#7875; c&oacute; k&iacute;ch th&#432;&#7899;c \((f, f, C_0)\) (c&aacute;c k&ecirc;nh c&#7911;a b&#7897; l&#7885;c kh&ocirc;ng nh&#7845;t thi&#7871;t b&#7857;ng nhau). &#272;&#7875;
+t&iacute;nh &#273;&#7847;u ra, ta c&#361;ng tr&#432;&#7907;t b&#7897; l&#7885;c &#273;i kh&#7855;p &#7843;nh, t&iacute;nh t&iacute;ch t&#7915;ng th&agrave;nh ph&#7847;n t&#432;&#417;ng
+&#7913;ng v&agrave; l&#7845;y t&#7893;ng to&agrave;n b&#7897; c&aacute;c t&iacute;ch &#273;&oacute;. C&aacute;c t&iacute;nh v&#7899;i t&iacute;n hi&#7879;u &#273;a k&ecirc;nh &#273;&#432;&#7907;c minh
+h&#7885;a trong H&igrave;nh 7b).</p>
+
+<hr><div class="imgcap">
+<div>
+    <img src="images/37_conv2d-conv2d_viz_general.png" width="800"></div>
+<div class="thecap">H&igrave;nh 7. (a) T&iacute;ch ch&#7853;p hai chi&#7873;u &#273;&#417;n k&ecirc;nh. (b) T&iacute;ch ch&#7853;p hai chi&#7873;u &#273;a k&ecirc;nh. </div>
+</div>
+<hr><p>T&#7893;ng qu&aacute;t, gi&#7843; s&#7917; &#273;&#7847;u v&agrave;o l&agrave; m&#7897;t mini-batch c&#7911;a t&iacute;n hi&#7879;u c&oacute; k&iacute;ch th&#432;&#7899;c \((m,
+H_0, W_0, C_0)\).  B&#7897; l&#7885;c c&#361;ng &#7903; d&#7841;ng t&#7893;ng qu&aacute;t v&#7899;i k&iacute;ch th&#432;&#7899;c \((f, f, C_0, C_1)\)
+(\(C_1\) b&#7897; l&#7885;c &#273;a k&ecirc;nh). Khi &#273;&oacute;, &#273;&#7847;u ra s&#7869; l&agrave; m&#7897;t m&#7843;ng b&#7889;n chi&#7873;u v&#7899;i k&iacute;ch th&#432;&#7899;c
+\((m, H_1, W_1, C_1)\).</p>
+
+<p>V&iacute; d&#7909;, n&#7871;u &#273;&#7847;u v&agrave;o l&agrave; \(m\) b&#7913;c &#7843;nh m&agrave;u ba k&ecirc;nh v&#7899;i k&iacute;ch th&#432;&#7899;c \((m, H_0, W_0, 3)\)
+th&igrave; &#273;&#7847;u ra s&#7869; l&agrave; \(m\) <em>b&#7913;c &#7843;nh</em>, m&#7895;i b&#7913;c &#7843;nh c&oacute; k&iacute;ch th&#432;&#7899;c \((H_1, W_1)\) v&agrave; c&oacute;
+\(C_1\) k&ecirc;nh.</p>
+
+<p>Vi&#7879;c t&iacute;nh t&iacute;ch ch&#7853;p hai chi&#7873;u t&#7893;ng qu&aacute;t c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n nh&#432; sau:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">conv2d</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="s">"""
+    A: input, A.shape = (m, in_height, in_width, in_channel)
+    W: filters, W.shape = (f, f, in_channel, out_channel)
+    b: biases, b.shape = (out_channel)
+    """</span>
+    <span class="k">assert</span> <span class="n">A</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">W</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>\
+        <span class="s">'number of input channels ({}) in A != number of input channels ({}) in W'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span>
+            <span class="n">A</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">W</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">in_height</span><span class="p">,</span> <span class="n">in_width</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">shape</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">in_channel</span><span class="p">,</span> <span class="n">out_channel</span> <span class="o">=</span> <span class="n">W</span><span class="p">.</span><span class="n">shape</span>
+    <span class="n">A_pad</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">pad</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="n">pad</span><span class="p">),</span> <span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="n">pad</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span> <span class="n">mode</span><span class="o">=</span><span class="s">'constant'</span><span class="p">,</span> <span class="n">constant_values</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># new shape
+</span>    <span class="n">out_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">in_height</span> <span class="o">-</span> <span class="n">f</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">pad</span><span class="p">)</span><span class="o">/</span><span class="n">stride</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">out_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">in_width</span> <span class="o">-</span> <span class="n">f</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">pad</span><span class="p">)</span><span class="o">/</span><span class="n">stride</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">A_res</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">out_height</span><span class="p">,</span> <span class="n">out_width</span><span class="p">,</span> <span class="n">out_channel</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">out_height</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">out_width</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">out_channel</span><span class="p">):</span>
+                    <span class="n">h_start</span> <span class="o">=</span> <span class="n">h</span><span class="o">*</span><span class="n">stride</span>
+                    <span class="n">h_end</span> <span class="o">=</span> <span class="n">h_start</span> <span class="o">+</span> <span class="n">f</span>
+                    <span class="n">w_start</span> <span class="o">=</span> <span class="n">w</span><span class="o">*</span><span class="n">stride</span>
+                    <span class="n">w_end</span> <span class="o">=</span> <span class="n">w_start</span> <span class="o">+</span> <span class="n">f</span>
+                    <span class="n">a_slide</span> <span class="o">=</span> <span class="n">A_pad</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">h_start</span><span class="p">:</span> <span class="n">h_end</span><span class="p">,</span> <span class="n">w_start</span><span class="p">:</span><span class="n">w_end</span><span class="p">,</span> <span class="p">:]</span>
+                    <span class="n">A_res</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">a_slide</span> <span class="o">*</span> <span class="n">W</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">c</span><span class="p">])</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">A_res</span>
+</code></pre></div></div>
+
+<p><a name="-ket-luan" href="03.html"></a></p>
+
+<h2 id="4-k&#7871;t-lu&#7853;n">4. K&#7871;t lu&#7853;n</h2>
+<p>T&iacute;ch ch&#7853;p hai chi&#7873;u t&#7893;ng qu&aacute;t v&agrave; c&aacute;c bi&#7871;n th&#7875; &#273;&oacute;ng vai tr&ograve; quan tr&#7885;ng trong vi&#7879;c
+x&acirc;y d&#7921;ng c&aacute;c m&#7841;ng neuron t&iacute;ch ch&#7853;p. C&aacute;c th&agrave;nh ph&#7847;n c&#417; b&#7843;n c&#7911;a m&#7897;t m&#7841;ng
+neuron t&iacute;ch ch&#7853;p s&#7869; &#273;&#432;&#7907;c &#273;&#7873; c&#7853;p trong b&agrave;i ti&#7871;p theo. M&#7901;i c&aacute;c b&#7841;n &#273;&oacute;n &#273;&#7885;c.</p>
+
+<p>M&atilde; ngu&#7891;n trong b&agrave;i n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c t&igrave;m th&#7845;y <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/37_conv2d/python/conv2d.ipynb">t&#7841;i &#273;&acirc;y</a>.</p>
+
+<p><a name="-tai-lieu-tham-khao" href="03.html"></a></p>
+
+<h2 id="5-t&agrave;i-li&#7879;u-tham-kh&#7843;o">5. T&agrave;i li&#7879;u tham kh&#7843;o</h2>
+
+<ol><li>
+    <p><a href="http://setosa.io/ev/image-kernels/">Image kernels explained visually</a></p>
+  </li>
+  <li>
+    <p><a href="https://github.com/vdumoulin/conv_arithmetic">A technical report on convolution arithmetic in the context of deep learning</a></p>
+  </li>
+</ol></div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="forum.html">&laquo; Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2018/10/03/conv2d';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11840290; 
+var sc_invisible=0; 
+var sc_security="b8b6ea2d"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/b8b6ea2d-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+                  
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2018/10/03/conv2d" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2018/10/03/conv2d" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2018/10/03/conv2d">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u&url=https://machinelearningcoban.com/2018/10/03/conv2d&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2018/10/03/conv2d" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2018/10/03/conv2d" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#6e513d1b0c040b0d1a533d07031e020b4e3d060f1c0b4e2c1b1a1a01001d480f031e552c010a1753274b5c5e1d0f194b5c5e1a06071d4b5c5e0f000a4b5c5e1a06011b09061a4b5c5e01084b5c5e17011b4f4b5c5e4e061a1a1e1d544141030f0d0607000b020b0f1c000700090d010c0f00400d0103415c5e5f56415f5e415e5d410d0100185c0a">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>B&agrave;i 15: Overfitting</title><!-- <script>
+var pageProperties = {
+    
+    category: "General",
+    
+    url: "/2017/03/04/overfitting/",
+    title: "B&agrave;i 15: Overfitting",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/2017/03/04/overfitting/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="B&agrave;i 15: Overfitting"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/2017/03/04/overfitting/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2017-03-04"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="General"><meta property="article:tag" content="Overfitting"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2017/03/04/overfitting/',
+'title': 'B&agrave;i 15: Overfitting'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="qns1.html">Q1. Quick Notes 1</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="overfitting.html">15. Overfitting</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="featureengineering.html">11. Feature Engineering</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/02/24/mlp/">B&agrave;i 14: Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/03/12/convexity/">B&agrave;i 16: Convex sets v&agrave; convex functions</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="mlp.html">&laquo; B&agrave;i 14: Multi-layer Perceptron v&agrave; Backpropagation</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="convexity.html">B&agrave;i 16: Convex sets v&agrave; convex functions &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">B&agrave;i 15: Overfitting</h1>
+
+
+<ul class="tags"><a href="/tags#Overfitting" class="tag">Overfitting</a>
+   
+</ul><span class="post-date" style="color: gray; font-style: italic;">Mar 4, 2017
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <p><strong>Trong trang n&agrave;y:</strong>
+<!-- MarkdownTOC --></p>
+
+<ul><li><a href="#-gioi-thieu">1. Gi&#7899;i thi&#7879;u</a></li>
+  <li><a href="#-validation">2. Validation</a>
+    <ul><li><a href="#-validation-1">2.1. Validation</a></li>
+      <li><a href="#-cross-validation">2.2. Cross-validation</a></li>
+    </ul></li>
+  <li><a href="#-regularization">3. Regularization</a>
+    <ul><li><a href="#-early-stopping">3.1. Early Stopping</a></li>
+      <li><a href="#-them-so-hang-vao-ham-mat-mat">3.2. Th&ecirc;m s&#7889; h&#7841;ng v&agrave;o h&agrave;m m&#7845;t m&aacute;t</a></li>
+      <li><a href="#-%5C%5Cl%5C%5C-regularization">3.3. \(l_2\) regularization</a>
+        <ul><li><a href="#vi-du-ve-weight-decay-voi-mlp">V&iacute; d&#7909; v&#7873; Weight Decay v&#7899;i MLP</a></li>
+        </ul></li>
+      <li><a href="#-tikhonov-regularization">3.4. Tikhonov regularization</a></li>
+      <li><a href="#-regularizers-for-sparsity">3.5. Regularizers for sparsity</a></li>
+      <li><a href="#-regularization-trong-sklearn">3.6. Regularization trong sklearn</a></li>
+    </ul></li>
+  <li><a href="#-cac-phuong-phap-khac">4. C&aacute;c ph&#432;&#417;ng ph&aacute;p kh&aacute;c</a></li>
+  <li><a href="#-tom-tat-noi-dung">5. T&oacute;m t&#7855;t n&#7897;i dung</a></li>
+  <li><a href="#-tai-lieu-tham-khao">6. T&agrave;i li&#7879;u tham kh&#7843;o</a></li>
+</ul><!-- /MarkdownTOC --><p>Overfitting kh&ocirc;ng ph&#7843;i l&agrave; m&#7897;t thu&#7853;t to&aacute;n trong Machine Learning. N&oacute; l&agrave; m&#7897;t hi&#7879;n t&#432;&#7907;ng kh&ocirc;ng mong mu&#7889;n th&#432;&#7901;ng g&#7863;p, ng&#432;&#7901;i x&acirc;y d&#7921;ng m&ocirc; h&igrave;nh Machine Learning c&#7847;n n&#7855;m &#273;&#432;&#7907;c c&aacute;c k&#7929; thu&#7853;t &#273;&#7875; tr&aacute;nh hi&#7879;n t&#432;&#7907;ng n&agrave;y.</p>
+
+<p><a name="-gioi-thieu" href="overfitting.html"></a></p>
+
+<p><a name="-gioi-thieu" href="overfitting.html"></a></p>
+<h2 id="1-gi&#7899;i-thi&#7879;u">1. Gi&#7899;i thi&#7879;u</h2>
+<p>&#272;&acirc;y l&agrave; m&#7897;t c&acirc;u chuy&#7879;n c&#7911;a ch&iacute;nh t&ocirc;i khi l&#7847;n &#273;&#7847;u bi&#7871;t &#273;&#7871;n Machine Learning.</p>
+
+<p>N&#259;m th&#7913; ba &#273;&#7841;i h&#7885;c, m&#7897;t th&#7847;y gi&aacute;o c&oacute; gi&#7899;i thi&#7879;u v&#7899;i l&#7899;p t&ocirc;i v&#7873; Neural Networks. L&#7847;n &#273;&#7847;u ti&ecirc;n nghe th&#7845;y kh&aacute;i ni&#7879;m n&agrave;y, ch&uacute;ng t&ocirc;i h&#7887;i th&#7847;y m&#7909;c &#273;&iacute;ch c&#7911;a n&oacute; l&agrave; g&igrave;. Th&#7847;y n&oacute;i, v&#7873; c&#417; b&#7843;n, t&#7915; d&#7919; li&#7879;u cho tr&#432;&#7899;c, ch&uacute;ng ta c&#7847;n t&igrave;m m&#7897;t h&agrave;m s&#7889; &#273;&#7875; bi&#7871;n c&aacute;c c&aacute;c &#273;i&#7875;m &#273;&#7847;u v&agrave;o th&agrave;nh c&aacute;c &#273;i&#7875;m &#273;&#7847;u ra t&#432;&#417;ng &#7913;ng, kh&ocirc;ng c&#7847;n ch&iacute;nh x&aacute;c, ch&#7881; c&#7847;n x&#7845;p x&#7881; th&ocirc;i.</p>
+
+<p>L&uacute;c &#273;&oacute;, v&#7889;n l&agrave; m&#7897;t h&#7885;c sinh chuy&ecirc;n to&aacute;n, l&agrave;m vi&#7879;c nhi&#7873;u v&#7899;i &#273;a th&#7913;c ng&agrave;y c&#7845;p ba, t&ocirc;i &#273;&atilde; qu&aacute; t&#7921; tin tr&#7843; l&#7901;i ngay r&#7857;ng <a href="https://vuontoanblog.blogspot.com/2012/10/polynomial-interpolation-lagrange.html">&#272;a th&#7913;c N&#7897;i suy Lagrange</a> c&oacute; th&#7875; l&agrave;m &#273;&#432;&#7907;c &#273;i&#7873;u &#273;&oacute;, mi&#7877;n l&agrave; c&aacute;c &#273;i&#7875;m &#273;&#7847;u v&agrave;o kh&aacute;c nhau &#273;&ocirc;i m&#7897;t! Th&#7847;y n&oacute;i r&#7857;ng &ldquo;nh&#7919;ng g&igrave; ta bi&#7871;t ch&#7881; l&agrave; nh&#7887; x&iacute;u so v&#7899;i nh&#7919;ng g&igrave; ta ch&#432;a bi&#7871;t&rdquo;. V&agrave; &#273;&oacute; l&agrave; nh&#7919;ng g&igrave; t&ocirc;i mu&#7889;n b&#7855;t &#273;&#7847;u trong b&agrave;i vi&#7871;t n&agrave;y.</p>
+
+<p>Nh&#7855;c l&#7841;i m&#7897;t ch&uacute;t v&#7873; &#272;a th&#7913;c n&#7897;i suy Lagrange: V&#7899;i \(N\) c&#7863;p &#273;i&#7875;m d&#7919; li&#7879;u \((x_1, y_1), (x_2, y_2), \dots, (x_N, y_N)\) v&#7899;i c&aacute;c \(x_i\) kh&aacute;u nhau &#273;&ocirc;i m&#7897;t, lu&ocirc;n t&igrave;m &#273;&#432;&#7907;c m&#7897;t &#273;a th&#7913;c \(P(.)\) b&#7853;c kh&ocirc;ng v&#432;&#7907;t qu&aacute; \(N-1\) sao cho \(P(x_i) = y_i, ~\forall i = 1, 2, \dots, N\). Ch&#7859;ng ph&#7843;i &#273;i&#7873;u n&agrave;y gi&#7889;ng v&#7899;i vi&#7879;c ta &#273;i t&igrave;m m&#7897;t m&ocirc; h&igrave;nh ph&ugrave; h&#7907;p (fit) v&#7899;i d&#7919; li&#7879;u trong b&agrave;i to&aacute;n <a href="/2016/12/27/categories/#supervised-learning-hoc-co-giam-sat">Supervised Learning</a> hay sao? Th&#7853;m ch&iacute; &#273;i&#7873;u n&agrave;y c&ograve;n t&#7889;t h&#417;n v&igrave; trong Supervised Learning ta ch&#7881; c&#7847;n x&#7845;p x&#7881; th&ocirc;i.</p>
+
+<p>S&#7921; th&#7853;t l&agrave; n&#7871;u m&#7897;t m&ocirc; h&igrave;nh <em>qu&aacute; fit</em> v&#7899;i d&#7919; li&#7879;u th&igrave; n&oacute; s&#7869; g&acirc;y ph&#7843;n t&aacute;c d&#7909;ng! Hi&#7879;n t&#432;&#7907;ng <em>qu&aacute; fit</em> n&agrave;y trong Machine Learning &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>overfitting</em>, l&agrave; &#273;i&#7873;u m&agrave; khi x&acirc;y d&#7921;ng m&ocirc; h&igrave;nh, ch&uacute;ng ta lu&ocirc;n c&#7847;n tr&aacute;nh. &#272;&#7875; c&oacute; c&aacute;i nh&igrave;n &#273;&#7847;u ti&ecirc;n v&#7873; overfitting, ch&uacute;ng ta c&ugrave;ng xem H&igrave;nh d&#432;&#7899;i &#273;&acirc;y. C&oacute; 50 &#273;i&#7875;m d&#7919; li&#7879;u &#273;&#432;&#7907;c t&#7841;o b&#7857;ng m&#7897;t &#273;a th&#7913;c b&#7853;c ba c&#7897;ng th&ecirc;m nhi&#7877;u. T&#7853;p d&#7919; li&#7879;u n&agrave;y &#273;&#432;&#7907;c chia l&agrave;m hai, 30 &#273;i&#7875;m d&#7919; li&#7879;u m&agrave;u &#273;&#7887; cho training data, 20 &#273;i&#7875;m d&#7919; li&#7879;u m&agrave;u v&agrave;ng cho test data. &#272;&#7891; th&#7883; c&#7911;a &#273;a th&#7913;c b&#7853;c ba n&agrave;y &#273;&#432;&#7907;c cho b&#7903;i &#273;&#432;&#7901;ng m&agrave;u xanh l&#7909;c. B&agrave;i to&aacute;n c&#7911;a ch&uacute;ng ta l&agrave; gi&#7843; s&#7917; ta kh&ocirc;ng bi&#7871;t m&ocirc; h&igrave;nh ban &#273;&#7847;u m&agrave; ch&#7881; bi&#7871;t c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u, h&atilde;y t&igrave;m m&#7897;t m&ocirc; h&igrave;nh &ldquo;t&#7889;t&rdquo; &#273;&#7875; m&ocirc; t&#7843; d&#7919; li&#7879;u &#273;&atilde; cho.</p>
+
+<hr><div>
+<table width="100%" style="border: 0px solid white"><tr><td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/15_overfitting-linreg_2.png"></td>
+        <td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/15_overfitting-linreg_4.png"></td>
+
+    </tr><tr><td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/15_overfitting-linreg_8.png"></td>
+        <td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/15_overfitting-linreg_16.png"></td>
+
+    </tr></table><div class="thecap"> Underfitting v&agrave; Overfitting v&#7899;i Polynomial Regression (<a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/15_overfitting/LinReg.ipynb">Source code</a>).
+</div>
+</div>
+<hr><p>V&#7899;i nh&#7919;ng g&igrave; ch&uacute;ng ta &#273;&atilde; bi&#7871;t t&#7915; b&agrave;i <a href="/2016/12/28/linearregression/#cac-bai-toan-co-the-giai-bang-linear-regression">Linear Regression</a>, v&#7899;i lo&#7841;i d&#7919; li&#7879;u n&agrave;y, ch&uacute;ng ta c&oacute; th&#7875; &aacute;p d&#7909;ng <a href="https://en.wikipedia.org/wiki/Polynomial_regression">Polynomial Regression</a>. B&agrave;i to&aacute;n n&agrave;y ho&agrave;n to&agrave;n c&oacute; th&#7875; &#273;&#432;&#7907;c gi&#7843;i quy&#7871;t b&#7857;ng Linear Regression v&#7899;i d&#7919; li&#7879;u m&#7903; r&#7897;ng cho m&#7897;t c&#7863;p &#273;i&#7875;m \((x, y)\) l&agrave; \((\mathbf{x}, y)\) v&#7899;i \(\mathbf{x} = [1, x, x^2, x^3, \dots, x^d]^T\) cho &#273;a th&#7913;c b&#7853;c \(d\). &#272;i&#7873;u quan tr&#7885;ng l&agrave; ch&uacute;ng ta c&#7847;n t&igrave;m b&#7853;c \(d\) c&#7911;a &#273;a th&#7913;c c&#7847;n t&igrave;m.</p>
+
+<p>R&otilde; r&agrave;ng l&agrave; m&#7897;t &#273;a th&#7913;c b&#7853;c kh&ocirc;ng v&#432;&#7907;t qu&aacute; 29 c&oacute; th&#7875; <em>fit</em> &#273;&#432;&#7907;c ho&agrave;n to&agrave;n v&#7899;i 30 &#273;i&#7875;m trong training data. Ch&uacute;ng ta c&ugrave;ng x&eacute;t v&agrave;i gi&aacute; tr&#7883; \(d = 2, 4, 8, 16\). V&#7899;i \(d = 2\), m&ocirc; h&igrave;nh kh&ocirc;ng th&#7921;c s&#7921; t&#7889;t v&igrave; m&ocirc; h&igrave;nh d&#7921; &#273;o&aacute;n qu&aacute; kh&aacute;c so v&#7899;i m&ocirc; h&igrave;nh th&#7921;c. Trong tr&#432;&#7901;ng h&#7907;p n&agrave;y, ta n&oacute;i m&ocirc; h&igrave;nh b&#7883; <em>underfitting</em>. V&#7899;i \(d = 8\), v&#7899;i c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u trong kho&#7843;ng c&#7911;a training data, m&ocirc; h&igrave;nh d&#7921; &#273;o&aacute;n v&agrave; m&ocirc; h&igrave;nh th&#7921;c l&agrave; kh&aacute; gi&#7889;ng nhau. Tuy nhi&ecirc;n, v&#7873; ph&iacute;a ph&#7843;i, &#273;a th&#7913;c b&#7853;c 8 cho k&#7871;t qu&#7843; ho&agrave;n to&agrave;n ng&#432;&#7907;c v&#7899;i <em>xu h&#432;&#7899;ng c&#7911;a d&#7919; li&#7879;u</em>. &#272;i&#7873;u t&#432;&#417;ng t&#7921; x&#7843;y ra trong tr&#432;&#7901;ng h&#7907;p \(d = 16\). &#272;a th&#7913;c b&#7853;c 16 n&agrave;y <em>qu&aacute; fit</em> d&#7919; li&#7879;u trong kho&#7843;ng &#273;ang x&eacute;t, v&agrave; <em>qu&aacute; fit</em>, t&#7913;c <em>kh&ocirc;ng &#273;&#432;&#7907;c m&#432;&#7907;t</em> trong kho&#7843;ng d&#7919; li&#7879;u training. Vi&#7879;c <em>qu&aacute; fit</em> trong tr&#432;&#7901;ng h&#7907;p b&#7853;c 16 kh&ocirc;ng t&#7889;t v&igrave; m&ocirc; h&igrave;nh &#273;ang c&#7889; g&#7855;ng m&ocirc; t&#7843; <em>nhi&#7877;u</em> h&#417;n l&agrave; d&#7919; li&#7879;u. Hai tr&#432;&#7901;ng h&#7907;p &#273;a th&#7913;c b&#7853;c cao n&agrave;y &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Overfitting</em>.</p>
+
+<p><em>N&#7871;u b&#7841;n n&agrave;o bi&#7871;t v&#7873; &#272;a th&#7913;c n&#7897;i suy Lagrange th&igrave; c&oacute; th&#7875; hi&#7875;u &#273;&#432;&#7907;c hi&#7879;n t&#432;&#7907;ng sai s&#7889; l&#7899;n v&#7899;i c&aacute;c &#273;i&#7875;m n&#7857;m ngo&agrave;i kho&#7843;ng c&#7911;a c&aacute;c &#273;i&#7875;m &#273;&atilde; cho. &#272;&oacute; ch&iacute;nh l&agrave; l&yacute; do ph&#432;&#417;ng ph&aacute;p &#273;&oacute; c&oacute; t&#7915; &ldquo;n&#7897;i suy&rdquo;, v&#7899;i c&aacute;c tr&#432;&#7901;ng h&#7907;p &ldquo;ngo&#7841;i suy&rdquo;, k&#7871;t qu&#7843; th&#432;&#7901;ng kh&ocirc;ng ch&iacute;nh x&aacute;c.</em></p>
+
+<p>V&#7899;i \(d = 4\), ta &#273;&#432;&#7907;c m&ocirc; h&igrave;nh d&#7921; &#273;o&aacute;n kh&aacute; gi&#7889;ng v&#7899;i m&ocirc; h&igrave;nh th&#7921;c. H&#7879; s&#7889; b&#7853;c cao nh&#7845;t t&igrave;m &#273;&#432;&#7907;c r&#7845;t g&#7847;n v&#7899;i 0 (xem k&#7871;t qu&#7843; trong <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/15_overfitting/LinReg.ipynb">source code</a>), v&igrave; v&#7853;y &#273;a th&#432;c b&#7853;c 4 n&agrave;y kh&aacute; g&#7847;n v&#7899;i &#273;a th&#7913;c b&#7853;c 3 ban &#273;&#7847;u. &#272;&acirc;y ch&iacute;nh l&agrave; m&#7897;t m&ocirc; h&igrave;nh t&#7889;t.</p>
+
+<p>Overfitting l&agrave; hi&#7879;n t&#432;&#7907;ng m&ocirc; h&igrave;nh t&igrave;m &#273;&#432;&#7907;c <em>qu&aacute; kh&#7899;p</em> v&#7899;i d&#7919; li&#7879;u training. Vi&#7879;c <em>qu&aacute; kh&#7899;p</em> n&agrave;y c&oacute; th&#7875; d&#7851;n &#273;&#7871;n vi&#7879;c d&#7921; &#273;o&aacute;n nh&#7847;m nhi&#7877;u, v&agrave; ch&#7845;t l&#432;&#7907;ng m&ocirc; h&igrave;nh kh&ocirc;ng c&ograve;n t&#7889;t tr&ecirc;n d&#7919; li&#7879;u test n&#7919;a. <a href="/general/2017/02/06/featureengineering/#main-algorithms">D&#7919; li&#7879;u test &#273;&#432;&#7907;c gi&#7843; s&#7917; l&agrave; kh&ocirc;ng &#273;&#432;&#7907;c bi&#7871;t tr&#432;&#7899;c, v&agrave; kh&ocirc;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng &#273;&#7875; x&acirc;y d&#7921;ng c&aacute;c m&ocirc; h&igrave;nh Machine Learning</a>.</p>
+
+<p>V&#7873; c&#417; b&#7843;n, overfitting x&#7843;y ra khi m&ocirc; h&igrave;nh qu&aacute; ph&#7913;c t&#7841;p &#273;&#7875; m&ocirc; ph&#7887;ng training data. &#272;i&#7873;u n&agrave;y &#273;&#7863;c bi&#7879;t x&#7843;y ra khi l&#432;&#7907;ng d&#7919; li&#7879;u training qu&aacute; nh&#7887; trong khi &#273;&#7897; ph&#7913;c t&#7841;p c&#7911;a m&ocirc; h&igrave;nh qu&aacute; cao. Trong v&iacute; d&#7909; tr&ecirc;n &#273;&acirc;y, &#273;&#7897; ph&#7913;c t&#7841;p c&#7911;a m&ocirc; h&igrave;nh c&oacute; th&#7875; &#273;&#432;&#7907;c coi l&agrave; b&#7853;c c&#7911;a &#273;a th&#7913;c c&#7847;n t&igrave;m. Trong <a href="mlp.html">Multi-layer Perceptron</a>, &#273;&#7897; ph&#7913;c t&#7841;p c&#7911;a m&ocirc; h&igrave;nh c&oacute; th&#7875; &#273;&#432;&#7907;c coi l&agrave; s&#7889; l&#432;&#7907;ng hidden layers v&agrave; s&#7889; l&#432;&#7907;ng units trong c&aacute;c hidden layers.</p>
+
+<p>V&#7853;y, c&oacute; nh&#7919;ng k&#7929; thu&#7853;t n&agrave;o gi&uacute;p tr&aacute;nh Overfitting?</p>
+
+<p>Tr&#432;&#7899;c h&#7871;t, ch&uacute;ng ta c&#7847;n m&#7897;t v&agrave;i &#273;&#7841;i l&#432;&#7907;ng &#273;&#7875; &#273;&aacute;nh gi&aacute; ch&#7845;t l&#432;&#7907;ng c&#7911;a m&ocirc; h&igrave;nh tr&ecirc;n training data v&agrave; test data. D&#432;&#7899;i &#273;&acirc;y l&agrave; hai &#273;&#7841;i l&#432;&#7907;ng &#273;&#417;n gi&#7843;n, v&#7899;i gi&#7843; s&#7917; \(\mathbf{y}\) l&agrave; &#273;&#7847;u ra th&#7921;c s&#7921; (c&oacute; th&#7875; l&agrave; vector), v&agrave; \(\mathbf{\hat{y}}\) l&agrave; &#273;&#7847;u ra d&#7921; &#273;o&aacute;n b&#7903;i m&ocirc; h&igrave;nh:</p>
+
+<p><strong>Train error:</strong> Th&#432;&#7901;ng l&agrave; h&agrave;m m&#7845;t m&aacute;t &aacute;p d&#7909;ng l&ecirc;n training data. H&agrave;m m&#7845;t m&aacute;t n&agrave;y c&#7847;n c&oacute; m&#7897;t th&#7915;a s&#7889; \(\frac{1}{N_{\text{train}}} \) &#273;&#7875; t&iacute;nh gi&aacute; tr&#7883; trung b&igrave;nh, t&#7913;c m&#7845;t m&aacute;t trung b&igrave;nh tr&ecirc;n m&#7895;i &#273;i&#7875;m d&#7919; li&#7879;u. V&#7899;i Regression, &#273;&#7841;i l&#432;&#7907;ng n&agrave;y th&#432;&#7901;ng &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a:
+\[
+\text{train error}= \frac{1}{N_{\text{train}}} \sum_{\text{training set}} \|\mathbf{y} - \mathbf{\hat{y}}\|_p^2
+\]
+v&#7899;i \(p\) <a href="/math/#mot-so-chuan-thuong-dung">th&#432;&#7901;ng b&#7857;ng 1 ho&#7863;c 2</a>.</p>
+
+<p>V&#7899;i Classification, trung b&igrave;nh c&#7897;ng c&#7911;a <a href="/2017/02/17/softmax/#-cross-entropy">cross entropy</a> c&oacute; th&#7875; &#273;&#432;&#7907;c s&#7917; d&#7909;ng.</p>
+
+<p><strong>Test error:</strong> T&#432;&#417;ng t&#7921; nh&#432; tr&ecirc;n nh&#432;ng &aacute;p d&#7909;ng m&ocirc; h&igrave;nh t&igrave;m &#273;&#432;&#7907;c v&agrave;o <strong>test data</strong>. Ch&uacute; &yacute; r&#7857;ng, khi x&acirc;y d&#7921;ng m&ocirc; h&igrave;nh, ta kh&ocirc;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng th&ocirc;ng tin trong t&#7853;p d&#7919; li&#7879;u test. D&#7919; li&#7879;u test ch&#7881; &#273;&#432;&#7907;c d&ugrave;ng &#273;&#7875; &#273;&aacute;nh gi&aacute; m&ocirc; h&igrave;nh. V&#7899;i Regression, &#273;&#7841;i l&#432;&#7907;ng n&agrave;y th&#432;&#7901;ng &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a:
+\[
+\text{test error}= \frac{1}{N_{\text{test}}} \sum_{\text{test set}} \|\mathbf{y} - \mathbf{\hat{y}}\|_p^2
+\]</p>
+
+<p>v&#7899;i \(p\) gi&#7889;ng nh&#432; \(p\) trong c&aacute;ch t&iacute;nh <em>train error</em> ph&iacute;a tr&ecirc;n.</p>
+
+<p><em>Vi&#7879;c l&#7845;y trung b&igrave;nh l&agrave; quan tr&#7885;ng v&igrave; l&#432;&#7907;ng d&#7919; li&#7879;u trong hai t&#7853;p h&#7907;p training v&agrave; test c&oacute; th&#7875; ch&ecirc;nh l&#7879;ch r&#7845;t nhi&#7873;u.</em></p>
+
+<p>M&#7897;t m&ocirc; h&igrave;nh &#273;&#432;&#7907;c coi l&agrave; t&#7889;t (fit) n&#7871;u c&#7843; <em>train error</em> v&agrave; <em>test error</em> &#273;&#7873;u th&#7845;p. N&#7871;u <em>train error</em> th&#7845;p nh&#432;ng <em>test error</em> cao, ta n&oacute;i m&ocirc; h&igrave;nh b&#7883; overfitting. N&#7871;u <em>train error</em> cao v&agrave; <em>test error</em> cao, ta n&oacute;i m&ocirc; h&igrave;nh b&#7883; underfitting. N&#7871;u <em>train error</em> cao nh&#432;ng <em>test error</em> th&#7845;p, t&ocirc;i kh&ocirc;ng bi&#7871;t t&ecirc;n c&#7911;a m&ocirc; h&igrave;nh n&agrave;y, v&igrave; c&#7921;c k&#7923; may m&#7855;n th&igrave; hi&#7879;n t&#432;&#7907;ng n&agrave;y m&#7899;i x&#7843;y ra, ho&#7863;c c&oacute; ch&#7881; khi t&#7853;p d&#7919; li&#7879;u test qu&aacute; nh&#7887;.</p>
+
+<p>Ch&uacute;ng ta c&ugrave;ng &#273;i v&agrave;o ph&#432;&#417;ng ph&aacute;p &#273;&#7847;u ti&ecirc;n</p>
+
+<p><a name="-validation" href="overfitting.html"></a></p>
+
+<p><a name="-validation" href="overfitting.html"></a></p>
+<h2 id="2-validation">2. Validation</h2>
+<p><a name="-validation-1" href="overfitting.html"></a></p>
+
+<p><a name="-validation-1" href="overfitting.html"></a></p>
+<h3 id="21-validation">2.1. Validation</h3>
+<p>Ch&uacute;ng ta v&#7851;n quen v&#7899;i vi&#7879;c chia t&#7853;p d&#7919; li&#7879;u ra th&agrave;nh hai t&#7853;p nh&#7887;: training data v&agrave; test data. V&agrave; m&#7897;t &#273;i&#7873;u t&ocirc;i v&#7851;n mu&#7889;n nh&#7855;c l&#7841;i l&agrave; khi x&acirc;y d&#7921;ng m&ocirc; h&igrave;nh, ta kh&ocirc;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng test data. V&#7853;y l&agrave;m c&aacute;ch n&agrave;o &#273;&#7875; bi&#7871;t &#273;&#432;&#7907;c ch&#7845;t l&#432;&#7907;ng c&#7911;a m&ocirc; h&igrave;nh v&#7899;i <em>unseen data</em> (t&#7913;c d&#7919; li&#7879;u ch&#432;a nh&igrave;n th&#7845;y bao gi&#7901;)?</p>
+
+<p>Ph&#432;&#417;ng ph&aacute;p &#273;&#417;n gi&#7843;n nh&#7845;t l&agrave; <em>tr&iacute;ch</em> t&#7915; t&#7853;p training data ra m&#7897;t t&#7853;p con nh&#7887; v&agrave; th&#7921;c hi&#7879;n vi&#7879;c &#273;&aacute;nh gi&aacute; m&ocirc; h&igrave;nh tr&ecirc;n t&#7853;p con nh&#7887; n&agrave;y. T&#7853;p con nh&#7887; <strong>&#273;&#432;&#7907;c tr&iacute;ch ra t&#7915; training set</strong> n&agrave;y &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>validation set</em>. L&uacute;c n&agrave;y, <strong>training set l&agrave; ph&#7847;n c&ograve;n l&#7841;i c&#7911;a training set ban &#273;&#7847;u</strong>. Train error &#273;&#432;&#7907;c t&iacute;nh tr&ecirc;n training set m&#7899;i n&agrave;y, v&agrave; c&oacute; m&#7897;t kh&aacute;i ni&#7879;m n&#7919;a &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a t&#432;&#417;ng t&#7921; nh&#432; tr&ecirc;n <em>validation error</em>, t&#7913;c error &#273;&#432;&#7907;c t&iacute;nh tr&ecirc;n t&#7853;p validation.</p>
+
+<blockquote>
+  <p>Vi&#7879;c n&agrave;y gi&#7889;ng nh&#432; khi b&#7841;n &ocirc;n thi. Gi&#7843; s&#7917; b&#7841;n kh&ocirc;ng bi&#7871;t &#273;&#7873; thi nh&#432; th&#7871; n&agrave;o nh&#432;ng c&oacute; 10 b&#7897; &#273;&#7873; thi t&#7915; c&aacute;c n&#259;m tr&#432;&#7899;c. &#272;&#7875; xem tr&igrave;nh &#273;&#7897; c&#7911;a m&igrave;nh tr&#432;&#7899;c khi thi th&#7871; n&agrave;o, c&oacute; m&#7897;t c&aacute;ch l&agrave; b&#7887; ri&ecirc;ng m&#7897;t b&#7897; &#273;&#7873; ra, kh&ocirc;ng &ocirc;n t&#7853;p g&igrave;. Vi&#7879;c &ocirc;n t&#7853;p s&#7869; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n d&#7921;a tr&ecirc;n 9 b&#7897; c&ograve;n l&#7841;i. Sau khi &ocirc;n t&#7853;p xong, b&#7841;n b&#7887; b&#7897; &#273;&#7873; &#273;&atilde; &#273;&#7875; ri&ecirc;ng ra l&agrave;m th&#7917; v&agrave; ki&#7875;m tra k&#7871;t qu&#7843;, nh&#432; th&#7871; m&#7899;i &ldquo;kh&aacute;ch quan&rdquo;, m&#7899;i gi&#7889;ng nh&#432; thi th&#7853;t. 10 b&#7897; &#273;&#7873; &#7903; c&aacute;c n&#259;m tr&#432;&#7899;c l&agrave; &ldquo;to&agrave;n b&#7897;&rdquo; training set b&#7841;n c&oacute;. &#272;&#7875; tr&aacute;nh vi&#7879;c h&#7885;c l&#7879;ch, h&#7885;c t&#7911; theo ch&#7881; 10 b&#7897;, b&#7841;n t&aacute;ch 9 b&#7897; ra l&agrave;m training set th&#7853;t, b&#7897; c&ograve;n l&#7841;i l&agrave; validation test. Khi l&agrave;m nh&#432; th&#7871; th&igrave; m&#7899;i &#273;&aacute;nh gi&aacute; &#273;&#432;&#7907;c vi&#7879;c b&#7841;n h&#7885;c &#273;&atilde; t&#7889;t th&#7853;t hay ch&#432;a, hay ch&#7881; l&agrave; <em>h&#7885;c t&#7911;</em>. V&igrave; v&#7853;y, <em>Overfitting</em> c&ograve;n c&oacute; th&#7875; so s&aacute;nh v&#7899;i vi&#7879;c <em>H&#7885;c t&#7911;</em> c&#7911;a con ng&#432;&#7901;i.</p>
+</blockquote>
+
+<p>V&#7899;i kh&aacute;i ni&#7879;m m&#7899;i n&agrave;y, ta t&igrave;m m&ocirc; h&igrave;nh sao cho c&#7843; <em>train eror</em> v&agrave; <em>validation error</em> &#273;&#7873;u nh&#7887;, qua &#273;&oacute; c&oacute; th&#7875; d&#7921; &#273;o&aacute;n &#273;&#432;&#7907;c r&#7857;ng <em>test error</em> c&#361;ng nh&#7887;. Ph&#432;&#417;ng ph&aacute;p th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave; s&#7917; d&#7909;ng nhi&#7873;u m&ocirc; h&igrave;nh kh&aacute;c nhau. M&ocirc; h&igrave;nh n&agrave;o cho <em>validation error</em> nh&#7887; nh&#7845;t s&#7869; l&agrave; m&ocirc; h&igrave;nh t&#7889;t.</p>
+
+<p>Th&ocirc;ng th&#432;&#7901;ng, ta b&#7855;t &#273;&#7847;u t&#7915; m&ocirc; h&igrave;nh &#273;&#417;n gi&#7843;n, sau &#273;&oacute; t&#259;ng d&#7847;n &#273;&#7897; ph&#7913;c t&#7841;p c&#7911;a m&ocirc; h&igrave;nh. T&#7899;i khi n&agrave;o <em>validation error</em> c&oacute; chi&#7873;u h&#432;&#7899;ng t&#259;ng l&ecirc;n th&igrave; ch&#7885;n m&ocirc; h&igrave;nh ngay tr&#432;&#7899;c &#273;&oacute;. Ch&uacute; &yacute; r&#7857;ng m&ocirc; h&igrave;nh c&agrave;ng ph&#7913;c t&#7841;p, <em>train error</em> c&oacute; xu h&#432;&#7899;ng c&agrave;ng nh&#7887; &#273;i.</p>
+
+<p>H&iacute;nh d&#432;&#7899;i &#273;&acirc;y m&ocirc; t&#7843; v&iacute; d&#7909; ph&iacute;a tr&ecirc;n v&#7899;i b&#7853;c c&#7911;a &#273;a th&#7913;c t&#259;ng t&#7915; 1 &#273;&#7871;n 8. T&#7853;p validation bao g&#7891;m 10 &#273;i&#7875;m &#273;&#432;&#7907;c l&#7845;y ra t&#7915; t&#7853;p training ban &#273;&#7847;u.</p>
+
+<div class="imgcap">
+<img src="images/overfitting-%5Cassets%5C15_overfitting%5Clinreg_val.png" align="center" width="500"><div class="thecap">H&igrave;nh 2: L&#7921;a ch&#7885;n m&ocirc; h&igrave;nh d&#7921;a tr&ecirc;n validation (<a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/15_overfitting/LinReg-validation.ipynb">Source code</a>).</div>
+</div>
+<p>Ch&uacute;ng ta h&atilde;y t&#7841;m ch&#7881; x&eacute;t hai &#273;&#432;&#7901;ng m&agrave;u lam v&agrave; &#273;&#7887;, t&#432;&#417;ng &#7913;ng v&#7899;i <em>train error</em> v&agrave; <em>validation error</em>. Khi b&#7853;c c&#7911;a &#273;a th&#7913;c t&#259;ng l&ecirc;n, <em>train error</em> c&oacute; xu h&#432;&#7899;ng gi&#7843;m. &#272;i&#7873;u n&agrave;y d&#7877; hi&#7875;u v&igrave; &#273;a th&#7913;c b&#7853;c c&agrave;ng cao, d&#7919; li&#7879;u c&agrave;ng &#273;&#432;&#7907;c <em>fit</em>. Quan s&aacute;t &#273;&#432;&#7901;ng m&agrave;u &#273;&#7887;, khi b&#7853;c c&#7911;a &#273;a th&#7913;c l&agrave; 3 ho&#7863;c 4 th&igrave; <em>validation error</em> th&#7845;p, sau &#273;&oacute; t&#259;ng d&#7847;n l&ecirc;n. D&#7921;a v&agrave;o <em>validation error</em>, ta c&oacute; th&#7875; x&aacute;c &#273;&#7883;nh &#273;&#432;&#7907;c b&#7853;c c&#7847;n ch&#7885;n l&agrave; 3 ho&#7863;c 4. Quan s&aacute;t ti&#7871;p &#273;&#432;&#7901;ng m&agrave;u l&#7909;c, t&#432;&#417;ng &#7913;ng v&#7899;i <em>test error</em>, th&#7853;t l&agrave; tr&ugrave;ng h&#7907;p, v&#7899;i b&#7853;c b&#7857;ng 3 ho&#7863;c 4, <em>test error</em> c&#361;ng &#273;&#7841;t gi&aacute; tr&#7883; nh&#7887; nh&#7845;t, sau &#273;&oacute; t&#259;ng d&#7847;n l&ecirc;n. V&#7853;y c&aacute;ch l&agrave;m n&agrave;y &#7903; &#273;&acirc;y &#273;&atilde; t&#7887; ra hi&#7879;u qu&#7843;.</p>
+
+<p>Vi&#7879;c kh&ocirc;ng s&#7917; d&#7909;ng <em>test data</em> khi l&#7921;a ch&#7885;n m&ocirc; h&igrave;nh &#7903; tr&ecirc;n nh&#432;ng v&#7851;n c&oacute; &#273;&#432;&#7907;c k&#7871;t qu&#7843; kh&#7843; quan v&igrave; ta gi&#7843; s&#7917; r&#7857;ng <em>validation data</em> v&agrave; <em>test data</em> c&oacute; chung m&#7897;t &#273;&#7863;c &#273;i&#7875;m n&agrave;o &#273;&oacute;. V&agrave; khi c&#7843; hai &#273;&#7873;u l&agrave; <em>unseen data</em>, <em>error</em> tr&ecirc;n hai t&#7853;p n&agrave;y s&#7869; t&#432;&#417;ng &#273;&#7889;i gi&#7889;ng nhau.</p>
+
+<p>Nh&#7855;c l&#7841;i r&#7857;ng, khi b&#7853;c nh&#7887; (b&#7857;ng 1 ho&#7863;c 2), c&#7843; ba error &#273;&#7873;u cao, ta n&oacute;i m&ocirc; h&igrave;nh b&#7883; <em>underfitting</em>.</p>
+
+<p><a name="-cross-validation" href="overfitting.html"></a></p>
+
+<p><a name="-cross-validation" href="overfitting.html"></a></p>
+<h3 id="22-cross-validation">2.2. Cross-validation</h3>
+<p>Trong nhi&#7873;u tr&#432;&#7901;ng h&#7907;p, ch&uacute;ng ta c&oacute; r&#7845;t h&#7841;n ch&#7871; s&#7889; l&#432;&#7907;ng d&#7919; li&#7879;u &#273;&#7875; x&acirc;y d&#7921;ng m&ocirc; h&igrave;nh. N&#7871;u l&#7845;y qu&aacute; nhi&#7873;u d&#7919; li&#7879;u trong t&#7853;p training ra l&agrave;m d&#7919; li&#7879;u validation, ph&#7847;n d&#7919; li&#7879;u c&ograve;n l&#7841;i c&#7911;a t&#7853;p training l&agrave; kh&ocirc;ng &#273;&#7911; &#273;&#7875; x&acirc;y d&#7921;ng m&ocirc; h&igrave;nh. L&uacute;c n&agrave;y, t&#7853;p validation ph&#7843;i th&#7853;t nh&#7887; &#273;&#7875; gi&#7919; &#273;&#432;&#7907;c l&#432;&#7907;ng d&#7919; li&#7879;u cho training &#273;&#7911; l&#7899;n. Tuy nhi&ecirc;n, m&#7897;t v&#7845;n &#273;&#7873; kh&aacute;c n&#7843;y sinh. Khi t&#7853;p validation qu&aacute; nh&#7887;, hi&#7879;n t&#432;&#7907;ng overfitting l&#7841;i c&oacute; th&#7875; x&#7843;y ra v&#7899;i t&#7853;p training c&ograve;n l&#7841;i. C&oacute; gi&#7843;i ph&aacute;p n&agrave;o cho t&igrave;nh hu&#7889;ng n&agrave;y kh&ocirc;ng?</p>
+
+<p>C&acirc;u tr&#7843; l&#7901;i l&agrave; <em>cross-validation</em>.</p>
+
+<p><em>Cross validation</em> l&agrave; m&#7897;t c&#7843;i ti&#7871;n c&#7911;a <em>validation</em> v&#7899;i l&#432;&#7907;ng d&#7919; li&#7879;u trong t&#7853;p validation l&agrave; nh&#7887; nh&#432;ng ch&#7845;t l&#432;&#7907;ng m&ocirc; h&igrave;nh &#273;&#432;&#7907;c &#273;&aacute;nh gi&aacute; tr&ecirc;n nhi&#7873;u t&#7853;p <em>validation</em> kh&aacute;c nhau. M&#7897;t c&aacute;ch th&#432;&#7901;ng &#273;&#432;&#7901;ng s&#7917; d&#7909;ng l&agrave; chia t&#7853;p training ra \(k\) t&#7853;p con kh&ocirc;ng c&oacute; ph&#7847;n t&#7917; chung, c&oacute; k&iacute;ch th&#432;&#7899;c g&#7847;n b&#7857;ng nhau. T&#7841;i m&#7895;i l&#7847;n ki&#7875;m th&#7917; , &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>run</em>, m&#7897;t trong s&#7889; \(k\) t&#7853;p con &#273;&#432;&#7907;c l&#7845;y ra l&agrave;m <em>validata set</em>. M&ocirc; h&igrave;nh s&#7869; &#273;&#432;&#7907;c x&acirc;y d&#7921;ng d&#7921;a v&agrave;o h&#7907;p c&#7911;a \(k-1\) t&#7853;p con c&ograve;n l&#7841;i. M&ocirc; h&igrave;nh cu&#7889;i &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh d&#7921;a tr&ecirc;n trung b&igrave;nh c&#7911;a c&aacute;c <em>train error</em> v&agrave; <em>validation error</em>. C&aacute;ch l&agrave;m n&agrave;y c&ograve;n c&oacute; t&ecirc;n g&#7885;i l&agrave; <strong>k-fold cross validation</strong>.</p>
+
+<p>Khi \(k\) b&#7857;ng v&#7899;i s&#7889; l&#432;&#7907;ng ph&#7847;n t&#7917; trong t&#7853;p <em>training</em> ban &#273;&#7847;u, t&#7913;c m&#7895;i t&#7853;p con c&oacute; &#273;&uacute;ng 1 ph&#7847;n t&#7917;, ta g&#7885;i k&#7929; thu&#7853;t n&agrave;y l&agrave; <strong>leave-one-out</strong>.</p>
+
+<p>Sklearn h&#7895; tr&#7907; r&#7845;t nhi&#7873;u ph&#432;&#417;ng th&#7913;c cho ph&acirc;n chia d&#7919; li&#7879;u v&agrave; t&iacute;nh to&aacute;n <em>scores</em> c&#7911;a c&aacute;c m&ocirc; h&igrave;nh. B&#7841;n &#273;&#7885;c c&oacute; th&#7875; xem th&ecirc;m t&#7841;i <a href="http://scikit-learn.org/stable/modules/cross_validation.html">Cross-validation: evaluating estimator performance</a>.</p>
+
+<p><a name="-regularization" href="overfitting.html"></a></p>
+
+<p><a name="-regularization" href="overfitting.html"></a></p>
+<h2 id="3-regularization">3. Regularization</h2>
+
+<p>M&#7897;t nh&#432;&#7907;c &#273;i&#7875;m l&#7899;n c&#7911;a <em>cross-validation</em> l&agrave; s&#7889; l&#432;&#7907;ng <em>training runs</em> t&#7881; l&#7879; thu&#7853;n v&#7899;i \(k\). &#272;i&#7873;u &#273;&aacute;ng n&oacute;i l&agrave; m&ocirc; h&igrave;nh polynomial nh&#432; tr&ecirc;n ch&#7881; c&oacute; m&#7897;t tham s&#7889; c&#7847;n x&aacute;c &#273;&#7883;nh l&agrave; b&#7853;c c&#7911;a &#273;a th&#7913;c. Trong c&aacute;c b&agrave;i to&aacute;n Machine Learning, l&#432;&#7907;ng tham s&#7889; c&#7847;n x&aacute;c &#273;&#7883;nh th&#432;&#7901;ng l&#7899;n h&#417;n nhi&#7873;u, v&agrave; kho&#7843;ng gi&aacute; tr&#7883; c&#7911;a m&#7895;i tham s&#7889; c&#361;ng r&#7897;ng h&#417;n nhi&#7873;u, ch&#432;a k&#7875; &#273;&#7871;n vi&#7879;c c&oacute; nh&#7919;ng tham s&#7889; c&oacute; th&#7875; l&agrave; s&#7889; th&#7921;c. Nh&#432; v&#7853;y, vi&#7879;c ch&#7881; x&acirc;y d&#7921;ng m&#7897;t m&ocirc; h&igrave;nh th&ocirc;i c&#361;ng l&agrave; &#273;&atilde; r&#7845;t ph&#7913;c t&#7841;p r&#7891;i. C&oacute; m&#7897;t c&aacute;ch gi&uacute;p s&#7889; m&ocirc; h&igrave;nh c&#7847;n hu&#7845;n luy&#7879;n gi&#7843;m &#273;i nhi&#7873;u, th&#7853;m ch&iacute; ch&#7881; m&#7897;t m&ocirc; h&igrave;nh. C&aacute;ch n&agrave;y c&oacute; t&ecirc;n g&#7885;i chung l&agrave; <em>regularization</em>.</p>
+
+<p><em>Regularization</em>, m&#7897;t c&aacute;ch c&#417; b&#7843;n, l&agrave; thay &#273;&#7893;i m&ocirc; h&igrave;nh m&#7897;t ch&uacute;t &#273;&#7875; tr&aacute;nh overfitting trong khi v&#7851;n gi&#7919; &#273;&#432;&#7907;c t&iacute;nh t&#7893;ng qu&aacute;t c&#7911;a n&oacute; (t&iacute;nh t&#7893;ng qu&aacute;t l&agrave; t&iacute;nh m&ocirc; t&#7843; &#273;&#432;&#7907;c nhi&#7873;u d&#7919; li&#7879;u, trong c&#7843; t&#7853;p training v&agrave; test). M&#7897;t c&aacute;ch c&#7909; th&#7875; h&#417;n, ta s&#7869; t&igrave;m c&aacute;ch <em>di chuy&#7875;n</em> nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n t&#7889;i &#432;u h&agrave;m m&#7845;t m&aacute;t t&#7899;i m&#7897;t &#273;i&#7875;m g&#7847;n n&oacute;. H&#432;&#7899;ng di chuy&#7875;n s&#7869; l&agrave; h&#432;&#7899;ng l&agrave;m cho m&ocirc; h&igrave;nh <em>&iacute;t ph&#7913;c t&#7841;p h&#417;n</em> m&#7863;c d&ugrave; gi&aacute; tr&#7883; c&#7911;a h&agrave;m m&#7845;t m&aacute;t c&oacute; t&#259;ng l&ecirc;n m&#7897;t ch&uacute;t.</p>
+
+<p>M&#7897;t k&#7929; thu&#7853;t r&#7845;t &#273;&#417;n gi&#7843;n l&agrave; <em>early stopping</em>.</p>
+
+<p><a name="-early-stopping" href="overfitting.html"></a></p>
+
+<p><a name="-early-stopping" href="overfitting.html"></a></p>
+<h3 id="31-early-stopping">3.1. Early Stopping</h3>
+<p>Trong nhi&#7873;u b&agrave;i to&aacute;n Machine Learning, ch&uacute;ng ta c&#7847;n s&#7917; d&#7909;ng c&aacute;c thu&#7853;t to&aacute;n l&#7863;p &#273;&#7875; t&igrave;m ra nghi&#7879;m, v&iacute; d&#7909; nh&#432; Gradient Descent. Nh&igrave;n chung, h&agrave;m m&#7845;t m&aacute;t gi&#7843;m d&#7847;n khi s&#7889; v&ograve;ng l&#7863;p t&#259;ng l&ecirc;n. Early stopping t&#7913;c d&#7915;ng thu&#7853;t to&aacute;n tr&#432;&#7899;c khi h&agrave;m m&#7845;t m&aacute;t &#273;&#7841;t gi&aacute; tr&#7883; qu&aacute; nh&#7887;, gi&uacute;p tr&aacute;nh overfitting.</p>
+
+<p>V&#7853;y d&#7915;ng khi n&agrave;o l&agrave; ph&ugrave; h&#7907;p?</p>
+
+<p>M&#7897;t k&#7929; thu&#7853;t th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave; t&aacute;ch t&#7915; training set ra m&#7897;t t&#7853;p validation set nh&#432; tr&ecirc;n. Sau m&#7897;t (ho&#7863;c m&#7897;t s&#7889;, v&iacute; d&#7909; 50) v&ograve;ng l&#7863;p, ta t&iacute;nh c&#7843; <em>train error</em> v&agrave; <em>validation error</em>, &#273;&#7871;n khi <em>validation error</em> c&oacute; chi&#7873;u h&#432;&#7899;ng t&#259;ng l&ecirc;n th&igrave; d&#7915;ng l&#7841;i, v&agrave; quay l&#7841;i s&#7917; d&#7909;ng m&ocirc; h&igrave;nh t&#432;&#417;ng &#7913;ng v&#7899;i &#273;i&#7875;m v&agrave; <em>validation error</em> &#273;&#7841;t gi&aacute; tr&#7883; nh&#7887;.</p>
+
+<div class="imgcap">
+<img src="images/overfitting-%5Cassets%5C15_overfitting%5CEarlyStopping.png" align="center" width="400"><div class="thecap">H&igrave;nh 3: Early Stopping. &#272;&#432;&#7901;ng m&agrave;u xanh l&agrave; <i>train error</i>, &#273;&#432;&#7901;ng m&agrave;u &#273;&#7887; l&agrave; <i>validation error</i>. Tr&#7909;c x l&agrave; s&#7889; l&#432;&#7907;ng v&ograve;ng l&#7863;p, tr&#7909;c y l&agrave; error. M&ocirc; h&igrave;nh &#273;&#432;&#7907;c x&aacute;c &#273;&#7883;nh t&#7841;i v&ograve;ng l&#7863;p m&agrave; <i>validation error</i> &#273;&#7841;t gi&aacute; tr&#7883; nh&#7887; nh&#7845;t.  (<a href="https://en.wikipedia.org/wiki/Overfitting">Overfitting - Wikipedia</a>).</div>
+</div>
+<p>H&igrave;nh tr&ecirc;n &#273;&acirc;y m&ocirc; t&#7843; c&aacute;ch t&igrave;m &#273;i&#7875;m <em>stopping</em>. Ch&uacute;ng ta th&#7845;y r&#7857;ng ph&#432;&#417;ng ph&aacute;p n&agrave;y kh&aacute; gi&#7889;ng v&#7899;i ph&#432;&#417;ng ph&aacute;p t&igrave;m b&#7853;c c&#7911;a &#273;a th&#7913;c &#7903; ph&#7847;n tr&ecirc;n c&#7911;a b&agrave;i vi&#7871;t.</p>
+
+<p><a name="-them-so-hang-vao-ham-mat-mat" href="overfitting.html"></a></p>
+
+<p><a name="-them-so-hang-vao-ham-mat-mat" href="overfitting.html"></a></p>
+<h3 id="32-th&ecirc;m-s&#7889;-h&#7841;ng-v&agrave;o-h&agrave;m-m&#7845;t-m&aacute;t">3.2. Th&ecirc;m s&#7889; h&#7841;ng v&agrave;o h&agrave;m m&#7845;t m&aacute;t</h3>
+
+<p>K&#7929; thu&#7853;t regularization ph&#7893; bi&#7871;n nh&#7845;t l&agrave; th&ecirc;m v&agrave;o h&agrave;m m&#7845;t m&aacute;t m&#7897;t s&#7889; h&#7841;ng n&#7919;a. S&#7889; h&#7841;ng n&agrave;y th&#432;&#7901;ng d&ugrave;ng &#273;&#7875; &#273;&aacute;nh gi&aacute; &#273;&#7897; ph&#7913;c t&#7841;p c&#7911;a m&ocirc; h&igrave;nh. S&#7889; h&#7841;ng n&agrave;y c&agrave;ng l&#7899;n, th&igrave; m&ocirc; h&igrave;nh c&agrave;ng ph&#7913;c t&#7841;p. <em>H&agrave;m m&#7845;t m&aacute;t m&#7899;i</em> n&agrave;y th&#432;&#7901;ng &#273;&#432;&#7907;c g&#7885;i l&agrave; <strong>regularized loss function</strong>, th&#432;&#7901;ng &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a nh&#432; sau:
+\[
+J_{\text{reg}}(\theta) = J(\theta) + \lambda R(\theta)
+\]</p>
+
+<p>Nh&#7855;c l&#7841;i r&#7857;ng \(\theta\) &#273;&#432;&#7907;c d&ugrave;ng &#273;&#7875; k&yacute; hi&#7879;u c&aacute;c bi&#7871;n trong m&ocirc; h&igrave;nh, ch&#7859;ng h&#7841;n nh&#432; c&aacute;c h&#7879; s&#7889; \(\mathbf{w}\) trong Neural Networks. \(J(\theta)\) k&yacute; hi&#7879;u cho h&agrave;m m&#7845;t m&aacute;t (<em>loss function</em>) v&agrave; \(R(\theta)\) l&agrave; s&#7889; h&#7841;ng <em>regularization</em>. \(\lambda\) th&#432;&#7901;ng l&agrave; m&#7897;t s&#7889; d&#432;&#417;ng &#273;&#7875; c&acirc;n b&#7857;ng gi&#7919;a hai &#273;&#7841;i l&#432;&#7907;ng &#7903; v&#7871; ph&#7843;i.</p>
+
+<p>Vi&#7879;c t&#7889;i thi&#7875;u <em>regularized loss function</em>, n&oacute;i m&#7897;t c&aacute;ch t&#432;&#417;ng &#273;&#7889;i, &#273;&#7891;ng ngh&#297;a v&#7899;i vi&#7879;c t&#7889;i thi&#7875;u c&#7843; <em>loss function</em> v&agrave; s&#7889; h&#7841;ng <em>regularization</em>. T&ocirc;i d&ugrave;ng c&#7909;m &ldquo;n&oacute;i m&#7897;t c&aacute;ch t&#432;&#417;ng &#273;&#7889;i&rdquo; v&igrave; nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n t&#7889;i &#432;u <em>loss function</em> v&agrave; <strong>regularized loss function</strong> l&agrave; kh&aacute;c nhau.  Ch&uacute;ng ta v&#7851;n mong mu&#7889;n r&#7857;ng s&#7921; kh&aacute;c nhau n&agrave;y l&agrave; nh&#7887;, v&igrave; v&#7853;y tham s&#7889; regularization (<em>regularizaton parameter</em>) \(\lambda\) th&#432;&#7901;ng &#273;&#432;&#7907;c ch&#7885;n l&agrave; m&#7897;t s&#7889; nh&#7887; &#273;&#7875; bi&#7875;u th&#7913;c regularization kh&ocirc;ng l&agrave;m gi&#7843;m qu&aacute; nhi&#7873;u ch&#7845;t l&#432;&#7907;ng c&#7911;a nghi&#7879;m.</p>
+
+<p>V&#7899;i c&aacute;c m&ocirc; h&igrave;nh Neural Networks, m&#7897;t s&#7889; k&#7929; thu&#7853;t regularization th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave;:</p>
+
+<p><a name="-%5C%5Cl%5C%5C-regularization" href="overfitting.html"></a></p>
+
+<p><a name="-%5C%5Cl%5C%5C-regularization" href="overfitting.html"></a></p>
+<h3 id="33-l_2-regularization">3.3. \(l_2\) regularization</h3>
+<p>Trong k&#7929; thu&#7853;t n&agrave;y:
+\[
+R(\mathbf{w}) = \|\mathbf{w}\|_2^2
+\]
+t&#7913;c norm 2 c&#7911;a h&#7879; s&#7889;.</p>
+
+<p><em>N&#7871;u b&#7841;n &#273;&#7885;c ch&#432;a quen thu&#7897;c v&#7899;i kh&aacute;i ni&#7879;m norm, b&#7841;n &#273;&#432;&#7907;c khuy&#7871;n kh&iacute;ch &#273;&#7885;c <a href="/math/#-norms-chuan">ph&#7847;n ph&#7909; l&#7909;c n&agrave;y</a></em>.</p>
+
+<p>H&agrave;m s&#7889; n&agrave;y c&oacute; m&#7897;t v&agrave;i &#273;&#7863;c &#273;i&#7875;m &#273;ang l&#432;u &yacute;:</p>
+
+<ul><li>Th&#7913; nh&#7845;t, \(\|\mathbf{w}\|_2^2\) l&agrave; m&#7897;t h&agrave;m s&#7889; <em>r&#7845;t m&#432;&#7907;t</em>, t&#7913;c c&oacute; &#273;&#7841;o h&agrave;m t&#7841;i m&#7885;i , &#273;&#7841;o h&agrave;m c&#7911;a n&oacute; &#273;&#417;n gi&#7843;n l&agrave; \(\mathbf{w}\), v&igrave; v&#7853;y &#273;&#7841;o h&agrave;m c&#7911;a <em>regularized loss function</em> c&#361;ng r&#7845;t d&#7877; t&iacute;nh, ch&uacute;ng ta c&oacute; th&#7875; ho&agrave;n to&agrave;n d&ugrave;ng c&aacute;c ph&#432;&#417;ng ph&aacute;p d&#7921;a tr&ecirc;n gradient &#273;&#7875; c&#7853;p nh&#7853;t nghi&#7879;m. C&#7909; th&#7875;:
+\[
+\frac{\partial J_{\text{reg}} }{\partial \mathbf{w}} = \frac{\partial J}{\partial \mathbf{w}} + \lambda \mathbf{w}
+\]</li>
+  <li>Th&#7913; hai, vi&#7879;c t&#7889;i thi&#7875;u \(\|\mathbf{w}\|_2^2\) &#273;&#7891;ng ngh&#297;a v&#7899;i vi&#7879;c khi&#7871;n cho c&aacute;c gi&aacute; tr&#7883; c&#7911;a h&#7879; s&#7889; \(\mathbf{w}\) tr&#7903; n&ecirc;n nh&#7887; g&#7847;n v&#7899;i 0. V&#7899;i Polynomial Regression, vi&#7879;c c&aacute;c h&#7879; s&#7889; n&agrave;y nh&#7887; c&oacute; th&#7875; gi&uacute;p c&aacute;c h&#7879; s&#7889; &#7913;ng v&#7899;i c&aacute;c s&#7889; h&#7841;ng b&#7853;c cao l&agrave; nh&#7887;, gi&uacute;p tr&aacute;nh overfitting. V&#7899;i Multi-layer Pereceptron, vi&#7879;c c&aacute;c h&#7879; s&#7889; n&agrave;y nh&#7887; gi&uacute;p cho nhi&#7873;u h&#7879; s&#7889; trong c&aacute;c ma tr&#7853;n tr&#7885;ng s&#7889; l&agrave; nh&#7887;. &#272;i&#7873;u n&agrave;y t&#432;&#417;ng &#7913;ng v&#7899;i vi&#7879;c s&#7889; l&#432;&#7907;ng c&aacute;c hidden units <em>ho&#7841;t &#273;&#7897;ng</em> (kh&aacute;c kh&ocirc;ng) l&agrave; nh&#7887;, c&#361;ng gi&uacute;p cho MLP tr&aacute;nh &#273;&#432;&#7907;c hi&#7879;n t&#432;&#7907;ng overfitting.</li>
+</ul><p>\(l_2\) regularization l&agrave; k&#7929; thu&#7853;t &#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u nh&#7845;t &#273;&#7875; gi&uacute;p Neural Networks tr&aacute;nh &#273;&#432;&#7907;c overfitting. N&oacute; c&ograve;n c&oacute; t&ecirc;n g&#7885;i kh&aacute;c l&agrave; <strong>weight decay</strong>. <em>Decay</em> c&oacute; ngh&#297;a l&agrave; <em>ti&ecirc;u bi&#7871;n</em>.</p>
+
+<p>Trong X&aacute;c su&#7845;t th&#7889;ng k&ecirc;, Linear Regression v&#7899;i \(l_2\) regularization &#273;&#432;&#7907;c g&#7885;i l&agrave; <a href="https://en.wikipedia.org/wiki/Tikhonov_regularization"><strong>Ridge Regression</strong></a>. H&agrave;m m&#7845;t m&aacute;t c&#7911;a <em>Ridge Regression</em> c&oacute; d&#7841;ng:
+\[
+J(\mathbf{w}) = \frac{1}{2} \|\mathbf{y} - \mathbf{Xw}\|_2^2 + \lambda \|\mathbf{w}\|_2^2
+\]
+trong &#273;&oacute;, s&#7889; h&#7841;ng &#273;&#7847;u ti&ecirc;n &#7903; v&#7871; ph&#7843;i ch&iacute;nh l&agrave; h&agrave;m m&#7845;t m&aacute;t c&#7911;a Linear Regression. S&#7889; h&#7841;ng th&#7913; hai ch&iacute;nh l&agrave; ph&#7847;n regularization.</p>
+
+<p><a name="vi-du-ve-weight-decay-voi-mlp" href="overfitting.html"></a></p>
+
+<p><a name="vi-du-ve-weight-decay-voi-mlp" href="overfitting.html"></a></p>
+<h4 id="v&iacute;-d&#7909;-v&#7873;-weight-decay-v&#7899;i-mlp">V&iacute; d&#7909; v&#7873; Weight Decay v&#7899;i MLP</h4>
+<p>Ch&uacute;ng ta s&#7917; d&#7909;ng <a href="/2017/02/24/mlp/#-vi-du-tren-python">m&ocirc; h&igrave;nh MLP gi&#7889;ng nh&#432; b&agrave;i tr&#432;&#7899;c</a> nh&#432;ng d&#7919; li&#7879;u c&oacute; kh&aacute;c &#273;i &#273;&ocirc;i ch&uacute;t.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># To support both python 2 and python 3
+</span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">means</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">X0</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">means</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cov</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">X1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">means</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cov</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">means</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">cov</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+</code></pre></div></div>
+<p>D&#7919; li&#7879;u &#273;&#432;&#7907;c t&#7841;o l&agrave; ba c&#7909;m tu&acirc;n theo ph&acirc;n ph&#7889;i chu&#7849;n c&oacute; t&acirc;m &#7903; <code class="language-plaintext highlighter-rouge">[[-1, -1], [1, -1], [0, 1]]</code>.</p>
+
+<p>Trong v&iacute; d&#7909; n&agrave;y, ch&uacute;ng ta s&#7917; d&#7909;ng s&#7889; h&#7841;ng regularization:
+\[
+\lambda R(\mathbf{W}) = \lambda \sum_{l=1}^L \|\mathbf{W}^{(l)}\|_F^2
+\]</p>
+
+<p>v&#7899;i \(\|.\|_F\) l&agrave; <a href="/math/#cho-ma-tran">Frobenius norm</a>, l&agrave; c&#259;n b&#7853;c hai c&#7911;a t&#7893;ng b&igrave;nh ph&#432;&#7901;ng c&aacute;c ph&#7849;n t&#7917; c&#7911;a ma tr&#7853;n.</p>
+
+<p>(B&#7841;n &#273;&#7885;c &#273;&#432;&#7907;c khuy&#7871;n kh&iacute;ch &#273;&#7885;c b&agrave;i <a href="mlp.html">MLP</a> &#273;&#7875; hi&#7875;u c&aacute;c k&yacute; hi&#7879;u).</p>
+
+<p>Ch&uacute; &yacute; r&#7857;ng weight decay &iacute;t khi &#273;&#432;&#7907;c &aacute;p d&#7909;ng l&ecirc;n biases. T&ocirc;i thay &#273;&#7893;i tham s&#7889; regularization \(\lambda\) v&agrave; nh&#7853;n &#273;&#432;&#7907;c k&#7871;t qu&#7843; nh&#432; sau:</p>
+
+<hr><div>
+<table width="100%" style="border: 0px solid white"><tr><td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/15_overfitting-nnet_reg0.png"></td>
+        <td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/15_overfitting-nnet_reg0.001.png"></td>
+
+    </tr><tr><td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/15_overfitting-nnet_reg0.01.png"></td>
+        <td width="40%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/15_overfitting-nnet_reg0.1.png"></td>
+
+    </tr></table><div class="thecap"> Multi-layer Perceptron v&#7899;i Weight Decay (<a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/15_overfitting/Weight%20Decay.ipynb">Source code</a>).
+</div>
+</div>
+<hr><p>Khi \(\lambda = 0\), t&#7913;c kh&ocirc;ng c&oacute; regularization, ta nh&#7853;n th&#7845;y g&#7847;n nh&#432; to&agrave;n b&#7897; d&#7919; li&#7879;u trong t&#7853;p training &#273;&#432;&#7907;c ph&acirc;n l&#7899;p &#273;&uacute;ng. Vi&#7879;c n&agrave;y khi&#7871;n cho c&aacute;c class b&#7883; ph&acirc;n l&agrave;m nhi&#7873;u m&#7843;nh kh&ocirc;ng &#273;&#432;&#7907;c t&#7921; nhi&ecirc;n. Khi \(\lambda = 0.001\), v&#7851;n l&agrave; m&#7897;t s&#7889; nh&#7887;, c&aacute;c &#273;&#432;&#7901;ng ph&acirc;n chia tr&ocirc;ng t&#7921; nhi&ecirc;n h&#417;n, nh&#432;ng l&#7899;p m&agrave;u xanh lam v&#7851;n b&#7883; chia l&agrave;m hai b&#7903;i l&#7899;p m&agrave;u xanh l&#7909;c. &#272;&acirc;y ch&iacute;nh l&agrave; bi&#7875;u hi&#7879;n c&#7911;a overfitting.</p>
+
+<p>Khi \(\lambda\) t&#259;ng l&ecirc;n, t&#7913;c s&#7921; &#7843;nh h&#432;&#7903;ng c&#7911;a regularization t&#259;ng l&ecirc;n (xem h&agrave;ng d&#432;&#7899;i), &#273;&#432;&#7901;ng ranh gi&#7899;i gi&#7919;a c&aacute;c l&#7899;p tr&#7903; l&ecirc;n t&#7921; nhi&ecirc;n h&#417;n. N&oacute;i c&aacute;ch kh&aacute;c, v&#7899;i \(\lambda\) &#273;&#7911; l&#7899;n, weight decay c&oacute; t&aacute;c d&#7909;ng h&#7841;n ch&#7871; overfitting trong MLP.</p>
+
+<p>B&#7841;n &#273;&#7885;c h&atilde;y th&#7917; v&agrave;o trong <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/15_overfitting/Weight%20Decay.ipynb">Source code</a>, thay \(\lambda = 1\) b&#7857;ng c&aacute;ch thay d&ograve;ng cu&#7889;i c&ugrave;ng:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mynet</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+<p>r&#7891;i ch&#7841;y l&#7841;i to&agrave;n b&#7897; code, xem c&aacute;c &#273;&#432;&#7901;ng ph&acirc;n l&#7899;p tr&ocirc;ng nh&#432; th&#7871; n&agrave;o. G&#7907;i &yacute;: <em>underfitting</em>.</p>
+
+<p>Khi \(\lambda\) qu&aacute; l&#7899;n, t&#7913;c ta xem ph&#7847;n <em>regularization</em> quan tr&#7885;ng h&#417;n ph&#7847;n <em>loss fucntion</em>, m&#7897;t hi&#7879;n t&#432;&#7907;ng x&#7845;u x&#7843;y ra l&agrave; c&aacute;c ph&#7847;n t&#7917; c&#7911;a \(\mathbf{w}\) ti&#7871;n v&#7873; 0 &#273;&#7875; th&#7887;a m&atilde;n regularization l&agrave; nh&#7887;.</p>
+
+<p><a href="http://scikit-learn.org/stable/modules/neural_networks_supervised.html">Sklearn c&oacute; cung c&#7845;p r&#7845;t nhi&#7873;u ch&#7913;c n&#259;ng cho MLP</a>, trong &#273;&oacute; ta c&oacute; th&#7875; l&#7921;a ch&#7885;n s&#7889; l&#432;&#7907;ng hidden layers v&agrave; s&#7889; l&#432;&#7907;ng hidden units trong m&#7895;i layer, activation functions, weight decay, <a href="gradientdescent2.html">learning rate, h&#7879; s&#7889; momentum, nesterovs_momentum</a>, c&oacute; early stopping hay kh&ocirc;ng, l&#432;&#7907;ng d&#7919; li&#7879;u &#273;&#432;&#7907;c t&aacute;ch ra l&agrave;m validation set, v&agrave; nhi&#7873;u ch&#7913;c n&#259;ng kh&aacute;c.</p>
+
+<p><a name="-tikhonov-regularization" href="overfitting.html"></a></p>
+
+<p><a name="-tikhonov-regularization" href="overfitting.html"></a></p>
+<h3 id="34-tikhonov-regularization">3.4. Tikhonov regularization</h3>
+<p>\[
+\lambda R(\mathbf{w}) = \|\Gamma \mathbf{w}\|_2^2
+\]</p>
+
+<p>V&#7899;i \(\Gamma\) (vi&#7871;t hoa c&#7911;a gamma) l&agrave; m&#7897;t ma tr&#7853;n. Ma tr&#7853;n \(\Gamma\) hay &#273;&#432;&#7907;c d&ugrave;ng nh&#7845;t l&agrave; ma tr&#7853;n &#273;&#432;&#7901;ng ch&eacute;o. Nh&#7853;n th&#7845;y r&#7857;ng \(l_2\) regularization ch&iacute;nh l&agrave; m&#7897;t tr&#432;&#7901;ng h&#7907;p &#273;&#7863;c bi&#7879;t c&#7911;a Tikhonov regularization v&#7899;i \(\Gamma = \lambda \mathbf{I}\) v&#7899;i \(\mathbf{I}\) l&agrave; ma tr&#7853;n &#273;&#417;n v&#7883; (<em>the identity matrix</em>), t&#7913;c c&aacute;c ph&#7847;n t&#7917; tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o c&#7911;a \(\Gamma\) l&agrave; nh&#432; nhau.</p>
+
+<p>Khi c&aacute;c ph&#7847;n t&#7917; tr&ecirc;n &#273;&#432;&#7901;ng ch&eacute;o c&#7911;a \(\Gamma\) l&agrave; kh&aacute;c nhau, ta c&oacute; m&#7897;t phi&ecirc;n b&#7843;n g&#7885;i l&agrave; <em>weighted \(l_2\) regularization</em>, t&#7913;c &#273;&aacute;nh tr&#7885;ng s&#7889; kh&aacute;c nhau cho m&#7895;i ph&#7847;n t&#7917; trong \(\mathbf{w}\). Ph&#7847;n t&#7917; n&agrave;o c&agrave;ng b&#7883; &#273;&aacute;nh tr&#7885;ng s&#7889; cao th&igrave; nghi&#7879;m t&#432;&#417;ng &#7913;ng c&agrave;ng nh&#7887; (&#273;&#7875; &#273;&#7843;m b&#7843;o r&#7857;ng h&agrave;m m&#7845;t m&aacute;t l&agrave; nh&#7887;). V&#7899;i Polynomial Regression, c&aacute;c ph&#7847;n t&#7917; &#7913;ng v&#7899;i h&#7879; s&#7889; b&#7853;c cao s&#7869; &#273;&#432;&#7907;c &#273;&aacute;nh tr&#7885;ng s&#7889; cao h&#417;n, khi&#7871;n cho x&aacute;c su&#7845;t &#273;&#7875; ch&uacute;ng g&#7847;n 0 l&agrave; l&#7899;n h&#417;n.</p>
+
+<p><a name="-regularizers-for-sparsity" href="overfitting.html"></a></p>
+
+<p><a name="-regularizers-for-sparsity" href="overfitting.html"></a></p>
+<h3 id="35-regularizers-for-sparsity">3.5. Regularizers for sparsity</h3>
+
+<p>Trong nhi&#7873;u tr&#432;&#7901;ng h&#7907;p, ta mu&#7889;n c&aacute;c h&#7879; s&#7889; <em>th&#7921;c s&#7921;</em> b&#7857;ng 0 ch&#7913; kh&ocirc;ng ph&#7843;i l&agrave; <em>nh&#7887; g&#7847;n 0</em> nh&#432; \(l_2\) regularization &#273;&atilde; l&agrave;m ph&iacute;a tr&ecirc;n. L&uacute;c &#273;&oacute;, c&oacute; m&#7897;t regularization kh&aacute;c &#273;&#432;&#7907;c s&#7917; d&#7909;ng, &#273;&oacute; l&agrave; \(l_0\) regularization:
+\[
+R(\mathbf{W}) = \|\mathbf{w}\|_0
+\]</p>
+
+<p>Norm 0 kh&ocirc;ng ph&#7843;i l&agrave; m&#7897;t norm th&#7921;c s&#7921; m&agrave; l&agrave; gi&#7843; norm. (B&#7841;n &#273;&#432;&#7907;c khuy&#7871;n kh&iacute;ch &#273;&#7885;c th&ecirc;m v&#7873; <a href="/math/#-norms-chuan">norms (chu&#7849;n)</a>). Norm 0 c&#7911;a m&#7897;t vector l&agrave; s&#7889; c&aacute;c ph&#7847;n t&#7917; kh&aacute;c kh&ocirc;ng c&#7911;a vector &#273;&oacute;. Khi norm 0 nh&#7887;, t&#7913;c r&#7845;t nhi&#7873;u ph&#7847;n t&#7917; trong vector &#273;&oacute; b&#7857;ng 0, ta n&oacute;i vector &#273;&oacute; l&agrave; <em>sparse</em>.</p>
+
+<p>Vi&#7879;c gi&#7843;i b&agrave;i to&aacute;n t&#7893;i thi&#7875;u norm 0 nh&igrave;n chung l&agrave; kh&oacute; v&igrave; h&agrave;m s&#7889; n&agrave;y kh&ocirc;ng <em>convex</em>, kh&ocirc;ng li&ecirc;n t&#7909;c. Thay v&agrave;o &#273;&oacute;, norm 1 th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng:
+\[
+R(\mathbf{W}) = \|\mathbf{w}\|_1 = \sum_{i=0}^d |w_i|
+\]</p>
+
+<p>Norm 1 l&agrave; t&#7893;ng c&aacute;c tr&#7883; tuy&#7879;t &#273;&#7889;i c&#7911;a t&#7845;t c&#7843; c&aacute;c ph&#7847;n t&#7917;. Ng&#432;&#7901;i ta &#273;&atilde; ch&#7913;ng minh &#273;&#432;&#7907;c r&#7857;ng t&#7889;i thi&#7875;u norm 1 s&#7869; d&#7851;n t&#7899;i nghi&#7879;m c&oacute; nhi&#7873;u ph&#7847;n t&#7917; b&#7857;ng 0. Ngo&agrave;i ra, v&igrave; norm 1 l&agrave; m&#7897;t <em>norm th&#7921;c s&#7921;</em> (proper norm) n&ecirc;n h&agrave;m s&#7889; n&agrave;y l&agrave; <em>convex</em>, v&agrave; hi&#7875;n nhi&ecirc;n l&agrave; li&ecirc;n t&#7909;c, vi&#7879;c gi&#7843;i b&agrave;i to&aacute;n n&agrave;y d&#7877; h&#417;n vi&#7879;c gi&#7843;i b&agrave;i to&aacute;n t&#7893;i thi&#7875;u norm 0. V&#7873; \(l_1\) regularization, b&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#273;&#7885;c th&ecirc;m trong <a href="%5C%5C(l_1%5C%5C)%20regularization.html">lecture note</a> n&agrave;y. Vi&#7879;c gi&#7843;i b&agrave;i to&aacute;n \(l_1\) regularization n&#7857;m ngo&agrave;i m&#7909;c &#273;&iacute;ch c&#7911;a t&ocirc;i trong b&agrave;i vi&#7871;t n&agrave;y. T&ocirc;i h&#7913;a s&#7869; quay l&#7841;i ph&#7847;n n&agrave;y sau. (V&igrave; &#273;&acirc;y l&agrave; ph&#7847;n ch&iacute;nh trong nghi&ecirc;n c&#7913;u c&#7911;a t&ocirc;i).</p>
+
+<p>Trong Th&#7889;ng K&ecirc;, vi&#7879;c s&#7917; d&#7909;ng \(l_1\) regularization c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <a href="https://en.wikipedia.org/wiki/Lasso_(statistics)">LASSO</a> (Least Absolute Shrinkage and Selection Operator)).</p>
+
+<p>Khi c&#7843; \(l_2\) v&agrave; \(l_1\) regularization &#273;&#432;&#7907;c s&#7917; d&#7909;ng, ta c&oacute; m&ocirc; h&igrave;nh g&#7885;i l&agrave; <a href="https://en.wikipedia.org/wiki/Elastic_net_regularization">Elastic Net Regression</a>.</p>
+
+<p><a name="-regularization-trong-sklearn" href="overfitting.html"></a></p>
+
+<p><a name="-regularization-trong-sklearn" href="overfitting.html"></a></p>
+<h3 id="36-regularization-trong-sklearn">3.6. Regularization trong sklearn</h3>
+
+<p>Trong <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">sklearn</a>, v&iacute; d&#7909; <a href="logisticregression.html">Logistic Regression</a>, b&#7841;n c&#361;ng c&oacute; th&#7875; s&#7917; d&#7909;ng c&aacute;c \(l_1\) v&agrave; \(l_2\) regularizations b&#7857;ng c&aacute;ch khai b&aacute;o bi&#7871;n <code class="language-plaintext highlighter-rouge">penalty='l1'</code> ho&#7863;c <code class="language-plaintext highlighter-rouge">penalty = 'l2'</code> v&agrave; bi&#7871;n <code class="language-plaintext highlighter-rouge">C</code>, trong &#273;&oacute; <code class="language-plaintext highlighter-rouge">C</code> l&agrave; <em>ngh&#7883;ch &#273;&#7843;o</em> c&#7911;a \(\lambda\). Trong c&aacute;c b&agrave;i tr&#432;&#7899;c khi ch&#432;a n&oacute;i v&#7873;  Overfitting v&agrave; Regularization, t&ocirc;i c&oacute; s&#7917; d&#7909;ng <code class="language-plaintext highlighter-rouge">C = 1e5</code> &#273;&#7875; ch&#7881; ra r&#7857;ng \(\lambda\) l&agrave; m&#7897;t s&#7889; r&#7845;t nh&#7887;.</p>
+
+<p><a name="-cac-phuong-phap-khac" href="overfitting.html"></a></p>
+
+<p><a name="-cac-phuong-phap-khac" href="overfitting.html"></a></p>
+<h2 id="4-c&aacute;c-ph&#432;&#417;ng-ph&aacute;p-kh&aacute;c">4. C&aacute;c ph&#432;&#417;ng ph&aacute;p kh&aacute;c</h2>
+<p>Ngo&agrave;i c&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&atilde; n&ecirc;u &#7903; tr&ecirc;n, v&#7899;i m&#7895;i m&ocirc; h&igrave;nh, nhi&#7873;u ph&#432;&#417;ng ph&aacute;p tr&aacute;nh overfitting kh&aacute;c c&#361;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng. &#272;i&#7875;n h&igrave;nh l&agrave; <a href="http://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf">Dropout trong Deep Neural Networks m&#7899;i &#273;&#432;&#7907;c &#273;&#7873; xu&#7845;t g&#7847;n &#273;&acirc;y</a>. M&#7897;t c&aacute;ch ng&#7855;n g&#7885;n, dropout l&agrave; m&#7897;t ph&#432;&#417;ng ph&aacute;p <em>t&#7855;t</em> ng&#7851;u nhi&ecirc;n c&aacute;c units trong Networks. <em>T&#7855;t</em> t&#7913;c cho c&aacute;c unit gi&aacute; tr&#7883; b&#7857;ng kh&ocirc;ng v&agrave; t&iacute;nh to&aacute;n feedforward v&agrave; backpropagation b&igrave;nh th&#432;&#7901;ng trong khi training. Vi&#7879;c n&agrave;y kh&ocirc;ng nh&#7919;ng gi&uacute;p l&#432;&#7907;ng t&iacute;nh to&aacute;n gi&#7843;m &#273;i m&agrave; c&ograve;n l&agrave;m gi&#7843;m vi&#7879;c overffitng. T&ocirc;i xin &#273;&#432;&#7907;c quay l&#7841;i v&#7845;n &#273;&#7873; n&agrave;y n&#7871;u c&oacute; d&#7883;p n&oacute;i  s&acirc;u v&#7873; Deep Learning trong t&#432;&#417;ng lai.</p>
+
+<p>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; t&igrave;m &#273;&#7885;c th&ecirc;m v&#7899;i c&aacute;c t&#7915; kh&oacute;a: <a href="https://en.wikipedia.org/wiki/Pruning_(decision_trees)">pruning</a> (tr&aacute;nh overftting trong Decision Trees), <a href="https://en.wikipedia.org/wiki/VC_dimension">VC dimension</a> (&#273;o &#273;&#7897; ph&#7913;c t&#7841;p c&#7911;a m&ocirc; h&igrave;nh, &#273;&#7897; ph&#7913;c t&#7841;p c&agrave;ng l&#7899;n th&igrave; c&agrave;ng d&#7877; b&#7883; overfitting).</p>
+
+<p><a name="-tom-tat-noi-dung" href="overfitting.html"></a></p>
+
+<p><a name="-tom-tat-noi-dung" href="overfitting.html"></a></p>
+<h2 id="5-t&oacute;m-t&#7855;t-n&#7897;i-dung">5. T&oacute;m t&#7855;t n&#7897;i dung</h2>
+<ul><li>
+    <p>M&#7897;t m&ocirc; h&igrave;nh m&ocirc; t&#7889;t l&agrave; m&#7897; m&ocirc; h&igrave;nh c&oacute; <em>t&iacute;nh t&#7893;ng qu&aacute;t</em>, t&#7913;c m&ocirc; t&#7843; &#273;&#432;&#7907;c d&#7919; li&#7879;u c&#7843; trong l&#7851;n ngo&agrave;i t&#7853;p training. M&ocirc; h&igrave;nh ch&#7881; m&ocirc; t&#7843; t&#7889;t d&#7919; li&#7879;u trong t&#7853;p training &#273;&#432;&#7907;c g&#7885;i l&agrave; <strong>overfitting</strong>.</p>
+  </li>
+  <li>
+    <p>&#272;&#7875; tr&aacute;nh overfitting, c&oacute; r&#7845;t nhi&#7873;u k&#7929; thu&#7853;t &#273;&#432;&#7907;c s&#7917; d&#7909;ng, &#273;i&#7875;n h&igrave;nh l&agrave; <strong>cross-validation</strong> v&agrave; <strong>regularization</strong>. Trong Neural Networks, <strong>weight decay</strong> v&agrave; <strong>dropout</strong> th&#432;&#7901;ng &#273;&#432;&#7907;c d&ugrave;ng.</p>
+  </li>
+</ul><p><a name="-tai-lieu-tham-khao" href="overfitting.html"></a></p>
+
+<p><a name="-tai-lieu-tham-khao" href="overfitting.html"></a></p>
+<h2 id="6-t&agrave;i-li&#7879;u-tham-kh&#7843;o">6. T&agrave;i li&#7879;u tham kh&#7843;o</h2>
+
+<p>[1] <a href="https://en.wikipedia.org/wiki/Overfitting">Overfitting - Wikipedia</a></p>
+
+<p>[2] <a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)">Cross-validation - Wikipedia</a></p>
+
+<p>[3] <a href="users.isr.ist.utl.pt/~wurmd/Livros/school/Bishop%20-%20Pattern%20Recognition%20And%20Machine%20Learning%20-%20Springer%20%202006.pdf">Pattern Recognition and Machine Learning</a></p>
+
+<p>[4] Krogh, Anders, and John A. Hertz. <a href="https://papers.nips.cc/paper/563-a-simple-weight-decay-can-improve-generalization.pdf">&ldquo;A simple weight decay can improve generalization.&rdquo;</a> NIPS. Vol. 4. 1991.</p>
+
+<p>[5] Srivastava, Nitish, et al. <a href="http://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf">&ldquo;Dropout: A Simple Way to Prevent Neural Networks from  Overfitting&rdquo;</a> Journal of Machine Learning Research 15.1 (2014): 1929-1958.</p>
+
+</div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="mlp.html">&laquo; B&agrave;i 14: Multi-layer Perceptron v&agrave; Backpropagation</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="convexity.html">B&agrave;i 16: Convex sets v&agrave; convex functions &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2017/03/04/overfitting/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11274171; 
+var sc_invisible=0; 
+var sc_security="980b6518"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/980b6518-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/03/04/overfitting/">B&agrave;i 15: Overfitting</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/general/2017/02/06/featureengineering/">B&agrave;i 11: Gi&#7899;i thi&#7879;u v&#7873; Feature Engineering</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2016/12/27/categories/">B&agrave;i 2: Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2016/12/26/introduce/">B&agrave;i 1: Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/03/04/overfitting/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2017/03/04/overfitting/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/03/04/overfitting/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=B&agrave;i 15: Overfitting&url=https://machinelearningcoban.com/2017/03/04/overfitting/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2017/03/04/overfitting/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2017/03/04/overfitting/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#221d715740484741561f714b4f524e4702714a43504702605756564d4c5104434f5219604d465b1f6b071012514355071012564a4b51071012434c46071012564a4d57454a560710124d440710125b4d5703071012024a56565251180d0d4f43414a4b4c474e4743504c4b4c45414d40434c0c414d4f0d101213150d12110d12160d4d544750444b56564b4c450d">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/02/24/mlp/">B&agrave;i 14: Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2017/03/12/convexity/">B&agrave;i 16: Convex sets v&agrave; convex functions</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

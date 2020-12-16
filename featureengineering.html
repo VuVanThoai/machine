@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>B&agrave;i 11: Gi&#7899;i thi&#7879;u v&#7873; Feature Engineering</title><!-- <script>
+var pageProperties = {
+    
+    category: "General",
+    
+    url: "/general/2017/02/06/featureengineering/",
+    title: "B&agrave;i 11: Gi&#7899;i thi&#7879;u v&#7873; Feature Engineering",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/general/2017/02/06/featureengineering/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="B&agrave;i 11: Gi&#7899;i thi&#7879;u v&#7873; Feature Engineering"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/general/2017/02/06/featureengineering/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2017-02-06"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="General"><meta property="article:tag" content="General"><meta property="article:tag" content="Feature-extraction"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/general/2017/02/06/featureengineering/',
+'title': 'B&agrave;i 11: Gi&#7899;i thi&#7879;u v&#7873; Feature Engineering'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="qns1.html">Q1. Quick Notes 1</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="overfitting.html">15. Overfitting</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="featureengineering.html">11. Feature Engineering</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/02/02/howdoIcreatethisblog/">Blog v&agrave; c&aacute;c b&agrave;i vi&#7871;t &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/02/11/binaryclassifiers/">B&agrave;i 12: Binary Classifiers cho c&aacute;c b&agrave;i to&aacute;n Classification</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="howdoIcreatethisblog.html">&laquo; Blog v&agrave; c&aacute;c b&agrave;i vi&#7871;t &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="binaryclassifiers.html">B&agrave;i 12: Binary Classifiers cho c&aacute;c b&agrave;i to&aacute;n Classification &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">B&agrave;i 11: Gi&#7899;i thi&#7879;u v&#7873; Feature Engineering</h1>
+
+
+<ul class="tags"><a href="/tags#General" class="tag">General</a>
+   
+      <a href="/tags#Feature-extraction" class="tag">Feature-extraction</a>
+   
+</ul><span class="post-date" style="color: gray; font-style: italic;">Feb 6, 2017
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <p><strong>Trong trang n&agrave;y:</strong></p>
+
+<!-- MarkdownTOC -->
+
+<ul><li><a href="#-gioi-thieu">1. Gi&#7899;i thi&#7879;u</a></li>
+  <li><a href="#-mo-hinh-chung-cho-cac-bai-toan-machine-learning">2. M&ocirc; h&igrave;nh chung cho c&aacute;c b&agrave;i to&aacute;n Machine Learning</a>
+    <ul><li><a href="#training-phase">TRAINING PHASE</a>
+        <ul><li><a href="#feature-extractor">Feature Extractor</a></li>
+          <li><a href="#main-algorithms">Main Algorithms</a></li>
+        </ul></li>
+      <li><a href="#testing-phase">TESTING PHASE</a></li>
+    </ul></li>
+  <li><a href="#-mot-so-vi-du-ve-feature-engineering">3. M&#7897;t s&#7889; v&iacute; d&#7909; v&#7873; Feature Engineering</a>
+    <ul><li><a href="#truc-tiep-lay-raw-data">Tr&#7921;c ti&#7871;p l&#7845;y raw data</a></li>
+      <li><a href="#feature-selection">Feature selection</a></li>
+      <li><a href="#dimensionality-reduction">Dimensionality reduction</a></li>
+      <li><a href="#bag-of-words">Bag-of-words</a></li>
+      <li><a href="#bag-of-words-trong-computer-vision">Bag-of-Words trong Computer Vision</a></li>
+      <li><a href="#feature-scaling-and-normalization">Feature Scaling and Normalization</a>
+        <ul><li><a href="#rescaling">Rescaling</a></li>
+          <li><a href="#standardization">Standardization</a></li>
+          <li><a href="#scaling-to-unit-length">Scaling to unit length</a></li>
+        </ul></li>
+    </ul></li>
+  <li><a href="#-thao-luan">4. Th&#7843;o lu&#7853;n</a></li>
+  <li><a href="#-tai-lieu-tham-khao">5. T&agrave;i li&#7879;u tham kh&#7843;o</a></li>
+</ul><!-- /MarkdownTOC --><p><a name="-gioi-thieu" href="featureengineering.html"></a></p>
+
+<h2 id="1-gi&#7899;i-thi&#7879;u">1. Gi&#7899;i thi&#7879;u</h2>
+
+<p>Cho t&#7899;i l&uacute;c n&agrave;y, t&ocirc;i &#273;&atilde; tr&igrave;nh b&agrave;y 5 thu&#7853;t to&aacute;n Machine Learning c&#417; b&#7843;n: <a href="linearregression.html">Linear Regression</a>, <a href="kmeans.html">K-means Clusterning</a>, <a href="knn.html">K-nearest neighbors</a>, <a href="perceptron.html">Perceptron Learning Algorithm</a> v&agrave; <a href="logisticregression.html">Logistic Regression</a>. Trong t&#7845;t c&#7843; c&aacute;c thu&#7853;t to&aacute;n n&agrave;y, t&ocirc;i &#273;&#7873;u gi&#7843; s&#7917; c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u &#273;&#432;&#7907;c bi&#7875;u di&#7877;n b&#7857;ng c&aacute;c vector, &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>feature vector</em> hay <em>vector &#273;&#7863;c tr&#432;ng</em>, c&oacute; &#273;&#7897; d&agrave;i b&#7857;ng nhau, v&agrave; c&ugrave;ng l&agrave; vector c&#7897;t ho&#7863;c vector h&agrave;ng. Tuy nhi&ecirc;n, trong c&aacute;c b&agrave;i to&aacute;n th&#7921;c t&#7871;, m&#7885;i chuy&#7879;n kh&ocirc;ng &#273;&#432;&#7907;c t&#7889;t &#273;&#7865;p nh&#432; v&#7853;y!</p>
+
+<p>V&#7899;i c&aacute;c b&agrave;i to&aacute;n v&#7873; Computer Vision, c&aacute;c b&#7913;c &#7843;nh l&agrave; c&aacute;c ma tr&#7853;n c&oacute; k&iacute;ch th&#432;&#7899;c kh&aacute;c nhau. Th&#7853;m ch&iacute; &#273;&#7875; nh&#7853;n d&#7841;ng v&#7853;t th&#7875; trong &#7843;nh, ta c&#7847;n th&ecirc;m m&#7897;t b&#432;&#7899;c n&#7919;a l&agrave; <em>object detection</em>, t&#7913;c l&agrave; t&igrave;m c&aacute;i khung ch&#7913;a v&#7853;t th&#7875; ch&uacute;ng ta c&#7847;n d&#7921; &#273;o&aacute;n. V&iacute; d&#7909;, trong b&agrave;i to&aacute;n nh&#7853;n d&#7841;ng khu&ocirc;n m&#7863;t, ch&uacute;ng ta c&#7847;n t&igrave;m &#273;&#432;&#7907;c v&#7883; tr&iacute; c&aacute;c khu&ocirc;n m&#7863;t trong &#7843;nh v&agrave; <em>crop</em> c&aacute;c khu&ocirc;n m&#7863;t &#273;&oacute; tr&#432;&#7899;c khi l&agrave;m c&aacute;c b&#432;&#7899;c ti&#7871;p theo. Ngay c&#7843; khi &#273;&atilde; x&aacute;c &#273;&#7883;nh &#273;&#432;&#7907;c c&aacute;c khung ch&#7913;a c&aacute;c khu&ocirc;n m&#7863;t (v&agrave; c&oacute; th&#7875; resize c&aacute;c khung &#273;&oacute; v&#7873; c&ugrave;ng m&#7897;t k&iacute;ch th&#432;&#7899;c), ta v&#7851;n ph&#7843;i l&agrave;m r&#7845;t nhi&#7873;u vi&#7879;c n&#7919;a v&igrave; h&igrave;nh &#7843;nh c&#7911;a khu&ocirc;n m&#7863;t c&ograve;n ph&#7909; th&#432;&#7897;c v&agrave;o g&oacute;c ch&#7909;p, &aacute;nh s&aacute;ng, &hellip; v&agrave; r&#7845;t nhi&#7873;u y&#7871;u t&#7889; kh&aacute;c n&#7919;a.</p>
+
+<p>C&aacute;c b&agrave;i to&aacute;n NLP (Natural Language Processing - X&#7917; l&yacute; ng&ocirc;n ng&#7919; t&#7921; nhi&ecirc;n) c&#361;ng c&oacute; kh&oacute; kh&#259;n t&#432;&#417;ng t&#7921; khi &#273;&#7897; d&agrave;i c&#7911;a c&aacute;c v&#259;n b&#7843;n l&agrave; kh&aacute;c nhau, th&#7853;m ch&iacute; c&oacute; nh&#7919;ng t&#7915; r&#7845;t hi&#7871;m g&#7863;p ho&#7863;c kh&ocirc;ng c&oacute; trong t&#7915; &#273;i&#7875;n. C&#361;ng c&oacute; khi th&ecirc;m m&#7897;t v&agrave;i t&#7915; v&agrave;o v&#259;n b&#7843;n m&agrave; n&#7897;i dung c&#7911;a v&#259;n b&#7843;n kh&ocirc;ng &#273;&#7893;i ho&#7863;c ho&agrave;n to&agrave;n mang ngh&#297;a ng&#432;&#7907;c l&#7841;i. Ho&#7863;c c&ugrave;ng l&agrave; m&#7897;t c&acirc;u n&oacute;i nh&#432;ng t&#7889;c &#273;&#7897;, &acirc;m gi&#7885;ng c&#7911;a m&#7895;i ng&#432;&#7901;i l&agrave; kh&aacute;c nhau, th&#7853;m ch&iacute; c&#7911;a c&ugrave;ng m&#7897;t ng&#432;&#7901;i nh&#432;ng l&uacute;c &#7889;m l&uacute;c kh&#7887;e c&#361;ng kh&aacute;c nhau.</p>
+
+<p>Khi l&agrave;m vi&#7879;c v&#7899;i c&aacute;c b&agrave;i to&aacute;n Machine Learning th&#7921;c t&#7871;, nh&igrave;n chung ch&uacute;ng ta ch&#7881; c&oacute; &#273;&#432;&#7907;c d&#7919; li&#7879;u th&ocirc; (raw) ch&#432;a qua ch&#7881;nh s&#7917;a, ch&#7885;n l&#7885;c. Ch&uacute;ng ta c&#7847;n ph&#7843;i t&igrave;m m&#7897;t ph&eacute;p bi&#7871;n &#273;&#7893;i &#273;&#7875; lo&#7841;i ra nh&#7919;ng d&#7919; li&#7879;u nhi&#7877;u (noise), v&agrave; &#273;&#7875; &#273;&#432;a d&#7919; li&#7879;u th&ocirc; v&#7899;i s&#7889; chi&#7873;u kh&aacute;c nhau v&#7873; c&ugrave;ng m&#7897;t chu&#7849;n (c&ugrave;ng l&agrave; c&aacute;c vector ho&#7863;c ma tr&#7853;n). D&#7919; li&#7879;u chu&#7849;n m&#7899;i n&agrave;y ph&#7843;i &#273;&#7843;m b&#7843;o gi&#7919; &#273;&#432;&#7907;c nh&#7919;ng th&ocirc;ng tin &#273;&#7863;c tr&#432;ng (features) cho d&#7919; li&#7879;u th&ocirc; ban &#273;&#7847;u. Kh&ocirc;ng nh&#7919;ng th&#7871;, t&ugrave;y v&agrave;o t&#7915;ng b&agrave;i to&aacute;n, ta c&#7847;n <em>thi&#7871;t k&#7871;</em> nh&#7919;ng ph&eacute;p bi&#7871;n &#273;&#7893;i &#273;&#7875; c&oacute; nh&#7919;ng features ph&ugrave; h&#7907;p. Qu&aacute; tr&igrave;nh quan tr&#7885;ng n&agrave;y &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Feature Extraction</em>, ho&#7863;c <em>Feature Engineering</em>, m&#7897;t s&#7889; t&agrave;i li&#7879;u ti&#7871;ng Vi&#7879;t g&#7885;i n&oacute; l&agrave; <em>tr&iacute;ch ch&#7885;n &#273;&#7863;c tr&#432;ng</em>.</p>
+
+<p>T&ocirc;i xin tr&iacute;ch m&#7897;t c&acirc;u n&oacute;i c&#7911;a th&#7847;y Andrew Ng v&agrave; xin ph&eacute;p th&ecirc;m kh&ocirc;ng d&#7883;ch ra ti&#7871;ng Vi&#7879;t (Ngu&#7891;n <a href="https://en.wikipedia.org/wiki/Feature_engineering">Feature Engineering - wiki</a>):</p>
+
+<blockquote>
+  <p>Coming up with features is difficult, time-consuming, requires expert knowledge. &ldquo;Applied machine learning&rdquo; is basically feature engineering.</p>
+</blockquote>
+
+<p>&#272;&#7875; gi&uacute;p c&aacute;c b&#7841;n c&oacute; c&aacute;i nh&igrave;n t&#7893;ng quan h&#417;n, trong ph&#7847;n ti&#7871;p theo t&ocirc;i xin &#273;&#7863;t b&#432;&#7899;c Feature Engineering n&agrave;y trong m&#7897;t b&#7913;c tranh l&#7899;n h&#417;n.</p>
+
+<p><a name="-mo-hinh-chung-cho-cac-bai-toan-machine-learning" href="featureengineering.html"></a></p>
+
+<h2 id="2-m&ocirc;-h&igrave;nh-chung-cho-c&aacute;c-b&agrave;i-to&aacute;n-machine-learning">2. M&ocirc; h&igrave;nh chung cho c&aacute;c b&agrave;i to&aacute;n Machine Learning</h2>
+<p>Ph&#7847;n l&#7899;n c&aacute;c b&agrave;i to&aacute;n Machine Learning c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7875; hi&#7879;n trong h&igrave;nh v&#7869; d&#432;&#7899;i &#273;&acirc;y:</p>
+
+<div class="imgcap">
+<img src="images/featureengineering-%5Cassets%5CFeatureEngineering%5CML_models.png" align="center" width="800"><div class="thecap">H&igrave;nh 1: M&ocirc; h&igrave;nh chung cho c&aacute;c b&agrave;i to&aacute;n Machine Learning.</div>
+</div>
+
+<p>C&oacute; hai phases l&#7899;n l&agrave; Training phase v&agrave; Testing phase. Xin nh&#7855;c l&#7841;i l&agrave; v&#7899;i c&aacute;c b&agrave;i to&aacute;n Supervised learning, ta c&oacute; c&aacute;c c&#7863;p d&#7919; li&#7879;u (<em>input, output</em>), v&#7899;i c&aacute;c b&agrave;i to&aacute;n Unsupervised learing, ta ch&#7881; c&oacute; <em>input</em> m&agrave; th&ocirc;i.</p>
+
+<p><a name="training-phase" href="featureengineering.html"></a></p>
+
+<h3 id="training-phase">TRAINING PHASE</h3>
+<p>C&oacute; hai kh&#7889;i c&oacute; n&#7873;n m&agrave;u xanh l&#7909;c ch&uacute;ng ta c&#7847;n ph&#7843;i thi&#7871;t k&#7871;:</p>
+
+<p><a name="feature-extractor" href="featureengineering.html"></a></p>
+
+<h4 id="feature-extractor">Feature Extractor</h4>
+<p><strong>&#272;&#7846;U RA</strong></p>
+
+<p>T&ocirc;i xin &#273;&#7873; c&#7853;p &#273;&#7847;u ra c&#7911;a kh&#7889;i n&agrave;y tr&#432;&#7899;c v&igrave; m&#7909;c &#273;&iacute;ch c&#7911;a Feature Engineering l&agrave; t&#7841;o ra m&#7897;t Feature Extractor bi&#7871;n d&#7919; li&#7879;u th&ocirc; ban &#273;&#7847;u th&agrave;nh d&#7919; li&#7879;u ph&ugrave; h&#7907;p v&#7899;i t&#7915;ng m&#7909;c &#273;&iacute;ch kh&aacute;c nhau.</p>
+
+<p><strong>&#272;&#7846;U V&Agrave;O</strong></p>
+
+<ul><li>
+    <p><strong><em>raw training input</em></strong>. Raw input l&agrave; t&#7845;t c&#7843; c&aacute;c th&ocirc;ng tin ta bi&#7871;t v&#7873; d&#7919; li&#7879;u. V&iacute; d&#7909;: v&#7899;i &#7843;nh th&igrave; l&agrave; gi&aacute; tr&#7883; c&#7911;a t&#7915;ng pixel; v&#7899;i v&#259;n b&#7843;n th&igrave; l&agrave; t&#7915;ng t&#7915;, t&#7915;ng c&acirc;u; v&#7899;i file &acirc;m thanh th&igrave; n&oacute; l&agrave; m&#7897;t &#273;o&#7841;n t&iacute;n hi&#7879;u; v&#7899;i c&#417; s&#7903; d&#7919; li&#7879;u <a href="/2017/01/08/knn/#bo-co-so-du-lieu-iris-iris-flower-dataset">Iris</a> th&igrave; n&oacute; l&agrave; &#273;&#7897; d&agrave;i c&aacute;c c&aacute;nh hoa v&agrave; &#273;&agrave;i hoa, &hellip; D&#7919; li&#7879;u th&ocirc; n&agrave;y th&#432;&#7901;ng kh&ocirc;ng &#7903; d&#7841;ng vector, kh&ocirc;ng c&oacute; s&#7889; chi&#7873;u nh&#432; nhau. Th&#7853;m ch&iacute; c&oacute; th&#7875; c&oacute; s&#7889; chi&#7873;u nh&#432; nhau nh&#432;ng s&#7889; chi&#7873;u qu&aacute; l&#7899;n, nh&#432; m&#7897;t b&#7913;c &#7843;nh m&agrave;u 1000 pixel x 1000 pixel th&igrave; s&#7889; <em>elements</em> &#273;&atilde; l&agrave; \(3 \times 10^6\) (3 v&igrave; &#7843;nh m&agrave;u th&#432;&#7901;ng c&oacute; 3 channels: Red, Green, Blue). &#272;&acirc;y l&agrave; m&#7897;t con s&#7889; qu&aacute; l&#7899;n, kh&ocirc;ng l&#7907;i cho l&#432;u tr&#7919; v&agrave; t&iacute;nh to&aacute;n.</p>
+  </li>
+  <li>
+    <p><strong>(optional) <em>output</em> c&#7911;a <em>training set</em></strong>. Trong c&aacute;c b&agrave;i to&aacute;n Unsupervised
+learning, ta kh&ocirc;ng bi&#7871;t <em>output</em> n&ecirc;n hi&#7875;n nhi&ecirc;n s&#7869; kh&ocirc;ng c&oacute; &#273;&#7847;u v&agrave;o n&agrave;y. Trong
+c&aacute;c b&agrave;i to&aacute;n Supervised learning, c&oacute; khi d&#7919; li&#7879;u n&agrave;y c&#361;ng kh&ocirc;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng.
+V&iacute; d&#7909;: n&#7871;u <em>raw input</em> &#273;&atilde; c&oacute; c&ugrave;ng s&#7889; chi&#7873;u r&#7891;i nh&#432;ng s&#7889; chi&#7873;u qu&aacute; l&#7899;n,  ta
+mu&#7889;n gi&#7843;m s&#7889; chi&#7873;u c&#7911;a n&oacute; th&igrave; c&aacute;ch &#273;&#417;n gi&#7843;n nh&#7845;t l&agrave; <em>chi&#7871;u</em> vector &#273;&oacute; xu&#7889;ng
+m&#7897;t kh&ocirc;ng gian c&oacute; s&#7889; chi&#7873;u nh&#7887; h&#417;n b&#7857;ng c&aacute;ch l&#7845;y m&#7897;t ma tr&#7853;n ng&#7851;u nhi&ecirc;n nh&acirc;n
+v&#7899;i n&oacute;. Ma tr&#7853;n n&agrave;y th&#432;&#7901;ng l&agrave; ma tr&#7853;n <em>b&eacute;o</em> (s&#7889; h&agrave;ng &iacute;t h&#417;n s&#7889; c&#7897;t, ti&#7871;ng Anh - fat matrices) &#273;&#7875; &#273;&#7843;m b&#7843;o s&#7889; chi&#7873;u thu &#273;&#432;&#7907;c nh&#7887; h&#417;n s&#7889; chi&#7873;u ban &#273;&#7847;u. Vi&#7879;c
+l&agrave;m n&agrave;y m&#7863;c d&ugrave; l&agrave;m m&#7845;t &#273;i th&ocirc;ng tin, trong nhi&#7873;u tr&#432;&#7901;ng h&#7907;p v&#7851;n mang l&#7841;i hi&#7879;u
+qu&#7843; v&igrave; &#273;&atilde; gi&#7843;m &#273;&#432;&#7907;c l&#432;&#7907;ng t&iacute;nh to&aacute;n &#7903; ph&#7847;n sau. &#272;&ocirc;i khi <em>ma tr&#7853;n chi&#7871;u</em> kh&ocirc;ng
+ph&#7843;i l&agrave; ng&#7851;u nhi&ecirc;n m&agrave; c&oacute; th&#7875; &#273;&#432;&#7907;c <em>h&#7885;c</em> d&#7921;a tr&ecirc;n to&agrave;n b&#7897; <em>raw input</em>, ta s&#7869; c&oacute;
+b&agrave;i to&aacute;n t&igrave;m ma tr&#7853;n chi&#7871;u &#273;&#7875; l&#432;&#7907;ng th&ocirc;ng tin m&#7845;t &#273;i l&agrave; &iacute;t nh&#7845;t. Trong nhi&#7873;u
+tr&#432;&#7901;ng h&#7907;p, d&#7919; li&#7879;u <em>output</em> c&#7911;a <em>training set</em> c&#361;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng &#273;&#7875; t&#7841;o ra
+Feature Extractor. V&iacute; d&#7909;: trong b&agrave;i to&aacute;n classification, ta kh&ocirc;ng quan t&acirc;m
+nhi&#7873;u &#273;&#7871;n vi&#7879;c m&#7845;t th&ocirc;ng tin hay kh&ocirc;ng, ta ch&#7881; quan t&acirc;m &#273;&#7871;n vi&#7879;c nh&#7919;ng th&ocirc;ng
+tin c&ograve;n l&#7841;i c&oacute; &#273;&#7863;c tr&#432;ng cho t&#7915;ng class hay kh&ocirc;ng. V&iacute; d&#7909;, d&#7919; li&#7879;u th&ocirc; l&agrave; c&aacute;c
+h&igrave;nh vu&ocirc;ng v&agrave; h&igrave;nh tam gi&aacute;c c&oacute; m&agrave;u &#273;&#7887; v&agrave; xanh. Trong b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#273;a
+gi&aacute;c, c&aacute;c output l&agrave; <em>tam gi&aacute;c</em> v&agrave; <em>vu&ocirc;ng</em>,  th&igrave; ta kh&ocirc;ng quan t&acirc;m t&#7899;i m&agrave;u s&#7855;c
+m&agrave; ch&#7881; quan t&acirc;m t&#7899;i s&#7889; c&#7841;nh c&#7911;a &#273;a gi&aacute;c. Ng&#432;&#7907;c l&#7841;i, trong b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i
+m&agrave;u, c&aacute;c class l&agrave; <em>xanh</em> v&agrave; <em>&#273;&#7887;</em>, ta kh&ocirc;ng quan t&acirc;m t&#7899;i s&#7889; c&#7841;nh m&agrave; ch&#7881; quan
+t&acirc;m &#273;&#7871;n m&agrave;u s&#7855;c th&ocirc;i.</p>
+  </li>
+  <li>
+    <p><strong>(optional) <em>Prior knowledge about data</em></strong>: &#272;&ocirc;i khi nh&#7919;ng gi&#7843; thi&#7871;t kh&aacute;c v&#7873; d&#7919; li&#7879;u c&#361;ng mang l&#7841;i l&#7907;i &iacute;ch. V&iacute; d&#7909;, trong b&agrave;i to&aacute;n classification, n&#7871;u ta bi&#7871;t d&#7919; li&#7879;u l&agrave; (g&#7847;n nh&#432;) <a href="/2017/01/21/perceptron/#bai-toan-perceptron"> <em>linearly separable</em></a> th&igrave; ta s&#7869; &#273;i t&igrave;m m&#7897;t ma tr&#7853;n chi&#7871;u sao cho &#7903; trong kh&ocirc;ng gian m&#7899;i, d&#7919; li&#7879;u v&#7851;n &#273;&#7843;m b&#7843;o t&iacute;nh <em>linearly separable</em>, vi&#7879;c n&agrave;y thu&#7853;n ti&#7879;n h&#417;n cho ph&#7847;n classification v&igrave; c&aacute;c thu&#7853;t to&aacute;n linear, nh&igrave;n chung, &#273;&#417;n gi&#7843;n h&#417;n.</p>
+  </li>
+</ul><p>Sau khi <em>h&#7885;c</em> &#273;&#432;&#7907;c feature extractor th&igrave; ta c&#361;ng s&#7869; thu &#273;&#432;&#7907;c <em>extracted features</em> cho <em>raw input data</em>. Nh&#7919;ng <em>extracted features</em> n&agrave;y &#273;&#432;&#7907;c d&ugrave;ng &#273;&#7875; hu&#7845;n luy&#7879;n c&aacute;c thu&#7853;t to&aacute;n Classification, Clustering, Regression,&hellip; &#7903; ph&iacute;a sau.</p>
+
+<p><a name="main-algorithms" href="featureengineering.html"></a></p>
+
+<h4 id="main-algorithms">Main Algorithms</h4>
+<p>Khi c&oacute; &#273;&#432;&#7907;c <em>extracted features</em> r&#7891;i, ch&uacute;ng ta s&#7917; d&#7909;ng nh&#7919;ng th&ocirc;ng tin n&agrave;y c&ugrave;ng
+v&#7899;i (optional) <em>training output</em> v&agrave; (optional) <em>prior knowledge</em> &#273;&#7875; t&#7841;o ra c&aacute;c
+m&ocirc; h&igrave;nh ph&ugrave; h&#7907;p, &#273;i&#7873;u m&agrave; ch&uacute;ng ta &#273;&atilde; l&agrave;m &#7903; nh&#7919;ng b&agrave;i tr&#432;&#7899;c.</p>
+
+<p><strong>Ch&uacute; &yacute;:</strong> Trong m&#7897;t s&#7889; thu&#7853;t to&aacute;n cao c&#7845;p h&#417;n, vi&#7879;c <em>hu&#7845;n luy&#7879;n</em> feature extractor v&agrave; main algorithm &#273;&#432;&#7907;c th&#7921;c hi&#7879;n c&ugrave;ng l&uacute;c v&#7899;i nhau ch&#7913; kh&ocirc;ng ph&#7843;i t&#7915;ng b&#432;&#7899;c nh&#432; tr&ecirc;n.</p>
+
+<p><strong>M&#7897;t &#273;i&#7875;m r&#7845;t quan tr&#7885;ng: khi x&acirc;y d&#7921;ng b&#7897; <em>feature extractor</em> v&agrave; <em>main
+algorithms</em>, ch&uacute;ng ta kh&ocirc;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng b&#7845;t k&#7923; th&ocirc;ng tin n&agrave;o trong t&#7853;p <em>test
+data</em>. Ta ph&#7843;i gi&#7843; s&#7917; r&#7857;ng nh&#7919;ng th&ocirc;ng tin trong <em>test data</em> ch&#432;a &#273;&#432;&#7907;c nh&igrave;n th&#7845;y
+bao gi&#7901;. N&#7871;u s&#7917; d&#7909;ng th&ecirc;m th&ocirc;ng tin v&#7873; <em>test data</em> th&igrave; r&otilde; r&agrave;ng ta &#273;&atilde; <em>&#259;n gian</em>!
+T&ocirc;i t&#7915;ng &#273;&aacute;nh gi&aacute; c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c qu&#7889;c t&#7871;, r&#7845;t nhi&#7873;u t&aacute;c gi&#7843; x&acirc;y d&#7921;ng m&ocirc;
+h&igrave;nh d&ugrave;ng c&#7843; d&#7919; li&#7879;u <em>test data</em>, sau &#273;&oacute; l&#7841;i d&ugrave;ng ch&iacute;nh m&ocirc; h&igrave;nh &#273;&oacute; &#273;&#7875; ki&#7875;m tra
+tr&ecirc;n <em>test data</em> &#273;&oacute;. Vi&#7879;c <em>&#259;n gian</em> n&agrave;y l&agrave; l&#7895;i r&#7845;t n&#7863;ng v&agrave; hi&#7875;n nhi&ecirc;n nh&#7919;ng b&agrave;i
+b&aacute;o &#273;&oacute; b&#7883; t&#7915; ch&#7889;i (reject).</strong></p>
+
+<p><a name="testing-phase" href="featureengineering.html"></a></p>
+
+<h3 id="testing-phase">TESTING PHASE</h3>
+<p>B&#432;&#7899;c n&agrave;y &#273;&#417;n gi&#7843;n h&#417;n nhi&#7873;u. V&#7899;i <em>raw input</em> m&#7899;i, ta s&#7917; d&#7909;ng feature extractor
+&#273;&atilde; t&#7841;o &#273;&#432;&#7907;c &#7903; tr&ecirc;n (t&#7845;t nhi&ecirc;n kh&ocirc;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng <em>output</em> c&#7911;a n&oacute; v&igrave; <em>output</em> l&agrave;
+c&aacute;i ta &#273;ang &#273;i t&igrave;m) &#273;&#7875; t&#7841;o ra feature vector t&#432;&#417;ng &#7913;ng. Feature vector &#273;&#432;&#7907;c &#273;&#432;a
+v&agrave;o <em>main algorithm</em> &#273;&atilde; &#273;&#432;&#7907;c h&#7885;c &#7903; training phase &#273;&#7875; d&#7921; &#273;o&aacute;n <em>output</em>.</p>
+
+<p><a name="-mot-so-vi-du-ve-feature-engineering" href="featureengineering.html"></a></p>
+
+<h2 id="3-m&#7897;t-s&#7889;-v&iacute;-d&#7909;-v&#7873;-feature-engineering">3. M&#7897;t s&#7889; v&iacute; d&#7909; v&#7873; Feature Engineering</h2>
+<p><a name="truc-tiep-lay-raw-data" href="featureengineering.html"></a></p>
+
+<h3 id="tr&#7921;c-ti&#7871;p-l&#7845;y-raw-data">Tr&#7921;c ti&#7871;p l&#7845;y raw data</h3>
+<p>V&#7899;i b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i ch&#7919; s&#7889; vi&#7871;t tay trong b&#7897; c&#417; s&#7903; d&#7919; li&#7879;u
+<a href="/2017/01/04/kmeans2/#bo-co-so-du-lieu-mnist">MNIST</a>, m&#7895;i b&#7913;c &#7843;nh c&oacute; s&#7889; chi&#7873;u l&agrave;
+28 pixel x 28 pixel (t&#7845;t nhi&ecirc;n vi&#7879;c <em>crop</em> v&agrave; ch&#7881;nh s&#7917;a m&#7895;i b&#7913;c &#7843;nh &#273;&atilde; &#273;&#432;&#7907;c th&#7921;c
+hi&#7879;n t&#7915; tr&#432;&#7899;c r&#7891;i, &#273;&oacute; &#273;&atilde; l&agrave; m&#7897;t ph&#7847;n c&#7911;a feature engineering r&#7891;i). M&#7897;t c&aacute;ch &#273;&#417;n
+gi&#7843;n th&#432;&#7901;ng &#273;&#432;&#7907;c d&ugrave;ng l&agrave; <em>k&eacute;o d&agrave;i</em> ma tr&#7853;n 28x28 n&agrave;y &#273;&#7875; &#273;&#432;&#7907;c 1 vector c&oacute; s&#7889;
+chi&#7873;u 784. Trong c&aacute;ch n&agrave;y, c&aacute;c c&#7897;t (ho&#7863;c h&agrave;ng) c&#7911;a ma tr&#7853;n &#7843;nh &#273;&#432;&#7907;c &#273;&#7863;t ch&#7891;ng
+l&ecirc;n (ho&#7863;c c&#7841;nh nhau) &#273;&#7875; &#273;&#432;&#7907;c 1 vector d&agrave;i. Vector d&agrave;i n&agrave;y &#273;&#432;&#7907;c tr&#7921;c ti&#7871;p s&#7917; d&#7909;ng
+l&agrave;m feature &#273;&#432;a v&agrave;o c&aacute;c b&#7897; classifier/clustering/regression/&hellip; L&uacute;c n&agrave;y, gi&aacute; tr&#7883;
+c&#7911;a m&#7895;i pixel &#7843;nh &#273;&#432;&#7907;c coi l&agrave; m&#7897;t feature.</p>
+
+<p>R&otilde; r&agrave;ng vi&#7879;c l&agrave;m &#273;&#417;n gi&#7843;n n&agrave;y &#273;&atilde; l&agrave;m m&#7845;t th&ocirc;ng tin v&#7873; <em>kh&ocirc;ng gian</em> (spatial information) gi&#7919;a c&aacute;c &#273;i&#7875;m &#7843;nh, tuy nhi&ecirc;n, trong nhi&#7873;u tr&#432;&#7901;ng h&#7907;p, n&oacute; v&#7851;n mang l&#7841;i k&#7871;t qu&#7843; kh&#7843; quan. 
+<a name="feature-selection" href="featureengineering.html"></a></p>
+
+<h3 id="feature-selection">Feature selection</h3>
+<p>Gi&#7843; s&#7917; r&#7857;ng c&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u c&oacute; s&#7889; features kh&aacute;c nhau (do k&iacute;ch th&#432;&#7899;c d&#7919; li&#7879;u
+kh&aacute;c nhau hay do m&#7897;t s&#7889; feature m&agrave; &#273;i&#7875;m d&#7919; li&#7879;u n&agrave;y c&oacute; nh&#432;ng &#273;i&#7875;m d&#7919; li&#7879;u kia
+l&#7841;i kh&ocirc;ng thu th&#7853;p &#273;&#432;&#7907;c), v&agrave; s&#7889; l&#432;&#7907;ng features l&agrave; c&#7921;c l&#7899;n. Ch&uacute;ng ta c&#7847;n <em>ch&#7885;n</em>
+ra m&#7897;t s&#7889; l&#432;&#7907;ng nh&#7887; h&#417;n c&aacute;c feature ph&ugrave; h&#7907;p v&#7899;i b&agrave;i to&aacute;n. <em>Ch&#7885;n th&#7871; n&agrave;o</em> v&agrave; <em>th&#7871;
+n&agrave;o l&agrave; ph&ugrave; h&#7907;p</em> l&#7841;i l&agrave; m&#7897;t b&agrave;i to&aacute;n kh&aacute;c, t&ocirc;i s&#7869; kh&ocirc;ng b&agrave;n th&ecirc;m &#7903; &#273;&acirc;y.</p>
+
+<p><a name="dimensionality-reduction" href="featureengineering.html"></a></p>
+
+<h3 id="dimensionality-reduction">Dimensionality reduction</h3>
+<p>M&#7897;t ph&#432;&#417;ng ph&aacute;p n&#7919;a t&ocirc;i &#273;&atilde; &#273;&#7873; c&#7853;p &#273;&oacute; l&agrave; l&agrave;m gi&#7843;m s&#7889; chi&#7873;u c&#7911;a d&#7919; li&#7879;u &#273;&#7875; gi&#7843;m b&#7897;
+nh&#7899; v&agrave; kh&#7889;i l&#432;&#7907;ng t&iacute;nh to&aacute;n. Vi&#7879;c gi&#7843;m s&#7889; chi&#7873;u n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n b&#7857;ng
+nhi&#7873;u c&aacute;ch, trong &#273;&oacute; <em>random projection</em> l&agrave; c&aacute;ch &#273;&#417;n gi&#7843;n nh&#7845;t. T&#7913;c ch&#7885;n m&#7897;t <em>ma
+tr&#7853;n chi&#7871;u</em> (projection matrix) ng&#7851;u nhi&ecirc;n (ma tr&#7853;n b&eacute;o) r&#7891;i nh&acirc;n n&oacute; v&#7899;i t&#7915;ng
+&#273;i&#7875;m d&#7919; li&#7879;u (gi&#7843; s&#7917; d&#7919; li&#7879;u &#7903; d&#7841;ng vector c&#7897;t) &#273;&#7875; &#273;&#432;&#7907;c c&aacute;c vector c&oacute; s&#7889; chi&#7873;u
+th&#7845;p h&#417;n. V&iacute; d&#7909;, vector ban &#273;&#7847;u c&oacute; s&#7889; chi&#7873;u l&agrave; 784, ch&#7885;n <em>ma tr&#7853;n chi&#7871;u</em> c&oacute; k&iacute;ch
+th&#432;&#7899;c (100x784), khi &#273;&oacute; n&#7871;u nh&acirc;n ma tr&#7853;n ch&eacute;o n&agrave;y v&#7899;i vector ban &#273;&#7847;u, ta s&#7869; &#273;&#432;&#7907;c
+m&#7897;t vector m&#7899;i c&oacute; s&#7889; chi&#7873;u l&agrave; 100, nh&#7887; h&#417;n s&#7889; chi&#7873;u ban &#273;&#7847;u r&#7845;t nhi&#7873;u. L&uacute;c n&agrave;y,
+c&oacute; th&#7875; ta kh&ocirc;ng c&oacute; t&ecirc;n g&#7885;i cho m&#7895;i feature n&#7919;a v&igrave; c&aacute;c feature &#7903; vector ban &#273;&#7847;u
+&#273;&atilde; &#273;&#432;&#7907;c tr&#7897;n l&#7851;n v&#7899;i nhau theo m&#7897;t t&#7881; l&#7879; n&agrave;o &#273;&oacute; r&#7891;i l&#432;u v&agrave; vector m&#7899;i n&agrave;y. M&#7895;i
+th&agrave;nh ph&#7847;n c&#7911;a vector m&#7899;i n&agrave;y &#273;&#432;&#7907;c coi l&agrave; m&#7897;t feature (kh&ocirc;ng t&ecirc;n).</p>
+
+<p>Vi&#7879;c ch&#7885;n m&#7897;t ma tr&#7853;n chi&#7871;u ng&#7851;u nhi&ecirc;n &#273;&ocirc;i khi mang l&#7841;i k&#7871;t qu&#7843; t&#7879; kh&ocirc;ng mong
+mu&#7889;n v&igrave; th&ocirc;ng tin b&#7883; m&#7845;t &#273;i qu&aacute; nhi&#7873;u. M&#7897;t ph&#432;&#417;ng ph&aacute;p &#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u &#273;&#7875; h&#7841;n
+ch&#7871; l&#432;&#7907;ng th&ocirc;ng tin m&#7845;t &#273;i c&oacute; t&ecirc;n l&agrave; <a href="https://en.wikipedia.org/wiki/Principal_component_analysis">Principle Component
+Analysis</a> s&#7869; &#273;&#432;&#7907;c
+t&ocirc;i tr&igrave;nh b&agrave;y sau &#273;&acirc;y kho&#7843;ng 1-2 th&aacute;ng.</p>
+
+<p><strong>Ch&uacute; &yacute;:</strong> Feature learning kh&ocirc;ng nh&#7845;t thi&#7871;t ph&#7843;i l&agrave;m gi&#7843;m s&#7889; chi&#7873;u d&#7919; li&#7879;u, &#273;&ocirc;i
+khi feature vector c&ograve;n c&oacute; s&#7889; chi&#7873;u l&#7899;n h&#417;n raw data. Random projection c&#361;ng c&oacute;
+th&#7875; l&agrave;m &#273;&#432;&#7907;c vi&#7879;c n&agrave;y n&#7871;u ma tr&#7853;n chi&#7871;u l&agrave; m&#7897;t ma tr&#7853;n <em>cao</em> (s&#7889; c&#7897;t &iacute;t h&#417;n s&#7889;
+h&agrave;ng).</p>
+
+<p><a name="bag-of-words" href="featureengineering.html"></a></p>
+
+<h3 id="bag-of-words">Bag-of-words</h3>
+<p>H&#7859;n r&#7845;t nhi&#7873;u b&#7841;n &#273;&atilde; t&#7921; &#273;&#7863;t c&acirc;u h&#7887;i: V&#7899;i m&#7897;t v&#259;n b&#7843;n th&igrave; feature vector s&#7869; c&oacute;
+d&#7841;ng nh&#432; th&#7871; n&agrave;o? L&agrave;m sao &#273;&#432;a c&aacute;c t&#7915;, c&aacute;c c&acirc;u, &#273;o&#7841;n v&#259;n &#7903; d&#7841;ng <em>text</em> trong c&aacute;c
+v&#259;n b&#7843;n v&#7873; m&#7897;t vector m&agrave; m&#7895;i ph&#7847;n t&#7917; l&agrave; m&#7897;t s&#7889;?</p>
+
+<p>C&oacute; m&#7897;t ph&#432;&#417;ng ph&aacute;p r&#7845;t ph&#7893; bi&#7871;n gi&uacute;p b&#7841;n tr&#7843; l&#7901;i nh&#7919;ng c&acirc;u h&#7887;i n&agrave;y. Ph&#432;&#417;ng ph&aacute;p &#273;&oacute; c&oacute; t&ecirc;n l&agrave; <em>Bag of Words (BoW)</em> (<em>T&uacute;i &#273;&#7921;ng T&#7915;</em>).</p>
+
+<p>V&#7851;n theo th&oacute;i quen, t&ocirc;i b&#7855;t &#273;&#7847;u b&#7857;ng m&#7897;t v&iacute; d&#7909;. Gi&#7843; s&#7917; ch&uacute;ng ta c&oacute; b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i tin r&aacute;c. Ta th&#7845;y r&#7857;ng n&#7871;u m&#7897;t tin c&oacute; ch&#7913;a c&aacute;c t&#7915; <em>khuy&#7871;n m&#7841;i, gi&#7843;m gi&aacute;, tr&uacute;ng th&#432;&#7903;ng, mi&#7877;n ph&iacute;, qu&agrave; t&#7863;ng, tri &acirc;n, &hellip;</em> th&igrave; nhi&#7873;u kh&#7843; n&#259;ng &#273;&oacute; l&agrave; m&#7897;t tin nh&#7855;n r&aacute;c. V&#7853;y ph&#432;&#417;ng ph&aacute;p &#273;&#417;n gi&#7843;n nh&#7845;t l&agrave; <em>&#273;&#7871;m</em> xem trong tin &#273;&oacute; c&oacute; bao nhi&ecirc;u t&#7915; thu&#7897;c v&agrave;o c&aacute;c t&#7915; tr&ecirc;n, n&#7871;u nhi&#7873;u h&#417;n 1 ng&#432;&#7905;ng n&agrave;o &#273;&oacute; th&igrave; ta quy&#7871;t &#273;&#7883;nh &#273;&oacute; l&agrave; tin r&aacute;c. (T&#7845;t nhi&ecirc;n b&agrave;i to&aacute;n th&#7921;c t&#7871; ph&#7913;c t&#7841;p h&#417;n nhi&#7873;u khi c&aacute;c t&#7915; c&oacute; th&#7875; &#273;&#432;&#7907;c vi&#7871;t d&#432;&#7899;i d&#7841;ng kh&ocirc;ng d&#7845;u, ho&#7863;c b&#7883; c&#7889; t&igrave;nh vi&#7871;t sai ch&iacute;nh t&#7843;, ho&#7863;c d&ugrave;ng ng&ocirc;n ng&#7919; teen). V&#7899;i c&aacute;c lo&#7841;i v&#259;n b&#7843;n kh&aacute;c nhau th&igrave; l&#432;&#7907;ng t&#7915; li&ecirc;n quan t&#7899;i t&#7915;ng ch&#7911; &#273;&#7873; c&#361;ng kh&aacute;c nhau. T&#7915; &#273;&oacute; c&oacute; th&#7875; d&#7921;a v&agrave;o s&#7889; l&#432;&#7907;ng c&aacute;c t&#7915; trong t&#7915;ng lo&#7841;i &#273;&#7875; l&agrave;m c&aacute;c vector &#273;&#7863;c tr&#432;ng cho t&#7915;ng v&#259;n b&#7843;n.</p>
+
+<p>T&ocirc;i xin l&#7845;y v&iacute; d&#7909; c&#7909; th&#7875; h&#417;n v&#7873; c&aacute;ch t&#7841;o ra vector &#273;&#7863;c tr&#432;ng cho m&#7895;i v&#259;n b&#7843;n d&#7921;a tr&ecirc;n BoW v&agrave; xin &#273;&#432;&#7907;c l&#7845;y ti&#7871;ng Anh l&agrave;m v&iacute; d&#7909; (ngu&#7891;n <a href="https://en.wikipedia.org/wiki/Bag-of-words_model">Bag of Words wiki</a>. Ti&#7871;ng Vi&#7879;t kh&oacute; h&#417;n v&igrave; m&#7897;t t&#7915; c&oacute; th&#7875; c&oacute; nhi&#7873;u &acirc;m ti&#7871;t, ti&#7871;ng Anh th&igrave; th&#432;&#7901;ng c&#7913; g&#7863;p d&#7845;u c&aacute;ch l&agrave; k&#7871;t th&uacute;c m&#7897;t t&#7915;).</p>
+
+<p>Gi&#7843; s&#7917; ch&uacute;ng ta c&oacute; hai v&#259;n b&#7843;n &#273;&#417;n gi&#7843;n:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1) John likes to watch movies. Mary likes movies too.
+</code></pre></div></div>
+
+<p>v&agrave;</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(2) John also likes to watch football games.
+</code></pre></div></div>
+<p>D&#7921;a tr&ecirc;n hai v&#259;n b&#7843;n n&agrave;y, ta c&oacute; danh s&aacute;ch c&aacute;c t&#7915; &#273;&#432;&#7907;c s&#7917; d&#7909;ng, &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>t&#7915; &#273;i&#7875;n</em> v&#7899;i 10 <em>t&#7915;</em> nh&#432; sau:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>["John", "likes", "to", "watch", "movies", "also", "football", "games", "Mary", "too"]
+</code></pre></div></div>
+<p>V&#7899;i m&#7895;i v&#259;n b&#7843;n, ta s&#7869; t&#7841;o ra m&#7897;t vector &#273;&#7863;c tr&#432;ng c&oacute; s&#7889; chi&#7873;u b&#7857;ng 10, m&#7895;i ph&#7847;n t&#7917; &#273;&#7841;i di&#7879;n cho s&#7889; t&#7915; t&#432;&#417;ng &#7913;ng xu&#7845;t hi&#7879;n trong v&#259;n b&#7843;n &#273;&oacute;. V&#7899;i hai v&#259;n b&#7843;n tr&ecirc;n, ta s&#7869; c&oacute; hai vector &#273;&#7863;c tr&#432;ng l&agrave;:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1) [1, 2, 1, 1, 2, 0, 0, 0, 1, 1]
+(2) [1, 1, 1, 1, 0, 1, 1, 1, 0, 0]
+</code></pre></div></div>
+<p>V&#259;n b&#7843;n (1) c&oacute; 1 t&#7915; &ldquo;John&rdquo;, 2 t&#7915; &ldquo;likes&rdquo;, 0 t&#7915; &ldquo;also&rdquo;, 0 t&#7915; &ldquo;football&rdquo;, &hellip; n&ecirc;n ta thu &#273;&#432;&#7907;c vector t&#432;&#417;ng &#7913;ng nh&#432; tr&ecirc;n.</p>
+
+<p>C&oacute; m&#7897;t v&agrave;i &#273;i&#7873;u c&#7847;n l&#432;u &yacute; trong BoW:</p>
+
+<ul><li>
+    <p>V&#7899;i nh&#7919;ng &#7913;ng d&#7909;ng th&#7921;c t&#7871;, <em>t&#7915; &#273;i&#7873;n</em> c&oacute; nhi&#7873;u h&#417;n 10 t&#7915; r&#7845;t nhi&#7873;u, c&oacute; th&#7875; &#273;&#7871;n m&#7897;t tr&#259;m ngh&igrave;n ho&#7863;c c&#7843; tri&#7879;u, nh&#432; v&#7853;y vector &#273;&#7863;c tr&#432;ng thu &#273;&#432;&#7907;c s&#7869; r&#7845;t <em>d&agrave;i</em>. M&#7897;t v&#259;n b&#7843;n ch&#7881; c&oacute; 1 c&acirc;u, v&agrave; 1 ti&#7875;u thuy&#7871;t ngh&igrave;n trang &#273;&#7873;u &#273;&#432;&#7907;c bi&#7875;u di&#7877;n b&#7857;ng c&aacute;c vector c&oacute; s&#7889; chi&#7873;u b&#7857;ng 100 ngh&igrave;n ho&#7863;c 1 tri&#7879;u.</p>
+  </li>
+  <li>
+    <p>C&oacute; r&#7845;t nhi&#7873;u t&#7915; trong t&#7915; &#273;i&#7875;n kh&ocirc;ng xu&#7845;t hi&#7879;n trong m&#7897;t v&#259;n b&#7843;n. Nh&#432; v&#7853;y c&aacute;c vector &#273;&#7863;c tr&#432;ng thu &#273;&#432;&#7907;c th&#432;&#7901;ng c&oacute; r&#7845;t nhi&#7873;u ph&#7847;n t&#7917; b&#7857;ng 0. C&aacute;c vector c&oacute; nhi&#7873;u ph&#7847;n t&#7917; b&#7857;ng 0 &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>sparse vector</em> (sparse hi&#7875;u theo ngh&#297;a l&agrave; <em>th&#432;a th&#7899;t, r&#7843;i r&aacute;c</em>, t&ocirc;i xin ph&eacute;p ch&#7881; s&#7917; d&#7909;ng kh&aacute;i ni&#7879;m n&agrave;y b&#7857;ng ti&#7871;ng Anh). &#272;&#7875; vi&#7879;c l&#432;u tr&#7919; &#273;&#432;&#7907;c hi&#7879;u qu&#7843; h&#417;n, ta kh&ocirc;ng l&#432;u c&#7843; vector &#273;&oacute; m&agrave; ch&#7881; l&#432;u <em>v&#7883; tr&iacute;</em> c&#7911;a c&aacute;c ph&#7847;n t&#7917; kh&aacute;c 0 v&agrave; <em>gi&aacute; tr&#7883;</em> t&#432;&#417;ng &#7913;ng. L&#432;u &yacute;: n&#7871;u c&oacute; h&#417;n 50% s&#7889; ph&#7847;n t&#7917; kh&aacute;c 0, vi&#7879;c l&agrave;m n&agrave;y l&#7841;i ph&#7843;n t&aacute;c d&#7909;ng!</p>
+  </li>
+  <li>
+    <p>Thi tho&#7843;ng c&oacute; nh&#7919;ng t&#7915; hi&#7871;m g&#7863;p kh&ocirc;ng n&#7857;m trong t&#7915; &#273;i&#7875;n, v&#7853;y ta s&#7869; l&agrave;m g&igrave;? M&#7897;t c&aacute;ch th&#432;&#7901;ng &#273;&#432;&#7907;c d&ugrave;ng l&agrave; <em>m&#7903; r&#7897;ng</em> vector &#273;&#7863;c tr&#432;ng th&ecirc;m 1 ph&#7847;n t&#7917;, g&#7885;i l&agrave; ph&#7849;n t&#7917; <code class="language-plaintext highlighter-rouge">&lt;Unknown&gt;</code>. M&#7885;i t&#7915; kh&ocirc;ng c&oacute; trong t&#7915; &#273;i&#7873;n &#273;&#7873;u &#273;&#432;&#7907;c coi l&agrave; <code class="language-plaintext highlighter-rouge">&lt;Unknown&gt;</code>.</p>
+  </li>
+  <li>
+    <p>Ngh&#297; k&#7929; m&#7897;t ch&uacute;t, nh&#7919;ng t&#7915; hi&#7871;m &#273;&ocirc;i khi l&#7841;i mang nh&#7919;ng th&ocirc;ng tin qua tr&#7885;ng nh&#7845;t m&agrave; ch&#7881; lo&#7841;i v&#259;n b&#7843;n &#273;&oacute; c&oacute;. &#272;&acirc;y l&agrave; m&#7897;t nh&#432;&#7907;c &#273;i&#7875;m c&#7911;a BoW. C&oacute; m&#7897;t ph&#432;&#417;ng ph&aacute;p c&#7843;i ti&#7871;n kh&aacute;c gi&uacute;p kh&#7855;c ph&#7909;c nh&#432;&#7907;c &#273;i&#7875;m n&agrave;y c&oacute; t&ecirc;n l&agrave; Term Frequency-Inverse Document Frequency (TF-IDF) d&ugrave;ng &#273;&#7875; x&aacute;c &#273;&#7883;nh t&#7847;m quan tr&#7885;ng c&#7911;a m&#7897;t t&#7915; trong m&#7897;t v&#259;n b&#7843;n d&#7921;a tr&ecirc;n to&agrave;n b&#7897; v&#259;n b&#7843;n trong c&#417; s&#7903; d&#7919; li&#7879;u (corpus). B&#7841;n &#273;&#7885;c mu&#7889;n t&igrave;m hi&#7875;u th&ecirc;m c&oacute; th&#7875; xem <a href="https://www.gitbook.com/book/lizrush/algorithms-for-webdevs-ebook/details">5 Algorithms Every Web Developer Can Use and Understand, section 5.</a></p>
+  </li>
+  <li>
+    <p>Nh&#432;&#7907;c &#273;i&#7875;m l&#7899;n nh&#7845;t c&#7911;a BoW l&agrave; n&oacute; kh&ocirc;ng mang th&ocirc;ng tin v&#7873; th&#7913; t&#7921; c&#7911;a c&aacute;c t&#7915;. C&#361;ng nh&#432; s&#7921; li&ecirc;n k&#7871;t gi&#7919;a c&aacute;c c&acirc;u, c&aacute;c &#273;o&#7841;n v&#259;n trong v&#259;n b&#7843;n. V&iacute; d&#7909;, ba c&acirc;u sau &#273;&acirc;y: &ldquo;<em>Em y&ecirc;u anh kh&ocirc;ng?</em>&rdquo;, &ldquo;<em>Em kh&ocirc;ng y&ecirc;u anh</em>&rdquo;, v&agrave; &ldquo;<em>Kh&ocirc;ng, (nh&#432;ng) anh y&ecirc;u em</em>&rdquo; khi &#273;&#432;&#7907;c tr&iacute;ch ch&#7885;n &#273;&#7863;c tr&#432;ng b&#7857;ng BoW s&#7869; cho ra ba vector gi&#7889;ng h&#7879;t nhau, m&#7863;c d&ugrave; &yacute; ngh&#297;a kh&aacute;c h&#7859;n nhau.</p>
+  </li>
+</ul><p><strong>Bonus:</strong> h&igrave;nh d&#432;&#7899;i &#273;ay l&agrave; t&#7847;n su&#7845;t s&#7917; d&#7909;ng c&aacute;c t&#7915; (coi m&#7895;i &acirc;m ti&#7871;t l&agrave; m&#7897;t t&#7915;) trong Truy&#7879;n Ki&#7873;u (<a href="https://bitbucket.org/tiepvupsu/vietnamese/src/c6f3af6050f8ca911ed0fa209220ce3c99010075/TruyenKieu2.txt?at=master&amp;fileviewer=file-view-default">theo b&#7843;n n&agrave;y</a>) n&#7871;u ta ch&#7881; s&#7917; d&#7909;ng 30 t&#7915; c&oacute; t&#7847;n su&#7845;t cao nh&#7845;t. :</p>
+<div class="imgcap">
+<img src="images/featureengineering-%5Cassets%5CFeatureEngineering%5Ctruyenkieu.png" align="center" width="400"><div class="thecap">H&igrave;nh 2: Bag of Words cho Truy&#7879;n Ki&#7873;u v&#7899;i 30 t&#7915; c&oacute; t&#7847;n su&#7845;t cao nh&#7845;t.</div>
+</div>
+
+<p><a name="bag-of-words-trong-computer-vision" href="featureengineering.html"></a></p>
+
+<h3 id="bag-of-words-trong-computer-vision">Bag-of-Words trong Computer Vision</h3>
+<p>Bags of Words c&#361;ng &#273;&#432;&#7907;c &aacute;p d&#7909;ng trong Computer Vision v&#7899;i c&aacute;ch &#273;&#7883;nh ngh&#297;a <em>words</em> v&agrave; t&#7915; &#273;i&#7875;n kh&aacute;c.</p>
+
+<p>X&eacute;t c&aacute;c v&iacute; d&#7909; sau:</p>
+
+<p><strong>V&iacute; d&#7909; 1:</strong></p>
+
+<p>C&oacute; hai class &#7843;nh, m&#7897;t class l&agrave; &#7843;nh c&aacute;c khu r&#7915;ng, m&#7897;t class l&agrave; &#7843;nh c&aacute;c sa m&#7841;c. Ph&acirc;n lo&#7841;i m&#7897;t b&#7913;c &#7843;nh l&agrave; r&#7915;ng hay sa m&#7841;c (gi&#7843; s&#7917; ta bi&#7871;t r&#7857;ng n&oacute; thu&#7897;c m&#7897;t trong hai lo&#7841;i n&agrave;y) m&#7897;t c&aacute;ch tr&#7921;c quan nh&#7845;t l&agrave; d&#7921;a v&agrave;o m&agrave;u s&#7855;c. M&agrave;u xanh nhi&#7873;u th&igrave; l&agrave; r&#7915;ng, m&agrave;u &#273;&#7887; v&agrave; v&agrave;ng nhi&#7873;u th&igrave; l&agrave; sa m&#7841;c. V&#7853;y ch&uacute;ng ta c&oacute; th&#7875; c&oacute; m&#7897;t m&ocirc; h&igrave;nh &#273;&#417;n gi&#7843;n &#273;&#7875; tr&iacute;ch ch&#7885;n &#273;&#7863;c tr&#432;ng nh&#432; sau:</p>
+
+<ul><li>
+    <p>V&#7899;i m&#7897;t b&#7913;c &#7843;nh, chu&#7849;n b&#7883; m&#7897;t vector \(\mathbf{x}\) c&oacute; s&#7889; chi&#7873;u b&#7857;ng 3, &#273;&#7841;i di&#7879;n cho 3 m&agrave;u xanh (\(x_1\)), &#273;&#7887; (\(x_2\)), v&agrave; v&agrave;ng (\(x_3\)).</p>
+  </li>
+  <li>
+    <p>V&#7899;i m&#7895;i &#273;i&#7875;m &#7843;nh trong b&#7913;c &#7843;nh &#273;&oacute;, xem n&oacute; g&#7847;n v&#7899;i m&agrave;u xanh, &#273;&#7887; hay v&agrave;ng nh&#7845;t d&#7921;a tr&ecirc;n gi&aacute; tr&#7883; c&#7911;a pixel &#273;&oacute;. N&#7871;u n&oacute; g&#7847;n &#273;i&#7875;m xanh nh&#7845;t, t&#259;ng \(x_1\) l&ecirc;n 1; g&#7847;n &#273;&#7887; nh&#7845;t, t&#259;ng \(x_2\) l&ecirc;n 1; g&#7847;n v&agrave;ng nh&#7845;t, t&#259;ng \(x_3\) l&ecirc;n 1.</p>
+  </li>
+  <li>
+    <p>Sau khi xem x&eacute;t t&#7845;t c&#7843; c&aacute;c &#273;i&#7875;m &#7843;nh, d&ugrave; cho b&#7913;c &#7843;nh c&oacute; k&iacute;ch th&#432;&#7899;c th&#7871; n&agrave;o, ta v&#7851;n thu &#273;&#432;&#7907;c m&#7897;t vector c&oacute; &#273;&#7897; d&agrave;i b&#7857;ng 3, m&#7895;i ph&#7847;n t&#7917; th&#7875; hi&#7879;n vi&#7879;c c&oacute; bao nhi&ecirc;u pixel trong b&#7913;c &#7843;nh c&oacute; m&agrave;u t&#432;&#417;ng &#7913;ng. Vector cu&#7889;i n&agrave;y c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; vector histogram c&#7911;a b&#7913;c &#7843;nh t&#432;&#417;ng &#7913;ng v&#7899;i ba m&agrave;u xanh, &#273;&#7887;, v&agrave;ng. D&#7921;a v&agrave;o vector n&agrave;y, ta c&oacute; th&#7875; quy&#7871;t &#273;&#7883;nh b&#7913;c &#7843;nh &#273;&oacute; l&agrave; &#7843;nh r&#7915;ng hay sa m&#7841;c.</p>
+  </li>
+</ul><p><strong>V&iacute; d&#7909; 2:</strong></p>
+
+<p>Tr&ecirc;n th&#7921;c t&#7871;, c&aacute;c b&agrave;i to&aacute;n x&#7917; l&yacute; &#7843;nh kh&ocirc;ng &#273;&#417;n gi&#7843;n nh&#432; v&iacute; d&#7909; 1 tr&ecirc;n &#273;&acirc;y. M&#7855;t ng&#432;&#7901;i th&#7921;c ra nh&#7841;y v&#7899;i c&aacute;c &#273;&#432;&#7901;ng n&eacute;t, h&igrave;nh d&aacute;ng h&#417;n l&agrave; m&agrave;u s&#7855;c. M&#7897;t c&aacute;i (&#7843;nh) c&acirc;y d&ugrave; kh&ocirc;ng c&oacute; m&agrave;u v&#7851;n l&agrave; m&#7897;t c&aacute;i (&#7843;nh) c&acirc;y! V&igrave; v&#7853;y, xem x&eacute;t gi&aacute; tr&#7883; t&#7915;ng &#273;i&#7875;m &#7843;nh m&#7897;t kh&ocirc;ng mang l&#7841;i k&#7871;t qu&#7843; kh&#7843; quan v&igrave; l&#432;&#7907;ng th&ocirc;ng tin b&#7883; m&#7845;t qu&aacute; nhi&#7873;u.</p>
+
+<p>C&oacute; m&#7897;t c&aacute;ch kh&#7855;c ph&#7909;c l&agrave; thay v&igrave; xem x&eacute;t m&#7897;t &#273;i&#7875;m &#7843;nh, ta xem x&eacute;t m&#7897;t <em>c&#7917;a s&#7893;</em> nh&#7887; trong &#7843;nh (trong Computer Vision, c&#7917;a s&#7893; n&agrave;y &#273;&#432;&#7907;c g&#7885;i l&agrave; patch) l&agrave; m&#7897;t h&igrave;nh ch&#7919; nh&#7853;t ch&#7913;a nhi&#7873;u &#273;i&#7875;m &#7843;nh g&#7847;n nhau. C&#7917;a s&#7893; n&agrave;y &#273;&#7911; l&#7899;n &#273;&#7875; c&oacute; th&#7875; ch&#7913;a &#273;&#432;&#7907;c c&aacute;c b&#7897; ph&#7853;n c&oacute; th&#7875; m&ocirc; t&#7843; &#273;&#432;&#7907;c v&#7853;t th&#7875; trong &#7843;nh.</p>
+
+<p>V&iacute; d&#7909; v&#7899;i m&#7863;t ng&#432;&#7901;i, c&aacute;c patch n&ecirc;n &#273;&#7911; l&#7899;n &#273;&#7875; ch&#7913;a &#273;&#432;&#7907;c c&aacute;c ph&#7847;n c&#7911;a khu&ocirc;n m&#7863;t nh&#432; m&#7855;t, m&#361;i, mi&#7879;ng nh&#432; h&igrave;nh d&#432;&#7899;i &#273;&acirc;y.</p>
+
+<div class="imgcap">
+<img src="images/featureengineering-%5Cassets%5CFeatureEngineering%5Cbow_face.png" align="center" width="800"><div class="thecap">H&igrave;nh 3: Bag of Words cho &#7843;nh ch&#7913;a m&#7863;t ng&#432;&#7901;i. (Ngu&#7891;n <a href="http://www.robots.ox.ac.uk/~az/icvss08_az_bow.pdf"> Bag of visual words model: recognizing object categories</a>)</div>
+</div>
+
+<p>T&#432;&#417;ng t&#7921; th&#7871;, v&#7899;i &#7843;nh l&agrave; &ocirc; t&ocirc;, c&aacute;c patch thu &#273;&#432;&#7907;c c&oacute; th&#7875; l&agrave; b&aacute;nh xe, khung xe, c&#7917;a xe, &hellip; nh&#432; h&agrave;ng tr&ecirc;n trong h&igrave;nh d&#432;&#7899;i &#273;&acirc;y.</p>
+
+<div class="imgcap">
+<img src="images/featureengineering-%5Cassets%5CFeatureEngineering%5Cbow_car.png" align="center" width="800"><div class="thecap">H&igrave;nh 4: Bag of Words cho &#7843;nh &ocirc; t&ocirc;. (Ngu&#7891;n: t&ocirc;i c&#7889; g&#7855;ng t&igrave;m ngu&#7891;n cho h&igrave;nh n&agrave;y nh&#432;ng t&#7845;t c&#7843; c&aacute;c t&agrave;i li&#7879;u t&ocirc;i t&igrave;m &#273;&#432;&#7907;c &#273;&#7873;u ghi "Source: B. Leibe", t&ocirc;i c&#361;ng xin &#273;&#432;&#7907;c tr&iacute;ch ngu&#7891;n t&#432;&#417;ng t&#7921;)</div>
+</div>
+
+<p>C&oacute; m&#7897;t c&acirc;u h&#7887;i &#273;&#7863;t ra l&agrave;, trong x&#7917; l&yacute; v&#259;n b&#7843;n, hai t&#7915; &#273;&#432;&#7907;c coi l&agrave; nh&#432; nhau n&#7871;u n&oacute; &#273;&#432;&#7907;c bi&#7875;u di&#7877;n b&#7903;i c&aacute;c k&yacute; t&#7921; gi&#7889;ng nhau. V&#7853;y trong x&#7917; l&yacute; &#7843;nh, hai patch&eacute;s &#273;&#432;&#7907;c coi l&agrave; nh&#432; nhau khi n&agrave;o? Khi m&#7885;i pixel trong hai patches c&oacute; gi&aacute; tr&#7883; b&#7857;ng nhau sao?</p>
+
+<p>C&acirc;u tr&#7843; l&#7901;i l&agrave; kh&ocirc;ng. X&aacute;c su&#7845;t &#273;&#7875; hai patches gi&#7889;ng h&#7879;t nhau t&#7915;ng pixel l&agrave; r&#7845;t th&#7845;p v&igrave; c&oacute; th&#7875; m&#7897;t ph&#7847;n c&#7911;a v&#7853;t th&#7875; trong m&#7897;t patch b&#7883; l&#7879;ch &#273;i v&agrave;i pixel so v&#7899;i ph&#7847;n &#273;&oacute; trong patch kia; ho&#7863;c ph&#7847;n v&#7853;t th&#7875; trong patch b&#7883; m&eacute;o, ho&#7863;c c&oacute; &#273;&#7897; s&aacute;ng kh&aacute;c nhau, m&#7863;c d&ugrave; ta v&#7851;n nh&igrave;n th&#7845;y hai patches &#273;&oacute; <em>r&#7845;t gi&#7889;ng nhau</em>. V&#7853;y th&igrave; hai patch &#273;&#432;&#7907;c coi l&agrave; nh&#432; nhau khi n&agrave;o? V&agrave; <em>t&#7915; &#273;i&#7875;n</em> &#7903; &#273;&acirc;y &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a nh&#432; th&#7871; n&agrave;o?</p>
+
+<p>C&acirc;u tr&#7843; l&#7901;i ng&#7855;n: hai patches l&agrave; g&#7847;n gi&#7889;ng nhau n&#7871;u kho&#7843;ng c&aacute;ch Euclid gi&#7919;a hai vector t&#7841;o b&#7903;i hai patches &#273;&oacute; g&#7847;n nhau. T&#7915; &#273;i&#7875;n (codebook) s&#7869; c&oacute; s&#7889; ph&#7847;n t&#7917; do ta t&#7921; ch&#7885;n. S&#7889; ph&#7847;n t&#7917; c&agrave;ng cao th&igrave; &#273;&#7897; sai l&#7879;ch c&agrave;ng &iacute;t, nh&#432;ng s&#7869; n&#7863;ng v&#7873; t&iacute;nh to&aacute;n h&#417;n.</p>
+
+<p>C&acirc;u tr&#7843; l&#7901;i d&agrave;i: ch&uacute;ng ta c&oacute; th&#7875; &aacute;p d&#7909;ng <a href="kmeans.html">K-means clustering</a>. V&#7899;i r&#7845;t nhi&#7873;u patches thu &#273;&#432;&#7907;c, gi&#7843; s&#7917; ta mu&#7889;n x&acirc;y d&#7921;ng m&#7897;t <em>codebook</em> v&#7899;i ch&#7881; kho&#7843;ng 1000 <em>words</em>. V&#7853;y th&igrave; ta cho \(k = 1000\) r&#7891;i th&#7921;c hi&#7879;n K-means clustering tr&ecirc;n to&agrave;n b&#7897; s&#7889; patches thu &#273;&#432;&#7907;c (t&#7915; t&#7853;p training). Sau khi th&#7921;c hi&#7879;n K-means clustering, ta thu &#273;&#432;&#7907;c 1000 clusters v&agrave; 1000 centers t&#432;&#417;ng &#7913;ng. M&#7895;i centers n&agrave;y &#273;&#432;&#7907;c coi l&agrave; m&#7897;t <em>words</em>, v&agrave; t&#7845;t c&#7843; nh&#7919;ng &#273;i&#7875;m r&#417;i v&agrave;o c&ugrave;ng m&#7897;t cluster &#273;&#432;&#7907;c coi l&agrave; c&ugrave;ng m&#7897;t bag. V&#7899;i &#7843;nh trong t&#7853;p test data, ta c&#361;ng l&#7845;y c&aacute;c patches r&#7891;i xem ch&uacute;ng r&#417;i v&agrave;o nh&#7919;ng bags n&agrave;o. T&#7915; &#273;&oacute; suy ra vector &#273;&#7863;c tr&#432;ng cho m&#7895;i b&#7913;c &#7843;nh. Ch&uacute; &yacute; r&#7857;ng v&#7899;i \(k = 1000\), m&#7895;i b&#7913;c &#7843;nh s&#7869; &#273;&#432;&#7907;c <em>m&ocirc; t&#7843;</em> b&#7903;i m&#7897;t vector c&oacute; s&#7889; chi&#7873;u 1000, t&#7913;c l&agrave; m&#7895;i &#273;i&#7875;m d&#7919; li&#7879;u b&acirc;y gi&#7901; &#273;&atilde; c&oacute; s&#7889; chi&#7873;u b&#7857;ng nhau, m&#7863;c d&ugrave; &#7843;nh th&ocirc; &#273;&#7847;u v&agrave;o c&oacute; th&#7875; c&oacute; k&iacute;ch th&#432;&#7899;c kh&aacute;c nhau.
+<a name="feature-scaling-and-normalization" href="featureengineering.html"></a></p>
+
+<h3 id="feature-scaling-and-normalization">Feature Scaling and Normalization</h3>
+<p>(Tham kh&#7843;o <a href="https://en.wikipedia.org/wiki/Feature_scaling">Feature Scaling wiki</a>).</p>
+
+<p>C&aacute;c &#273;i&#7875;m d&#7919; li&#7879;u &#273;&ocirc;i khi &#273;&#432;&#7907;c &#273;o &#273;&#7841;c v&#7899;i nh&#7919;ng &#273;&#417;n v&#7883; kh&aacute;c nhau, m v&agrave; feet ch&#7859;ng h&#7841;n. Ho&#7863;c c&oacute; hai th&agrave;nh ph&#7847;n (c&#7911;a vector d&#7919; li&#7879;u) ch&ecirc;nh l&#7879;ch nhau qu&aacute; l&#7899;n, m&#7897;t th&agrave;nh ph&#7847;n c&oacute; kho&#7843;ng gi&aacute; tr&#7883; t&#7915; 0 &#273;&#7871;n 1000, th&agrave;nh ph&#7847;n kia ch&#7881; c&oacute; kho&#7843;ng gi&aacute; tr&#7883; t&#7915; 0 &#273;&#7871;n 1 ch&#7859;ng h&#7841;n. L&uacute;c n&agrave;y, ch&uacute;ng ta c&#7847;n chu&#7849;n h&oacute;a d&#7919; li&#7879;u tr&#432;&#7899;c khi th&#7921;c hi&#7879;n c&aacute;c b&#432;&#7899;c ti&#7871;p theo.</p>
+
+<p><strong>Ch&uacute; &yacute;:</strong> vi&#7879;c chu&#7849;n h&oacute;a n&agrave;y ch&#7881; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n khi vector d&#7919; li&#7879;u &#273;&atilde; c&oacute; c&ugrave;ng chi&#7873;u.</p>
+
+<p>M&#7897;t v&agrave;i ph&#432;&#417;ng ph&aacute;p chu&#7849;n h&oacute;a th&#432;&#7901;ng d&ugrave;ng:
+<a name="rescaling" href="featureengineering.html"></a></p>
+
+<h4 id="rescaling">Rescaling</h4>
+<p>Ph&#432;&#417;ng ph&aacute;p &#273;&#417;n gi&#7843;n nh&#7845;t l&agrave; &#273;&#432;a t&#7845;t c&#7843; c&aacute;c th&agrave;nh ph&#7847;n v&#7873; c&ugrave;ng m&#7897;t kho&#7843;ng, \([0, 1]\) ho&#7863;c \([-1, 1]\) ch&#7859;ng h&#7841;n, t&ugrave;y thu&#7897;c v&agrave;o &#7913;ng d&#7909;ng. N&#7871;u mu&#7889;n &#273;&#432;a m&#7897;t th&agrave;nh ph&#7847;n (feature) v&#7873; kho&#7843;ng \([0, 1]\), c&ocirc;ng th&#7913;c s&#7869; l&agrave;: 
+\[
+x&rsquo; = \frac{x - \min(x)}{\max(x) - \min(x)}
+\]
+trong &#273;&oacute; \(x\) l&agrave; gi&aacute; tr&#7883; ban &#273;&#7847;u, \(x&rsquo;\) l&agrave; gi&aacute; tr&#7883; sau khi chu&#7849;n h&oacute;a. \(\min(x), \max(x)\) &#273;&#432;&#7907;c t&iacute;nh tr&ecirc;n to&agrave;n b&#7897; d&#7919; li&#7879;u training data &#7903; c&ugrave;ng m&#7897;t th&agrave;nh ph&#7847;n. Vi&#7879;c n&agrave;y &#273;&#432;&#7907;c th&#7921;c hi&#7879;n tr&ecirc;n t&#7915;ng th&agrave;nh ph&#7847;n c&#7911;a vector d&#7919; li&#7879;u \(\mathbf{x}\).</p>
+
+<p><a name="standardization" href="featureengineering.html"></a></p>
+
+<h4 id="standardization">Standardization</h4>
+<p>M&#7897;t ph&#432;&#417;ng ph&aacute;p n&#7919;a c&#361;ng hay &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave; gi&#7843; s&#7917; m&#7895;i th&agrave;nh ph&#7847;n &#273;&#7873;u c&oacute; ph&acirc;n ph&#7889;i chu&#7849;n v&#7899;i k&#7923; v&#7885;ng l&agrave; 0 v&agrave; ph&#432;&#417;ng sai l&agrave; 1. Khi &#273;&oacute;, c&ocirc;ng th&#7913;c chu&#7849;n h&oacute;a s&#7869; l&agrave;: 
+\[
+x&rsquo; = \frac{x - \bar{x}}{\sigma}
+\]
+v&#7899;i \(\bar{x}, \sigma\) l&#7847;n l&#432;&#7907;t l&agrave; k&#7923; v&#7885;ng v&agrave; ph&#432;&#417;ng sai (standard deviation) c&#7911;a th&agrave;nh ph&#7847;n &#273;&oacute; tr&ecirc;n to&agrave;n b&#7897; training data. 
+<a name="scaling-to-unit-length" href="featureengineering.html"></a></p>
+
+<h4 id="scaling-to-unit-length">Scaling to unit length</h4>
+<p>M&#7897;t l&#7921;a ch&#7885;n kh&aacute;c n&#7919;a c&#361;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng r&#7897;ng r&atilde;i l&agrave; chu&#7849;n h&oacute;a c&aacute;c th&agrave;nh ph&#7847;n c&#7911;a m&#7895;i vector d&#7919; li&#7879;u sao cho to&agrave;n b&#7897; vector c&oacute; &#273;&#7897; l&#7899;n (Euclid, t&#7913;c <a href="/math/#norm2">norm 2</a>) b&#7857;ng 1. Vi&#7879;c n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n b&#7857;ng:
+\[
+\mathbf{x}&rsquo; = \frac{\mathbf{x}}{||\mathbf{x}||_2}
+\]</p>
+
+<p><a name="-thao-luan" href="featureengineering.html"></a></p>
+
+<h2 id="4-th&#7843;o-lu&#7853;n">4. Th&#7843;o lu&#7853;n</h2>
+<p>Xem ra th&#7871; gi&#7899;i Machine Learning r&#7845;t r&#7897;ng l&#7899;n v&agrave; c&oacute; r&#7845;t nhi&#7873;u th&#7913; ch&uacute;ng ta c&#7847;n l&agrave;m. V&agrave;
+v&#7851;n c&oacute; kh&aacute; nhi&#7873;u th&#7913; t&ocirc;i c&oacute; th&#7875; vi&#7871;t &#273;&#432;&#7907;c. Tuy nhi&ecirc;n, blog n&agrave;y s&#7869; kh&ocirc;ng t&#7853;p trung nhi&#7873;u v&agrave;o Feature Learning, m&#7863;c d&ugrave; s&#7869; c&oacute; m&#7897;t v&agrave;i b&agrave;i n&oacute;i v&#7873; Dimensionality Reduction. T&ocirc;i s&#7869; s&#7917; d&#7909;ng c&aacute;c b&#7897; d&#7919; li&#7879;u c&oacute; s&#7861;n, v&agrave; &#273;&atilde; qua b&#432;&#7899;c Feature Learning.</p>
+
+<p><a name="-tai-lieu-tham-khao" href="featureengineering.html"></a></p>
+
+<h2 id="5-t&agrave;i-li&#7879;u-tham-kh&#7843;o">5. T&agrave;i li&#7879;u tham kh&#7843;o</h2>
+<ol><li><a href="https://en.wikipedia.org/wiki/Feature_engineering">Feature Enginieering - wiki</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Feature_scaling">Feature Scaling wiki</a></li>
+  <li>Csurka, Gabriella, et al. &ldquo;<a href="https://people.eecs.berkeley.edu/~efros/courses/AP06/Papers/csurka-eccv-04.pdf">Visual categorization with bags of keypoints.</a>&rdquo; Workshop on statistical learning in computer vision, ECCV. Vol. 1. No. 1-22. 2004.</li>
+  <li><a href="https://en.wikipedia.org/wiki/Bag-of-words_model">Bag of Words model - wiki</a></li>
+  <li><a href="https://www.kaggle.com/c/word2vec-nlp-tutorial/details/part-1-for-beginners-bag-of-words">Bag of Words Meets Bags of Popcorn</a></li>
+</ol></div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="howdoIcreatethisblog.html">&laquo; Blog v&agrave; c&aacute;c b&agrave;i vi&#7871;t &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="binaryclassifiers.html">B&agrave;i 12: Binary Classifiers cho c&aacute;c b&agrave;i to&aacute;n Classification &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/general/2017/02/06/featureengineering/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11243833; 
+var sc_invisible=0; 
+var sc_security="bf1d62ec"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/bf1d62ec-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/03/04/overfitting/">B&agrave;i 15: Overfitting</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/general/2017/02/06/featureengineering/">B&agrave;i 11: Gi&#7899;i thi&#7879;u v&#7873; Feature Engineering</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2016/12/27/categories/">B&agrave;i 2: Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2016/12/26/introduce/">B&agrave;i 1: Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/general/2017/02/06/featureengineering/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/general/2017/02/06/featureengineering/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/general/2017/02/06/featureengineering/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=B&agrave;i 11: Gi&#7899;i thi&#7879;u v&#7873; Feature Engineering&url=https://machinelearningcoban.com/general/2017/02/06/featureengineering/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/general/2017/02/06/featureengineering/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/general/2017/02/06/featureengineering/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#08375b7d6a626d6b7c355b616578646d285b60697a6d284a7d7c7c67667b2e696578334a676c7135412d3a387b697f2d3a387c60617b2d3a3869666c2d3a387c60677d6f607c2d3a38676e2d3a3871677d292d3a3828607c7c787b32272765696b6061666d646d697a6661666f6b676a6966266b6765276f6d666d7a6964273a38393f27383a27383e276e6d697c7d7a6d6d666f61666d6d7a61666f27">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/02/02/howdoIcreatethisblog/">Blog v&agrave; c&aacute;c b&agrave;i vi&#7871;t &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2017/02/11/binaryclassifiers/">B&agrave;i 12: Binary Classifiers cho c&aacute;c b&agrave;i to&aacute;n Classification</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

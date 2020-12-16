@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</title><!-- <script>
+var pageProperties = {
+    
+    category: "Deep Learning",
+    
+    url: "/2018/07/06/deeplearning/",
+    title: "B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/2018/07/06/deeplearning/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/2018/07/06/deeplearning/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2018-07-06"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="Deep Learning"><meta property="article:tag" content="Keras,"><meta property="article:tag" content="mlp"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2018/07/06/deeplearning/',
+'title': 'B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="deeplearning.html">36. Keras</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+                  
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="deeplearning.html">&laquo; B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="forum.html">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</h1>
+
+
+<ul class="tags"><a href="/tags#Keras," class="tag">Keras,</a>
+   
+      <a href="/tags#mlp" class="tag">mlp</a>
+   
+</ul><span class="post-date" style="color: gray; font-style: italic;">Jul 6, 2018
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <p><em>B&agrave;i vi&#7871;t n&agrave;y &#273;&#432;&#7907;c th&#7921;c hi&#7879;n v&#7899;i s&#7921; &#273;&oacute;ng g&oacute;p c&#7911;a Nguy&#7877;n Ti&#7871;n C&#432;&#7901;ng, Cao Thanh H&agrave;, &#272;inh Duy Kh&aacute;nh, v&agrave; Nguy&#7877;n V&#259;n T&agrave;i. C&aacute;c b&#7841;n n&agrave;y c&#361;ng s&#7869; gi&uacute;p t&ocirc;i trong c&aacute;c b&agrave;i v&#7873; deep learning ti&#7871;p theo.</em></p>
+
+<p>Trong trang n&agrave;y: 
+<!-- MarkdownTOC --></p>
+
+<ul><li><a href="#-gioi-thieu">1. Gi&#7899;i thi&#7879;u</a></li>
+  <li><a href="#-linear-regression-va-logistic-regression-voi-keras">2. Linear regression v&agrave; logistic regression v&#7899;i Keras</a>
+    <ul><li><a href="#-keras-voi-linear-regression">2.1. Keras v&#7899;i linear regression</a></li>
+      <li><a href="#-keras-voi-logistic-regression">2.1. Keras v&#7899;i logistic regression</a></li>
+    </ul></li>
+  <li><a href="#-keras-cho-multi-layer-perceptron">3. Keras cho multi-layer perceptron</a>
+    <ul><li><a href="#-gioi-thieu-ve-fashion-mnist">3.1. Gi&#7899;i thi&#7879;u v&#7873; Fashion-MNIST</a></li>
+      <li><a href="#-xay-dung-mot-multi-layer-perceptron-de-giai-quyet-bai-toan">3.2. X&acirc;y d&#7921;ng m&#7897;t multi-layer perceptron &#273;&#7875; gi&#7843;i quy&#7871;t b&agrave;i to&aacute;n</a></li>
+      <li><a href="#-nhan-xet">3.3. Nh&#7853;n x&eacute;t</a></li>
+    </ul></li>
+  <li><a href="#-ket-luan">4. K&#7871;t lu&#7853;n</a></li>
+  <li><a href="#-tai-lieu-tham-khao">5. T&agrave;i li&#7879;u tham kh&#7843;o</a></li>
+</ul><!-- /MarkdownTOC --><p><a name="-gioi-thieu" href="deeplearning.html"></a></p>
+
+<h2 id="1-gi&#7899;i-thi&#7879;u">1. Gi&#7899;i thi&#7879;u</h2>
+
+<p>K&#7875; t&#7915; 2012 khi <a href="/2018/06/22/deeplearning/#dot-pha-">deep learning c&oacute; b&#432;&#7899;c &#273;&#7897;t ph&aacute; l&#7899;n</a>, h&agrave;ng lo&#7841;t c&aacute;c th&#432; vi&#7879;n h&#7895; tr&#7907; deep learning ra &#273;&#7901;i. C&ugrave;ng v&#7899;i &#273;&oacute;, ng&agrave;y c&agrave;ng nhi&#7873;u ki&#7871;n tr&uacute;c deep learning ra &#273;&#7901;i, khi&#7871;n cho s&#7889; l&#432;&#7907;ng &#7913;ng d&#7909;ng v&agrave; c&aacute;c b&agrave;i b&aacute;o li&ecirc;n quan t&#7899;i deep learning t&#259;ng l&ecirc;n ch&oacute;ng m&#7863;t.</p>
+
+<p>C&aacute;c th&#432; vi&#7879;n deep learning th&#432;&#7901;ng &#273;&#432;&#7907;c &lsquo;ch&#7889;ng l&#432;ng&rsquo; b&#7903;i nh&#7919;ng h&atilde;ng c&ocirc;ng ngh&#7879; l&#7899;n: Google (Keras, TensorFlow), Facebook (Caffe2, Pytorch), Microsoft (CNTK), Amazon (Mxnet), Microsoft v&agrave; Amazon c&#361;ng &#273;ang b&#7855;t tay x&acirc;y d&#7921;ng Gluon (phi&ecirc;n b&#7843;n t&#432;&#417;ng t&#7921; nh&#432; Keras). (C&aacute;c h&atilde;ng n&agrave;y &#273;&#7873;u c&oacute; c&aacute;c d&#7883;ch v&#7909; cloud computing v&agrave; mu&#7889;n thu h&uacute;t ng&#432;&#7901;i d&ugrave;ng).</p>
+
+<hr><div class="imgcap">
+<div>
+    <img src="images/36_keras-dlp0.png" width="600"></div>
+<div class="thecap">C&aacute;c th&#432; vi&#7879;n deep learning v&agrave; c&aacute;c h&atilde;ng c&ocirc;ng ngh&#7879; l&#7899;n. <br> (Ngu&#7891;n: <a href="https://towardsdatascience.com/battle-of-the-deep-learning-frameworks-part-i-cff0e3841750">Battle of the Deep Learning frameworks&#8202;&mdash;&#8202;Part I: 2017, even more frameworks and interfaces</a>)</div>
+</div>
+<hr><p>V&#7853;y th&#432; vi&#7879;n n&agrave;o l&agrave; t&#7889;t nh&#7845;t? C&acirc;u tr&#7843; l&#7901;i tu&#7923; thu&#7897;c v&agrave;o vi&#7879;c b&#7841;n quen v&#7899;i h&#7879; &#273;i&#7873;u h&agrave;nh, ng&ocirc;n ng&#7919; l&#7853;p tr&igrave;nh n&agrave;o, b&#7841;n s&#7917; d&#7909;ng deep learning v&agrave;o m&#7909;c &#273;&iacute;ch nghi&ecirc;n c&#7913;u hay ra s&#7843;n ph&#7849;m, b&#7841;n s&#7917; d&#7909;ng tr&ecirc;n n&#7873;n t&#7843;ng ph&#7847;n c&#7913;ng n&agrave;o, v.v.</p>
+
+<p>Nh&igrave;n chung, m&#7897;t th&#432; vi&#7879;n deep learning t&#7889;t c&#7847;n c&oacute; c&aacute;c &#273;&#7863;c &#273;i&#7875;m sau:</p>
+
+<ol><li>
+    <p>H&#7895; tr&#7907; t&iacute;nh to&aacute;n v&#7899;i GPU v&agrave; c&aacute;c h&#7879; th&#7889;ng ph&acirc;n t&aacute;n. &#272;i&#7873;u n&agrave;y l&agrave; t&#7889;i quan tr&#7885;ng v&igrave; vi&#7879;c hu&#7845;n luy&#7879;n c&aacute;c m&ocirc; h&igrave;nh deep learning y&ecirc;u c&#7847;u kh&#7843; n&#259;ng t&iacute;nh to&aacute;n r&#7845;t m&#7841;nh.</p>
+  </li>
+  <li>
+    <p>H&#7895; tr&#7907; c&aacute;c ng&ocirc;n ng&#7919; l&#7853;p tr&igrave;nh ph&#7893; bi&#7871;n: C/C++, Python, Java, R, &hellip;</p>
+  </li>
+  <li>
+    <p>C&oacute; th&#7875; ch&#7841;y &#273;&#432;&#7907;c tr&ecirc;n nhi&#7873;u h&#7879; &#273;i&#7873;u h&agrave;nh.</p>
+  </li>
+  <li>
+    <p>Th&#7901;i gian t&#7915; &yacute; t&#432;&#7903;ng t&#7899;i x&acirc;y d&#7921;ng v&agrave; hu&#7845;n luy&#7879;n m&ocirc; h&igrave;nh ng&#7855;n.</p>
+  </li>
+  <li>
+    <p>C&oacute; th&#7875; ch&#7841;y tr&ecirc;n tr&igrave;nh duy&#7879;t v&agrave; c&aacute;c thi&#7871;t b&#7883; di &#273;&#7897;ng.</p>
+  </li>
+  <li>
+    <p>C&oacute; kh&#7843; n&#259;ng gi&uacute;p ng&#432;&#7901;i l&#7853;p tr&igrave;nh can thi&#7879;p s&acirc;u v&agrave;o m&ocirc; h&igrave;nh v&agrave; t&#7841;o ra c&aacute;c m&ocirc; h&igrave;nh ph&#7913;c t&#7841;p.</p>
+  </li>
+  <li>
+    <p>Ch&#7913;a nhi&#7873;u <code class="language-plaintext highlighter-rouge">model zoo</code>, t&#7913;c c&aacute;c m&ocirc; h&igrave;nh deep learning th&ocirc;ng d&#7909;ng &#273;&atilde; &#273;&#432;&#7907;c hu&#7845;n luy&#7879;n.</p>
+  </li>
+  <li>
+    <p>H&#7895; tr&#7907; t&iacute;nh to&aacute;n backpropagation t&#7921; &#273;&#7897;ng.</p>
+  </li>
+  <li>
+    <p>C&oacute; c&#7897;ng &#273;&#7891;ng h&#7887;i &#273;&aacute;p l&#7899;n.</p>
+  </li>
+</ol><p>Th&#7853;t kh&oacute; c&oacute; th&#7875; ch&#7881; ra m&#7897;t th&#432; vi&#7879;n &#273;&aacute;p &#7913;ng t&#7889;t t&#7845;t c&#7843; c&aacute;c y&ecirc;u c&#7847;u ph&iacute;a tr&ecirc;n. C&aacute;c b&#7841;n c&oacute; th&#7875; xem c&aacute;c b&agrave;i so s&aacute;nh c&aacute;c th&#432; vi&#7879;n n&agrave;y &#7903; ph&#7847;n <a href="#-tai-lieu-tham-khao">T&agrave;i li&#7879;u tham kh&#7843;o</a>. T&ocirc;i ch&#7881; xin gi&#7899;i thi&#7879;u m&#7897;t v&agrave;i th&#7889;ng k&ecirc; gi&uacute;p c&aacute;c b&#7841;n c&oacute; c&aacute;i nh&igrave;n nhanh nh&#7845;t v&#7873; th&#432; vi&#7879;n n&agrave;o &#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u nh&#7845;t.</p>
+
+<hr><div class="imgcap">
+<div>
+    <img src="images/36_keras-dlp1.png" width="600"></div>
+<div class="thecap">S&#7889; l&#432;&#7907;ng 'stars' tr&ecirc;n GitHub repo. <br> (Xem th&ecirc;m: <a href="https://blog.paperspace.com/which-ml-framework-should-i-use/">Machine Learning Frameworks Comparison</a>)</div>
+</div>
+<ol><li>TensorFlow, 2. Caffe (n&#259;m 2015-2016).</li>
+</ol><hr><hr><div class="imgcap">
+<div>
+    <img src="images/36_keras-dlp2.jpg" width="600"></div>
+<div class="thecap">S&#7889; l&#432;&#7907;ng 'stars' tr&ecirc;n GitHub repo, s&#7889; l&#432;&#7907;ng 'contributors', v&agrave; 'tu&#7893;i' c&#7911;a th&#432; vi&#7879;n. <br> (Xem th&ecirc;m: <a href="https://blog.paperspace.com/which-ml-framework-should-i-use/">Top 16 Open Source Deep Learning Libraries and Platforms</a>)</div>
+</div>
+<ol><li>TensorFlow, 2. Keras, 3. Caffe</li>
+</ol><hr><hr><div class="imgcap">
+<div>
+    <img src="images/36_keras-dlp3.png" width="600"></div>
+<div class="thecap">S&#7889; l&#432;&#7907;ng c&aacute;c b&agrave;i b&aacute;o tr&ecirc;n arxiv c&oacute; &#273;&#7873; c&#7853;p &#273;&#7871;n m&#7895;i th&#432; vi&#7879;n. <br> (Xem th&ecirc;m: <a href="https://keras.io/why-use-keras/">Why use Keras?</a>)</div>
+</div>
+<ol><li>TensorFlow, 2. Keras, 3. Caffe</li>
+</ol><hr><p>Nh&#7919;ng so s&aacute;nh tr&ecirc;n &#273;&acirc;y ch&#7881; ra r&#7857;ng TensorFlow, Keras v&agrave; Caffe l&agrave; c&aacute;c th&#432; vi&#7879;n &#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u nh&#7845;t (g&#7847;n &#273;&acirc;y c&oacute; th&ecirc;m PyTorch r&#7845;t d&#7877; s&#7917; d&#7909;ng v&agrave; &#273;ang thu h&uacute;t th&ecirc;m nhi&#7873;u ng&#432;&#7901;i d&ugrave;ng).</p>
+
+<p>Keras &#273;&#432;&#7907;c coi l&agrave; m&#7897;t th&#432; vi&#7879;n &lsquo;high-level&rsquo; v&#7899;i ph&#7847;n &lsquo;low-level&rsquo; (c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>backend</em>) c&oacute; th&#7875; l&agrave; TensorFlow, CNTK, ho&#7863;c Theano (<a href="https://syncedreview.com/2017/09/29/rip-theano/">s&#7855;p t&#7899;i Theano s&#7869; kh&ocirc;ng &#273;&#432;&#7907;c duy tr&igrave; n&acirc;ng c&#7845;p n&#7919;a</a>). Keras c&oacute; c&uacute; ph&aacute;p &#273;&#417;n gi&#7843;n h&#417;n TensorFlow r&#7845;t nhi&#7873;u. V&#7899;i m&#7909;c &#273;&iacute;ch gi&#7899;i thi&#7879;u v&#7873; c&aacute;c m&ocirc; h&igrave;nh nhi&#7873;u h&#417;n l&agrave; c&aacute;c s&#7917; d&#7909;ng c&aacute;c th&#432; vi&#7879;n deep learning, t&ocirc;i s&#7869; ch&#7885;n Keras v&#7899;i TensorFlow l&agrave; &lsquo;backend&rsquo;.</p>
+
+<p>(B&#7843;n th&acirc;n t&ocirc;i khi l&agrave;m nghi&ecirc;n c&#7913;u th&#432;&#7901;ng d&ugrave;ng TensorFlow v&agrave; Pytorch.)</p>
+
+<p>C&aacute;c b&#7841;n c&oacute; th&#7875; &#273;&#7885;c th&ecirc;m b&agrave;i <a href="https://keras.io/why-use-keras/">Why use Keras?</a> tr&ecirc;n trang ch&#7911; c&#7911;a Keras (<em>T&#7845;t nhi&ecirc;n tr&ecirc;n trang ch&#7911; c&#7911;a th&#432; vi&#7879;n n&agrave;o c&#361;ng s&#7869; c&oacute; m&#7897;t b&agrave;i t&#432;&#417;ng t&#7921; ki&#7875;u &lsquo;Why use &hellip;?&rsquo;</em>). T&ocirc;i xin n&ecirc;u l&#7841;i m&#7897;t v&agrave;i g&#7841;ch &#273;&#7847;u d&ograve;ng:</p>
+
+<ul><li>
+    <p>Keras &#432;u ti&ecirc;n  tr&#7843;i nghi&#7879;m c&#7911;a ng&#432;&#7901;i l&#7853;p tr&igrave;nh</p>
+  </li>
+  <li>
+    <p>Keras &#273;&atilde; &#273;&#432;&#7907;c s&#7917; d&#7909;ng r&#7897;ng r&atilde;i trong doanh nghi&#7879;p v&agrave; c&#7897;ng &#273;&#7891;ng nghi&ecirc;n c&#7913;u</p>
+  </li>
+  <li>
+    <p>Keras gi&uacute;p d&#7877; d&agrave;ng bi&#7871;n c&aacute;c thi&#7871;t k&#7871; th&agrave;nh s&#7843;n ph&#7849;m</p>
+  </li>
+  <li>
+    <p>Keras h&#7895; tr&#7907; hu&#7845;n luy&#7879;n tr&ecirc;n nhi&#7873;u GPU ph&acirc;n t&aacute;n</p>
+  </li>
+  <li>
+    <p>Keras h&#7895; tr&#7907; &#273;a backend engines v&agrave; kh&ocirc;ng gi&#7899;i h&#7841;n b&#7841;n v&agrave;o m&#7897;t h&#7879; sinh th&aacute;i</p>
+  </li>
+</ul><p>Amazon hi&#7879;n c&#361;ng &#273;ang l&agrave;m vi&#7879;c &#273;&#7875; ph&aacute;t tri&#7875;n MXNet backend cho Keras.
+M&ocirc; h&igrave;nh Keras c&oacute; th&#7875; &#273;&#432;&#7907;c hu&#7845;n luy&#7879;n tr&ecirc;n m&#7897;t s&#7889; n&#7873;n t&#7843;ng ph&#7847;n c&#7913;ng kh&aacute;c nhau ngo&agrave;i CPU:</p>
+
+<ul><li>NVIDIA GPU</li>
+  <li>Google TPUs, th&ocirc;ng qua TensorFlow backend v&agrave; Google Cloud</li>
+  <li>C&aacute;c OpenCL GPU, ch&#7859;ng h&#7841;n nh&#432; c&aacute;c s&#7843;m ph&#7847;m t&#7915; AMD, th&ocirc;ng qua PlaidML Keras backend.</li>
+</ul><p>Hy v&#7885;ng ch&#7915;ng &#273;&oacute; &#273;&atilde; &#273;&#7911; &#273;&#7875; ch&uacute;ng ta c&ugrave;ng b&#7855;t &#273;&#7847;u v&#7899;i Keras. C&aacute;ch c&agrave;i &#273;&#7863;t Keras c&oacute; th&#7875; &#273;&#432;&#7907;c t&igrave;m th&#7845;y tr&ecirc;n <a href="https://keras.io/">trang ch&#7911; c&#7911;a n&oacute;</a>.</p>
+
+<p>Ti&#7871;p theo, ch&uacute;ng ta s&#7869; l&agrave;m quen v&#7899;i Keras qua ba v&iacute; d&#7909; &#273;&#417;n gi&#7843;n: <a href="linearregression.html">linear regression</a>, <a href="logisticregression.html">logistic regression</a>, v&agrave; <a href="mlp.html">multi-layer perceptron</a>.</p>
+
+<p><a name="-linear-regression-va-logistic-regression-voi-keras" href="deeplearning.html"></a></p>
+
+<h2 id="2-linear-regression-v&agrave;-logistic-regression-v&#7899;i-keras">2. Linear regression v&agrave; logistic regression v&#7899;i Keras</h2>
+<hr><p>Vi&#7879;c hu&#7845;n luy&#7879;n m&#7897;t m&ocirc; h&igrave;nh deep learning hay neural network n&oacute;i chung bao g&#7891;m c&aacute;c b&#432;&#7899;c:</p>
+
+<ol><li>Chu&#7849;n b&#7883; d&#7919; li&#7879;u</li>
+  <li>X&acirc;y d&#7921;ng network</li>
+  <li>Ch&#7885;n thu&#7853;t to&aacute;n c&#7853;p nh&#7853;t nghi&#7879;m, x&acirc;y d&#7921;ng loss v&agrave; ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&ocirc; h&igrave;nh</li>
+  <li>Hu&#7845;n luy&#7879;n m&ocirc; h&igrave;nh.</li>
+  <li>&#272;&aacute;nh gi&aacute; m&ocirc; h&igrave;nh</li>
+</ol><hr><p>Ch&uacute;ng ta c&ugrave;ng xem Keras th&#7921;c hi&#7879;n c&aacute;c b&#432;&#7899;c n&agrave;y th&ocirc;ng qua hai v&iacute; d&#7909; d&#432;&#7899;i &#273;&acirc;y.</p>
+
+<p><a name="-keras-voi-linear-regression" href="deeplearning.html"></a></p>
+
+<h3 id="21-keras-v&#7899;i-linear-regression">2.1. Keras v&#7899;i linear regression</h3>
+
+<p>Ta c&ugrave;ng l&agrave;m m&#7897;t v&iacute; d&#7909; &#273;&#417;n gi&#7843;n. D&#7919; li&#7879;u &#273;&#7847;u <code class="language-plaintext highlighter-rouge">X</code> v&agrave;o c&oacute; s&#7889; chi&#7873;u l&agrave; 2, &#273;&#7847;u ra <code class="language-plaintext highlighter-rouge">y = 2*X[0] + 3*X[1] + 4 + e</code> v&#7899;i <code class="language-plaintext highlighter-rouge">e</code> l&agrave; nhi&#7877;u tu&acirc;n theo m&#7897;t ph&acirc;n ph&#7889;i chu&#7849;n c&oacute; k&#7923; v&#7885;ng b&#7857;ng 0, ph&#432;&#417;ng sai b&#7857;ng 0.2.</p>
+
+<p>D&#432;&#7899;i &#273;&acirc;y l&agrave; &#273;o&#7841;n code v&iacute; d&#7909; v&#7873; hu&#7845;n luy&#7879;n m&ocirc; h&igrave;nh linear regression b&#7857;ng Keras:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras.layers.core</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Activation</span>
+<span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">optimizers</span>
+
+<span class="c1"># 1. create pseudo data y = 2*x0 + 3*x1 + 4
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span>  <span class="mi">2</span><span class="o">*</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">+</span> <span class="p">.</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># noise added
+</span>
+<span class="c1"># 2. Build model 
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">([</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">input_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="n">activation</span><span class="o">=</span><span class="s">'linear'</span><span class="p">)])</span>
+
+<span class="c1"># 3. gradient descent optimizer and loss function 
+</span><span class="n">sgd</span> <span class="o">=</span> <span class="n">optimizers</span><span class="p">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">model</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'mse'</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">sgd</span><span class="p">)</span>
+
+<span class="c1"># 4. Train the model 
+</span><span class="n">model</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>K&#7871;t qu&#7843;:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Epoch 1/100
+100/100 [==============================] - 0s 5ms/step - loss: 1.7199
+Epoch 2/100
+100/100 [==============================] - 0s 709us/step - loss: 0.0388
+Epoch 3/100
+100/100 [==============================] - 0s 675us/step - loss: 0.0415
+Epoch 4/100
+100/100 [==============================] - 0s 774us/step - loss: 0.0392
+Epoch 5/100
+.....
+Epoch 100/100
+100/100 [==============================] - 0s 823us/step - loss: 0.0393
+</code></pre></div></div>
+
+<p>Ta th&#7845;y r&#259;ng thu&#7853;t to&aacute;n h&#7897;i t&#7909; kh&aacute; nhanh v&agrave; MSE loss kh&aacute; nh&#7887; sau khi hu&#7845;n luy&#7879;n xong.</p>
+
+<p>Ch&uacute;ng ta c&ugrave;ng xem x&eacute;t t&#7915;ng b&#432;&#7899;c:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 2. Build model 
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">([</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">input_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="n">activation</span><span class="o">=</span><span class="s">'linear'</span><span class="p">)])</span>
+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Sequantial([&lt;a list&gt;])</code> l&agrave; th&#7875; hi&#7879;n vi&#7879;c c&aacute;c layer &#273;&#432;&#7907;c x&acirc;y d&#7921;ng theo &#273;&uacute;ng th&#7913; t&#7921; trong <code class="language-plaintext highlighter-rouge">[&lt;a list&gt;]</code>. Ph&#7847;n t&#7917; &#273;&#7847;u ti&ecirc;n c&#7911;a list th&#7875; hi&#7879;n k&#7871;t n&#7889;i gi&#432;a input layer v&agrave; layer ti&#7871;p theo, c&aacute;c ph&#7847;n t&#7917; ti&#7871;p theo c&#7911;a list th&#7875; hi&#7879;n k&#7871;t n&#7889;i c&#7911;a c&aacute;c layer ti&#7871;p theo.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Dense</code> th&#7875; hi&#7879;n m&#7897;t <em>fully connected layer</em>, t&#7913;c to&agrave;n b&#7897; c&aacute;c unit c&#7911;a layer tr&#432;&#7899;c &#273;&oacute; &#273;&#432;&#7907;c n&#7889;i v&#7899;i to&agrave;n b&#7897; c&aacute;c unit c&#7911;a layer hi&#7879;n t&#7841;i. Gi&aacute; tr&#7883; &#273;&#7847;u ti&ecirc;n trong <code class="language-plaintext highlighter-rouge">Dense</code> b&#7857;ng <code class="language-plaintext highlighter-rouge">1</code> th&#7875; hi&#7879;n vi&#7879;c ch&#7881; c&oacute; 1 unit &#7903; layer n&agrave;y (&#273;&#7847;u ra c&#7911;a linear regression trong tr&#432;&#7901;ng h&#7907;p n&agrave;y b&#7857;ng 1). <code class="language-plaintext highlighter-rouge">input_shape = (2,)</code> ch&iacute;nh l&agrave; k&iacute;ch th&#432;&#7899;c c&#7911;a d&#7919; li&#7879;u &#273;&#7847;u v&agrave;o. K&iacute;ch th&#432;&#7899;c n&agrave;y l&agrave; m&#7897;t tuple n&ecirc;n ta c&#7847;n vi&#7871;t d&#432;&#7899;i d&#7841;ng <code class="language-plaintext highlighter-rouge">(2,)</code>. V&#7873; sau, khi l&agrave;m vi&#7879;c v&#7899;i d&#7919; li&#7879;u nhi&#7873;u chi&#7873;u, ta s&#7869; c&oacute; c&aacute;c tuple nhi&#7873;u chi&#7873;u. V&iacute; d&#7909;, n&#7871;u input l&agrave; &#7843;nh RGB v&#7899;i k&iacute;ch th&#432;&#7899;c 224x224x3 pixel th&igrave; <code class="language-plaintext highlighter-rouge">input_shape = (224, 224, 3)</code>.</p>
+
+<p>C&aacute;c layer c&#361;ng c&oacute; th&#7875; &#273;&#432;&#7907;c th&ecirc;m l&#7847;n l&#432;&#7907;t v&agrave;o <code class="language-plaintext highlighter-rouge">model</code> b&#7857;ng c&aacute;ch s&#7917; d&#7909;ng h&agrave;m <code class="language-plaintext highlighter-rouge">.add()</code>. &#272;o&#7841;n code ph&iacute;a tr&ecirc;n v&agrave; &#273;o&#7841;n code ngay d&#432;&#7899;i &#273;&acirc;y l&agrave; t&#432;&#417;ng &#273;&#432;&#417;ng.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="n">activation</span><span class="o">=</span><span class="s">'linear'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Activation c&#361;ng c&oacute; th&#7875; &#273;&#432;&#7907;c t&aacute;ch ra th&agrave;nh ri&ecirc;ng m&#7897;t layer nh&#432; sau:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 2. Build model 
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,)))</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s">'linear'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#273;&#7885;c v&#7873; c&aacute;c activation c&#7911;a Keras <a href="https://keras.io/activations/">t&#7841;i &#273;&acirc;y</a>.</p>
+
+<p>&#272;o&#7841;n code ti&#7871;p theo:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 3. gradient descent optimizer and loss function 
+</span><span class="n">sgd</span> <span class="o">=</span> <span class="n">optimizers</span><span class="p">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">model</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'mse'</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">sgd</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Th&#7875; hi&#7879;n vi&#7879;c ch&#7885;n ph&#432;&#417;ng ph&aacute;p c&#7853;p nh&#7853;t nghi&#7879;m, &#7903; &#273;&acirc;u ta s&#7917; d&#7909;ng <a href="/2017/01/16/gradientdescent2/#-stochastic-gradient-descent">Stochastic Gradient Descent (SGD)</a> v&#7899;i learning rate <code class="language-plaintext highlighter-rouge">lr=0.1</code>. C&aacute;c ph&#432;&#417;ng ph&aacute;p c&#7853;p nh&#7853;t nghi&#7879;m kh&aacute;c c&oacute; th&#7875; &#273;&#432;&#7907;c t&igrave;m th&#7845;y t&#7841;i <a href="https://keras.io/optimizers/">Keras-Usage of optimizers</a>.
+<code class="language-plaintext highlighter-rouge">loss='mse'</code> ch&iacute;nh l&agrave; <a href="https://en.wikipedia.org/wiki/Mean_squared_error"><em>mean squared error</em></a>, l&agrave; h&agrave;m m&#7845;t m&aacute;t c&#7911;a linear regression.</p>
+
+<p>Sau khi x&acirc;y d&#7921;ng &#273;&#432;&#7907;c m&ocirc; h&igrave;nh v&agrave; ch&#7881; ra ph&#432;&#417;ng ph&aacute;p c&#7853;p nh&#7853;t c&#361;ng nh&#432; h&agrave;m m&#7845;t m&aacute;t, ta hu&#7845;n luy&#7879;n m&ocirc; h&igrave;nh b&#7857;ng:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+<p>(Keras kh&aacute; gi&#7889;ng v&#7899;i scikit-learn &#7903; ch&#7895; c&ugrave;ng hu&#7845;n luy&#7879;n c&aacute;c m&ocirc; h&igrave;nh b&#7857;ng ph&#432;&#417;ng th&#7913;c <code class="language-plaintext highlighter-rouge">.fit()</code>). &#7902; &#273;&acirc;y, <code class="language-plaintext highlighter-rouge">epochs</code> ch&iacute;nh l&agrave; s&#7889; l&#432;&#7907;ng <a href="/2017/01/16/gradientdescent2/#-stochastic-gradient-descent">epoch</a> v&agrave; <code class="language-plaintext highlighter-rouge">batch_size</code> ch&iacute;nh l&agrave; k&iacute;ch th&#432;&#7899;c c&#7911;a m&#7897;t <a href="%5C/2017/01/16/gradientdescent2/#-mini-batch-gradient-descent">mini-batch</a>.</p>
+
+<p>&#272;&#7875; xem h&#7879; s&#7889; t&igrave;m &#273;&#432;&#7907;c c&#7911;a linear regression, ta s&#7917; d&#7909;ng:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="p">.</span><span class="n">get_weights</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>K&#7871;t qu&#7843;:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[array([[1.996118 ],
+        [3.0239758]], dtype=float32), array([3.963116], dtype=float32)]
+</code></pre></div></div>
+
+<p>&#7903; &#273;&oacute;, ph&#7847;n t&#7917; th&#7913; nh&#7845;t c&#7911;a list n&agrave;y ch&iacute;nh l&agrave; h&#7879; s&#7889; t&igrave;m &#273;&#432;&#7907;c, ph&#7849;n t&#7917; th&#7913; hai ch&iacute;nh l&agrave; bias. K&#7871;t qu&#7843; n&agrave;y g&#7847;n v&#7899;i nghi&#7879;m mong &#273;&#7907;i c&#7911;a b&agrave;i to&aacute;n (<code class="language-plaintext highlighter-rouge">y = 2*X[0] + 3*X[1] + 4</code>).</p>
+
+<p><em>T&#432;&#417;ng &#273;&#7889;i &#273;&#417;n gi&#7843;n.</em></p>
+
+<p><a name="-keras-voi-logistic-regression" href="deeplearning.html"></a></p>
+
+<h3 id="21-keras-v&#7899;i-logistic-regression">2.1. Keras v&#7899;i logistic regression</h3>
+<p>Quay l&#7841;i <a href="https://machinelearningcoban.com/2017/01/27/logisticregression/#-vi-du-voi-python">v&iacute; d&#7909; v&#7873; m&#7889;i li&ecirc;n h&#7879; gi&#7919;a s&#7889; gi&#7901; &ocirc;n t&#7853;p v&agrave; k&#7871;t qu&#7843; thi trong b&agrave;i logistic regression</a>, b&agrave;i to&aacute;n c&oacute; th&#7875; &#273;&#432;&#7907;c gi&#7843;i quy&#7871;t b&#7857;ng keras nh&#432; sau:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras.layers.core</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Activation</span>
+<span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">losses</span>
+<span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">optimizers</span>
+
+<span class="c1"># 1. Prepare data 
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.50</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">,</span> <span class="mf">2.25</span><span class="p">,</span> <span class="mf">2.50</span><span class="p">,</span> 
+              <span class="mf">2.75</span><span class="p">,</span> <span class="mf">3.00</span><span class="p">,</span> <span class="mf">3.25</span><span class="p">,</span> <span class="mf">3.50</span><span class="p">,</span> <span class="mf">4.00</span><span class="p">,</span> <span class="mf">4.25</span><span class="p">,</span> <span class="mf">4.50</span><span class="p">,</span> <span class="mf">4.75</span><span class="p">,</span> <span class="mf">5.00</span><span class="p">,</span> <span class="mf">5.50</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># 2. Build model 
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)))</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s">'sigmoid'</span><span class="p">))</span>
+
+<span class="c1"># 3. gradient descent optimizer and loss function 
+</span><span class="n">sgd</span> <span class="o">=</span> <span class="n">optimizers</span><span class="p">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">model</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">losses</span><span class="p">.</span><span class="n">binary_crossentropy</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">sgd</span><span class="p">)</span>
+
+<span class="c1"># 4. Train the model 
+</span><span class="n">model</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+</code></pre></div></div>
+
+<p>C&oacute; hai s&#7921; kh&aacute;c bi&#7879;t &#7903; <code class="language-plaintext highlighter-rouge">Activation</code> v&agrave; <code class="language-plaintext highlighter-rouge">loss</code> v&igrave; logistic regression s&#7917; d&#7909;ng h&agrave;m activation l&agrave; sigmoid, h&agrave;m m&#7845;t m&aacute;t l&agrave; tr&#432;&#7901;ng h&#7907;p &#273;&#7863;c bi&#7879;t c&#7911;a cross entropy v&#7899;i hai class.</p>
+
+<p>K&#7871;t qu&#7843; t&igrave;m &#273;&#432;&#7907;c t&#432;&#417;ng &#273;&#7889;i gi&#7889;ng v&#7899;i k&#7871;t qu&#7843; t&igrave;m &#273;&#432;&#7907;c tr&#432;&#7899;c &#273;&oacute; v&#7899;i numpy.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="p">.</span><span class="n">get_weights</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[array([[1.5141923]], dtype=float32), array([-4.1248693], dtype=float32)]
+</code></pre></div></div>
+<p>v&agrave; ta c&oacute; <code class="language-plaintext highlighter-rouge">y ~ 1.51*x - 4.12</code>.</p>
+
+<p><a name="-keras-cho-multi-layer-perceptron" href="deeplearning.html"></a></p>
+
+<h2 id="3-keras-cho-multi-layer-perceptron">3. Keras cho multi-layer perceptron</h2>
+
+<p>Ch&uacute;ng ta c&ugrave;ng x&acirc;y d&#7921;ng m&#7897;t m&#7841;ng MLP &#273;&#417;n gi&#7843;n v&#7899;i Keras &#273;&#7875; gi&#7843;i quy&#7871;t m&#7897;t b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh.
+<a name="-gioi-thieu-ve-fashion-mnist" href="deeplearning.html"></a></p>
+
+<h3 id="31-gi&#7899;i-thi&#7879;u-v&#7873;-fashion-mnist">3.1. Gi&#7899;i thi&#7879;u v&#7873; Fashion-MNIST</h3>
+
+<p>C&#417; s&#7903; d&#7919; li&#7879;u &#7843;nh &#273;&#432;&#7907;c d&ugrave;ng l&agrave; <a href="https://github.com/zalandoresearch/fashion-mnist">Fashion-MNIST</a>.</p>
+
+<p>Ch&uacute;ng ta &#273;&atilde; qu&aacute; quen v&#7899;i vi&#7879;c s&#7917; d&#7909;ng <a href="http://yann.lecun.com/exdb/mnist/">MNIST</a>. MNIST l&agrave; c&#417; s&#7903; d&#7919; li&#7879;u v&#7873; ch&#7919; s&#7889; vi&#7871;t tay, &#273;&#432;&#7907;c s&#7917; d&#7909;ng r&#7845;t r&#7897;ng r&atilde;i trong c&#7891;ng &#273;&#7891;ng AI/ML. MNIST th&#432;&#7901;ng &#273;&#432;&#7907;c th&#7917; &#273;&#7847;u ti&ecirc;n khi c&oacute; m&#7897;t thu&#7853;t to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh m&#7899;i. M&#7897;t s&#7889; ng&#432;&#7901;i n&oacute;i &ldquo;<em>If it doesn&rsquo;t work on MNIST, it won&rsquo;t work at all</em>&rdquo;. Nh&#432;ng &#273;&#7891;ng th&#7901;i, &ldquo;<em>Well, if it does work on MNIST, it may still fail on others.</em>&rdquo;</p>
+
+<p>Fashion-MNIST &#273;&#432;&#7907;c t&#7841;o ra g&#7847;n &#273;&acirc;y v&#7899;i k&iacute;ch th&#432;&#7899;c t&#432;&#417;ng t&#7921; nh&#432; MNIST nh&#432;ng c&aacute;c &#7843;nh l&agrave; c&aacute;c &#7843;nh x&aacute;m c&#7911;a trang ph&#7909;c v&#7899;i c&aacute;c nh&atilde;n: (0) T-shirt/top, (1) Trouser, (2) Pullover, (3) Dress, (4) Coat, (5) Sandal, (6) Shirt, (7) Sneaker, (8) Bag, (9) Ankle boot. Fashion-MNIST c&#361;ng c&oacute; 10 class, 60000 &#7843;nh cho training, 10000 &#7843;nh cho test, m&#7895;i &#7843;nh c&oacute; k&iacute;ch th&#432;&#7899;c 28x28 pixel v&agrave; l&agrave; c&aacute;c &#7843;nh x&aacute;m v&#7899;i ch&#7881; m&#7897;t channel. D&#432;&#7899;i &#273;&acirc;y l&agrave; m&#7897;t v&iacute; d&#7909; v&#7873; &#7843;nh c&#7911;a class (2) Pullover.</p>
+
+<hr><div class="imgcap">
+<div>
+    <img src="images/36_keras-mlp1.png" width="255"></div>
+<div class="thecap">H&igrave;nh &#7843;nh m&#7897;t m&#7851;u d&#7919; li&#7879;u &#273;&#7847;u v&agrave;o v&#7899;i k&iacute;ch th&#432;&#7899;c 28x28, t&#432;&#417;ng &#7913;ng v&#7899;i nh&atilde;n "pullover" - &aacute;o len chui &#273;&#7847;u <br></div>
+</div>
+<hr><p>T&aacute;c gi&#7843; c&#7911;a Fashion-MNIST cho r&#7857;ng c&#7847;n ph&#7843;i thay th&#7871; MNIST v&igrave;:</p>
+
+<ul><li>
+    <p><strong>MNIST &#273;&atilde; tr&#7903; n&ecirc;n qu&aacute; d&#7877;</strong>. R&#7845;t nhi&#7873;u thu&#7853;t to&aacute;n deep learning &#273;&atilde; &#273;&#7841;t &#273;&#432;&#7907;c &#273;&#7897; ch&iacute;nh x&aacute;c l&ecirc;n t&#7899;i 99.7%, ngay c&#7843; KNN c&#361;ng &#273;&#7841;t &#273;&#432;&#7907;c tr&ecirc;n 96%. R&#7845;t kh&oacute; &#273;&#7875; &#273;&aacute;nh b&#7841;i con s&#7889; 99.7%, v&agrave; n&#7871;u m&ocirc; h&igrave;nh c&#7911;a b&#7841;n &#273;&#7841;t &#273;&#432;&#7907;c con s&#7889; n&agrave;y, ta v&#7851;n kh&oacute; c&oacute; th&#7875; k&#7871;t lu&#7853;n ngay &#273;&oacute; l&agrave; m&#7897;t m&ocirc; h&igrave;nh t&#7889;t.</p>
+  </li>
+  <li>
+    <p><strong>MNIST &#273;&#432;&#7907;c s&#7917; d&#7909;ng qu&aacute; nhi&#7873;u</strong> &#273;&#7871;n m&#7913;c nh&agrave;m ch&aacute;n.</p>
+  </li>
+  <li>
+    <p><strong>MNIST kh&ocirc;ng &#273;&#7841;i di&#7879;n cho c&aacute;c b&agrave;i to&aacute;n computer vision hi&#7879;n &#273;&#7841;i</strong>.</p>
+  </li>
+</ul><p>C&#417; s&#7903; d&#7919; li&#7879;u Fashion-MNIST c&oacute; th&#7875; &#273;&#432;&#7907;c t&#7843;i v&#7873; th&ocirc;ng qua <code class="language-plaintext highlighter-rouge">keras.datasets</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 1. prepare data 
+</span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span> 
+<span class="kn">from</span> <span class="nn">keras.datasets</span> <span class="kn">import</span> <span class="n">fashion_mnist</span>
+
+<span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">fashion_mnist</span><span class="p">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'x_train shape:</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span> <span class="n">x_train</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'x_test shape:</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span> <span class="n">x_test</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'y_train shape:</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span> <span class="n">y_train</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'y_test shape:</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span> <span class="n">y_test</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x_train shape:   (60000, 28, 28)
+x_test shape:    (10000, 28, 28)
+y_train shape:   (60000,)
+y_test shape:    (10000,)
+</code></pre></div></div>
+
+<p>&#7902; &#273;&acirc;y, <code class="language-plaintext highlighter-rouge">x_train, x_test</code> mang c&aacute;c gi&aacute; tr&#7883; nguy&ecirc;n t&#7915; 0 &#273;&#7871;n 255, <code class="language-plaintext highlighter-rouge">y_train, y_test</code> ch&#7913;a c&aacute;c s&#7889; nguy&ecirc;n t&#7915; 0 &#273;&#7871;n 9 th&#7875; hi&#7879;n class c&#7911;a <code class="language-plaintext highlighter-rouge">x</code> t&#432;&#417;ng &#7913;ng. N&#7871;u s&#7917; d&#7909;ng m&#7897;t neural network v&#7899;i <a href="softmax.html">softmax layer</a> &#7903; cu&#7889;i, ta c&#7847;n chu&#7849;n ho&aacute; d&#7919; li&#7879;u &#273;&#7847;u v&agrave;o <code class="language-plaintext highlighter-rouge">x_train, x_test</code> v&#7873; &#273;o&#7841;n [0, 1] v&agrave; chuy&#7875;n <code class="language-plaintext highlighter-rouge">y_train, y_test</code> v&#7873; d&#7841;ng one-hot coding.</p>
+
+<p>Vi&#7879;c n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n nh&#432; sau:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># data normalization
+</span><span class="n">x_train</span> <span class="o">=</span> <span class="n">x_train</span><span class="o">/</span><span class="mf">255.</span>
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">x_test</span><span class="o">/</span><span class="mf">255.</span> 
+<span class="n">num_classes</span> <span class="o">=</span> <span class="mi">10</span> 
+<span class="c1"># convert class vectors to binary class matrices
+</span><span class="n">y_train</span> <span class="o">=</span> <span class="n">keras</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">keras</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a name="-xay-dung-mot-multi-layer-perceptron-de-giai-quyet-bai-toan" href="deeplearning.html"></a></p>
+
+<h3 id="32-x&acirc;y-d&#7921;ng-m&#7897;t-multi-layer-perceptron-&#273;&#7875;-gi&#7843;i-quy&#7871;t-b&agrave;i-to&aacute;n">3.2. X&acirc;y d&#7921;ng m&#7897;t multi-layer perceptron &#273;&#7875; gi&#7843;i quy&#7871;t b&agrave;i to&aacute;n</h3>
+<p>Ta &#273;&atilde; th&#7921;c hi&#7879;n b&#432;&#7899;c &#273;&#7847;u ti&ecirc;n trong b&agrave;i to&aacute;n x&acirc;y d&#7921;ng m&ocirc; h&igrave;nh neural network cho b&agrave;i to&aacute;n classification &ndash; b&#432;&#7899;c chu&#7849;n b&#7883; d&#7919; li&#7879;u.</p>
+
+<p>Trong m&#7909;c n&agrave;y, ch&uacute;ng ta s&#7869; &#273;i x&acirc;y d&#7921;ng m&#7897;t neural network &#273;&#417;n gi&#7843;n. M&#7897;t m&ocirc; h&igrave;nh &#273;&#7911; &#273;&#417;n gi&#7843;n gi&uacute;p ch&uacute;ng ta ti&#7871;p t&#7909;c l&agrave;m quen v&#7899;i Keras l&agrave; <a href="mlp.html">multi-layer perceptron</a>.</p>
+
+<p>Ta s&#7869; x&acirc;y d&#7921;ng m&#7897;t MLP v&#7899;i 3 hidden layers. C&aacute;c layer c&#7909; th&#7875; nh&#432; sau:</p>
+<ol><li>Input layer v&#7899;i s&#7889; units l&agrave; \(28\times 28 = 784\). M&#7895;i input l&agrave; m&#7897;t b&#7913;c &#7843;nh c&#7911;a Fashion-MNIST &#273;&#432;&#7907;c <em>k&eacute;o d&agrave;i ra</em> th&agrave;nh m&#7897;t vector.</li>
+  <li>Hidden layer th&#7913; nh&#7845;t v&#7899;i 128 units, activation l&agrave; ReLU.</li>
+  <li>Hidden layer th&#7913; hai v&#7899;i 256 units, activation l&agrave; ReLU.</li>
+  <li>Hidden layer th&#7913; ba v&#7899;i 512 units, activation l&agrave; ReLU.</li>
+  <li>Output layer l&agrave; m&#7897;t softmax layer v&#7899;i 10 units.</li>
+</ol><p>H&agrave;m m&#7845;t m&aacute;t l&agrave; cross entropy, ta t&#7841;m th&#7901;i ch&#432;a quan t&acirc;m &#273;&#7871;n <a href="/2017/03/04/overfitting/#-regularization">regularization</a> (&#7903; &#273;&acirc;y l&agrave; <a href="/2017/03/04/overfitting/#-%5C%5Cl%5C%5C-regularization">weight decay</a>).</p>
+
+<p>Ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p n&agrave;y l&agrave; <code class="language-plaintext highlighter-rouge">'accuracy'</code>, t&#7913;c s&#7889; l&#432;&#7907;ng &#273;i&#7875;m &#273;&#432;&#7907;c ph&acirc;n lo&#7841;i &#273;&uacute;ng trong to&agrave;n b&#7897; s&#7889; &#273;i&#7875;m.</p>
+
+<p>Network &#273;&#417;n gi&#7843;n n&agrave;y &#273;&#432;&#7907;c th&#7921;c hi&#7879;n tr&ecirc;n Keras nh&#432; sau:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Flatten</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">metrics</span> 
+<span class="c1"># 2. buid model 
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)))</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">))</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">))</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">))</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'softmax'</span><span class="p">))</span>
+
+<span class="c1"># 3. loss, metrics 
+</span><span class="n">model</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">keras</span><span class="p">.</span><span class="n">losses</span><span class="p">.</span><span class="n">categorical_crossentropy</span><span class="p">,</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="p">.</span><span class="n">optimizers</span><span class="p">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>&#7902; &#273;&acirc;y c&oacute; m&#7897;t h&agrave;m m&#7899;i l&agrave; <code class="language-plaintext highlighter-rouge">Flatten()</code>, h&agrave;m n&agrave;y bi&#7871;n m&#7895;i &#273;i&#7875;m d&#7919; li&#7875;u &#7903; d&#7841;ng m&#7897;t m&#7843;ng nhi&#7873;u chi&#7873;u th&agrave;nh m&#7897;t m&#7843;ng m&#7897;t chi&#7873;u. <em>V&igrave; ta &#273;ang s&#7917; d&#7909;ng MLP n&ecirc;n ta c&#7847;n l&agrave;m c&ocirc;ng vi&#7879;c n&agrave;y. V&#7873; sau, khi s&#7917; d&#7909;ng CNN, vi&#7879;c gi&#7919; nguy&ecirc;n m&#7843;ng hai chi&#7873;u s&#7869; cho k&#7871;t qu&#7843; t&#7889;t h&#417;n.</em></p>
+
+<p>K&#7871;t qu&#7843; sau khi th&#7921;c hi&#7879;n &#273;o&#7841;n code tr&ecirc;n</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Epoch 1/20
+60000/60000 [==============================] - 3s 47us/step - loss: 0.6784 - acc: 0.7582
+....
+Epoch 20/20
+60000/60000 [==============================] - 3s 54us/step - loss: 0.2140 - acc: 0.9192
+</code></pre></div></div>
+
+<p>Sau 20 epochs, m&ocirc; h&igrave;nh cho &#273;&#7897; ch&iacute;nh x&aacute;c tr&ecirc;n t&#7853;p hu&#7845;n luy&#7879;n <code class="language-plaintext highlighter-rouge">x_train</code> kh&aacute; cao.</p>
+
+<p>N&#7871;u ch&uacute;ng ta mu&#7889;n &#273;&aacute;nh gi&aacute; m&ocirc; h&igrave;nh tr&ecirc;n t&#7853;p <code class="language-plaintext highlighter-rouge">x_test</code>, ta c&oacute; th&#7875; th&#7921;c hi&#7879;n nh&#432; sau:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">metrics</span> 
+<span class="n">score</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Test loss: %.4f'</span><span class="o">%</span> <span class="n">score</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Test accuracy %.4f'</span><span class="o">%</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Test loss: 0.3312
+Test accuracy 0.8840
+</code></pre></div></div>
+
+<p>Nh&#432; v&#7853;y, &#273;&#7897; ch&iacute;nh x&aacute;c c&#7911;a m&ocirc; h&igrave;nh tr&ecirc;n t&#7853;p ki&#7875;m th&#7917; &#273;&#7841;t 88.4%.</p>
+
+<p><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; th&#7917; gi&#7843;i quy&#7871;t b&agrave;i to&aacute;n n&agrave;y b&#7857;ng c&aacute;c thu&#7853;t to&aacute;n ph&acirc;n lo&#7841;i kh&aacute;c v&agrave; so s&aacute;nh k&#7871;t qu&#7843;.</em></p>
+
+<p><a name="-nhan-xet" href="deeplearning.html"></a></p>
+
+<h3 id="33-nh&#7853;n-x&eacute;t">3.3. Nh&#7853;n x&eacute;t</h3>
+
+<ul><li>
+    <p>D&#7919; li&#7879;u &#273;&#7847;u v&agrave;o ch&#7881; l&agrave; 784 chi&#7873;u v&agrave; &#273;&#7863;c tr&#432;ng cho d&#7919; li&#7879;u th&#7901;i trang c&#361;ng kh&ocirc;ng qu&aacute; ph&#7913;c t&#7841;p tr&ecirc;n n&#7873;n l&agrave; m&#7897;t m&agrave;u &#273;en v&agrave; &#7843;nh &#273;&atilde; &#273;&#432;&#7907;c c&#259;n ch&#7881;nh &#273;&uacute;ng t&acirc;m, &#273;&uacute;ng k&iacute;ch th&#432;&#7899;c. MLP m&#7863;c d&ugrave; cho k&#7871;t qu&#7843; t&#432;&#417;ng &#273;&#7889;i t&#7889;t trong b&agrave;i to&aacute;n n&agrave;y, n&oacute; kh&ocirc;ng ph&#7843;i l&agrave; m&#7897;t m&ocirc; h&igrave;nh t&#7889;i &#432;u cho d&#7919; li&#7879;u d&#7841;ng &#7843;nh v&igrave; &iacute;t nh&#7845;t, d&#7919; li&#7879;u &#7843;nh hai chi&#7873;u ban &#273;&#7847;u &#273;&atilde; &#273;&#432;&#7907;c <em>d&agrave;n ph&#7859;ng</em> ra th&agrave;nh d&#7919; li&#7879;u m&#7897;t chi&#7873;u, l&agrave;m m&#7845;t &#273;i nh&#7919;ng th&ocirc;ng tin v&#7873; kh&ocirc;ng gian trong &#7843;nh (spatial information). Convolutional neural network th&ocirc;ng th&#432;&#7901;ng s&#7869; cho k&#7871;t qu&#7843; t&#7889;t h&#417;n. T&ocirc;i s&#7869; s&#7899;m gi&#7899;i thi&#7879;u v&#7899;i b&#7841;n &#273;&#7885;c v&#7873; ki&#7871;n tr&uacute;c n&agrave;y.</p>
+  </li>
+  <li>
+    <p>M&#7841;ng MLP &#273;&#417;n gi&#7843;n n&agrave;y ch&#432;a d&ugrave;ng nhi&#7873;u k&#7929; thu&#7853;t c&#7911;a deep learning, ch&uacute;ng ta s&#7869; d&#7847;n l&agrave;m quen v&#7899;i c&aacute;c k&#7929; thu&#7853;t gi&uacute;p t&#259;ng &#273;&#7897; ch&iacute;nh x&aacute;c v&agrave; gi&#7843;m th&#7901;i gian hu&#7845;n luy&#7879;n trong c&aacute;c b&agrave;i sau.</p>
+  </li>
+</ul><p><a name="-ket-luan" href="deeplearning.html"></a></p>
+<h2 id="4-k&#7871;t-lu&#7853;n">4. K&#7871;t lu&#7853;n</h2>
+
+<ul><li>
+    <p>Keras l&agrave; m&#7897;t th&#432; vi&#7879;n t&#432;&#417;ng &#273;&#7889;i d&#7877; s&#7917; d&#7909;ng &#273;&#7889;i v&#7899;i ng&#432;&#7901;i m&#7899;i b&#7855;t &#273;&#7847;u. N&oacute; cung c&#7845;p c&aacute;c h&agrave;m s&#7889; c&#7847;n thi&#7871;t v&#7899;i c&uacute; ph&aacute;p &#273;&#417;n gi&#7843;n.</p>
+  </li>
+  <li>
+    <p>Khi &#273;i s&acirc;u h&#417;n v&agrave;o deep learning trong c&aacute;c b&agrave;i sau, ch&uacute;ng ta s&#7869; d&#7847;n l&agrave;m quen v&#7899;i c&aacute;c k&#7929; thu&#7853;t l&#7853;p tr&igrave;nh v&#7899;i Keras. M&#7901;i c&aacute;c b&#7841;n &#273;&oacute;n &#273;&#7885;c.</p>
+  </li>
+  <li>
+    <p>Source code trong b&agrave;i n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c t&igrave;m th&#7845;y <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/36_keras/Keras.ipynb">t&#7841;i &#273;&acirc;y</a>.
+<a name="-tai-lieu-tham-khao" href="deeplearning.html"></a></p>
+  </li>
+</ul><h2 id="5-t&agrave;i-li&#7879;u-tham-kh&#7843;o">5. T&agrave;i li&#7879;u tham kh&#7843;o</h2>
+
+<p>[1] <a href="https://towardsdatascience.com/battle-of-the-deep-learning-frameworks-part-i-cff0e3841750">Battle of the Deep Learning frameworks&#8202;&mdash;&#8202;Part I: 2017, even more frameworks and interfaces</a></p>
+
+<p>[2] <a href="https://keras.io/">Keras hompage</a></p>
+
+<p>[3] <a href="https://en.wikipedia.org/wiki/Comparison_of_deep_learning_software">Comparison of deep learning software &ndash; Wikipedia</a></p>
+
+</div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="deeplearning.html">&laquo; B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="forum.html">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2018/07/06/deeplearning/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11754787; 
+var sc_invisible=0; 
+var sc_security="75b9e032"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/75b9e032-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+                  
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2018/07/06/deeplearning/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2018/07/06/deeplearning/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2018/07/06/deeplearning/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras&url=https://machinelearningcoban.com/2018/07/06/deeplearning/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2018/07/06/deeplearning/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2018/07/06/deeplearning/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#6e513d1b0c040b0d1a533d07031e020b4e3d060f1c0b4e2c1b1a1a01001d480f031e552c010a1753274b5c5e1d0f194b5c5e1a06071d4b5c5e0f000a4b5c5e1a06011b09061a4b5c5e01084b5c5e17011b4f4b5c5e4e061a1a1e1d544141030f0d0607000b020b0f1c000700090d010c0f00400d0103415c5e5f56415e59415e58410a0b0b1e020b0f1c0007000941">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</title><!-- <script>
+var pageProperties = {
+    
+    category: "Chia-s&#7867;",
+    
+    url: "/lifesofar/",
+    title: "Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/lifesofar/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/lifesofar/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2017-07-10"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="Chia-s&#7867;"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/lifesofar/',
+'title': 'Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="prob.html">&laquo; B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="mlemap.html">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</h1>
+
+
+<ul class="tags"></ul><span class="post-date" style="color: gray; font-style: italic;">Jul 10, 2017
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <p>G&#7847;n &#273;&acirc;y c&oacute; m&#7897;t &#273;&#7897;c gi&#7843; nh&#7853;n m&igrave;nh l&agrave; <em>loyal reader</em> c&#7911;a blog, h&#7887;i t&ocirc;i v&#7873; ph&#432;&#417;ng ph&aacute;p t&ocirc;i h&#7885;c &#273;&#7841;i s&#7889;, gi&#7843;i t&iacute;ch, v&agrave; t&#7889;i &#432;u. T&ocirc;i kh&ocirc;ng th&#7921;c s&#7921; c&oacute; th&#7875; tr&#7843; l&#7901;i c&acirc;u h&#7887;i n&agrave;y trong m&#7897;t v&agrave;i c&acirc;u trao &#273;&#7893;i qua l&#7841;i. M&#7897;t ph&#7847;n v&igrave; t&ocirc;i ch&#432;a t&#7921; t&oacute;m t&#7855;t l&#7841;i &lsquo;ph&#432;&#417;ng ph&aacute;p&rsquo; c&#7911;a m&igrave;nh, m&#7897;t ph&#7847;n v&igrave; &#273;&oacute; l&agrave; c&#7843; m&#7897;t c&acirc;u chuy&#7879;n d&agrave;i, b&#7855;t &#273;&#7847;u t&#7915; h&#417;n hai m&#432;&#417;i n&#259;m tr&#432;&#7899;c.</p>
+
+<p>B&agrave;i vi&#7871;t n&agrave;y kh&ocirc;ng nh&#7857;m m&#7909;c &#273;&iacute;ch tr&#7843; l&#7901;i c&acirc;u h&#7887;i tr&ecirc;n m&agrave; ch&#7911; y&#7871;u &#273;&#7875; chia s&#7867; v&#7899;i c&aacute;c b&#7841;n c&acirc;u chuy&#7879;n &#273;i h&#7885;c c&#7911;a t&ocirc;i. Trong qu&aacute; tr&igrave;nh h&#7891;i t&#432;&#7903;ng, t&ocirc;i c&oacute; th&#7875; xen th&ecirc;m nhi&#7873;u c&#7843;m x&uacute;c c&aacute; nh&acirc;n v&agrave; nh&#7919;ng ng&#432;&#7901;i b&#7841;n tu&#7893;i th&#417; &#273;&atilde; &#7843;nh h&#432;&#7903;ng r&#7845;t nhi&#7873;u &#273;&#7871;n con ng&#432;&#7901;i t&ocirc;i b&acirc;y gi&#7901;.</p>
+
+<p>Nh&igrave;n chung, con &#273;&#432;&#7901;ng &#273;i h&#7885;c c&#7911;a t&ocirc;i kh&aacute; su&ocirc;n s&#7867; v&agrave; ch&#7911; y&#7871;u l&agrave; ni&#7873;m vui. Con &#273;&#432;&#7901;ng &#273;&oacute; c&oacute; nh&#7919;ng ch&ocirc;ng gai, nh&#432;ng t&ocirc;i lu&ocirc;n nh&igrave;n s&#7921; vi&#7879;c &#273;&#417;n gi&#7843;n b&#7857;ng m&#7897;t &#273;&ocirc;i m&#7855;t l&#7841;c quan.</p>
+
+<h3 id="h&egrave;-n&#259;m-1994---k&#7871;t-th&uacute;c-l&#7899;p-m&#7851;u-gi&aacute;o-b&#7889;n-tu&#7893;i">H&egrave; n&#259;m 1994 - k&#7871;t th&uacute;c l&#7899;p m&#7851;u gi&aacute;o b&#7889;n tu&#7893;i</h3>
+
+<p><em>Ng&agrave;y h&#7885;c m&#7851;u gi&aacute;o, t&ocirc;i v&agrave; &#273;&aacute;m b&#7841;n t&#7921; &#273;i b&#7897; &#273;i h&#7885;c. Tr&#432;&#7901;ng ngay trong l&agrave;ng, b&#7889; m&#7865; b&#7853;n kh&ocirc;ng &#273;&#432;a &#273;&oacute;n &#273;&#432;&#7907;c.</em></p>
+
+<p>Tr&#432;&#7899;c khi h&#7885;c ch&#7919; qu&#7889;c ng&#7919;, t&ocirc;i c&oacute; th&#7901;i gian m&#7897;t n&#259;m h&#7885;c ch&#7919; Nho &#7903; nh&agrave; m&#7897;t &ocirc;ng &#273;&#7891; trong l&agrave;ng. H&agrave;ng tu&#7847;n t&ocirc;i &#273;&#7841;p chi&#7871;c xe nh&#7887; x&iacute;u v&agrave; mang theo m&#7897;t cu&#7889;n v&#7903; t&#7899;i nh&agrave; &ocirc;ng. M&#7895;i tu&#7847;n t&ocirc;i &#273;&#432;&#7907;c d&#7841;y kho&#7843;ng m&#432;&#7901;i ch&#7919;, kh&ocirc;ng h&#7885;c vi&#7871;t m&agrave; ch&#7881; h&#7885;c thu&#7897;c v&#7865;t c&#7863;p song ng&#7919; Nho-Vi&#7879;t. T&ocirc;i nh&#7899; &#273;&#432;&#7907;c kho&#7843;ng m&#7845;y ch&#7919; &#273;&#7847;u v&agrave; hay &#273;em khoe v&#7899;i c&aacute;c c&ocirc; v&agrave; b&#7841;n trong l&#7899;p m&#7851;u gi&aacute;o. Ai c&#361;ng tr&#7847;m tr&#7891; khen, h&#7885; ch&#7859;ng bi&#7871;t r&#7857;ng t&ocirc;i &#273;&ocirc;i khi c&#361;ng b&#7883;a ra m&#7845;y n&eacute;t v&#7869;.</p>
+
+<h3 id="091995---101998">09/1995 - 10/1998</h3>
+<p><em>Ng&agrave;y h&#7885;c ti&#7875;u h&#7885;c, t&ocirc;i &#273;i h&#7885;c &#7903; m&#7897;t l&agrave;ng kh&aacute;c trong x&atilde;. T&ocirc;i v&agrave; &#273;&aacute;m b&#7841;n v&#7851;n t&#7921; &#273;i b&#7897; &#273;i h&#7885;c.</em></p>
+
+<p>Ng&agrave;y &#273;&#432;&#7907;c x&#7871;p v&agrave;o l&#7899;p m&#7897;t, t&ocirc;i &#273;&#432;&#7907;c b&#7847;u l&agrave;m l&#7899;p tr&#432;&#7903;ng nh&#432;ng v&#7851;n kh&oacute;c nh&#432; m&#432;a v&igrave; kh&ocirc;ng &#273;&#432;&#7907;c h&#7885;c c&ugrave;ng c&aacute;c b&#7841;n h&#7891;i m&#7851;u gi&aacute;o. T&ocirc;i &#273;&ograve;i m&#7865; &#273;&#432;a &#273;&#7871;n nh&agrave; th&#7847;y hi&#7879;u ph&oacute; <em>&#259;n v&#7841;</em> nh&#432;ng kh&ocirc;ng th&agrave;nh. Bu&#7893;i chi&#7873;u t&ocirc;i v&#7851;n bu&#7891;n m&#7897;t ch&uacute;t nh&#432;ng h&ocirc;m sau qu&ecirc;n ngay.</p>
+
+<p>C&ocirc; gi&aacute;o l&#7899;p m&#7897;t n&oacute;i t&ocirc;i n&ecirc;n d&#7915;ng h&#7885;c ch&#7919; Nho &#273;&#7875; t&#7853;p trung h&#7885;c ch&#7919; qu&#7889;c ng&#7919;. T&ocirc;i d&#7915;ng, &ocirc;ng &#273;&#7891; ti&#7871;c m&atilde;i v&igrave; l&agrave;ng t&ocirc;i v&#7915;a m&#7845;t &#273;i m&#7897;t th&#7847;y c&uacute;ng t&#432;&#417;ng lai.</p>
+
+<p>T&ocirc;i c&oacute; m&#7897;t con l&#7907;n nh&#7921;a, c&#7913; m&#7897;t &#273;i&#7875;m m&#432;&#7901;i th&igrave; b&#7889; t&ocirc;i s&#7869; th&#432;&#7903;ng 1-2k cho v&agrave;o l&#7907;n. C&oacute; ng&agrave;y t&ocirc;i &#273;&#432;&#7907;c 23 &#273;i&#7875;m m&#432;&#7901;i (&agrave;, t&ocirc;i r&#7845;t nh&#7841;y c&#7843;m v&#7899;i c&aacute;c con s&#7889;, nh&#7845;t l&agrave; c&aacute;c s&#7889; nguy&ecirc;n t&#7889; - m&#7863;c d&ugrave; l&#7899;p m&#7897;t ch&#432;a bi&#7871;t s&#7889; nguy&ecirc;n t&#7889; l&agrave; g&igrave;), v&#7853;y m&agrave; b&#7889; t&ocirc;i c&#361;ng ch&#7881; cho 10k b&#7887; l&#7907;n :D.</p>
+
+<p>B&#7889; t&ocirc;i d&#7841;y t&ocirc;i ch&#417;i c&#7901; vua. M&#7897;t th&#7901;i gian sau, t&ocirc;i th&#432;&#7901;ng xuy&ecirc;n th&#7855;ng b&#7889;.</p>
+
+<p>M&#7897;t ng&agrave;y n&#259;m l&#7899;p ba &#273;i h&#7885;c &#7903; l&#7899;p b&#7891;i d&#432;&#7905;ng h&#7885;c sinh gi&#7887;i, t&ocirc;i &#273;&#432;&#7907;c 3 &#273;i&#7875;m m&ocirc;n to&aacute;n trong khi c&ocirc; b&#7841;n th&acirc;n h&#7885;c c&ugrave;ng &#273;&#432;&#7907;c 8 &#273;i&#7875;m. T&ocirc;i r&#7845;t bu&#7891;n v&agrave; lo s&#7907;, ch&#432;a bao gi&#7901; &#273;i&#7875;m to&aacute;n c&#7911;a t&ocirc;i t&#7879; &#273;&#7871;n th&#7871;. V&#7853;y nh&#432;ng n&#7895;i bu&#7891;n c&#361;ng ch&#7881; k&eacute;o d&agrave;i kho&#7843;ng m&#7897;t ng&agrave;y, t&ocirc;i lu&ocirc;n bi&#7871;t c&aacute;ch l&agrave;m cho m&igrave;nh vui v&#7867; tr&#7903; l&#7841;i.</p>
+
+<h3 id="101998---052000-chuy&#7875;n-xu&#7889;ng-th&#7883;-tr&#7845;n-h&#7885;c">10/1998 - 05/2000: chuy&#7875;n xu&#7889;ng th&#7883; tr&#7845;n h&#7885;c</h3>
+
+<p><strong><em>&#272;&acirc;y l&agrave; b&#432;&#7899;c ngo&#7863;t quan tr&#7885;ng nh&#7845;t trong cu&#7897;c &#273;&#7901;i t&ocirc;i. T&ocirc;i s&#7869; nh&#7899; m&atilde;i nh&#7919;ng ng&#432;&#7901;i &#273;&atilde; s&#7889;ng c&ugrave;ng t&ocirc;i th&#7901;i gian &#7845;y</em></strong></p>
+
+<p><em>T&ocirc;i b&#7855;t &#273;&#7847;u s&#7889;ng xa nh&agrave; khi m&#7899;i ch&iacute;n tu&#7893;i. T&ocirc;i  l&#7841;i khu n&#7897;i tr&uacute; c&#7911;a tr&#432;&#7901;ng, m&#7897;t tu&#7847;n ch&#7881; v&#7873; nh&agrave; m&#7897;t l&#7847;n.</em></p>
+
+<p>Th&aacute;ng 09/1998, h&#7885;c sinh gi&#7887;i trong c&#7843; huy&#7879;n Th&aacute;i Thu&#7925; v&#7873; th&#7883; tr&#7845;n Di&ecirc;m &#272;i&#7873;n d&#7921; thi &#273;&#7875; ch&#7885;n ra m&#7897;t l&#7899;p &#273;&#7863;c bi&#7879;t. T&ocirc;i &#273;&#432;&#7907;c tr&#432;&#7901;ng ti&#7875;u h&#7885;c Th&#7909;y v&#259;n c&#7917; &#273;i thi, t&ocirc;i l&agrave;m b&agrave;i r&#7845;t t&#7879;! T&ocirc;i may m&#7855;n &#273;&#432;&#7907;c nh&#7853;n v&agrave;o l&#7899;p v&#7899;i r&#7845;t nhi&#7873;u b&#7841;n gi&#7887;i, t&ocirc;i &#273;o&aacute;n l&agrave; c&aacute;c b&#7841;n thi &#273;&#7873;u &#273;&#432;&#7907;c c&#7843; v&igrave; bi&#7871;t m&igrave;nh l&agrave;m b&agrave;i kh&ocirc;ng t&#7889;t.</p>
+
+<p>V&agrave; t&ocirc;i b&#7855;t &#273;&#7847;u s&#7889;ng xa gia &#273;&igrave;nh t&#7915; l&uacute;c m&#7899;i ch&iacute;n tu&#7893;i. T&ocirc;i &#7903; l&#7841;i khu n&#7897;i tr&uacute; c&#7911;a tr&#432;&#7901;ng c&ugrave;ng v&#7899;i r&#7845;t nhi&#7873;u b&#7841;n h&#7885;c. B&#7889; m&#7865; m&#7897;t tu&#7847;n &#273;&oacute;n t&ocirc;i m&#7897;t l&#7847;n. V&igrave; b&#7889; m&#7865; l&agrave;m vi&#7879;c c&#7843; tu&#7847;n n&ecirc;n &iacute;t khi &#273;&#7875; &yacute; th&#7913; b&#7843;y ch&#7911; nh&#7853;t, thi tho&#7843;ng b&#7889; m&#7865; qu&ecirc;n kh&ocirc;ng &#273;&oacute;n th&igrave; t&ocirc;i t&#7921; &#273;i b&#7897; v&#7873;. C&oacute; l&#7847;n &#273;i b&#7897; xa nh&#7845;t l&agrave; &#273;&#432;&#7907;c n&#7917;a &#273;&#432;&#7901;ng (kho&#7843;ng 3km), may t&ocirc;i g&#7863;p &ocirc;ng h&agrave;ng x&oacute;m &#273;i l&agrave;m v&#7873; nh&igrave;n th&#7845;y. May n&#7919;a l&agrave; h&#7891;i &#273;&oacute; xe c&#7897; kh&ocirc;ng nhi&#7873;u v&agrave; t&ocirc;i kh&ocirc;ng b&#7883; b&#7855;t c&oacute;c.</p>
+
+<p>T&ocirc;i v&#7851;n nh&#7899; nh&#432; in c&ocirc; Di&#7879;n d&#7841;y To&aacute;n t&ocirc;i ng&agrave;y l&#7899;p b&#7889;n. Ng&agrave;y &#273;&oacute; c&ocirc; 27 tu&#7893;i,
+k&eacute;m t&ocirc;i b&acirc;y gi&#7901; m&#7897;t tu&#7893;i. B&agrave;i h&#7885;c &#273;&#7847;u ti&ecirc;n &#7903; l&#7899;p m&#7899;i l&agrave; &ldquo;c&#7845;u t&#7841;o s&#7889;&rdquo;. B&agrave;i t&#7853;p m&#7851;u &#273;&#7847;u
+ti&ecirc;n l&agrave;: t&igrave;m m&#7897;t s&#7889; c&oacute; hai ch&#7919; s&#7889; sao cho khi th&ecirc;m ch&#7919; s&#7889; m&#7897;t v&agrave;o tr&#432;&#7899;c th&igrave; &#273;&#432;&#7907;c
+m&#7897;t s&#7889; m&#7899;i g&#7845;p n&#259;m l&#7847;n s&#7889; ban &#273;&#7847;u. Th&#7853;t l&agrave; k&#7923; di&#7879;u, m&#7897;t th&#7871; gi&#7899;i to&aacute;n h&#7885;c s&aacute;ng
+lo&agrave; m&#7903; ra tr&#432;&#7899;c m&#7855;t t&ocirc;i. M&#7897;t b&agrave;i h&#7885;c kh&aacute;c n&#7919;a t&ocirc;i nh&#7899; l&agrave;: c&oacute; bao nhi&ecirc;u s&#7889; c&oacute;
+hai ch&#7919; s&#7889; kh&aacute;c nhau &#273;&#432;&#7907;c t&#7841;o b&#7903;i c&aacute;c ch&#7919; s&#7889; 1, 2, 3. T&ocirc;i c&#7921;c k&#7923; sung s&#432;&#7899;ng v&igrave;
+th&#7845;y nh&#7919;ng l&#7901;i gi&#7843;i th&#7853;t &#273;&#7865;p m&agrave; c&ocirc; Di&#7879;n d&#7841;y ch&uacute;ng t&ocirc;i. T&ocirc;i ngh&#297; c&ocirc; qu&yacute; t&ocirc;i nh&#7845;t l&#7899;p, v&igrave; t&ocirc;i l&agrave; h&#7885;c sinh duy nh&#7845;t &#273;&#432;&#7907;c c&ocirc; t&#7893; ch&#7913;c sinh nh&#7853;t ri&ecirc;ng &#7903; l&#7899;p. C&ocirc; t&#7863;ng t&ocirc;i hai m&#432;&#417;i cu&#7889;n v&#7903; &ocirc; li, c&aacute;c b&#7841;n trong l&#7899;p c&#361;ng t&#7863;ng cho t&ocirc;i r&#7845;t nhi&#7873;u qu&agrave;. C&ocirc; l&agrave; c&ocirc; gi&aacute;o d&#7841;y
+to&aacute;n m&agrave; t&ocirc;i s&#7869; nh&#7899; m&atilde;i su&#7889;t cu&#7897;c &#273;&#7901;i n&agrave;y, kh&ocirc;ng ph&#7843;i l&agrave; &#273;&#7847;u ti&ecirc;n nh&#432;ng l&agrave; ng&#432;&#7901;i
+th&#7921;c s&#7921; &#273;&#432;a t&ocirc;i v&agrave;o con &#273;&#432;&#7901;ng h&#7885;c to&aacute;n d&agrave;i t&#7899;i t&#7853;n b&acirc;y gi&#7901;. V&agrave;i n&#259;m sau &#273;&oacute;, c&ocirc;
+chuy&#7875;n ra H&#7843;i Ph&ograve;ng v&agrave; t&ocirc;i kh&ocirc;ng th&#7875; n&agrave;o li&ecirc;n l&#7841;c l&#7841;i v&#7899;i c&ocirc; &#273;&#432;&#7907;c n&#7919;a.</p>
+
+<p><em>Sau khi vi&#7871;t b&agrave;i n&agrave;y, t&ocirc;i &#273;&atilde; t&igrave;m &#273;&#432;&#7907;c c&ocirc; Di&#7879;n. C&ocirc; c&#361;ng l&agrave; gi&aacute;o vi&ecirc;n d&#7841;y To&aacute;n c&#7911;a m&#7897;t b&#7841;n &#273;ang theo d&otilde;i blog.</em></p>
+
+<p>L&#7899;p t&ocirc;i c&oacute; m&#7897;t c&#7853;u b&#7841;n t&ecirc;n Th&#7883;nh, nh&agrave; g&#7847;n tr&#432;&#7901;ng. Bu&#7893;i chi&#7873;u v&agrave; t&#7889;i Th&#7883;nh hay v&agrave;o trong tr&#432;&#7901;ng ch&#417;i v&#7899;i t&ocirc;i. T&ocirc;i nh&#7855;c t&#7899;i Th&#7883;nh v&igrave; con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i v&agrave; Th&#7883;nh g&#7855;n v&#7899;i nhau kh&aacute; nhi&#7873;u v&#7873; sau.</p>
+
+<p>T&ocirc;i d&#7841;y Th&#7883;nh ch&#417;i c&#7901; vua. M&#7897;t th&#7901;i gian sau, Th&#7883;nh th&#432;&#7901;ng xuy&ecirc;n th&#7855;ng t&ocirc;i.</p>
+
+<p>N&#259;m &#7845;y thi h&#7885;c sinh gi&#7887;i, t&ocirc;i &#273;&#432;&#7907;c gi&#7843;i Nh&#7845;t t&#7881;nh. &#272;i&#7875;m &#273;&#7913;ng th&#7913; hai &#7903; huy&#7879;n sau m&#7897;t c&ocirc; b&#7841;n c&ugrave;ng l&#7899;p t&ecirc;n Trang (c&oacute; nhi&#7873;u gi&#7843;i Nh&#7845;t). H&#7891;i ti&#7875;u h&#7885;c thi h&#7885;c sinh gi&#7887;i c&oacute; c&#7843; hai m&ocirc;n To&aacute;n v&agrave; Ti&#7871;ng Vi&#7879;t. &#272;i&#7875;m Ti&#7871;ng Vi&#7879;t c&#7911;a t&ocirc;i kh&aacute; cao. Th&#7883;nh kh&ocirc;ng &#273;&#432;&#7907;c gi&#7843;i cao, v&agrave; c&#361;ng ch&#432;a n&#7893;i b&#7853;t l&#7855;m trong l&#7899;p.</p>
+
+<p><strong>Nh&#7919;ng ng&#432;&#7901;i b&#7841;n h&#7885;c r&#7845;t gi&#7887;i v&agrave; ch&#417;i r&#7845;t vui &#273;&atilde; gi&uacute;p &#273;&#7883;nh h&igrave;nh con ng&#432;&#7901;i t&ocirc;i sau n&agrave;y r&#7845;t nhi&#7873;u. &#272;&acirc;y l&agrave; m&#7889;c th&#7901;i gian m&agrave; t&ocirc;i kh&ocirc;ng th&#7875; kh&ocirc;ng nh&#7855;c t&#7899;i.</strong></p>
+
+<p>Ng&agrave;y l&#7899;p n&#259;m, ch&uacute;ng t&ocirc;i &#273;&#432;&#7907;c h&#7885;c c&ocirc; Th&#7843;o. C&ocirc; r&#7845;t t&#7889;t, nhi&#7879;t t&igrave;nh v&agrave; d&#7841;y r&#7845;t gi&#7887;i. Th&#7901;i gian g&#7847;n l&uacute;c thi h&#7885;c sinh gi&#7887;i t&#7881;nh, c&ocirc; t&#7893; ch&#7913;c d&#7841;y mi&#7877;n ph&iacute; cho c&aacute;c b&#7841;n d&#7921; thi v&agrave;o bu&#7893;i t&#7889;i &#7903; tr&#432;&#7901;ng. C&#7843; l&#7899;p t&ocirc;i sau n&agrave;y v&#7851;n th&#432;&#7901;ng g&#7885;i c&ocirc; l&agrave; &ldquo;M&#7865; Th&#7843;o&rdquo;. N&#259;m &#273;&oacute;, l&#7899;p t&ocirc;i c&oacute; r&#7845;t nhi&#7873;u gi&#7843;i cao. T&ocirc;i m&#7897;t l&#7847;n n&#7919;a &#273;&#432;&#7907;c gi&#7843;i Nh&#7845;t t&#7881;nh Th&aacute;i B&igrave;nh, v&agrave; &#273;i&#7875;m cao th&#7913; hai trong huy&#7879;n, sau m&#7897;t b&#7841;n n&#7919; t&ecirc;n Trang. M&#7897;t ni&#7873;m vui nho nh&#7887; l&agrave; &#273;i&#7875;m Ti&#7871;ng Vi&#7879;t c&#7911;a t&ocirc;i cao nh&#7845;t huy&#7879;n. T&ocirc;i c&ograve;n nh&#7899; b&agrave;i T&#7853;p l&agrave;m v&#259;n &#273;&#7873; ra l&agrave; &ldquo;H&atilde;y t&#432;&#7903;ng t&#432;&#7907;ng em &#273;&#432;&#7907;c gi&#7843;i nh&#7845;t trong k&#7923; thi h&#7885;c sinh gi&#7887;i t&#7881;nh. Ngay khi bi&#7871;t tin, c&#7843;m x&uacute;c c&#7911;a em nh&#432; th&#7871; n&agrave;o v&agrave; em s&#7869; l&agrave;m g&igrave;.&rdquo; C&aacute;i &#273;&#7873; g&igrave; k&#7923; qu&#7863;c, ch&#432;a thi &#273;&atilde; b&#7855;t t&#432;&#7903;ng t&#432;&#7907;ng r&#7891;i. C&ocirc; Th&#7843;o c&oacute; d&#7863;n t&ocirc;i vi&#7871;t l&#7841;i b&agrave;i v&#259;n &#273;&oacute; ng&agrave;y sau khi bi&#7871;t k&#7871;t qu&#7843;. T&ocirc;i c&oacute; vi&#7871;t l&#7841;i, nh&#432;ng t&ocirc;i bi&#7871;t ch&#7855;c ch&#7855;n kh&ocirc;ng th&#7875; hay b&#7857;ng l&uacute;c thi th&#7853;t.</p>
+
+<p>Sau khi thi h&#7885;c sinh gi&#7887;i v&agrave;o kho&#7843;ng th&aacute;ng 03/2000. C&aacute;c b&#7841;n trong khu n&#7897;i tr&uacute; c&#7911;a t&ocirc;i v&#7873; nh&agrave; h&#7871;t, ch&#7881; c&ograve;n m&igrave;nh t&ocirc;i &#7903; l&#7841;i v&igrave; b&#7889; m&#7865; t&ocirc;i b&#7853;n c&ocirc;ng vi&#7879;c kh&ocirc;ng &#273;&#432;a &#273;&oacute;n h&agrave;ng ng&agrave;y &#273;&#432;&#7907;c. T&ocirc;i v&#7851;n nh&#7899; bu&#7893;i t&#7889;i t&ocirc;i ng&#7911; c&ugrave;ng &ocirc;ng b&#7843;o v&#7879;. C&oacute; m&#7897;t c&ocirc; c&#7845;p d&#432;&#7905;ng m&#7895;i t&#7889;i v&agrave;o tr&#432;&#7901;ng n&#7845;u c&#417;m cho t&ocirc;i, m&#7897;t m&igrave;nh t&ocirc;i.</p>
+
+<p><em>C&oacute; nh&#7919;ng ng&#432;&#7901;i t&#7889;t, vi&#7879;c t&#7889;t di&#7877;n ra r&#7845;t b&igrave;nh th&#432;&#7901;ng ng&agrave;y &#273;&oacute;, b&acirc;y gi&#7901; tr&#7903; th&agrave;nh hi&#7871;m g&#7863;p.</em></p>
+
+<h3 id="092000---092003-v&#7851;n-h&#7885;c-l&#7899;p-ch&#7885;n-&#7903;-th&#7883;-tr&#7845;n">09/2000 - 09/2003: v&#7851;n h&#7885;c l&#7899;p ch&#7885;n &#7903; Th&#7883; tr&#7845;n</h3>
+<p>Ch&uacute;ng t&ocirc;i l&ecirc;n c&#7845;p hai, v&agrave; g&#7847;n nh&#432; l&#7899;p c&#7845;p m&#7897;t v&#7851;n &#273;&#432;&#7907;c h&#7885;c chung m&#7897;t l&#7899;p. Nh&#432;ng l&#7899;p b&acirc;y gi&#7901; ch&#7881; nh&#432; c&aacute;c l&#7899;p b&igrave;nh th&#432;&#7901;ng kh&aacute;c trong tr&#432;&#7901;ng ch&#7913; kh&ocirc;ng ph&#7843;i l&#7899;p &#273;&#7863;c bi&#7879;t nh&#432; c&#7845;p m&#7897;t. &#272;&#7897;i tuy&#7875;n h&#7885;c sinh gi&#7887;i gi&#7901; c&#361;ng kh&aacute;c v&igrave; ch&uacute;ng t&ocirc;i ch&#7881; &#273;&#432;&#7907;c ch&#7885;n m&#7897;t trong ba &#273;&#7897;i tuy&#7875;n: To&aacute;n, V&#259;n, Anh. C&ocirc; gi&aacute;o ch&#7911; nhi&#7879;m l&#7899;p s&aacute;u c&#7911;a t&ocirc;i l&agrave; c&ocirc; Thoa. C&ocirc; d&#7841;y V&#259;n, nghi&ecirc;m kh&#7855;c v&agrave; r&#7845;t quan t&acirc;m t&#7899;i l&#7899;p. T&#7899;i ng&agrave;y ch&#7885;n &#273;&#7897;i tuy&#7875;n, t&ocirc;i l&#432;&#7905;ng l&#7921; gi&#7919;a To&aacute;n v&agrave; V&#259;n v&igrave; c&#7843; hai m&ocirc;n t&ocirc;i &#273;&#7873;u h&#7885;c t&#7889;t :3. Cu&#7889;i c&ugrave;ng t&ocirc;i ch&#7885;n To&aacute;n v&igrave; &#273;&aacute;m b&#7841;n th&acirc;n, bao g&#7891;m Th&#7883;nh v&agrave; Trang, c&#361;ng theo h&#7885;c To&aacute;n. C&ocirc; Thoa c&oacute; l&#7869; h&#417;i bu&#7891;n v&igrave; l&#7899;p theo To&aacute;n g&#7847;n h&#7871;t.</p>
+
+<p>Tr&#432;&#7901;ng c&#7845;p hai kh&ocirc;ng c&oacute; khu n&#7897;i tr&uacute;, t&ocirc;i h&agrave;ng ng&agrave;y &#273;&#7841;p xe &#273;i h&#7885;c kho&#7843;ng 7km m&#7897;t chi&#7873;u. H&#7885;c &#273;&#7897;i tuy&#7875;n th&#432;&#7901;ng l&agrave; 2-3 bu&#7893;i s&aacute;ng/tu&#7847;n. Bu&#7893;i chi&#7873;u h&#7885;c &#7903; l&#7899;p b&igrave;nh th&#432;&#7901;ng v&#7899;i c&aacute;c b&#7841;n. Bu&#7893;i tr&#432;a t&ocirc;i th&#432;&#7901;ng v&#7873; nh&agrave; &#272;&ocirc;ng, nh&agrave; b&#7841;n &#7845;y b&aacute;n c&#417;m. Ch&uacute;ng t&ocirc;i th&#432;&#7901;ng kh&ocirc;ng ng&#7911; tr&#432;a m&agrave; &#273;&#7885;c Conan c&#7843; bu&#7893;i tr&#432;a d&#432;&#7899;i ph&ograve;ng ri&ecirc;ng c&#7911;a b&#7841;n &#7845;y.</p>
+
+<p>K&#7871;t th&uacute;c h&#7885;c k&#7923; I, t&ocirc;i &#273;&#432;&#7907;c &#273;i&#7875;m t&#7893;ng k&#7871;t 8.9, b&#7857;ng v&#7899;i Hi&#7879;p l&#7899;p tr&#432;&#7903;ng. Nh&#432;ng v&igrave; nh&agrave; t&ocirc;i &#7903; xa v&agrave; h&agrave;ng ng&agrave;y &#273;&#7841;p xe &#273;i h&#7885;c n&ecirc;n &#273;&#432;&#7907;c c&ocirc; Thoa th&#432;&#7903;ng m&#7897;t quy&#7875;n s&#7893; d&agrave;y, b&igrave;a c&#7913;ng m&agrave;u t&iacute;m &ndash; quy&#7875;n s&#7893; &#273;&#7865;p nh&#7845;t m&agrave; t&ocirc;i t&#7915;ng s&#7903; h&#7919;u. T&ocirc;i d&aacute;n &#7843;nh Thu&#7927; th&#7911; m&#7863;t tr&#259;ng l&ecirc;n trang &#273;&#7847;u ti&ecirc;n, ngay d&#432;&#7899;i l&#7901;i khen v&agrave; ch&#7919; k&yacute; c&#7911;a c&ocirc;. T&ocirc;i d&ugrave;ng quy&#7875;n s&#7893; n&agrave;y &#273;&#7875; ghi ch&eacute;p b&agrave;i t&#7853;p &#7903; l&#7899;p h&#7885;c &#273;&#7897;i tuy&#7875;n To&aacute;n c&aacute;c n&#259;m sau &#273;&oacute;. Quy&#7875;n s&#7889; n&agrave;y theo t&ocirc;i &#273;&#7871;n t&#7853;n n&#259;m th&#7913; t&#432; &#273;&#7841;i h&#7885;c, t&ocirc;i v&#7851;n thi tho&#7843;ng m&#7903; ra &#273;&#7885;c l&#7841;i &#273;&#7875; nh&#7899; v&#7873; m&#7897;t th&#7901;i h&#7885;c to&aacute;n t&#432;&#417;i &#273;&#7865;p. R&#7891;i kh&ocirc;ng hi&#7875;u v&igrave; sao m&agrave; t&ocirc;i l&#7841;i &#273;em cho quy&#7875;n s&#7893; v&#7899;i r&#7845;t nhi&#7873;u ki&#7871;n th&#7913;c v&agrave; k&#7927; ni&#7879;m &#273;&oacute; cho Ti&#7871;n c&ugrave;ng ph&ograve;ng k&yacute; t&uacute;c x&aacute;, Ti&#7871;n xin cho &#273;&#7913;a ch&aacute;u &#273;ang h&#7885;c &#273;&#7897;i tuy&#7875;n To&aacute;n. B&acirc;y gi&#7901; ngh&#297; l&#7841;i t&ocirc;i th&#7845;y r&#7845;t ti&#7871;c, kh&ocirc;ng bi&#7871;t cu&#7889;n &#273;&oacute; gi&#7901; th&#7871; n&agrave;o.</p>
+
+<p>N&#259;m l&#7899;p s&aacute;u, t&ocirc;i thi h&#7885;c sinh gi&#7887;i t&#7881;nh ch&#7881; &#273;&#432;&#7907;c gi&#7843;i Khuy&#7871;n Kh&iacute;ch, t&ocirc;i r&#7845;t th&#7845;t v&#7885;ng. Th&#7883;nh b&#7841;n t&ocirc;i x&#7871;p h&#7841;ng kh&aacute; cao trong &#273;&#7897;i v&agrave; b&#7855;t &#273;&#7847;u tr&#7903; th&agrave;nh ng&ocirc;i sao c&#7911;a huy&#7879;n Th&aacute;i Th&#7909;y. &#272;i&#7875;m cao nh&#7845;t thu&#7897;c v&#7873; m&#7897;t b&#7841;n n&#7919; t&ecirc;n Y&#7871;n, m&#7897;t nh&acirc;n v&#7853;t m&#7899;i xu&#7845;t hi&#7879;n trong l&#7899;p.</p>
+
+<p>L&#7899;p b&#7843;y, t&ocirc;i &#273;&#432;&#7907;c gi&#7843;i Ba, Th&#7883;nh h&igrave;nh nh&#432; c&#361;ng th&#7871;, Y&#7871;n v&#7851;n gi&agrave;nh &#273;i&#7875;m cao nh&#7845;t &#273;&#7897;i.</p>
+
+<p>L&#7899;p t&aacute;m, t&ocirc;i &#273;&#432;&#7907;c gi&#7843;i Nh&#7845;t, &#273;i&#7875;m cao nh&#7845;t &#273;&#7897;i (19.5/20) l&#7847;n &#273;&#7847;u ti&ecirc;n. Th&#7883;nh c&#361;ng &#273;&#7841;t gi&#7843;i cao.</p>
+
+<p>Trong th&#7901;i gian n&agrave;y, m&#7895;i m&ugrave;a h&egrave; t&ocirc;i &#273;&#7873;u &#273;&#432;&#7907;c b&#7889; &#273;&#432;a l&ecirc;n th&#7883; x&atilde; mua s&aacute;ch n&acirc;ng cao m&ocirc;n To&aacute;n. Cu&#7889;n s&aacute;ch t&ocirc;i th&iacute;ch nh&#7845;t l&agrave; cu&#7889;n &ldquo;Nh&#7919;ng b&agrave;i to&aacute;n c&#7893;&rdquo; c&#7911;a NXB gi&aacute;o d&#7909;c, b&igrave;a m&agrave;u v&agrave;ng, t&ocirc;i kh&ocirc;ng nh&#7899; t&ecirc;n t&aacute;c gi&#7843;. T&ocirc;i &#273;&#7885;c v&agrave; say m&ecirc; c&aacute;c b&agrave;i to&aacute;n c&#361;ng nh&#432; l&#7883;ch s&#7917; c&#7911;a To&aacute;n h&#7885;c t&#7915; cu&#7889;n s&aacute;ch n&agrave;y. C&aacute;c s&aacute;ch to&aacute;n n&acirc;ng cao kh&aacute;c c&#7911;a t&aacute;c gi&#7843; V&#361; H&#7919;u B&igrave;nh (c&ugrave;ng h&#7885; V&#361; H&#7919;u v&#7899;i t&ocirc;i) c&#361;ng l&agrave; h&agrave;nh trang theo su&#7889;t tu&#7893;i th&#417; h&#7885;c To&aacute;n c&#7911;a t&ocirc;i.</p>
+
+<h3 id="092003---092004">09/2003 - 09/2004</h3>
+<p>N&#259;m l&#7899;p ch&iacute;n, c&oacute; m&#7897;t s&#7921; thay &#273;&#7893;i l&#7899;n. L&#7899;p h&#7885;c ch&iacute;nh c&#7911;a ch&uacute;ng t&ocirc;i &#7903; th&#7883; tr&#7845;n
+nh&#432;ng l&#7899;p h&#7885;c &#273;&#7897;i tuy&#7875;n l&#7841;i &#7903; m&#7897;t tr&#432;&#7901;ng kh&aacute;c c&aacute;ch th&#7883; tr&#7845;n kho&#7843;ng 6km v&#7873; ph&iacute;a
+xa nh&agrave; t&ocirc;i h&#417;n. T&ocirc;i kh&ocirc;ng th&#7875; &#273;&#7841;p xe &#273;i v&#7873; &#273;&#432;&#7907;c v&agrave; ph&#7843;i t&igrave;m nh&agrave; tr&#7885; &#7903; l&#7841;i th&#7883;
+tr&#7845;n. Hi&#7879;p l&#7899;p tr&#432;&#7903;ng &#273;&#7873; ngh&#7883; t&ocirc;i v&#7873; nh&agrave; b&#7841;n &#7845;y &#7903; c&ugrave;ng. Ch&uacute;ng t&ocirc;i &#7903;
+c&ugrave;ng ph&ograve;ng trong m&#7897;t n&#259;m v&agrave; c&oacute; r&#7845;t nhi&#7873;u k&#7927; ni&#7879;m &#273;&#7865;p. T&ocirc;i v&#7851;n th&acirc;n v&#7899;i Hi&#7879;p v&agrave;
+gia &#273;&igrave;nh b&#7841;n &#7845;y. C&#7843; nh&agrave; &#273;&#7873;u r&#7845;t th&#432;&#417;ng t&ocirc;i v&agrave; coi t&ocirc;i nh&#432; ng&#432;&#7901;i trong nh&agrave;.</p>
+
+<p>C&ocirc; Di&#7879;p d&#7841;y &#272;&#7841;i S&#7889; v&agrave; th&#7847;y Quy&#7871;t d&#7841;y h&igrave;nh h&#7885;c &#273;&atilde; gi&uacute;p ch&uacute;ng t&ocirc;i h&#7885;c &#273;&#432;&#7907;c r&#7845;t
+nhi&#7873;u &#273;i&#7873;u m&#7899;i v&agrave;o n&#259;m &#273;&oacute;. Ch&uacute;ng t&ocirc;i b&#7855;t &#273;&#7847;u l&agrave;m quen v&#7899;i c&aacute;c b&agrave;i to&aacute;n b&#7845;t &#273;&#7859;ng
+th&#7913;c t&#7915; l&#7899;p ch&iacute;n. B&#7845;t &#273;&#7859;ng th&#7913;c Cauchy v&agrave; Bunhiacopxki c&#361;ng g&#7855;n v&#7899;i ch&uacute;ng t&ocirc;i
+t&#7915; nh&#7919;ng ng&agrave;y &#273;&oacute;. Ba tu&#7847;n cu&#7889;i tr&#432;&#7899;c khi thi h&#7885;c sinh gi&#7887;i t&#7881;nh, ch&uacute;ng t&ocirc;i &#273;&#432;&#7907;c
+mi&#7877;n h&#7885;c tr&ecirc;n l&#7899;p v&agrave; ch&#7881; t&#7853;p trung h&#7885;c &#273;&#7897;i tuy&#7875;n. C&#7843; ng&agrave;y ch&uacute;ng t&ocirc;i h&#7885;c c&ugrave;ng
+nhau, bu&#7893;i tr&#432;a &#259;n &#7903; nh&agrave; m&#7897;t b&#7841;n b&aacute;n c&#417;m g&#7847;n tr&#432;&#7901;ng &#273;&oacute;. &#272;&#7897;i tuy&#7875;n n&#259;m &#273;&oacute; &#273;&#7841;t
+gi&#7843;i r&#7845;t cao. Th&#7883;nh, Y&#7871;n, Trang &#273;&#7873;u &#273;&#432;&#7907;c gi&#7843;i Nh&#7845;t.
+Hi&#7879;p &#273;&#432;&#7907;c gi&#7843;i Nh&igrave;, t&ocirc;i &#273;&#432;&#7907;c &#273;i&#7875;m cao nh&#7845;t t&#7881;nh n&#259;m &#273;&oacute; (18.5/20).</p>
+
+<p>Sau khi thi h&#7885;c sinh gi&#7887;i xong, b&#7889; m&#7865; t&ocirc;i c&#7843;m &#417;n gia &#273;&igrave;nh Hi&#7879;p v&agrave; xin cho t&ocirc;i v&#7873; nh&agrave; v&igrave; ch&uacute;ng t&ocirc;i kh&ocirc;ng h&#7885;c &#273;&#7897;i tuy&#7875;n n&#7919;a. M&#7865; Hi&#7879;p gi&#7919; t&ocirc;i &#7903; l&#7841;i v&igrave; t&ocirc;i v&agrave; Hi&#7879;p h&#7885;c v&agrave; ch&#417;i c&ugrave;ng nhau r&#7845;t t&#7889;t, mu&#7889;n  hai &#273;&#7913;a c&ugrave;ng nhau chu&#7849;n b&#7883; cho k&#7923; thi v&agrave;o c&#7845;p ba.</p>
+
+<p><em>M&#7865; Hi&#7879;p kh&ocirc;ng bi&#7871;t r&#7857;ng ch&uacute;ng t&ocirc;i th&#432;&#7901;ng xuy&ecirc;n nh&#7883;n &#259;n s&aacute;ng d&agrave;nh ti&#7873;n &#273;i ch&#417;i &#273;i&#7879;n t&#7917; c&ugrave;ng nhau. H&#7891;i &#273;&oacute; ch&uacute;ng t&ocirc;i th&#432;&#7901;ng ch&#417;i B&oacute;ng &#273;&aacute; 99, ch&#7885;n &#273;&#7897;i tuy&#7875;n Brazil v&agrave; th&#432;&#7901;ng xuy&ecirc;n v&ocirc; &#273;&#7883;ch.</em></p>
+
+<p>C&#361;ng trong n&#259;m &#273;&oacute;, c&oacute; ch&#432;&#417;ng tr&igrave;nh &#273;i h&#7885;c c&#7845;p ba &#7903; Singapore; t&#7881;nh t&ocirc;i c&#7917; hai b&#7841;n &#273;i&#7875;m cao nh&#7845;t m&ocirc;n To&aacute;n v&agrave; ti&#7871;ng Anh &#273;i thi. T&ocirc;i r&#7845;t d&#7889;t ti&#7871;ng Anh nh&#432;ng v&#7851;n qua &#273;&#432;&#7907;c b&agrave;i thi vi&#7871;t. &#272;&#7871;n l&uacute;c ph&#7887;ng v&#7845;n t&#7841;i &#272;&#7841;i s&#7913; qu&aacute;n Singapore th&igrave; ch&#7883;u lu&ocirc;n, kh&ocirc;ng bi&#7871;t n&oacute;i ch&#7919; n&agrave;o. C&oacute; l&#7869; &#273;&oacute; l&agrave; m&#7897;t &#273;i&#7873;u may m&#7855;n, kh&ocirc;ng hi&#7875;u sao t&ocirc;i lu&ocirc;n cho r&#7857;ng nh&#432; v&#7853;y.</p>
+
+<p>Cu&#7889;i n&#259;m l&#7899;p ch&iacute;n, t&ocirc;i kh&ocirc;ng h&#7873; bi&#7871;t g&igrave; v&#7873; chuy&ecirc;n S&#432; Ph&#7841;m v&agrave; chuy&ecirc;n T&#7893;ng H&#7907;p, t&ocirc;i ch&#7881; bi&#7871;t chuy&ecirc;n Th&aacute;i B&igrave;nh v&agrave; &#273;&#259;ng k&yacute; thi v&agrave;o &#273;&oacute;. Qua c&aacute;c b&#7841;n, t&ocirc;i c&oacute; k&#7883;p &#273;&#259;ng k&yacute; thi chuy&ecirc;n S&#432; Ph&#7841;m nh&#432;ng thi thi&#7871;u &#273;i&#7875;m r&#7845;t nhi&#7873;u. Th&#7883;nh v&agrave; &#272;&ocirc;ng &#273;&#7895; v&agrave; h&#7885;c S&#432; Ph&#7841;m. T&ocirc;i &#273;&#7895; chuy&ecirc;n Th&aacute;i B&igrave;nh, &#273;i&#7875;m &#273;&#7913;ng th&#7913; t&#432; trong k&#7923; thi &#273;&oacute;, sau hai b&#7841;n n&#7919; v&agrave; m&#7897;t b&#7841;n nam kh&aacute;c. Ch&uacute;ng t&ocirc;i c&oacute; nhi&#7873;u cu&#7897;c chia ly sau s&aacute;u n&#259;m h&#7885;c c&ugrave;ng nhau. R&#7845;t nhi&#7873;u l&#432;u luy&#7871;n.</p>
+
+<p><em>C&aacute;c b&#7841;n trong l&#7899;p c&#7845;p m&#7897;t v&agrave; c&#7845;p hai v&#7851;n ch&#417;i r&#7845;t th&acirc;n v&#7899;i nhau cho t&#7899;i b&acirc;y gi&#7901;. L&#7899;p &#273;&oacute; l&agrave; l&#7899;p t&ocirc;i nh&#7899; nh&#7845;t trong su&#7889;t th&#7901;i gian &#273;i h&#7885;c.</em></p>
+
+<h3 id="092004---052007-h&#7885;c-chuy&ecirc;n-to&aacute;n">09/2004 - 05/2007: H&#7885;c chuy&ecirc;n To&aacute;n</h3>
+<p>T&ocirc;i &#7903; l&#7841;i k&yacute; t&uacute;c x&aacute; c&#7911;a tr&#432;&#7901;ng Chuy&ecirc;n Th&aacute;i B&igrave;nh, m&#7897;t tu&#7847;n &#273;&#7841;p xe 32km v&#7873; nh&agrave; v&agrave;o s&aacute;ng Th&#7913; B&#7843;y v&agrave; l&ecirc;n l&#7841;i v&agrave;o chi&#7873;u Ch&#7911; Nh&#7853;t.</p>
+
+<p>T&ocirc;i h&#7885;c l&#7899;p chuy&ecirc;n To&aacute;n, v&agrave; th&#7921;c s&#7921; &#273;&#432;&#7907;c d&#7841;y r&#7845;t s&acirc;u v&#7873; To&aacute;n. K&yacute; t&uacute;c x&aacute; c&#7911;a t&ocirc;i 19h30 &#273;&oacute;ng c&#7917;a, kh&ocirc;ng TV, kh&ocirc;ng internet, kh&ocirc;ng n&oacute;i chuy&#7879;n to. T&ocirc;i th&#432;&#7901;ng th&#7913;c &#273;&#7871;n 2-3 gi&#7901; sang &#273;&#7885;c s&aacute;ch To&aacute;n v&agrave; r&#7845;t nhi&#7873;u ti&#7875;u thuy&#7871;t. &#272;&#417;n gi&#7843;n v&igrave; t&ocirc;i th&iacute;ch h&#7885;c v&agrave; th&iacute;ch &#273;&#7885;c. C&ocirc; gi&aacute;o d&#7841;y V&#259;n l&#7899;p 10 c&#7911;a ch&uacute;ng t&ocirc;i c&#361;ng l&agrave; qu&#7843;n l&yacute; th&#432; vi&#7879;n tr&#432;&#7901;ng n&ecirc;n l&#7899;p t&ocirc;i &#273;&#432;&#7907;c m&#432;&#7907;n r&#7845;t nhi&#7873;u s&aacute;ch t&#7915; th&#432; vi&#7879;n.</p>
+
+<p>L&#7899;p 10 t&#7881;nh Th&aacute;i B&igrave;nh kh&ocirc;ng t&#7893; ch&#7913;c thi h&#7885;c sinh gi&#7887;i t&#7881;nh v&agrave; t&ocirc;i c&#361;ng ch&#432;a &#273;&#7911; &#273;i&#7873;u ki&#7879;n thi h&#7885;c sinh gi&#7887;i qu&#7889;c gia. T&ocirc;i v&#7851;n nh&#7899; tr&#432;&#7901;ng Chuy&ecirc;n Th&aacute;i B&igrave;nh t&#7893; ch&#7913;c thi ba m&ocirc;n thi &#273;&#7841;i h&#7885;c sau m&#7895;i n&#7917;a h&#7885;c k&#7923;. L&#7847;n &#273;&#7847;u ti&ecirc;n &#273;i&#7875;m t&ocirc;i kh&aacute; cao trong tr&#432;&#7901;ng. &#272;i&#7875;m cao nh&#7845;t l&agrave; Nhung, c&ocirc; b&#7841;n h&#7885;c r&#7845;t gi&#7887;i &#7903; l&#7899;p chuy&ecirc;n L&yacute;.</p>
+
+<p>T&ocirc;i v&agrave; Th&#7883;nh v&#7851;n th&#432;&#7901;ng xuy&ecirc;n li&ecirc;n l&#7841;c m&#7863;c d&ugrave; Th&#7883;nh h&#7885;c &#7903; S&#432; Ph&#7841;m. Nhi&#7873;u l&#7847;n tr&ecirc;n &#273;&#432;&#7901;ng v&#7873;
+qu&ecirc;, Th&#7883;nh d&#7915;ng l&#7841;i &#7903; Tp Th&aacute;i B&igrave;nh m&#7897;t &#273;&ecirc;m v&agrave; &#7903; c&ugrave;ng t&ocirc;i trong k&yacute; t&uacute;c x&aacute;, hai th&#7857;ng n&#7857;m chung m&#7897;t chi&#7871;c gi&#432;&#7901;ng r&#7897;ng 90cm. Th&#7883;nh
+th&#432;&#7901;ng mang theo r&#7845;t nhi&#7873;u t&agrave;i li&#7879;u t&#7915; S&#432; Ph&#7841;m v&#7873; cho t&ocirc;i. T&ocirc;i &#273;&#432;&#7907;c ti&#7871;p c&#7853;n nhi&#7873;u b&agrave;i to&aacute;n
+h&igrave;nh h&#7885;c hay t&#7915; th&#7847;y Nguy&#7877;n Minh H&agrave; v&agrave; nhi&#7873;u b&agrave;i t&#7893; h&#7907;p kh&oacute; m&#7899;i l&#7841;, nh&#7919;ng
+th&#7913; m&agrave; t&ocirc;i kh&ocirc;ng &#273;&#432;&#7907;c h&#7885;c &#7903; Th&aacute;i B&igrave;nh. T&ocirc;i v&agrave; Th&#7883;nh th&#432;&#7901;ng th&#7913;c &#273;&#7871;n 2-3 gi&#7901; &#273;&ecirc;m
+n&oacute;i chuy&#7879;n c&ugrave;ng nhau. S&aacute;ng n&#259;m gi&#7901; d&#7853;y &#273;&#7841;p xe &#273;&#432;a Th&#7883;nh ra b&#7871;n xe v&#7873; qu&ecirc;. Nh&#7919;ng
+t&agrave;i li&#7879;u qu&yacute; gi&aacute; Th&#7883;nh mang v&#7873; &#273;&atilde; gi&uacute;p t&ocirc;i r&#7845;t nhi&#7873;u trong vi&#7879;c h&#7885;c m&ocirc;n To&aacute;n.</p>
+
+<p>H&egrave; n&#259;m 2005, t&ocirc;i xin b&#7889; l&ecirc;n H&agrave; N&#7897;i mua s&aacute;ch To&aacute;n n&acirc;ng cao. T&ocirc;i v&#7851;n nh&#7899; l&#7847;n &#273;&#7847;u ti&ecirc;n ti&ecirc;u nhi&#7873;u ti&#7873;n th&#7871; &#273;&#7875; mua s&aacute;ch. T&ocirc;i t&#7921; &#273;i H&agrave; N&#7897;i l&ecirc;n nh&agrave; c&#7853;u; c&#7853;u &#273;&#432;a t&ocirc;i &#273;i nh&agrave; s&aacute;ch Gi&#7843;ng V&otilde; v&agrave; Nguy&#7877;n Th&aacute;i H&#7885;c. T&ocirc;i mua nhi&#7873;u s&aacute;ch, h&#7871;t t&#7893;ng c&#7897;ng 327k. T&ocirc;i th&#7845;y h&#417;i ti&#7871;c ti&#7873;n nh&#432;ng nhi&#7873;u s&aacute;ch hay th&#7871; n&agrave;y ch&#7855;c b&#7889; kh&ocirc;ng m&#7855;ng (m&#7897;t b&#7919;a c&#417;m h&#7891;i &#273;&oacute; t&ocirc;i &#259;n ch&#7881; ba ngh&igrave;n &#273;&#7891;ng).</p>
+
+<p>N&#259;m 2006, h&#7885;c l&#7899;p 11, t&ocirc;i v&agrave; b&#7889;n b&#7841;n kh&aacute;c trong l&#7899;p &#273;&#432;&#7907;c ch&#7885;n v&agrave;o &#273;&#7897;i tuy&#7875;n thi h&#7885;c sinh gi&#7887;i qu&#7889;c gia c&#7911;a t&#7881;nh Th&aacute;i B&igrave;nh. T&ocirc;i &#273;&#432;&#7907;c gi&#7843;i Ba, hai b&#7841;n n&#7919; trong l&#7899;p &#273;&#432;&#7907;c gi&#7843;i Nh&igrave;. &#272;i&#7875;m thi c&#7911;a t&ocirc;i v&#7851;n lu&ocirc;n k&eacute;m c&aacute;c b&#7841;n n&#7919;.</p>
+
+<p>N&#259;m l&#7899;p 12, t&ocirc;i v&#7851;n trong &#273;&#7897;i tuy&#7875;n to&aacute;n c&#7911;a t&#7881;nh. N&#259;m n&agrave;y l&agrave; n&#259;m Vi&#7879;t Nam t&#7893; ch&#7913;c thi International Mathematical Olympiad (IMO). T&ocirc;i v&#7851;n &#273;&oacute;n b&aacute;o To&aacute;n h&#7885;c tu&#7893;i tr&#7867; ng&agrave;y 15 h&agrave;ng th&aacute;ng v&agrave; thi tho&#7843;ng n&#7897;p b&agrave;i l&ecirc;n b&aacute;o. H&agrave;ng th&aacute;ng b&aacute;o v&#7873; t&#7899;i b&#432;u &#273;i&#7879;n Th&aacute;i B&igrave;nh kho&#7843;ng ng&agrave;y 18-19 nh&#432;ng t&ocirc;i &#273;&#7841;p xe ra s&#7841;p b&aacute;o m&#7895;i ng&agrave;y t&#7915; ng&agrave;y 15 &#273;&#7875; &#273;&oacute;n mua. N&#259;m &#273;&oacute; b&aacute;o c&oacute; ch&#432;&#417;ng tr&igrave;nh &ldquo;Ch&agrave;o IMO&rdquo;, t&ocirc;i c&#361;ng n&#7897;p m&#7897;t s&#7889; b&agrave;i. T&ocirc;i nh&#7899; m&atilde;i m&#7897;t l&#7847;n &#273;&#432;&#7907;c b&aacute;o n&ecirc;u t&ecirc;n, l&agrave; m&#7897;t trong b&#7889;n h&#7885;c sinh c&#7843; n&#432;&#7899;c gi&#7843;i &#273;&#432;&#7907;c m&#7897;t b&agrave;i t&#7893; h&#7907;p v&agrave; l&#7901;i gi&#7843;i &#273;&#432;&#7907;c l&#7845;y l&agrave;m m&#7851;u. Sau n&agrave;y m&#7897;t s&#7889; b&#7841;n nghe t&ecirc;n t&ocirc;i &#273;&#7873;u h&#7887;i t&ocirc;i t&#7915;ng &#273;&#432;&#7907;c b&aacute;o To&aacute;n h&#7885;c tu&#7893;i tr&#7867; n&ecirc;u t&ecirc;n &#273;&uacute;ng kh&ocirc;ng. T&ocirc;i l&#7845;y l&agrave;m vinh d&#7921; l&#7855;m.</p>
+
+<p><em>B&agrave;i to&aacute;n &#273;&oacute; n&#7857;m trong t&#7853;p t&agrave;i li&#7879;u Th&#7883;nh mang v&#7873; cho t&ocirc;i, &#273;&atilde; &#273;&#432;&#7907;c d&#7841;y &#7903; S&#432; Ph&#7841;m.</em></p>
+
+<p>H&#7891;i &#273;&oacute; internet m&#7899;i b&#7855;t &#273;&#7847;u n&#7903; r&#7897;. T&ocirc;i tham gia Di&#7877;n &#272;&agrave;n To&aacute;n H&#7885;c v&agrave; c&oacute; gi&#7843;i m&#7897;t s&#7889; b&agrave;i. T&ocirc;i c&#361;ng th&#432;&#7901;ng xuy&ecirc;n download c&aacute;c b&agrave;i to&aacute;n hay trong c&aacute;c k&#7923; thi to&aacute;n tr&ecirc;n kh&#7855;p th&#7871; gi&#7899;i v&#7873; h&#7885;c. V&#7851;n nh&#7899; h&#7891;i &#273;&oacute; in r&#7845;t &#273;&#7855;t. C&oacute; l&#7847;n t&ocirc;i in 46 trang t&agrave;i li&#7879;u m&#7845;t t&#7899;i 23k. &#272;&#7847;u t&#432; v&agrave;o h&#7885;c t&#7853;p t&ocirc;i kh&ocirc;ng bao gi&#7901; ti&#7871;c.</p>
+
+<p>N&#259;m &#273;&oacute; k&#7923; thi h&#7885;c sinh gi&#7887;i qu&#7889;c gia c&oacute; nhi&#7873;u thay &#273;&#7893;i. Kh&ocirc;ng c&ograve;n b&#7843;ng A hay B nh&#432; tr&#432;&#7899;c n&#7919;a m&agrave; c&#7843; n&#432;&#7899;c thi chung m&#7897;t &#273;&#7873;. Nh&#7919;ng n&#259;m tr&#432;&#7899;c c&aacute;c &#273;&#7897;i tuy&#7875;n m&#7895;i t&#7881;nh &#273;&#432;&#7907;c 8 th&agrave;nh vi&ecirc;n, c&aacute;c &#273;&#7897;i c&#7911;a c&aacute;c tr&#432;&#7901;ng &#273;&#7841;i h&#7885;c (S&#432; Ph&#7841;m, T&#7893;ng H&#7907;p, Vinh) &#273;&#432;&#7907;c 10 ho&#7863;c 15. N&#259;m n&agrave;y ch&#7881; c&ograve;n 6. K&#7923; thi kh&ocirc;ng c&ograve;n l&agrave; hai ng&agrave;y, m&#7895;i ng&agrave;y ba b&agrave;i nh&#432; tr&#432;&#7899;c m&agrave; d&#7891;n l&#7841;i m&#7897;t ng&agrave;y, b&#7843;y b&agrave;i trong 180 ph&uacute;t. M&#7897;t &#273;i&#7875;m &#273;&#7863;c bi&#7879;t, t&#7915; n&#259;m n&agrave;y c&aacute;c h&#7885;c sinh &#273;&#432;&#7907;c gi&#7843;i trong k&#7923; thi qu&#7889;c gia kh&ocirc;ng c&ograve;n &#273;&#432;&#7907;c tuy&#7875;n th&#7859;ng &#273;&#7841;i h&#7885;c n&#7919;a n&ecirc;n Vi&#7879;t Nam b&#7887; l&#7905; kh&aacute; nhi&#7873;u nh&acirc;n t&agrave;i v&agrave;o n&#259;m &#273;&oacute;, t&ocirc;i ngh&#297; th&#7871;.</p>
+
+<p>Th&#7883;nh b&#7845;t ng&#7901; &#273;&#7841;t &#273;i&#7875;m k&eacute;m trong v&ograve;ng thi cu&#7889;i c&ugrave;ng &#7903; S&#432; Ph&#7841;m v&agrave; kh&ocirc;ng &#273;&#432;&#7907;c tham d&#7921; k&#7923; thi Qu&#7889;c gia m&#7863;c d&ugrave; &#273;i&#7875;m c&aacute;c v&ograve;ng tr&#432;&#7899;c r&#7845;t cao. &#272;&oacute; l&agrave; m&#7897;t &#273;i&#7873;u &#273;&aacute;ng ti&#7871;c cho nhi&#7873;u b&ecirc;n.</p>
+
+<p>Thi xong, t&ocirc;i ngh&#297; s&#7869; &#273;&#432;&#7907;c gi&#7843;i Nh&#7845;t v&igrave; l&agrave;m &#273;&#432;&#7907;c 6.5/7 b&agrave;i. Th&#7871; nh&#432;ng ni&#7873;m vui c&#7913; gi&#7843;m d&#7847;n sau khi ph&aacute;t hi&#7879;n ra c&aacute;c l&#7895;i sai. Khi nh&#7853;n gi&#7843;i, t&ocirc;i l&agrave; ng&#432;&#7901;i duy nh&#7845;t trong &#273;&#7897;i tuy&#7875;n Th&aacute;i B&igrave;nh c&oacute; gi&#7843;i. &#272;&#432;&#7907;c gi&#7843;i Ba, t&ocirc;i kh&oacute;c nh&#432; m&#432;a!!</p>
+
+<p>V&igrave; n&#259;m &#273;&oacute; c&#7843; n&#432;&#7899;c c&oacute; &iacute;t gi&#7843;i, c&#7843; gi&#7843;i Khuy&#7871;n kh&iacute;ch m&#7899;i l&agrave; 41, n&ecirc;n t&#7845;t c&#7843; h&#7885;c sinh &#273;&#7841;t gi&#7843;i &#273;&#7873;u &#273;&#432;&#7907;c v&agrave;o v&ograve;ng hai. T&ocirc;i c&#361;ng &#273;i nh&#432;ng th&#7847;y v&agrave; t&ocirc;i &#273;&#7873;u kh&ocirc;ng hy v&#7885;ng v&agrave;o &#273;&#432;&#7907;c top s&aacute;u ng&#432;&#7901;i cho &#273;&#7897;i Vi&#7879;t Nam n&#259;m &#273;&oacute;. T&ocirc;i kh&ocirc;ng bu&#7891;n khi bi&#7871;t k&#7871;t qu&#7843; v&igrave; &#273;&oacute; l&agrave; &#273;i&#7873;u &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n t&#7915; tr&#432;&#7899;c. Trong k&#7923; thi n&agrave;y, t&ocirc;i &#273;&#432;&#7907;c g&#7863;p v&agrave; l&agrave;m quen v&#7899;i r&#7845;t nhi&#7873;u c&aacute;c b&#7841;n gi&#7887;i, nhi&#7873;u trong s&#7889; &#273;&oacute; h&#7885;c c&ugrave;ng l&#7899;p &#273;&#7841;i h&#7885;c v&#7899;i t&ocirc;i sau n&agrave;y v&agrave; l&agrave; b&#7841;n t&#7889;t t&#7899;i b&acirc;y gi&#7901;.</p>
+
+<p>Sau khi thi v&ograve;ng hai, t&ocirc;i kh&aacute; r&#7843;nh rang v&igrave; kh&ocirc;ng ph&#7843;i thi T&#7889;t nghi&#7879;p (t&ocirc;i nh&#7899; n&#259;m &#273;&oacute; thi t&#7889;t nghi&#7879;p r&#7845;t r&#7845;t <em>kh&oacute;</em>). T&ocirc;i c&#361;ng kh&ocirc;ng ph&#7843;i thi &#273;&#7841;i h&#7885;c v&igrave; c&oacute; gi&#7843;i Ba t&#7915; n&#259;m l&#7899;p 11, tr&#432;&#7899;c khi quy &#273;&#7883;nh c&oacute; gi&#7843;i QG v&#7851;n ph&#7843;i thi &#273;&#7841;i h&#7885;c. T&ocirc;i c&#361;ng &#273;&#432;&#7907;c v&agrave;o th&#7859;ng l&#7899;p K&#7929; S&#432; T&agrave;i N&#259;ng (KSTN) c&#7911;a B&aacute;ch Khoa n&ecirc;n ch&#7859;ng ph&#7843;i lo ngh&#297; g&igrave; n&#7919;a. K&eacute;o theo &#273;&oacute; l&agrave; th&#7901;i gian x&#7843; h&#417;i sau ba n&#259;m v&#7845;t v&#7843; h&#7885;c t&#7853;p. T&ocirc;i &#273;i ch&#417;i c&#7843; m&ugrave;a h&egrave; trong khi c&aacute;c b&#7841;n t&#7853;p trung &ocirc;n thi. Vi&#7879;c kh&ocirc;ng <em>luy&#7879;n t&#7853;p</em> th&#432;&#7901;ng xuy&ecirc;n mang l&#7841;i nhi&#7873;u h&#7853;u qu&#7843; sau n&agrave;y.</p>
+
+<p>Trong 12 n&#259;m h&#7885;c Ph&#7893; Th&ocirc;ng, t&ocirc;i c&oacute; vinh d&#7921; s&aacute;u l&#7847;n &#273;&#432;&#7907;c gi&#7843;i Nh&#7845;t trong c&aacute;c k&#7923; thi h&#7885;c sinh gi&#7887;i c&#7845;p t&#7881;nh, chia &#273;&#7873;u ra hai l&#7847;n v&agrave;o c&aacute;c n&#259;m cu&#7889;i c&#7845;p.</p>
+
+<h3 id="092007---062012-h&#7885;c-&#273;&#7841;i-h&#7885;c">09/2007 - 06/2012: h&#7885;c &#272;&#7841;i h&#7885;c</h3>
+<p>T&ocirc;i v&agrave;o l&#7899;p KSTN-&#272;TVT-K52 c&#7911;a B&aacute;ch Khoa H&agrave; N&#7897;i. L&#7899;p l&#7899;n (100 sinh vi&ecirc;n) c&#7911;a t&ocirc;i quy t&#7909; r&#7845;t nhi&#7873;u nh&acirc;n t&agrave;i kh&#7855;p mi&#7873;n B&#7855;c v&agrave; mi&#7873;n Trung. R&#7845;t nhi&#7873;u trong &#273;&oacute; c&oacute; gi&#7843;i qu&#7889;c gia, qu&#7889;c t&#7871;. L&#7847;n &#273;&#7847;u ti&ecirc;n t&ocirc;i th&#7845;y m&igrave;nh nh&#7887; b&eacute; trong l&#7899;p! R&#7845;t nhi&#7873;u b&#7841;n gi&#7887;i &#273;ang chu&#7849;n b&#7883; l&agrave;m h&#7891; s&#417; du h&#7885;c. K&#7923; I n&#259;m &#273;&oacute; &#273;i&#7875;m GPA c&#7911;a t&ocirc;i r&#7845;t th&#7845;p, 2.9/4, &#272;&#7841;i S&#7889; B, Gi&#7843;i t&iacute;ch C. T&#7841;i sao l&agrave; to&aacute;n m&agrave; &#273;i&#7875;m c&#7911;a t&ocirc;i th&#7845;p v&#7853;y. Th&#7901;i gian m&ugrave;a h&egrave; b&#7887; b&ecirc; qu&aacute; nhi&#7873;u khi&#7871;n t&ocirc;i kh&ocirc;ng bao gi&#7901; t&igrave;m l&#7841;i &#273;&#432;&#7907;c c&#7843;m gi&aacute;c v&#7899;i to&aacute;n nh&#432; tr&#432;&#7899;c n&#7919;a. C&#7843; th&#7901;i gian &#273;&#7841;i h&#7885;c t&ocirc;i &#259;n m&agrave;y d&#297; v&atilde;ng th&#7901;i &#273;am m&ecirc; s&#7889;ng v&agrave; h&#7885;c t&#7853;p h&#7891;i c&#7845;p ba m&agrave; kh&ocirc;ng th&#7875; t&igrave;m l&#7841;i &#273;&#432;&#7907;c. C&oacute; l&#7869; v&igrave; c&oacute; qu&aacute; nhi&#7873;u th&uacute; vui khi&#7871;n t&ocirc;i sao nh&atilde;ng vi&#7879;c h&#7885;c h&agrave;nh, m&#7863;c d&ugrave; t&ocirc;i r&#7845;t mu&#7889;n t&igrave;m l&#7841;i c&#7843;m x&uacute;c &#273;am m&ecirc; ng&agrave;y n&agrave;o.</p>
+
+<p>N&#259;m th&#7913; nh&#7845;t t&ocirc;i bi&#7871;t tin c&oacute; k&#7923; thi Olympic to&aacute;n sinh vi&ecirc;n to&agrave;n qu&#7889;c. M&#7863;c d&ugrave; bi&#7871;t m&igrave;nh kh&oacute; c&#7841;nh tranh v&#7899;i to&agrave;n tr&#432;&#7901;ng &#273;&#7875; v&agrave;o &#273;&#7897;i tuy&#7875;n n&#259;m ng&#432;&#7901;i c&#7911;a &#272;&#7841;i s&#7889; ho&#7863;c Gi&#7843;i t&iacute;ch, t&ocirc;i v&#7851;n tham gia v&igrave; k&#7923; thi n&#259;m &#273;&oacute; &#273;&#432;&#7907;c t&#7893; ch&#7913;c &#7903; Nha Trang - wow. K&#7923; l&#7841; thay, t&ocirc;i &#273;&#7913;ng th&#7913; n&#259;m v&agrave; &#273;&#432;&#7907;c ch&#7885;n v&agrave;o &#273;&#7897;i tuy&#7875;n &#272;&#7841;i s&#7889; c&#7911;a B&aacute;ch Khoa n&#259;m &#273;&oacute;. T&ocirc;i v&#7851;n nh&#7899; r&#7857;ng th&#7847;y d&#7841;y &#273;&#7897;i tuy&#7875;n n&#259;m &#273;&oacute; kh&ocirc;ng hy v&#7885;ng nhi&#7873;u v&agrave;o t&ocirc;i v&igrave; trong qu&aacute; tr&igrave;nh &ocirc;n thi t&ocirc;i h&#7885;c t&#7879; nh&#7845;t &#273;&#7897;i.</p>
+
+<p>T&ocirc;i v&#7851;n nh&#7899; k&#7923; thi n&#259;m &#273;&oacute;. C&oacute; n&#259;m b&agrave;i, t&ocirc;i &#273;&aacute;nh v&#7853;t v&#7899;i t&#7915;ng b&agrave;i. T&#7899;i 2/3 th&#7901;i gian th&igrave; th&#7845;y Th&#7883;nh, l&uacute;c &#273;&oacute; &#7903; &#273;&#7897;i c&#7911;a S&#432; Ph&#7841;m H&agrave; N&#7897;i, c&#432;&#7901;i toe to&eacute;t &#7903; b&ecirc;n ngo&agrave;i c&#7917;a sau khi xin ra s&#7899;m. Th&#7853;t l&agrave; ghen t&#7883; v&#7899;i b&#7841;n.</p>
+
+<p>T&ocirc;i r&#7845;t bu&#7891;n sau khi thi xong, l&#7841;i nghe tin tr&#432;&#7899;c l&uacute;c bi&#7871;t k&#7871;t qu&#7843; r&#7857;ng BKHN c&oacute; ba gi&#7843;i Nh&#7845;t, m&#7897;t Nh&igrave;, m&#7897;t Ba. Ch&#7855;c m&igrave;nh &#273;&#432;&#7907;c gi&#7843;i Ba r&#7891;i, bu&#7891;n qu&aacute;. Th&#7871; m&agrave; t&ocirc;i l&#7841;i &#273;&#432;&#7907;c gi&#7843;i Nh&#7845;t, c&oacute; l&#7869; do nh&#7847;m l&#7851;n g&igrave; &#273;&oacute;. Th&#7883;nh c&#361;ng &#273;&#432;&#7907;c gi&#7843;i Nh&#7845;t n&#259;m &#273;&oacute;, nh&#432; m&#7897;t &#273;i&#7873;u hi&#7875;n nhi&ecirc;n.</p>
+
+<p>N&#259;m th&#7913; hai. C&aacute;c b&#7841;n &#273;&atilde; &#273;i du h&#7885;c r&#7845;t nhi&#7873;u. T&ocirc;i v&#7851;n &#7903; l&#7841;i v&#7899;i Gi&#7843;i t&iacute;ch II B+, Gi&#7843;i t&iacute;ch III B+, Ph&#432;&#417;ng ph&aacute;p t&iacute;nh B+, X&aacute;c su&#7845;t th&#7889;ng k&ecirc; B+. Kh&ocirc;ng m&ocirc;n to&aacute;n n&agrave;o t&ocirc;i &#273;&#432;&#7907;c A! T&ocirc;i l&#7841;i tham gia &#273;&#7897;i tuy&#7875;n &#272;&#7841;i s&#7889; c&#7911;a BKHN &#273;i thi &#7903; &#272;&#7891;ng H&#7899;i. T&ocirc;i nh&#7899; nh&#432; in t&ocirc;i l&agrave;m xong b&agrave;i t&#7915; r&#7845;t s&#7899;m, sau &#273;&oacute; l&agrave;m l&#7841;i s&#7841;ch &#273;&#7865;p kh&ocirc;ng d&#7853;p xo&aacute; t&iacute; n&agrave;o. T&#7921; tin gi&#7843;i Nh&#7845;t, cu&#7889;i c&ugrave;ng r&#7845;t bu&#7891;n v&igrave; &#273;&#432;&#7907;c gi&#7843;i Nh&igrave;.</p>
+
+<p>N&#259;m th&#7913; ba, t&ocirc;i m&#7897;t l&#7847;n n&#7919;a v&agrave;o &#273;&#7897;i &#272;&#7841;i s&#7889;. K&#7923; thi n&#259;m &#273;&oacute; &#7903; Hu&#7871;, t&ocirc;i tham gia &#273;&#7875; &#273;i du l&#7883;ch l&agrave; ch&iacute;nh. C&aacute;c th&#7847;y trong khoa to&aacute;n nh&igrave;n t&ocirc;i ngao ng&aacute;n b&#7843;o sang n&#259;m ngh&#7881; &#273;&#7875; nh&#432;&#7901;ng cho c&aacute;c em. T&ocirc;i l&#7841;i &#273;&#432;&#7907;c gi&#7843;i Nh&#7845;t m&#7897;t l&#7847;n n&#7919;a.</p>
+
+<p>Sau n&#259;m th&#7913; ba, t&ocirc;i kh&ocirc;ng h&#7885;c s&acirc;u To&aacute;n n&#7919;a v&igrave; c&aacute;c m&ocirc;n chuy&ecirc;n ng&agrave;nh y&ecirc;u c&#7847;u th&ecirc;m nhi&#7873;u ki&#7871;n th&#7913;c kh&aacute;c. T&ocirc;i c&oacute; tham gia m&#7897;t lab v&#7873; ph&#7847;n c&#7913;ng trong Vi&#7879;n &#272;i&#7879;n T&#7917; Vi&#7877;n Th&ocirc;ng. T&ocirc;i c&#7889; g&#7855;ng r&#7845;t nhi&#7873;u nh&#432;ng kh&ocirc;ng bao gi&#7901; th&#7845;y l&#7841;i &#273;am m&ecirc; nh&#432; tr&#432;&#7899;c n&#7919;a. Ph&#7847;n c&#7913;ng v&agrave; t&ocirc;i kh&ocirc;ng c&oacute; duy&ecirc;n v&#7899;i nhau. T&ocirc;i l&agrave;m ch&aacute;y kh&aacute; nhi&#7873;u m&#7841;ch &#273;&#7855;t ti&#7873;n c&#7911;a th&#7847;y h&#432;&#7899;ng d&#7851;n!</p>
+
+<p>N&#259;m cu&#7889;i &#273;&#7841;i h&#7885;c, t&ocirc;i &#273;&#432;&#7907;c th&#7847;y h&#432;&#7899;ng d&#7851;n khuy&#7871;n kh&iacute;ch l&agrave;m h&#7891; s&#417; &#273;i M&#7929; h&#7885;c cao h&#7885;c. T&ocirc;i kh&ocirc;ng t&#7921; tin v&#7899;i ti&#7871;ng Anh c&#7911;a m&igrave;nh l&#7855;m. C&#361;ng ch&#7881; l&agrave;m theo phong tr&agrave;o. May m&#7855;n thay, t&ocirc;i &#273;&#432;&#7907;c th&#7847;y hi&#7879;n gi&#7901; &#7903; Penn State nh&#7853;n v&agrave;o h&#7885;c, b&#7855;t &#273;&#7847;u t&#7915; k&#7923; Fall 2013.</p>
+
+<p>Th&#7883;nh hi&#7879;n gi&#7901; &#273;ang l&agrave;m nghi&ecirc;n c&#7913;u sinh ng&agrave;nh to&aacute;n &#7903; Singapore.</p>
+
+<h3 id="082013---hi&#7879;n-t&#7841;i">08/2013 - hi&#7879;n t&#7841;i</h3>
+<p>&#272;&acirc;y l&agrave; m&#7897;t kho&#7843;ng th&#7901;i gian quan tr&#7885;ng v&#7899;i t&ocirc;i. T&ocirc;i &#273;&#432;&#7907;c h&#7885;c l&#7841;i &#272;&#7841;i s&#7889; tuy&#7871;n t&iacute;nh, X&aacute;c su&#7845;t th&ocirc;ng k&ecirc;, T&#7889;i &#432;u r&#7845;t k&#7929;, c&#7843; &#7903; trong tr&#432;&#7901;ng v&agrave; c&#7843; t&#7921; h&#7885;c online. T&ocirc;i r&#7845;t th&iacute;ch kho&aacute; Convex optimization c&#7911;a Stephen Boyd, kho&aacute; Probabilities and Random Processes, v&agrave; kho&aacute; Pattern Regconition &#273;&#7873;u c&#7911;a th&#7847;y David Miller &#7903; Penn State. T&ocirc;i th&#432;&#7901;ng xuy&ecirc;n ph&aacute;t bi&#7875;u trong l&#7899;p v&agrave; &#273;&#7841;t &#273;i&#7875;m cao trong c&aacute;c m&ocirc;n h&#7885;c n&agrave;y. C&#7843;m gi&aacute;c th&iacute;ch h&#7885;c to&aacute;n v&agrave; s&#7921; t&#7921; tin c&#7911;a t&ocirc;i quay l&#7841;i, v&agrave; ni&#7873;m &#273;am m&ecirc; h&#7885;c t&#7853;p c&#7911;a t&ocirc;i c&#361;ng ti&#7879;m c&#7853;n v&#7899;i nh&#7919;ng g&igrave; t&ocirc;i c&oacute; h&#7891;i tr&#432;&#7899;c khi v&agrave;o &#273;&#7841;i h&#7885;c.</p>
+
+<p>C&agrave;ng h&#7885;c, t&ocirc;i c&agrave;ng th&#7845;y m&igrave;nh nh&#7887; b&eacute;. Nh&#432;ng nh&#7919;ng &#273;i&#7873;u &#273;&oacute; kh&ocirc;ng bao gi&#7901; l&agrave;m t&ocirc;i n&#7843;n ch&iacute; m&agrave; ch&#7881; khi&#7871;n t&ocirc;i c&#7889; g&#7855;ng t&igrave;m t&ograve;i h&#417;n n&#7919;a. T&ocirc;i b&#7855;t &#273;&#7847;u &#273;&#7885;c v&agrave; vi&#7871;t papers. C&aacute;c papers c&#7911;a t&ocirc;i &#273;&#7873;u c&oacute; ph&#7847;n t&#259;ng t&#7889;c cho thu&#7853;t to&aacute;n, l&agrave; m&#7897;t &#273;i&#7873;u t&ocirc;i r&#7845;t th&iacute;ch. C&oacute; nhi&#7873;u papers &#273;&#7873; xu&#7845;t c&aacute;c &yacute; t&#432;&#7903;ng v&agrave; b&agrave;i to&aacute;n t&#7889;i &#432;u r&#7845;t &#273;&#7865;p nh&#432;ng ch&#432;a th&#7921;c s&#7921; gi&#7843;i quy&#7871;t c&aacute;c b&agrave;i to&aacute;n &#273;&oacute; m&#7897;t c&aacute;ch tri&#7879;t &#273;&#7875;. T&ocirc;i r&#7845;t th&iacute;ch t&#7889;i &#432;u c&aacute;c thu&#7853;t to&aacute;n &#273;&oacute; &#273;&#7875; c&oacute; nghi&#7879;m t&#7889;t h&#417;n v&agrave; t&#7889;c &#273;&#7897; ch&#7841;y nhanh h&#417;n, &#273;&oacute; c&#361;ng l&agrave; ph&#7847;n ch&iacute;nh trong &#273;&#7873; t&agrave;i t&#7889;t nghi&#7879;p cao h&#7885;c c&#7911;a t&ocirc;i. T&ocirc;i v&#7915;a m&#7899;i bi&#7871;t ch&#7855;c r&#7857;ng m&igrave;nh s&#7869; t&#7889;t nghi&#7879;p v&agrave;o m&ugrave;a h&egrave; n&#259;m t&#7899;i.</p>
+
+<p>Nh&#432; &#273;&atilde; t&#7915;ng &#273;&#7873; c&#7853;p, t&ocirc;i mu&#7889;n &ocirc;n t&#7853;p l&#7841;i ki&#7871;n th&#7913;c Machine Learning, m&#7897;t l&#297;nh v&#7921;c c&#7847;n kh&aacute; nhi&#7873;u to&aacute;n, n&ecirc;n t&ocirc;i b&#7855;t &#273;&#7847;u vi&#7871;t blog n&agrave;y t&#7915; &#273;&#7847;u n&#259;m nay. T&ocirc;i &#273;&#432;&#7907;c &ocirc;n l&#7841;i to&aacute;n r&#7845;t nhi&#7873;u, v&agrave; h&#7841;nh ph&uacute;c v&#7899;i nh&#7919;ng g&igrave; m&igrave;nh &#273;ang l&agrave;m cho t&#7899;i th&#7901;i &#273;i&#7875;m n&agrave;y.</p>
+
+<p><em>C&oacute; th&#7875; c&aacute;c b&#7841;n th&#7845;y h&#7909;t h&#7851;ng v&igrave; t&ocirc;i k&#7871;t th&uacute;c &#7903; &#273;&acirc;y, nh&#432;ng t&ocirc;i xin ph&eacute;p &#273;&#432;&#7907;c d&#7915;ng l&#7841;i. C&oacute; th&#7875; c&oacute; nhi&#7873;u c&acirc;u chuy&#7879;n th&uacute; v&#7883; kh&aacute;c n&#7919;a, t&ocirc;i s&#7869; k&#7875; l&#7841;i v&agrave;o d&#7883;p kh&aacute;c, m&#7897;t d&#7883;p m&agrave; t&ocirc;i l&#7841;i c&oacute; th&#7901;i gian v&agrave; c&#7843;m h&#7913;ng. Th&#7901;i &#273;&#7841;i h&#7885;c, t&ocirc;i c&#361;ng c&oacute; nh&#7919;ng k&#7927; ni&#7879;m r&#7845;t &#273;&#7865;p, nh&#7919;ng th&#7847;y c&ocirc; t&#7853;n tu&#7925; v&agrave; nh&#7919;ng ng&#432;&#7901;i b&#7841;n r&#7845;t ch&acirc;n th&agrave;nh, nh&#432;ng nh&#7919;ng &#273;i&#7873;u &#273;&oacute; &#7843;nh h&#432;&#7903;ng t&#7899;i con ng&#432;&#7901;i t&ocirc;i h&#417;n l&agrave; con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i. C&#7843;m x&uacute;c c&#361;ng kh&ocirc;ng ph&#7843;i t&#7921; nhi&ecirc;n tu&ocirc;n ra &#273;&#432;&#7907;c, v&agrave; kh&ocirc;ng ph&#7843;i chuy&#7879;n g&igrave; c&#361;ng &#273;em ra k&#7875; &#273;&#432;&#7907;c.</em></p>
+
+<h3 id="k&#7871;t-lu&#7853;n">K&#7871;t lu&#7853;n</h3>
+
+<p><em>C&#7913; kho&#7843;ng m&#7895;i 5 n&#259;m, t&ocirc;i l&#7841;i xa nh&agrave; th&ecirc;m m&#7897;t b&#7853;c. T&#7915; l&agrave;ng, x&atilde;, th&#7883; tr&#7845;n, th&#7883; x&atilde;, t&#7899;i th&#7911; &#273;&ocirc;. V&agrave; b&acirc;y gi&#7901; t&ocirc;i &#273;ang &#7903; M&#7929;.</em></p>
+
+<p>M&#7895;i ng&#432;&#7901;i c&oacute; m&#7897;t con &#273;&#432;&#7901;ng h&#7885;c t&#7853;p kh&aacute;c nhau. V&agrave; t&ocirc;i kh&ocirc;ng ngh&#297; nh&#7919;ng g&igrave; tr&#7843;i qua trong cu&#7897;c &#273;&#7901;i t&ocirc;i c&oacute; th&#7875; &#273;&uacute;c r&uacute;t l&#7841;i th&agrave;nh &ldquo;kinh nghi&#7879;m h&#7885;c to&aacute;n&rdquo; cho b&#7845;t k&#7923; ai. Ch&#7881; c&oacute; m&#7897;t &#273;i&#7873;u t&ocirc;i lu&ocirc;n ghi nh&#7899;: &#273;am m&ecirc; l&agrave; quan tr&#7885;ng nh&#7845;t. T&ocirc;i t&#7921; nh&#7853;n m&igrave;nh kh&aacute; ch&#259;m ch&#7881;, nh&#432;ng ch&#259;m ch&#7881; th&ocirc;i kh&ocirc;ng &#273;&#7911; (nh&#432; nh&#7919;ng n&#259;m cu&#7889;i c&#7911;a &#273;&#7841;i h&#7885;c), quan tr&#7885;ng nh&#7845;t l&agrave; m&igrave;nh &#273;&#432;&#7907;c l&agrave;m nh&#7919;ng th&#7913; m&igrave;nh &#273;am m&ecirc;.</p>
+
+<p>V&#7899;i c&aacute;c b&#7841;n mu&#7889;n h&#7885;c to&aacute;n cho Machine Learning, &#273;&#7915;ng tr&aacute;ch hay &#7927; l&#7841;i v&agrave;o ki&#7871;n th&#7913;c &#7903; trong tr&#432;&#7901;ng &#273;&#7841;i h&#7885;c. H&#7885;c &#273;&#7841;i h&#7885;c l&agrave; ph&#7843;i t&#7921; t&igrave;m ki&#7871;m nh&#7919;ng g&igrave; c&#7847;n thi&#7871;t v&agrave; &#273;am m&ecirc;. T&agrave;i li&#7879;u online r&#7845;t nhi&#7873;u, t&#7889;t v&agrave; mi&#7877;n ph&iacute;. V&agrave; b&#7841;n c&oacute; th&#7875; h&#7885;c b&#7845;t c&#7913; l&uacute;c n&agrave;o, b&#7855;t &#273;&#7847;u t&#7915; h&ocirc;m nay.</p>
+
+<p>C&#7843;m &#417;n c&aacute;c b&#7841;n &#273;&atilde; &#273;&#7885;c &#273;&#7871;n nh&#7919;ng d&ograve;ng cu&#7889;i c&ugrave;ng n&agrave;y.</p>
+
+<p>T&ocirc;i lu&ocirc;n ghi nh&#7899; v&agrave; tr&acirc;n tr&#7885;ng nh&#7919;ng con ng&#432;&#7901;i &#273;i c&ugrave;ng con &#273;&#432;&#7901;ng h&#7885;c t&#7853;p c&#7911;a t&ocirc;i. T&ocirc;i bi&#7871;t r&#7857;ng m&igrave;nh c&#7847;n ph&#7843;i c&#7889; g&#7855;ng nhi&#7873;u nhi&#7873;u h&#417;n n&#7919;a.</p>
+
+<p>Hoa K&#7923;, th&aacute;ng 7 n&#259;m 2017.</p>
+
+</div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="prob.html">&laquo; B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="mlemap.html">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/lifesofar/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11391116; 
+var sc_invisible=0; 
+var sc_security="2a8ad2c1"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/2a8ad2c1-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/lifesofar/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/lifesofar/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/lifesofar/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i&url=https://machinelearningcoban.com/lifesofar/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/lifesofar/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/lifesofar/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#4d721e382f27282e39701e24203d21286d1e252c3f286d0f38393922233e6b2c203d760f2229347004687f7d3e2c3a687f7d3925243e687f7d2c2329687f7d392522382a2539687f7d222b687f7d3422386c687f7d6d2539393d3e776262202c2e2524232821282c3f2324232a2e222f2c23632e22206221242b283e222b2c3f62">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

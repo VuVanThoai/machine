@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>B&agrave;i 25: Matrix Factorization Collaborative Filtering</title><!-- <script>
+var pageProperties = {
+    
+    category: "Recommendation-systems",
+    
+    url: "/2017/05/31/matrixfactorization/",
+    title: "B&agrave;i 25: Matrix Factorization Collaborative Filtering",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/2017/05/31/matrixfactorization/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="B&agrave;i 25: Matrix Factorization Collaborative Filtering"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/2017/05/31/matrixfactorization/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2017-05-31"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="Recommendation-systems"><meta property="article:tag" content="Recommendation-systems,"><meta property="article:tag" content="dimensionality-reduction"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2017/05/31/matrixfactorization/',
+'title': 'B&agrave;i 25: Matrix Factorization Collaborative Filtering'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/05/24/collaborativefiltering/">B&agrave;i 24: Neighborhood-Based Collaborative Filtering</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/06/07/svd/">B&agrave;i 26: Singular Value Decomposition</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="collaborativefiltering.html">&laquo; B&agrave;i 24: Neighborhood-Based Collaborative Filtering</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="svd.html">B&agrave;i 26: Singular Value Decomposition &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">B&agrave;i 25: Matrix Factorization Collaborative Filtering</h1>
+
+
+<ul class="tags"><a href="/tags#Recommendation-systems," class="tag">Recommendation-systems,</a>
+   
+      <a href="/tags#dimensionality-reduction" class="tag">dimensionality-reduction</a>
+   
+</ul><span class="post-date" style="color: gray; font-style: italic;">May 31, 2017
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <p><strong>Trong trang n&agrave;y:</strong>
+<!-- MarkdownTOC --></p>
+
+<ul><li>
+    <ol><li>Gi&#7899;i thi&#7879;u</li>
+    </ol></li>
+  <li>
+    <ol><li>X&acirc;y d&#7921;ng v&agrave; t&#7889;i &#432;u h&agrave;m m&#7845;t m&aacute;t
+        <ul><li>2.1. H&agrave;m m&#7845;t m&aacute;t</li>
+          <li>2.2. T&#7889;i &#432;u h&agrave;m m&#7845;t m&aacute;t</li>
+        </ul></li>
+    </ol></li>
+  <li>
+    <ol><li>L&#7853;p tr&igrave;nh Python
+        <ul><li>3.1. <code class="language-plaintext highlighter-rouge">class MF</code></li>
+          <li>3.2. &Aacute;p d&#7909;ng l&ecirc;n MovieLens 100k</li>
+          <li>3.3. &Aacute;p d&#7909;ng l&ecirc;n MovieLens 1M</li>
+        </ul></li>
+    </ol></li>
+  <li>
+    <ol><li>Th&#7843;o lu&#7853;n
+        <ul><li>4.1. Khi c&oacute; bias</li>
+          <li>4.2. Nonnegative Matrix Factorization</li>
+          <li>4.3. Incremental Matrix Factorization</li>
+          <li>4.4. Others</li>
+        </ul></li>
+    </ol></li>
+  <li>
+    <ol><li>T&agrave;i li&#7879;u tham kh&#7843;o</li>
+    </ol></li>
+</ul><!-- /MarkdownTOC --><p><a name="-gioi-thieu" href="matrixfactorization.html"></a></p>
+
+<h2 id="1-gi&#7899;i-thi&#7879;u">1. Gi&#7899;i thi&#7879;u</h2>
+<p>Trong <a href="collaborativefiltering.html">B&agrave;i 24</a>, ch&uacute;ng ta &#273;&atilde; l&agrave;m quen v&#7899;i m&#7897;t h&#432;&#7899;ng ti&#7871;p c&#7853;n trong Collaborative Filtering d&#7921;a tr&ecirc;n h&agrave;nh vi c&#7911;a c&aacute;c <em>users</em> ho&#7863;c <em>items</em> l&acirc;n c&#7853;n c&oacute; t&ecirc;n l&agrave; Neighborhood-based Collaborative Filtering. Trong b&agrave;i vi&#7871;t n&agrave;y, ch&uacute;ng ta s&#7869; l&agrave;m quen v&#7899;i m&#7897;t h&#432;&#7899;ng ti&#7871;p c&#7853;n kh&aacute;c cho Collaborative Filtering d&#7921;a tr&ecirc;n <em>Matrix Factorization</em> (ho&#7863;c <em>Matrix Decomposition</em>), t&#7913;c <em>Ph&acirc;n t&iacute;ch ma tr&#7853;n th&agrave;nh nh&acirc;n t&#7917;</em>.</p>
+
+<p>Nh&#7855;c l&#7841;i r&#7857;ng trong <a href="contentbasedrecommendersys.html">Content-based Recommendation Systems</a>, m&#7895;i <em>item</em> &#273;&#432;&#7907;c m&ocirc; t&#7843; b&#7857;ng m&#7897;t vector \(\mathbf{x}\) &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>item profile</em>. Trong ph&#432;&#417;ng ph&aacute;p n&agrave;y, ta c&#7847;n t&igrave;m m&#7897;t vector h&#7879; s&#7889; \(\mathbf{w}\) t&#432;&#417;ng &#7913;ng v&#7899;i m&#7895;i <em>user</em> sao cho <em>rating</em> &#273;&atilde; bi&#7871;t m&agrave; <em>user</em> &#273;&oacute; cho <em>item</em> x&#7845;p x&#7881; v&#7899;i: 
+\[
+y \approx \mathbf{xw}
+\]</p>
+
+<p>V&#7899;i c&aacute;ch l&agrave;m tr&ecirc;n, <a href="/2017/05/17/contentbasedrecommendersys/#-utility-matrix"><em>Utility Matrix</em></a> \(\mathbf{Y}\), gi&#7843; s&#7917; &#273;&atilde; &#273;&#432;&#7907;c &#273;i&#7873;n h&#7871;t, s&#7869; x&#7845;p x&#7881; v&#7899;i:</p>
+
+<p>\[
+\mathbf{Y} \approx \left[ \begin{matrix}
+\mathbf{x}_1\mathbf{w}_1 &amp; \mathbf{x}_1\mathbf{w}_2 &amp; \dots &amp; \mathbf{x}_1 \mathbf{w}_N\<br>
+\mathbf{x}_2\mathbf{w}_1 &amp; \mathbf{x}_2\mathbf{w}_2 &amp; \dots &amp; \mathbf{x}_2 \mathbf{w}_N\<br>
+\dots &amp; \dots &amp; \ddots &amp; \dots \<br>
+\mathbf{x}_M\mathbf{w}_1 &amp; \mathbf{x}_M\mathbf{w}_2 &amp; \dots &amp; \mathbf{x}_M \mathbf{w}_N\<br>
+\end{matrix} \right]
+ = \left[ \begin{matrix}
+\mathbf{x}_1 \<br>
+\mathbf{x}_2 \<br>
+\dots \<br>
+\mathbf{x}_M \<br>
+\end{matrix} \right]
+\left[ \begin{matrix}
+\mathbf{w}_1 &amp; \mathbf{w}_2 &amp; \dots &amp; \mathbf{w}_N
+\end{matrix} \right] = \mathbf{XW}
+\]</p>
+
+<p>v&#7899;i \(M, N\) l&#7847;n l&#432;&#7907;t l
+&agrave; s&#7889; <em>items</em> v&agrave; s&#7889; <em>users</em>.</p>
+
+<p>Ch&uacute; &yacute; r&#7857;ng, \(\mathbf{x}\) &#273;&#432;&#7907;c x&acirc;y d&#7921;ng d&#7921;a tr&ecirc;n th&ocirc;ng tin m&ocirc; t&#7843; c&#7911;a <em>item</em> v&agrave; qu&aacute; tr&igrave;nh x&acirc;y d&#7921;ng n&agrave;y &#273;&#7897;c l&#7853;p v&#7899;i qu&aacute; tr&#7883;nh &#273;i t&igrave;m h&#7879; s&#7889; ph&ugrave; h&#7907;p cho m&#7895;i <em>user</em>. Nh&#432; v&#7853;y, vi&#7879;c x&acirc;y d&#7921;ng <em>item profile</em> &#273;&oacute;ng vai tr&ograve; r&#7845;t quan tr&#7885;ng v&agrave; c&oacute; &#7843;nh h&#432;&#7903;ng tr&#7921;c ti&#7871;p l&ecirc;n hi&#7879;u n&#259;ng c&#7911;a m&ocirc; h&igrave;nh. Th&ecirc;m n&#7919;a, vi&#7879;c x&acirc;y d&#7921;ng t&#7915;ng m&ocirc; h&igrave;nh ri&ecirc;ng l&#7867; cho m&#7895;i <em>user</em> d&#7851;n &#273;&#7871;n k&#7871;t qu&#7843; ch&#432;a th&#7921;c s&#7921; t&#7889;t v&igrave; kh&ocirc;ng khai th&aacute;c &#273;&#432;&#7907;c &#273;&#7863;c &#273;i&#7875;m c&#7911;a nh&#7919;ng <em>users</em> g&#7847;n gi&#7889;ng nhau.</p>
+
+<p>B&acirc;y gi&#7901;, gi&#7843; s&#7917; r&#7857;ng ta kh&ocirc;ng c&#7847;n x&acirc;y d&#7921;ng t&#7915; tr&#432;&#7899;c c&aacute;c <em>item profile</em> \(\mathbf{x}\) m&agrave; vector &#273;&#7863;c tr&#432;ng cho m&#7895;i <em>item</em> n&agrave;y c&oacute; th&#7875; &#273;&#432;&#7907;c hu&#7845;n luy&#7879;n &#273;&#7891;ng th&#7901;i v&#7899;i m&ocirc; h&igrave;nh c&#7911;a m&#7895;i <em>user</em> (&#7903; &#273;&acirc;y l&agrave; 1 vector h&#7879; s&#7889;). &#272;i&#7873;u n&agrave;y ngh&#297;a l&agrave;, bi&#7871;n s&#7889; trong b&agrave;i to&aacute;n t&#7889;i &#432;u l&agrave; c&#7843; \(\mathbf{X}\) v&agrave; \(\mathbf{W}\); trong &#273;&oacute;, \(\mathbf{X}\) l&agrave; ma tr&#7853;n c&#7911;a to&agrave;n b&#7897; <em>item profiles</em>, m&#7895;i <strong>h&agrave;ng</strong> t&#432;&#417;ng &#7913;ng v&#7899;i 1 <em>item</em>, \(\mathbf{W}\) l&agrave; ma tr&#7853;n c&#7911;a to&agrave;n b&#7897; <em>user models</em>, m&#7895;i <strong>c&#7897;t</strong> t&#432;&#417;ng &#7913;ng v&#7899;i 1 <em>user</em>.</p>
+
+<p>V&#7899;i c&aacute;ch l&agrave;m n&agrave;y, ch&uacute;ng ta &#273;ang c&#7889; g&#7855;ng x&#7845;p x&#7881; <em>Utility Matrix</em> \(\mathbf{Y} \in \mathbb{R}^{M \times N}\) b&#7857;ng t&iacute;ch c&#7911;a hai ma tr&#7853;n \(\mathbf{X}\in \mathbb{R}^{M\times K}\) v&agrave; \(\mathbf{W} \in \mathbb{R}^{K \times N}\).</p>
+
+<p>Th&ocirc;ng th&#432;&#7901;ng, \(K\) &#273;&#432;&#7907;c ch&#7885;n l&agrave; m&#7897;t s&#7889; nh&#7887; h&#417;n r&#7845;t nhi&#7873;u so v&#7899;i \(M, N\). Khi &#273;&oacute;, c&#7843; hai ma tr&#7853;n \(\mathbf{X}\) v&agrave; \(\mathbf{W}\) &#273;&#7873;u c&oacute; rank kh&ocirc;ng v&#432;&#7907;t qu&aacute; \(K\). Ch&iacute;nh v&igrave; v&#7853;y, ph&#432;&#417;ng ph&aacute;p n&agrave;y c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>Low-Rank Matrix Factorization</em> (xem H&igrave;nh 1).</p>
+<hr><div class="imgcap">
+<img src="images/25_mf-mf1.png" align="center" width="800"><div class="thecap" align="left">H&igrave;nh 1: Matrix Factorization. Utility matrix \(\mathbf{Y}\) &#273;&#432;&#7907;c ph&acirc;n t&iacute;ch th&agrave;nh t&iacute;ch c&#7911;a hai ma tr&#7853;n low-rank \(\mathbf{X}\) v&agrave; \\(\mathbf{W}\) </div>
+</div>
+<hr><p>C&oacute; m&#7897;t v&agrave;i &#273;i&#7875;m l&#432;u &yacute; &#7903; &#273;&acirc;y:</p>
+
+<ul><li>
+    <p>&Yacute; t&#432;&#7903;ng ch&iacute;nh &#273;&#7857;ng sau Matrix Factorization cho Recommendation Systems l&agrave; t&#7891;n t&#7841;i c&aacute;c <em>latent features</em> (t&iacute;nh ch&#7845;t &#7849;n) m&ocirc; t&#7843; s&#7921; li&ecirc;n quan gi&#7919;a c&aacute;c <em>items</em> v&agrave; <em>users</em>. V&iacute; d&#7909; v&#7899;i h&#7879; th&#7889;ng g&#7907;i &yacute; c&aacute;c b&#7897; phim, t&iacute;nh ch&#7845;t &#7849;n c&oacute; th&#7875; l&agrave; <em>h&igrave;nh s&#7921;</em>, <em>ch&iacute;nh tr&#7883;</em>, <em>h&agrave;nh &#273;&#7897;ng</em>, <em>h&agrave;i</em>, &hellip;; c&#361;ng c&oacute; th&#7875; l&agrave; m&#7897;t s&#7921; k&#7871;t h&#7907;p n&agrave;o &#273;&oacute; c&#7911;a c&aacute;c th&#7875; lo&#7841;i n&agrave;y; ho&#7863;c c&#361;ng c&oacute; th&#7875; l&agrave; b&#7845;t c&#7913; &#273;i&#7873;u g&igrave; m&agrave; ch&uacute;ng ta kh&ocirc;ng th&#7921;c s&#7921; c&#7847;n &#273;&#7863;t t&ecirc;n. M&#7895;i <em>item</em> s&#7869; mang t&iacute;nh ch&#7845;t &#7849;n &#7903; m&#7897;t m&#7913;c &#273;&#7897; n&agrave;o &#273;&oacute; t&#432;&#417;ng &#7913;ng v&#7899;i c&aacute;c h&#7879; s&#7889; trong vector \(\mathbf{x}\) c&#7911;a n&oacute;, h&#7879; s&#7889; c&agrave;ng cao t&#432;&#417;ng &#7913;ng v&#7899;i vi&#7879;c mang t&iacute;nh ch&#7845;t &#273;&oacute; c&agrave;ng cao. T&#432;&#417;ng t&#7921;, m&#7895;i <em>user</em> c&#361;ng s&#7869; c&oacute; xu h&#432;&#7899;ng th&iacute;ch nh&#7919;ng t&iacute;nh ch&#7845;t &#7849;n n&agrave;o &#273;&oacute; v&agrave; &#273;&#432;&#7907;c m&ocirc; t&#7843; b&#7903;i c&aacute;c h&#7879; s&#7889; trong vector \(\mathbf{w}\) c&#7911;a n&oacute;. H&#7879; s&#7889; cao t&#432;&#417;ng &#7913;ng v&#7899;i vi&#7879;c <em>user</em> th&iacute;ch c&aacute;c b&#7897; phim c&oacute; t&iacute;nh ch&#7845;t &#7849;n &#273;&oacute;. Gi&aacute; tr&#7883; c&#7911;a bi&#7875;u th&#7913;c \(\mathbf{xw}\) s&#7869; cao n&#7871;u c&aacute;c th&agrave;nh ph&#7847;n t&#432;&#417;ng &#7913;ng c&#7911;a \(\mathbf{x}\) v&agrave; \(\mathbf{w}\) &#273;&#7873;u cao. &#272;i&#7873;u n&agrave;y ngh&#297;a l&agrave; <em>item</em> mang c&aacute;c t&iacute;nh ch&#7845;t &#7849;n m&agrave; <em>user</em> th&iacute;ch, v&#7853;y th&igrave; n&ecirc;n g&#7907;i &yacute; <em>item</em> n&agrave;y cho <em>user</em> &#273;&oacute;.</p>
+  </li>
+  <li>
+    <p>V&#7853;y t&#7841;i sao Matrix Factorization l&#7841;i &#273;&#432;&#7907;c x&#7871;p v&agrave;o Collaborative Filtering? C&acirc;u tr&#7843; l&#7901;i &#273;&#7871;n t&#7915; vi&#7879;c &#273;i t&#7889;i &#432;u h&agrave;m m&#7845;t m&aacute;t m&agrave; ch&uacute;ng ta s&#7869; th&#7843;o lu&#7853;n &#7903; M&#7909;c 2. V&#7873; c&#417; b&#7843;n, &#273;&#7875; t&igrave;m nghi&#7879;m c&#7911;a b&agrave;i to&aacute;n t&#7889;i &#432;u, ta ph&#7843;i l&#7847;n l&#432;&#7907;t &#273;i t&igrave;m \(\mathbf{X}\) v&agrave; \(\mathbf{W}\) khi th&agrave;nh ph&#7847;n c&ograve;n l&#7841;i &#273;&#432;&#7907;c c&#7889; &#273;&#7883;nh. Nh&#432; v&#7853;y, m&#7895;i h&agrave;ng c&#7911;a \(\mathbf{X}\) s&#7869; ph&#7909; thu&#7897;c v&agrave;o to&agrave;n b&#7897; c&aacute;c c&#7897;t c&#7911;a \(\mathbf{W}\). Ng&#432;&#7907;c l&#7841;i, m&#7895;i c&#7897;t c&#7911;a \(\mathbf{W}\) l&#7841;i ph&#7909;c thu&#7897;c v&agrave;o to&agrave;n b&#7897; c&aacute;c h&agrave;ng c&#7911;a \(\mathbf{X}\). Nh&#432; v&#7853;y, c&oacute; nh&#7919;ng m&#7895;i quan h&#7879; r&agrave;ng bu&#7897;c <em>ch&#7857;ng ch&#7883;t</em> gi&#7919;a c&aacute;c th&agrave;nh ph&#7847;n c&#7911;a hai ma tr&#7853;n tr&ecirc;n. T&#7913;c ch&uacute;ng ta c&#7847;n s&#7917; d&#7909;ng th&ocirc;ng tin c&#7911;a t&#7845;t c&#7843; &#273;&#7875; suy ra t&#7845;t c&#7843;. V&#7853;y n&ecirc;n ph&#432;&#417;ng ph&aacute;p n&agrave;y c&#361;ng &#273;&#432;&#7907;c x&#7871;p v&agrave;o Collaborative Filtering.</p>
+  </li>
+  <li>
+    <p>Trong c&aacute;c b&agrave;i to&aacute;n th&#7921;c t&#7871;, s&#7889; l&#432;&#7907;ng <em>items</em> \(M\) v&agrave; s&#7889; l&#432;&#7907;ng <em>users</em> \(N\) th&#432;&#7901;ng r&#7845;t l&#7899;n. Vi&#7879;c t&igrave;m ra c&aacute;c m&ocirc; h&igrave;nh &#273;&#417;n gi&#7843;n gi&uacute;p d&#7921; &#273;o&aacute;n <em>ratings</em> c&#7847;n &#273;&#432;&#7907;c th&#7921;c hi&#7879;n m&#7897;t c&aacute;ch nhanh nh&#7845;t c&oacute; th&#7875;. <a href="collaborativefiltering.html">Neighborhood-based Collaborative Filtering</a> kh&ocirc;ng y&ecirc;u c&#7847;u vi&#7879;c <em>learning</em> qu&aacute; nhi&#7873;u, nh&#432;ng trong qu&aacute; tr&igrave;nh d&#7921; &#273;o&aacute;n (<em>inference</em>), ta c&#7847;n &#273;i t&igrave;m &#273;&#7897; <em>similarity</em> c&#7911;a <em>user</em> &#273;ang x&eacute;t v&#7899;i <em>to&agrave;n b&#7897;</em> c&aacute;c <em>users</em> c&ograve;n l&#7841;i r&#7891;i suy ra k&#7871;t qu&#7843;. Ng&#432;&#7907;c l&#7841;i, v&#7899;i Matrix Factorization, vi&#7879;c <em>learning</em> c&oacute; th&#7875; h&#417;i ph&#7913;c t&#7841;p m&#7897;t ch&uacute;t v&igrave; ph&#7843;i l&#7863;p &#273;i l&#7863;p l&#7841;i vi&#7879;c t&#7889;i &#432;u m&#7897;t ma tr&#7853;n khi c&#7889; &#273;&#7883;nh ma tr&#7853;n c&ograve;n l&#7841;i, nh&#432;ng vi&#7879;c <em>inference</em> &#273;&#417;n gi&#7843;n h&#417;n v&igrave; ta ch&#7881; c&#7847;n l&#7845;y t&iacute;ch c&#7911;a hai vector \(\mathbf{xw}\), m&#7895;i vector c&oacute; &#273;&#7897; d&agrave;i \(K\) l&agrave; m&#7897;t s&#7889; nh&#7887; h&#417;n nhi&#7873;u so v&#7899;i \(M, N\). V&#7853;y n&ecirc;n qu&aacute; tr&igrave;nh <em>inference</em> kh&ocirc;ng y&ecirc;u c&#7847;u kh&#7843; n&#259;ng t&iacute;nh to&aacute;n cao. Vi&#7879;c n&agrave;y khi&#7871;n n&oacute; ph&ugrave; h&#7907;p v&#7899;i c&aacute;c m&ocirc; h&igrave;nh c&oacute; t&#7853;p d&#7919; li&#7879;u l&#7899;n.</p>
+  </li>
+  <li>
+    <p>Th&ecirc;m n&#7919;a, vi&#7879;c l&#432;u tr&#7919; hai ma tr&#7853;n \(\mathbf{X}\) v&agrave; \(\mathbf{W}\) y&ecirc;u c&#7847;u l&#432;&#7907;ng b&#7897; nh&#7899; nh&#7887; khi so v&#7899;i vi&#7879;c l&#432;u to&agrave;n b&#7897; <em>Similarity matrix</em> trong Neighborhood-based Collaborative Filtering. C&#7909; th&#7875;, ta c&#7847;n b&#7897; nh&#7899; &#273;&#7875; ch&#7913;a \(K(M+N)\) ph&#7847;n t&#7917; thay v&igrave; l&#432;u \(M^2\) ho&#7863;c \(N^2\) c&#7911;a <em>Similarity matrix</em>.</p>
+  </li>
+</ul><p>Ti&#7871;p theo, ch&uacute;ng ta c&ugrave;ng &#273;i x&acirc;y d&#7921;ng h&agrave;m m&#7845;t m&aacute;t v&agrave; c&aacute;ch t&#7889;i &#432;u n&oacute;.</p>
+
+<p><a name="-xay-dung-va-toi-uu-ham-mat-mat" href="matrixfactorization.html"></a></p>
+
+<h2 id="2-x&acirc;y-d&#7921;ng-v&agrave;-t&#7889;i-&#432;u-h&agrave;m-m&#7845;t-m&aacute;t">2. X&acirc;y d&#7921;ng v&agrave; t&#7889;i &#432;u h&agrave;m m&#7845;t m&aacute;t</h2>
+
+<p><a name="-ham-mat-mat" href="matrixfactorization.html"></a></p>
+
+<h3 id="21-h&agrave;m-m&#7845;t-m&aacute;t">2.1. H&agrave;m m&#7845;t m&aacute;t</h3>
+<p><a href="/2017/05/17/contentbasedrecommendersys/#-xay-dung-ham-mat-mat">T&#432;&#417;ng t&#7921; nh&#432; trong Content-based Recommendation Systems</a>, vi&#7879;c x&acirc;y d&#7921;ng h&agrave;m m&#7845;t m&aacute;t c&#361;ng &#273;&#432;&#7907;c d&#7921;a tr&ecirc;n c&aacute;c th&agrave;nh ph&#7847;n &#273;&atilde; &#273;&#432;&#7907;c &#273;i&#7873;n c&#7911;a Utility Matrix \(\mathbf{Y}\), c&oacute; kh&aacute;c m&#7897;t ch&uacute;t l&agrave; kh&ocirc;ng c&oacute; th&agrave;nh ph&#7847;n bias v&agrave; bi&#7871;n t&#7889;i &#432;u l&agrave; c&#7843; \(\mathbf{X}\) v&agrave; \(\mathbf{W}\). Vi&#7879;c th&ecirc;m bias v&agrave;o s&#7869; &#273;&#432;&#7907;c th&#7843;o lu&#7853;n &#7903; M&#7909;c 4. Vi&#7879;c x&acirc;y d&#7921;ng h&agrave;m m&#7845;t m&aacute;t cho Matrix Factorization l&agrave; t&#432;&#417;ng &#273;&#7889;i d&#7877; hi&#7875;u:</p>
+
+<p>\[
+\mathcal{L}(\mathbf{X}, \mathbf{W}) = \frac{1}{2s} \sum_{n=1}^N \sum_{m:r_{mn} = 1} (y_{mn} - \mathbf{x}_m\mathbf{w}_n)^2 + \frac{\lambda}{2} (||\mathbf{X}||_F^2 + ||\mathbf{W}||_F^2) ~~~~~ (1)
+\]</p>
+
+<p>trong &#273;&oacute; \(r_{mn} = 1\) n&#7871;u <em>item</em> th&#7913; \(m\) &#273;&atilde; &#273;&#432;&#7907;c &#273;&aacute;nh gi&aacute; b&#7903;i <em>user</em> th&#7913; \(n\), \(||\bullet||_F^2\) l&agrave; <a href="/math/#chuan-cua-ma-tran">Frobineous norm</a>, t&#7913;c c&#259;n b&#7853;c hai c&#7911;a t&#7893;ng b&igrave;nh ph&#432;&#417;ng t&#7845;t c&#7843; c&aacute;c ph&#7847;n t&#7917; c&#7911;a ma tr&#7853;n (gi&#7889;ng v&#7899;i norm 2 trong vector), \(s\) l&agrave; to&agrave;n b&#7897; s&#7889; <em>ratings</em> &#273;&atilde; c&oacute;. Th&agrave;nh ph&#7847;n th&#7913; nh&#7845;t ch&iacute;nh l&agrave; trung b&igrave;nh sai s&#7889; c&#7911;a m&ocirc; h&igrave;nh. Th&agrave;nh ph&#7847;n th&#7913; hai trong h&agrave;m m&#7845;t m&aacute;t ph&iacute;a tr&ecirc;n l&agrave; <a href="/2017/03/04/overfitting/#-%5C%5Cl%5C%5C-regularization">\(l_2\) regularization</a>, gi&uacute;p tr&aacute;nh <a href="overfitting.html">overfitting</a>.</p>
+
+<blockquote>
+  <p><strong>L&#432;u &yacute;:</strong> Gi&aacute; tr&#7883; <em>ratings</em> th&#432;&#7901;ng l&agrave; c&aacute;c gi&aacute; tr&#7883; &#273;&atilde; &#273;&#432;&#7907;c chu&#7849;n ho&aacute;, b&#7857;ng c&aacute;ch tr&#7915; m&#7895;i h&agrave;ng c&#7911;a Utility Matrix &#273;i trung b&igrave;nh c&#7897;ng c&#7911;a c&aacute;c gi&aacute; tr&#7883; &#273;&atilde; bi&#7871;t c&#7911;a h&agrave;ng &#273;&oacute; (item-based) ho&#7863;c tr&#7915; m&#7895;i c&#7897;t &#273;i trung b&igrave;nh c&#7897;ng c&#7911;a c&aacute;c gi&aacute; tr&#7883; &#273;&atilde; bi&#7871;t trong c&#7897;t &#273;&oacute; (user_based). Trong m&#7897;t s&#7889; tr&#432;&#7901;ng h&#7907;p nh&#7845;t &#273;&#7883;nh, ta kh&ocirc;ng c&#7847;n chu&#7849;n ho&aacute; ma tr&#7853;n n&agrave;y, nh&#432;ng k&egrave;m theo &#273;&oacute; ph&#7843;i c&oacute; th&ecirc;m c&aacute;c k&#7929; thu&#7853;t kh&aacute;c &#273;&#7875; gi&#7843;i quy&#7871;t v&#7845;n &#273;&#7873; <em>thi&ecirc;n l&#7879;ch</em> trong khi <em>rating</em>.</p>
+</blockquote>
+
+<p>Vi&#7879;c t&#7889;i &#432;u &#273;&#7891;ng th&#7901;i \(\mathbf{X}, \mathbf{W}\) l&agrave; t&#432;&#417;ng &#273;&#7889;i ph&#7913;c t&#7841;p, thay v&agrave;o &#273;&oacute;, ph&#432;&#417;ng ph&aacute;p &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave; l&#7847;n l&#432;&#7907;t t&#7889;i &#432;u m&#7897;t ma tr&#7853;n trong khi c&#7889; &#273;&#7883;nh ma tr&#7853;n kia, t&#7899;i khi h&#7897;i t&#7909;.</p>
+
+<p><a name="-toi-uu-ham-mat-mat" href="matrixfactorization.html"></a></p>
+
+<h3 id="22-t&#7889;i-&#432;u-h&agrave;m-m&#7845;t-m&aacute;t">2.2. T&#7889;i &#432;u h&agrave;m m&#7845;t m&aacute;t</h3>
+<p>Khi c&#7889; &#273;&#7883;nh \(\mathbf{X}\), vi&#7879;c t&#7889;i &#432;u \(\mathbf{W}\) ch&iacute;nh l&agrave; b&agrave;i to&aacute;n t&#7889;i &#432;u trong Content-based Recommendation Systems:</p>
+
+<p>\[
+\mathcal{L}(\mathbf{W}) = \frac{1}{2s} \sum_{n=1}^N \sum_{m:r_{mn} = 1} (y_{mn} - \mathbf{x}_m\mathbf{w}_n)^2 + \frac{\lambda}{2} ||\mathbf{W}||_F^2 ~~~~~ (2)
+\]</p>
+
+<p>Khi c&#7889; &#273;&#7883;nh \(\mathbf{W}\), vi&#7879;c t&#7889;i &#432;u \(\mathbf{X}\) &#273;&#432;&#7907;c &#273;&#432;a v&#7873; t&#7889;i &#432;u h&agrave;m:</p>
+
+<p>\[
+\mathcal{L}(\mathbf{X}) = \frac{1}{2s} \sum_{n=1}^N \sum_{m:r_{mn} = 1} (y_{mn} - \mathbf{x}_m\mathbf{w}_n)^2 + \frac{\lambda}{2} ||\mathbf{X}||_F^2 ~~~~~ (3)
+\]</p>
+
+<p>Hai b&agrave;i to&aacute;n n&agrave;y s&#7869; &#273;&#432;&#7907;c t&#7889;i &#432;u b&#7857;ng <a href="gradientdescent.html">Gradient Descent</a>.</p>
+
+<p>Ch&uacute;ng ta c&oacute; th&#7875; th&#7845;y r&#7857;ng b&agrave;i to&aacute;n \((2)\) c&oacute; th&#7875; &#273;&#432;&#7907;c t&aacute;ch th&agrave;nh \(N\) b&agrave;i to&aacute;n nh&#7887;, m&#7895;i b&agrave;i to&aacute;n &#7913;ng v&#7899;i vi&#7879;c &#273;i t&#7889;i &#432;u m&#7897;t c&#7897;t c&#7911;a ma tr&#7853;n \(\mathbf{W}\): 
+\[
+\mathcal{L}(\mathbf{w}_n) = \frac{1}{2s} \sum_{m:r_{mn} = 1} (y_{mn} - \mathbf{x}_m\mathbf{w}_n)^2 + \frac{\lambda}{2}||\mathbf{w}_n||_2^2 ~~~~ (4)
+\]</p>
+
+<p>V&igrave; bi&#7875;u th&#7913;c trong d&#7845;u \(\sum\) ch&#7881; ph&#7909; thu&#7897;c v&agrave;o c&aacute;c <em>items</em> &#273;&atilde; &#273;&#432;&#7907;c <em>rated</em> b&#7903;i <em>user</em> &#273;ang x&eacute;t, ta c&oacute; th&#7875; &#273;&#417;n gi&#7843;n n&oacute; b&#7857;ng c&aacute;ch &#273;&#7863;t \(\hat{\mathbf{X}}_n\) l&agrave; ma tr&#7853;n &#273;&#432;&#7907;c t&#7841;o b&#7903;i c&aacute;c h&agrave;ng t&#432;&#417;ng &#7913;ng v&#7899;i c&aacute;c <em>items</em> &#273;&atilde; &#273;&#432;&#7907;c <em>rated</em> &#273;&oacute;, v&agrave; \(\hat{\mathbf{y}}_n\) l&agrave; c&aacute;c <em>ratings</em> t&#432;&#417;ng &#7913;ng. Khi &#273;&oacute;: 
+\[
+\mathcal{L}(\mathbf{w}_n) = \frac{1}{2s} ||\hat{\mathbf{y}}_n - \hat{\mathbf{X}}_n\mathbf{w}_n||^2 + \frac{\lambda}{2}||\mathbf{w}_n||_2^2 ~~~~~(5)
+\]
+v&agrave; &#273;&#7841;o h&agrave;m c&#7911;a n&oacute;: 
+\[
+\frac{\partial \mathcal{L}(\mathbf{w}_n)}{\partial \mathbf{w}_n} = -\frac{1}{s}\hat{\mathbf{X}}_n^T(\hat{\mathbf{y}}_n - \hat{\mathbf{X}}_n\mathbf{w}_n) + \lambda \mathbf{w}_n ~~~~~ (6)
+\]</p>
+
+<p><strong>V&#7853;y c&ocirc;ng th&#7913;c c&#7853;p nh&#7853;t cho m&#7895;i c&#7897;t c&#7911;a \(\mathbf{W}\) l&agrave;:</strong> 
+\[
+\mathbf{w}_n = \mathbf{w}_n - \eta \left(-\frac{1}{s}\hat{\mathbf{X}}_n^T (\hat{\mathbf{y}}_n - \hat{\mathbf{X}}_n\mathbf{w}_n) + \lambda \mathbf{w}_n\right) ~~~~~(7)
+\]</p>
+
+<p>T&#432;&#417;ng t&#7921; nh&#432; th&#7871;, m&#7895;i c&#7897;t c&#7911;a \(\mathbf{X}\), t&#7913;c vector cho m&#7895;i <em>item</em>, s&#7869; &#273;&#432;&#7907;c t&igrave;m b&#7857;ng c&aacute;ch t&#7889;i &#432;u: 
+\[
+\begin{eqnarray}
+\mathcal{L}(\mathbf{x}_m) &amp;=&amp; \frac{1}{2s}\sum_{n:r_{mn} = 1} (y_{mn} - \mathbf{x}_m\mathbf{w}_n)^2 + \frac{\lambda}{2}||\mathbf{x}_m||_2^2 ~~~~ (8)
+\end{eqnarray}
+\]</p>
+
+<p>&#272;&#7863;t \(\hat{\mathbf{W}}_m\) l&agrave; ma tr&#7853;n &#273;&#432;&#7907;c t&#7841;o b&#7857;ng c&aacute;c c&#7897;t c&#7911;a \(\mathbf{W}\) &#7913;ng v&#7899;i c&aacute;c <em>users</em> &#273;&atilde; &#273;&aacute;nh gi&aacute; <em>item</em> &#273;&oacute; v&agrave; \(\hat{\mathbf{y}}^m\) l&agrave; vector <em>ratings</em> t&#432;&#417;ng &#7913;ng. \((8)\) tr&#7903; th&agrave;nh:</p>
+
+<p>\[
+\mathcal{L}(\mathbf{x}_m)
+ = \frac{1}{2s}||\hat{\mathbf{y}}^m - {\mathbf{x}}_m\hat{\mathbf{W}}_m||_2^2 + \frac{\lambda}{2} ||\mathbf{x}_m||_2^2 ~~~~~ (9)
+\]
+T&#432;&#417;ng t&#7921; nh&#432; tr&ecirc;n, <strong>c&ocirc;ng th&#7913;c c&#7853;p nh&#7853;t cho m&#7891;i h&agrave;ng c&#7911;a \(\mathbf{X}\) s&#7869; c&oacute; d&#7841;ng:</strong>
+\[
+\mathbf{x}_m = \mathbf{x}_m - \eta\left(-\frac{1}{s}(\hat{\mathbf{y}}^m - \mathbf{x}_m\hat{\mathbf{W}}_m)\hat{\mathbf{W}}_m^T + \lambda \mathbf{x}_m\right) ~~~~~ (10)
+\]</p>
+
+<p><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; mu&#7889;n xem th&ecirc;m <a href="/math/#-dao-ham-cua-ham-nhieu-bien">&#272;&#7841;o h&agrave;m c&#7911;a h&agrave;m nhi&#7873;u bi&#7871;n</a></em>
+<a name="-lap-trinh-python" href="matrixfactorization.html"></a></p>
+
+<h2 id="3-l&#7853;p-tr&igrave;nh-python">3. L&#7853;p tr&igrave;nh Python</h2>
+<p>Ti&#7871;p theo, ch&uacute;ng ta s&#7869; &#273;i s&acirc;u v&agrave;o ph&#7847;n l&#7853;p tr&igrave;nh.</p>
+
+<p><a name="-class-mf" href="matrixfactorization.html"></a></p>
+
+<h3 id="31-class-mf">3.1. <code class="language-plaintext highlighter-rouge">class MF</code></h3>
+
+<p><strong>Kh&#7903;i t&#7841;o v&agrave; chu&#7849;n ho&aacute;:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">cosine_similarity</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span> 
+
+<span class="k">class</span> <span class="nc">MF</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="s">"""docstring for CF"""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">lam</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">Xinit</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">Winit</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> 
+            <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">print_every</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">user_based</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">Y_raw_data</span> <span class="o">=</span> <span class="n">Y_data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">K</span> <span class="o">=</span> <span class="n">K</span>
+        <span class="c1"># regularization parameter
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">lam</span> <span class="o">=</span> <span class="n">lam</span>
+        <span class="c1"># learning rate for gradient descent
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+        <span class="c1"># maximum number of iterations
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">max_iter</span> <span class="o">=</span> <span class="n">max_iter</span>
+        <span class="c1"># print results after print_every iterations
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">print_every</span> <span class="o">=</span> <span class="n">print_every</span>
+        <span class="c1"># user-based or item-based
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">user_based</span> <span class="o">=</span> <span class="n">user_based</span>
+        <span class="c1"># number of users, items, and ratings. Remember to add 1 since id starts from 0
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">n_users</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">Y_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">+</span> <span class="mi">1</span> 
+        <span class="bp">self</span><span class="p">.</span><span class="n">n_items</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">Y_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]))</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">n_ratings</span> <span class="o">=</span> <span class="n">Y_data</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">Xinit</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="c1"># new
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">n_items</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># or from saved data
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">Xinit</span> 
+        
+        <span class="k">if</span> <span class="n">Winit</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> 
+            <span class="bp">self</span><span class="p">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">n_users</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># from daved data
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">Winit</span>
+            
+        <span class="c1"># normalized data, update later in normalized_Y function
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Y_raw_data</span><span class="p">.</span><span class="n">copy</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">normalize_Y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">user_based</span><span class="p">:</span>
+            <span class="n">user_col</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">item_col</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">n_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">n_users</span>
+
+        <span class="c1"># if we want to normalize based on item, just switch first two columns of data
+</span>        <span class="k">else</span><span class="p">:</span> <span class="c1"># item bas
+</span>            <span class="n">user_col</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">item_col</span> <span class="o">=</span> <span class="mi">0</span> 
+            <span class="n">n_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">n_items</span>
+
+        <span class="n">users</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Y_raw_data</span><span class="p">[:,</span> <span class="n">user_col</span><span class="p">]</span> 
+        <span class="bp">self</span><span class="p">.</span><span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_objects</span><span class="p">,))</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_objects</span><span class="p">):</span>
+            <span class="c1"># row indices of rating done by user n
+</span>            <span class="c1"># since indices need to be integers, we need to convert
+</span>            <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">users</span> <span class="o">==</span> <span class="n">n</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">int32</span><span class="p">)</span>
+            <span class="c1"># indices of all ratings associated with user n
+</span>            <span class="n">item_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[</span><span class="n">ids</span><span class="p">,</span> <span class="n">item_col</span><span class="p">]</span> 
+            <span class="c1"># and the corresponding ratings 
+</span>            <span class="n">ratings</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[</span><span class="n">ids</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="c1"># take mean
+</span>            <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ratings</span><span class="p">)</span> 
+            <span class="k">if</span> <span class="n">np</span><span class="p">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># to avoid empty array and nan value
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">mu</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span>
+            <span class="c1"># normalize
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[</span><span class="n">ids</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ratings</span> <span class="o">-</span> <span class="bp">self</span><span class="p">.</span><span class="n">mu</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p><strong>T&iacute;nh gi&aacute; tr&#7883; h&agrave;m m&#7845;t m&aacute;t:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="mi">0</span> 
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">n_ratings</span><span class="p">):</span>
+            <span class="c1"># user, item, rating
+</span>            <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">rate</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="n">L</span> <span class="o">+=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">rate</span> <span class="o">-</span> <span class="bp">self</span><span class="p">.</span><span class="n">X</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="p">:].</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">W</span><span class="p">[:,</span> <span class="n">n</span><span class="p">]))</span><span class="o">**</span><span class="mi">2</span>
+        
+        <span class="c1"># take average
+</span>        <span class="n">L</span> <span class="o">/=</span> <span class="bp">self</span><span class="p">.</span><span class="n">n_ratings</span>
+        <span class="c1"># regularization, don't ever forget this 
+</span>        <span class="n">L</span> <span class="o">+=</span> <span class="mf">0.5</span><span class="o">*</span><span class="bp">self</span><span class="p">.</span><span class="n">lam</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">X</span><span class="p">,</span> <span class="s">'fro'</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">W</span><span class="p">,</span> <span class="s">'fro'</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">L</span> 
+</code></pre></div></div>
+
+<p><strong>X&aacute;c &#273;&#7883;nh c&aacute;c <em>items</em> &#273;&#432;&#7907;c &#273;&aacute;nh gi&aacute; b&#7903;i 1 <em>user</em>, v&agrave; <em>users</em> &#273;&atilde; &#273;&aacute;nh gi&aacute; 1 <em>item</em> v&agrave; c&aacute;c <em>ratings</em> t&#432;&#417;ng &#7913;ng:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">get_items_rated_by_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="s">"""
+        get all items which are rated by user user_id, and the corresponding ratings
+        """</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> 
+        <span class="n">item_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[</span><span class="n">ids</span><span class="p">,</span> <span class="mi">1</span><span class="p">].</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">int32</span><span class="p">)</span> <span class="c1"># indices need to be integers
+</span>        <span class="n">ratings</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[</span><span class="n">ids</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">item_ids</span><span class="p">,</span> <span class="n">ratings</span><span class="p">)</span>
+        
+        
+    <span class="k">def</span> <span class="nf">get_users_who_rate_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item_id</span><span class="p">):</span>
+        <span class="s">"""
+        get all users who rated item item_id and get the corresponding ratings
+        """</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">item_id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> 
+        <span class="n">user_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[</span><span class="n">ids</span><span class="p">,</span> <span class="mi">0</span><span class="p">].</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="n">ratings</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[</span><span class="n">ids</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">user_ids</span><span class="p">,</span> <span class="n">ratings</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>C&#7853;p nh&#7853;t \(\mathbf{X}, \mathbf{W}\):</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">updateX</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">n_items</span><span class="p">):</span>
+            <span class="n">user_ids</span><span class="p">,</span> <span class="n">ratings</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_users_who_rate_item</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+            <span class="n">Wm</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">W</span><span class="p">[:,</span> <span class="n">user_ids</span><span class="p">]</span>
+            <span class="c1"># gradient
+</span>            <span class="n">grad_xm</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">ratings</span> <span class="o">-</span> <span class="bp">self</span><span class="p">.</span><span class="n">X</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="p">:].</span><span class="n">dot</span><span class="p">(</span><span class="n">Wm</span><span class="p">)).</span><span class="n">dot</span><span class="p">(</span><span class="n">Wm</span><span class="p">.</span><span class="n">T</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="p">.</span><span class="n">n_ratings</span> <span class="o">+</span> \
+                                               <span class="bp">self</span><span class="p">.</span><span class="n">lam</span><span class="o">*</span><span class="bp">self</span><span class="p">.</span><span class="n">X</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">X</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-=</span> <span class="bp">self</span><span class="p">.</span><span class="n">learning_rate</span><span class="o">*</span><span class="n">grad_xm</span><span class="p">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="p">.</span><span class="n">K</span><span class="p">,))</span>
+    
+    <span class="k">def</span> <span class="nf">updateW</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">n_users</span><span class="p">):</span>
+            <span class="n">item_ids</span><span class="p">,</span> <span class="n">ratings</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_items_rated_by_user</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">Xn</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">X</span><span class="p">[</span><span class="n">item_ids</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="c1"># gradient
+</span>            <span class="n">grad_wn</span> <span class="o">=</span> <span class="o">-</span><span class="n">Xn</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ratings</span> <span class="o">-</span> <span class="n">Xn</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">W</span><span class="p">[:,</span> <span class="n">n</span><span class="p">]))</span><span class="o">/</span><span class="bp">self</span><span class="p">.</span><span class="n">n_ratings</span> <span class="o">+</span> \
+                        <span class="bp">self</span><span class="p">.</span><span class="n">lam</span><span class="o">*</span><span class="bp">self</span><span class="p">.</span><span class="n">W</span><span class="p">[:,</span> <span class="n">n</span><span class="p">]</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">W</span><span class="p">[:,</span> <span class="n">n</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="p">.</span><span class="n">learning_rate</span><span class="o">*</span><span class="n">grad_wn</span><span class="p">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="p">.</span><span class="n">K</span><span class="p">,))</span>
+</code></pre></div></div>
+
+<p><strong>Ph&#7847;n thu&#7853;t to&aacute;n ch&iacute;nh:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">normalize_Y</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">max_iter</span><span class="p">):</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">updateX</span><span class="p">()</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">updateW</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="p">.</span><span class="n">print_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">rmse_train</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">evaluate_RMSE</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">Y_raw_data</span><span class="p">)</span>
+                <span class="k">print</span> <span class="s">'iter ='</span><span class="p">,</span> <span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s">', loss ='</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">loss</span><span class="p">(),</span> <span class="s">', RMSE train ='</span><span class="p">,</span> <span class="n">rmse_train</span>
+</code></pre></div></div>
+
+<p><strong>D&#7921; &#273;o&aacute;n:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">pred</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="s">""" 
+        predict the rating of user u for item i 
+        if you need the un
+        """</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">user_based</span><span class="p">:</span>
+            <span class="n">bias</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">mu</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="n">bias</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">mu</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:].</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">W</span><span class="p">[:,</span> <span class="n">u</span><span class="p">])</span> <span class="o">+</span> <span class="n">bias</span> 
+        <span class="c1"># truncate if results are out of range [0, 5]
+</span>        <span class="k">if</span> <span class="n">pred</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span> 
+        <span class="k">if</span> <span class="n">pred</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span> 
+            <span class="k">return</span> <span class="mi">5</span> 
+        <span class="k">return</span> <span class="n">pred</span> 
+        
+    
+    <span class="k">def</span> <span class="nf">pred_for_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="s">"""
+        predict ratings one user give all unrated items
+        """</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">items_rated_by_u</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">Y_data_n</span><span class="p">[</span><span class="n">ids</span><span class="p">,</span> <span class="mi">1</span><span class="p">].</span><span class="n">tolist</span><span class="p">()</span>              
+        
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">X</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">W</span><span class="p">[:,</span> <span class="n">user_id</span><span class="p">])</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">mu</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span>
+        <span class="n">predicted_ratings</span><span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">n_items</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">items_rated_by_u</span><span class="p">:</span>
+                <span class="n">predicted_ratings</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        
+        <span class="k">return</span> <span class="n">predicted_ratings</span>
+</code></pre></div></div>
+
+<p><strong>&#272;&aacute;nh gi&aacute; k&#7871;t qu&#7843; b&#7857;ng c&aacute;ch &#273;o Root Mean Square Error:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">evaluate_RMSE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate_test</span><span class="p">):</span>
+        <span class="n">n_tests</span> <span class="o">=</span> <span class="n">rate_test</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">SE</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># squared error
+</span>        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_tests</span><span class="p">):</span>
+            <span class="n">pred</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">pred</span><span class="p">(</span><span class="n">rate_test</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">rate_test</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">SE</span> <span class="o">+=</span> <span class="p">(</span><span class="n">pred</span> <span class="o">-</span> <span class="n">rate_test</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> 
+
+        <span class="n">RMSE</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">SE</span><span class="o">/</span><span class="n">n_tests</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RMSE</span>
+</code></pre></div></div>
+
+<p><a name="-ap-dung-len-movielens-k" href="matrixfactorization.html"></a></p>
+
+<h3 id="32-&aacute;p-d&#7909;ng-l&ecirc;n-movielens-100k">3.2. &Aacute;p d&#7909;ng l&ecirc;n MovieLens 100k</h3>
+
+<p>Ch&uacute;ng ta c&ugrave;ng quay l&#7841;i v&#7899;i c&#417; s&#7903; d&#7919; li&#7879;u <a href="/2017/05/17/contentbasedrecommendersys/#-co-so-du-lieu-movielens-k">MovieLens 100k</a></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s">'user_id'</span><span class="p">,</span> <span class="s">'movie_id'</span><span class="p">,</span> <span class="s">'rating'</span><span class="p">,</span> <span class="s">'unix_timestamp'</span><span class="p">]</span>
+
+<span class="n">ratings_base</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'ml-100k/ub.base'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">r_cols</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'latin-1'</span><span class="p">)</span>
+<span class="n">ratings_test</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'ml-100k/ub.test'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">r_cols</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'latin-1'</span><span class="p">)</span>
+
+<span class="n">rate_train</span> <span class="o">=</span> <span class="n">ratings_base</span><span class="p">.</span><span class="n">as_matrix</span><span class="p">()</span>
+<span class="n">rate_test</span> <span class="o">=</span> <span class="n">ratings_test</span><span class="p">.</span><span class="n">as_matrix</span><span class="p">()</span>
+
+<span class="c1"># indices start from 0
+</span><span class="n">rate_train</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="n">rate_test</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p>K&#7871;t qu&#7843; n&#7871;u s&#432; d&#7909;ng c&aacute;ch <strong>chu&#7849;n ho&aacute; d&#7921;a tr&ecirc;n <em>user</em>:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rs</span> <span class="o">=</span> <span class="n">MF</span><span class="p">(</span><span class="n">rate_train</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">lam</span> <span class="o">=</span> <span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="n">print_every</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> 
+    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">user_based</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">rs</span><span class="p">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="c1"># evaluate on test data
+</span><span class="n">RMSE</span> <span class="o">=</span> <span class="n">rs</span><span class="p">.</span><span class="n">evaluate_RMSE</span><span class="p">(</span><span class="n">rate_test</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">'</span><span class="se">\n</span><span class="s">User-based MF, RMSE ='</span><span class="p">,</span> <span class="n">RMSE</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iter = 10 , loss = 5.67288309116 , RMSE train = 1.20479476967
+iter = 20 , loss = 2.64823713338 , RMSE train = 1.03727078113
+iter = 30 , loss = 1.34749564429 , RMSE train = 1.02937828335
+iter = 40 , loss = 0.754769340402 , RMSE train = 1.0291792473
+iter = 50 , loss = 0.48310745143 , RMSE train = 1.0292035212
+iter = 60 , loss = 0.358530096403 , RMSE train = 1.02921183102
+iter = 70 , loss = 0.30139979707 , RMSE train = 1.02921377947
+iter = 80 , loss = 0.27520033847 , RMSE train = 1.02921421055
+iter = 90 , loss = 0.263185542009 , RMSE train = 1.02921430477
+iter = 100 , loss = 0.257675693217 , RMSE train = 1.02921432529
+
+User-based MF, RMSE = 1.06037991127
+</code></pre></div></div>
+
+<p>Ta nh&#7853;n th&#7845;y r&#7857;ng gi&aacute; tr&#7883; <code class="language-plaintext highlighter-rouge">loss</code> gi&#7843;m d&#7847;n v&agrave; <code class="language-plaintext highlighter-rouge">RMSE train</code> c&#361;ng gi&#7843;m d&#7847;n khi s&#7889; v&ograve;ng l&#7863;p t&#259;ng l&ecirc;n. RMSE c&oacute; cao h&#417;n so v&#7899;i Neighborhood-based Collaborative Filtering (~0.99) m&#7897;t ch&uacute;t nh&#432;ng v&#7851;n t&#7889;t h&#417;n k&#7871;t qu&#7843; c&#7911;a Content-based Recommendation Systems r&#7845;t nhi&#7873;u (~1.2).</p>
+
+<p>N&#7871;u <strong>chu&#7849;n ho&aacute; d&#7921;a tr&ecirc;n <em>item</em>:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rs</span> <span class="o">=</span> <span class="n">MF</span><span class="p">(</span><span class="n">rate_train</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">lam</span> <span class="o">=</span> <span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="n">print_every</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">user_based</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">rs</span><span class="p">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="c1"># evaluate on test data
+</span><span class="n">RMSE</span> <span class="o">=</span> <span class="n">rs</span><span class="p">.</span><span class="n">evaluate_RMSE</span><span class="p">(</span><span class="n">rate_test</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">'</span><span class="se">\n</span><span class="s">Item-based MF, RMSE ='</span><span class="p">,</span> <span class="n">RMSE</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iter = 10 , loss = 5.62978100103 , RMSE train = 1.18231933756
+iter = 20 , loss = 2.61820113008 , RMSE train = 1.00601013825
+iter = 30 , loss = 1.32429630221 , RMSE train = 0.996672160644
+iter = 40 , loss = 0.734890958031 , RMSE train = 0.99621264651
+iter = 50 , loss = 0.464793412146 , RMSE train = 0.996184081495
+iter = 60 , loss = 0.340943058213 , RMSE train = 0.996181347407
+iter = 70 , loss = 0.284148579208 , RMSE train = 0.996180972472
+iter = 80 , loss = 0.258103818785 , RMSE train = 0.996180914097
+iter = 90 , loss = 0.246160195903 , RMSE train = 0.996180905172
+iter = 100 , loss = 0.240683073898 , RMSE train = 0.996180903957
+
+Item-based MF, RMSE = 1.04980475198
+</code></pre></div></div>
+
+<p>K&#7871;t qu&#7843; c&oacute; t&#7889;t h&#417;n m&#7897;t ch&uacute;t.</p>
+
+<p>Ch&uacute;ng ta c&ugrave;ng l&agrave;m th&ecirc;m m&#7897;t th&iacute; nghi&#7879;m n&#7919;a khi kh&ocirc;ng s&#7917; d&#7909;ng regularization, t&#7913;c <code class="language-plaintext highlighter-rouge">lam = 0</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rs</span> <span class="o">=</span> <span class="n">MF</span><span class="p">(</span><span class="n">rate_train</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">lam</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">print_every</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">learning_rate</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">user_based</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">rs</span><span class="p">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="c1"># evaluate on test data
+</span><span class="n">RMSE</span> <span class="o">=</span> <span class="n">rs</span><span class="p">.</span><span class="n">evaluate_RMSE</span><span class="p">(</span><span class="n">rate_test</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">'</span><span class="se">\n</span><span class="s">Item-based MF, RMSE ='</span><span class="p">,</span> <span class="n">RMSE</span>
+</code></pre></div></div>
+
+<p>N&#7871;u c&aacute;c b&#7841;n ch&#7841;y &#273;o&#7841;n code tr&ecirc;n, c&aacute;c b&#7841;n s&#7869; th&#7845;y ch&#7845;t l&#432;&#7907;ng c&#7911;a m&ocirc; h&igrave;nh gi&#7843;m &#273;i r&otilde; r&#7879;t (RMSE cao).</p>
+
+<p><a name="-ap-dung-len-movielens-m" href="matrixfactorization.html"></a></p>
+
+<h3 id="33-&aacute;p-d&#7909;ng-l&ecirc;n-movielens-1m">3.3. &Aacute;p d&#7909;ng l&ecirc;n MovieLens 1M</h3>
+
+<p>Ti&#7871;p theo, ch&uacute;ng ta c&ugrave;ng &#273;&#7871;n v&#7899;i m&#7897;t b&#7897; c&#417; s&#7903; d&#7919; li&#7879;u l&#7899;n h&#417;n l&agrave; <a href="https://grouplens.org/datasets/movielens/1m/">MovieLens 1M</a> bao g&#7891;m x&#7845;p x&#7881; 1 tri&#7879;u <em>ratings</em> c&#7911;a 6000 ng&#432;&#7901;i d&ugrave;ng l&ecirc;n 4000 b&#7897; phim. &#272;&acirc;y l&agrave; m&#7897;t b&#7897; c&#417; s&#7903; d&#7919; li&#7879;u l&#7899;n, th&#7901;i gian <em>training</em> c&#361;ng s&#7869; t&#259;ng theo. B&#7841;n &#273;&#7885;c c&#361;ng c&oacute; th&#7875; th&#7917; &aacute;p d&#7909;ng m&ocirc; h&igrave;nh Neighborhood-based Collaborative Filtering l&ecirc;n c&#417; s&#7903; d&#7919; li&#7879;u n&agrave;y &#273;&#7875; so s&aacute;nh k&#7871;t qu&#7843;. T&ocirc;i d&#7921; &#273;o&aacute;n l&agrave; th&#7901;i gian <em>training</em> s&#7869; nhanh nh&#432;ng th&#7901;i gian <em>inference</em> s&#7869; r&#7845;t l&acirc;u.</p>
+
+<p><strong>Load d&#7919; li&#7879;u:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s">'user_id'</span><span class="p">,</span> <span class="s">'movie_id'</span><span class="p">,</span> <span class="s">'rating'</span><span class="p">,</span> <span class="s">'unix_timestamp'</span><span class="p">]</span>
+
+<span class="n">ratings_base</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'ml-1m/ratings.dat'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'::'</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">r_cols</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'latin-1'</span><span class="p">)</span>
+<span class="n">ratings</span> <span class="o">=</span> <span class="n">ratings_base</span><span class="p">.</span><span class="n">as_matrix</span><span class="p">()</span>
+
+<span class="c1"># indices in Python start from 0
+</span><span class="n">ratings</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p><strong>T&aacute;ch t&#7853;p training v&agrave; test, s&#7917; d&#7909;ng 1/3 d&#7919; li&#7879;u cho test</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">rate_train</span><span class="p">,</span> <span class="n">rate_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">ratings</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">X_train</span><span class="p">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(670140, 4) (330069, 4)
+</code></pre></div></div>
+
+<p><strong>&Aacute;p d&#7909;ng Matrix Factorization:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rs</span> <span class="o">=</span> <span class="n">MF</span><span class="p">(</span><span class="n">rate_train</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">lam</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">print_every</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">learning_rate</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">user_based</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">rs</span><span class="p">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="c1"># evaluate on test data
+</span><span class="n">RMSE</span> <span class="o">=</span> <span class="n">rs</span><span class="p">.</span><span class="n">evaluate_RMSE</span><span class="p">(</span><span class="n">rate_test</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">'</span><span class="se">\n</span><span class="s">Item-based MF, RMSE ='</span><span class="p">,</span> <span class="n">RMSE</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iter = 2 , loss = 6.80832412832 , RMSE train = 1.12359545594
+iter = 4 , loss = 4.35238943299 , RMSE train = 1.00312745587
+iter = 6 , loss = 2.85065420416 , RMSE train = 0.978490200028
+iter = 8 , loss = 1.90134941041 , RMSE train = 0.974189487594
+iter = 10 , loss = 1.29580344305 , RMSE train = 0.973438724579
+
+Item-based MF, RMSE = 0.981631017423
+</code></pre></div></div>
+
+<p>K&#7871;t qu&#7843; kh&aacute; &#7845;n t&#432;&#7907;ng sau 10 v&ograve;ng l&#7863;p. K&#7871;t qu&#7843; khi &aacute;p d&#7909;ng Neighborhood-based Collaborative Filtering l&agrave; kho&#7843;ng 0.92 nh&#432;ng th&#7901;i gian <em>inference</em> kh&aacute; l&#7899;n.</p>
+
+<p><a name="-thao-luan" href="matrixfactorization.html"></a></p>
+
+<h2 id="4-th&#7843;o-lu&#7853;n">4. Th&#7843;o lu&#7853;n</h2>
+
+<p><a name="-khi-co-bias" href="matrixfactorization.html"></a></p>
+
+<h3 id="41-khi-c&oacute;-bias">4.1. Khi c&oacute; bias</h3>
+<p>M&#7897;t l&#7907;i th&#7871; c&#7911;a h&#432;&#7899;ng ti&#7871;p c&#7853;n Matrix Factorization cho Collaborative Filtering l&agrave; kh&#7843; n&#259;ng linh ho&#7841;t c&#7911;a n&oacute; khi c&oacute; th&ecirc;m c&aacute;c &#273;i&#7873;u ki&#7879;n r&agrave;ng bu&#7897;c kh&aacute;c, c&aacute;c &#273;i&#7873;u ki&#7879;n n&agrave;y c&oacute; th&#7875; li&ecirc;n quan &#273;&#7871;n qu&aacute; tr&igrave;nh x&#7917; l&yacute; d&#7919; li&#7879;u ho&#7863;c &#273;&#7871;n t&#7915;ng &#7913;ng d&#7909;ng c&#7909; th&#7875;.</p>
+
+<p>Gi&#7843; s&#7917; ta ch&#432;a chu&#7849;n ho&aacute; c&aacute;c gi&aacute; tr&#7883; <em>ratings</em> m&agrave; s&#7917; d&#7909;ng tr&#7921;c ti&#7871;p gi&aacute; tr&#7883; ban &#273;&#7847;u c&#7911;a ch&uacute;ng trong &#273;&#7859;ng th&#7913;c \((1)\). Vi&#7879;c chu&#7849;n ho&aacute; c&#361;ng c&oacute; th&#7875; &#273;&#432;&#7907;c t&iacute;ch h&#7907;p tr&#7921;c ti&#7871;p v&agrave;o trong h&agrave;m m&#7845;t m&aacute;t. Nh&#432; t&ocirc;i &#273;&atilde; &#273;&#7873; c&#7853;p, c&aacute;c <em>ratings</em> th&#7921;c t&#7871; &#273;&#7873;u c&oacute; nh&#7919;ng thi&ecirc;n l&#7879;ch v&#7873; <em>users</em> ho&#7863;c/v&agrave; <em>items</em>. C&oacute; <em>user</em> d&#7877; v&agrave; kh&oacute; t&iacute;nh, c&#361;ng c&oacute; nh&#7919;ng <em>item</em> &#273;&#432;&#7907;c <em>rated</em> cao h&#417;n nh&#7919;ng <em>items</em> kh&aacute;c ch&#7881; v&igrave; <em>user</em> th&#7845;y c&aacute;c <em>users</em> kh&aacute;c &#273;&atilde; &#273;&aacute;nh gi&aacute; <em>item</em> &#273;&oacute; cao r&#7891;i. V&#7845;n &#273;&#7873; thi&ecirc;n l&#7879;ch c&oacute; th&#7875; &#273;&#432;&#7907;c gi&#7843;i quy&#7871;t b&#7857;ng c&aacute;c bi&#7871;n g&#7885;i l&agrave; <em>biases</em>, ph&#7909; thu&#7897;c v&agrave;o m&#7895;i <em>user</em> v&agrave; <em>item</em> v&agrave; c&oacute; th&#7875; &#273;&#432;&#7907;c t&#7889;i &#432;u c&ugrave;ng v&#7899;i \(\mathbf{X}\) v&agrave; \(\mathbf{W}\). Khi &#273;&oacute;, <em>ratings</em> c&#7911;a <em>user</em> \(n\) l&ecirc;n <em>item</em> \(m\) kh&ocirc;ng ch&#7881; &#273;&#432;&#7907;c x&#7845;p x&#7881; b&#7857;ng \(\mathbf{x}_m\mathbf{w}_n\) m&agrave; c&ograve;n ph&#7909; thu&#7897;c v&agrave;o c&aacute;c <em>biases</em> c&#7911;a <em>item</em> \(m\) v&agrave; <em>user</em> \(n\) n&#7919;a. Ngo&agrave;i ra, gi&aacute; tr&#7883; n&agrave;y c&#361;ng c&oacute; th&#7875; ph&#7909; thu&#7897;c v&agrave;o gi&aacute; tr&#7883; trung b&igrave;nh c&#7911;a to&agrave;n b&#7897; <em>ratings</em> n&#7919;a:</p>
+
+<p>\[
+y_{mn} \approx \mathbf{x}_m \mathbf{w}_n + b_m + d_n + \mu
+\]</p>
+
+<p>v&#7899;i \(b_m, d_n, \mu\) l&#7847;n l&#432;&#7907;t l&agrave; bias c&#7911;a <em>item</em> \(m\), <em>user</em> \(n\), v&agrave; gi&aacute; tr&#7883; trung b&igrave;nh c&#7911;a to&agrave;n b&#7897; c&aacute;c <em>ratings</em> (l&agrave; h&#7857;ng s&#7889;).</p>
+
+<p>L&uacute;c n&agrave;y, h&agrave;m m&#7845;t m&aacute;t c&oacute; th&#7875; &#273;&#432;&#7907;c thay &#273;&#7893;i th&agrave;nh: 
+\[
+\begin{eqnarray}
+\mathcal{L}(\mathbf{X}, \mathbf{W}, \mathbf{b}, \mathbf{d}) &amp;=&amp; \frac{1}{2s} \sum_{n=1}^N \sum_{m:r_{mn} = 1} (\mathbf{x}_m\mathbf{w}_n + b_m + d_n +\mu - y_{mn})^2 + \\ 
+&amp;&amp; + \frac{\lambda}{2} (||\mathbf{X}||_F^2 + ||\mathbf{W}||_F^2 + ||\mathbf{b}||_2^2  + ||\mathbf{d}||_2^2)
+\end{eqnarray}
+\]</p>
+
+<p>Vi&#7879;c t&iacute;nh to&aacute;n &#273;&#7841;o h&agrave;m cho t&#7915;ng bi&#7871;n kh&ocirc;ng qu&aacute; ph&#7913;c t&#7841;p, t&ocirc;i s&#7869; kh&ocirc;ng b&agrave;n ti&#7871;p &#7903; &#273;&acirc;y. Tuy nhi&ecirc;n, n&#7871;u b&#7841;n quan t&acirc;m, b&#7841;n c&oacute; th&#7875; tham kh&#7843;o <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/tree/master/assets/25_mf/python">source code m&agrave; t&ocirc;i vi&#7871;t t&#7841;i &#273;&acirc;y</a>. Link n&agrave;y c&#361;ng k&egrave;m theo c&aacute;c v&iacute; d&#7909; n&ecirc;u trong M&#7909;c 3 v&agrave; d&#7919; li&#7879;u li&ecirc;n quan.</p>
+
+<p><a name="-nonnegative-matrix-factorization" href="matrixfactorization.html"></a></p>
+
+<h3 id="42-nonnegative-matrix-factorization">4.2. Nonnegative Matrix Factorization</h3>
+<p>Khi d&#7919; li&#7879;u ch&#432;a &#273;&#432;&#7907;c chu&#7849;n ho&aacute;, ch&uacute;ng &#273;&#7873;u mang c&aacute;c gi&aacute; tr&#7883; kh&ocirc;ng &acirc;m. N&#7871;u d&#7843;i gi&aacute; tr&#7883; c&#7911;a <em>ratings</em> c&oacute; ch&#7913;a gi&aacute; tr&#7883; &acirc;m, ta ch&#7881; c&#7847;n c&#7897;ng th&ecirc;m v&agrave;o Utility Matrix m&#7897;t gi&aacute; tr&#7883; h&#7907;p l&yacute; &#273;&#7875; c&oacute; &#273;&#432;&#7907;c c&aacute;c <em>ratings</em> l&agrave; c&aacute;c s&#7889; kh&ocirc;ng &acirc;m. Khi &#273;&oacute;, m&#7897;t ph&#432;&#417;ng ph&aacute;p Matrix Factorization kh&aacute;c c&#361;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng r&#7845;t nhi&#7873;u v&agrave; mang l&#7841;i hi&#7879;u qu&#7843; cao trong Recommendation Systems l&agrave; Nonnegative Matrix Factorization, t&#7913;c ph&acirc;n t&iacute;ch ma tr&#7853;n th&agrave;nh t&iacute;ch c&aacute;c ma tr&#7853;n c&oacute; c&aacute;c ph&#7847;n t&#7917; kh&ocirc;ng &acirc;m.</p>
+
+<p>B&#7857;ng Matrix Factorization, c&aacute;c <em>users</em> v&agrave; <em>items</em> &#273;&#432;&#7907;c li&ecirc;n k&#7871;t v&#7899;i nhau b&#7903;i c&aacute;c <em>latent features</em> (t&iacute;nh ch&#7845;t &#7849;n). &#272;&#7897; li&ecirc;n k&#7871;t c&#7911;a m&#7895;i <em>user</em> v&agrave; <em>item</em> t&#7899;i m&#7895;i latent feature &#273;&#432;&#7907;c &#273;o b&#7857;ng th&agrave;nh ph&#7847;n t&#432;&#417;ng &#7913;ng trong feature vector h&#7879; s&#7889; c&#7911;a ch&uacute;ng, gi&aacute; tr&#7883; c&agrave;ng l&#7899;n th&#7875; hi&#7879;n vi&#7879;c <em>user</em> ho&#7863;c <em>item</em> c&oacute; li&ecirc;n quan &#273;&#7871;n latent feature &#273;&oacute; c&agrave;ng l&#7899;n. B&#7857;ng tr&#7921;c gi&aacute;c, s&#7921; li&ecirc;n quan c&#7911;a m&#7897;t <em>user</em> ho&#7863;c <em>item</em> &#273;&#7871;n m&#7897;t latent feature n&ecirc;n l&agrave; m&#7897;t s&#7889; kh&ocirc;ng &acirc;m v&#7899;i gi&aacute; tr&#7883; 0 th&#7875; hi&#7879;n vi&#7879;c <em>kh&ocirc;ng li&ecirc;n quan</em>. H&#417;n n&#7919;a, m&#7895;i <em>user</em> v&agrave; <em>item</em> ch&#7881; <em>li&ecirc;n quan</em> &#273;&#7871;n m&#7897;t v&agrave;i <em>latent feature</em> nh&#7845;t &#273;&#7883;nh. V&#7853;y n&ecirc;n feature vectors cho <em>users</em> v&agrave; <em>items</em> n&ecirc;n l&agrave; c&aacute;c vectors kh&ocirc;ng &acirc;m v&agrave; c&oacute; r&#7845;t nhi&#7873;u gi&aacute; tr&#7883; b&#7857;ng 0. Nh&#7919;ng nghi&#7879;m n&agrave;y c&oacute; th&#7875; &#273;&#7841;t &#273;&#432;&#7907;c b&#7857;ng c&aacute;ch cho th&ecirc;m r&agrave;ng bu&#7897;c kh&ocirc;ng &acirc;m v&agrave;o c&aacute;c th&agrave;nh ph&#7847;n c&#7911;a \(\mathbf{X}\) v&agrave; \(\mathbf{W}\).</p>
+
+<p>B&#7841;n &#273;&#7885;c mu&#7889;n t&igrave;m hi&#7875;u th&ecirc;m v&#7873; Nonnegative Matrix Factorization c&oacute; th&#7875; tham kh&#7843;o c&aacute;c t&agrave;i li&#7879;u &#7903; M&#7909;c 6.</p>
+
+<p><a name="-incremental-matrix-factorization" href="matrixfactorization.html"></a></p>
+
+<h3 id="43-incremental-matrix-factorization">4.3. Incremental Matrix Factorization</h3>
+<p>Nh&#432; &#273;&atilde; &#273;&#7873; c&#7853;p, th&#7901;i gian <em>inference</em> c&#7911;a Recommendation Systems s&#7917; d&#7909;ng Matrix Factorization l&agrave; r&#7845;t nhanh nh&#432;ng th&#7901;i gian <em>training</em> l&agrave; kh&aacute; l&acirc;u v&#7899;i c&aacute;c t&#7853;p d&#7919; li&#7879;u l&#7899;n. Th&#7921;c t&#7871; cho th&#7845;y, Utility Matrix thay &#273;&#7893;i li&ecirc;n t&#7909;c v&igrave; c&oacute; th&ecirc;m <em>users</em>, <em>items</em> c&#361;ng nh&#432; c&aacute;c <em>ratings</em> m&#7899;i ho&#7863;c <em>user</em> mu&#7889;n thay &#273;&#7893;i <em>ratings</em> c&#7911;a h&#7885;, v&igrave; v&#7853;y hai ma tr&#7853;n \(\mathbf{X}\) v&agrave; \(\mathbf{W}\) ph&#7843;i th&#432;&#7901;ng xuy&ecirc;n &#273;&#432;&#7907;c c&#7853;p nh&#7853;t. &#272;i&#7873;u n&agrave;y &#273;&#7891;ng ngh&#297;a v&#7899;i vi&#7879;c ta ph&#7843;i ti&#7871;p t&#7909;c th&#7921;c hi&#7879;n qu&aacute; tr&igrave;nh <em>training</em> v&#7889;n t&#7889;n kh&aacute; nhi&#7873;u th&#7901;i gian.</p>
+
+<p>Vi&#7879;c n&agrave;y &#273;&#432;&#7907;c gi&#7843;i quy&#7871;t ph&#7847;n n&agrave;o b&#7857;ng Incremental Matrix Factorization. B&#7841;n &#273;&#7885;c quan t&acirc;m c&oacute; th&#7875; &#273;&#7885;c <a href="https://ai2-s2-pdfs.s3.amazonaws.com/c827/d2267640a7a913250fa5046a16ff078a5ce4.pdf">Fast incremental matrix factorization for recommendation with positive-only feedback</a>.</p>
+
+<p><a name="-others" href="matrixfactorization.html"></a></p>
+
+<h3 id="44-others">4.4. Others</h3>
+
+<ul><li>
+    <p>B&agrave;i to&aacute;n Matrix Factorization c&oacute; nhi&#7873;u h&#432;&#7899;ng gi&#7843;i quy&#7871;t kh&aacute;c ngo&agrave;i Gradient Descent. B&#7841;n &#273;&#7885;c c&oacute; th&#7875; xem th&ecirc;m <a href="https://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf">Alternating Least Square (ALS)</a>, <a href="https://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf">Generalized Low Rank Models</a>. Trong b&agrave;i ti&#7871;p theo, t&ocirc;i s&#7869; vi&#7871;t v&#7873; <a href="https://en.wikipedia.org/wiki/Singular_value_decomposition">Singular Value Decomposition (SVD)</a>, m&#7897;t ph&#432;&#417;ng ph&aacute;p ph&#7893; bi&#7871;n trong Matrix Factorization,  &#273;&#432;&#7907;c s&#7917; d&#7909;ng kh&ocirc;ng nh&#7919;ng trong (Recommendation) Systems m&agrave; c&ograve;n trong nhi&#7873;u h&#7879; th&#7889;ng kh&aacute;c. M&#7901;i c&aacute;c b&#7841;n &#273;&oacute;n &#273;&#7885;c.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/tree/master/assets/25_mf/python">Source code</a>
+<a name="-tai-lieu-tham-khao" href="matrixfactorization.html"></a></p>
+  </li>
+</ul><h2 id="6-t&agrave;i-li&#7879;u-tham-kh&#7843;o">6. T&agrave;i li&#7879;u tham kh&#7843;o</h2>
+
+<p>[1] <a href="http://infolab.stanford.edu/~ullman/mmds/ch9.pdf">Recommendation Systems - Stanford InfoLab</a></p>
+
+<p>[2] <a href="https://www.youtube.com/watch?v=h9gpufJFF-0&amp;t=436s">Collaborative Filtering - Stanford University</a></p>
+
+<p>[3] <a href="https://www.youtube.com/watch?v=saXRzxgFN0o&amp;list=PL_npY1DYXHPT-3dorG7Em6d18P4JRFDvH">Recommendation systems - Machine Learning - Andrew Ng</a></p>
+
+<p>[4] Ekstrand, Michael D., John T. Riedl, and Joseph A. Konstan. &ldquo;<a href="http://herbrete.vvv.enseirb-matmeca.fr/IR/CF_Recsys_Survey.pdf">Collaborative filtering recommender systems.</a>&rdquo; Foundations and Trends&reg; in Human&ndash;Computer Interaction 4.2 (2011): 81-173.</p>
+
+<p>[5] <a href="https://datajobs.com/data-science-repo/Recommender-Systems-%5BNetflix%5D.pdf">Matrix factorization techniques for recommender systems</a></p>
+
+<p>[6] <a href="https://joyceho.github.io/cs584_s16/slides/mf-16.pdf">Matrix Factorization For Recommender Systems</a></p>
+
+<p>[7] <a href="http://www.siam.org/meetings/sdm06/proceedings/059zhangs2.pdf">Learning from Incomplete Ratings Using Non-negative Matrix Factorization</a></p>
+
+<p>[8] <a href="https://ai2-s2-pdfs.s3.amazonaws.com/c827/d2267640a7a913250fa5046a16ff078a5ce4.pdf">Fast Incremental Matrix Factorization for Recommendation with Positive-Only Feedback</a></p>
+
+</div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="collaborativefiltering.html">&laquo; B&agrave;i 24: Neighborhood-Based Collaborative Filtering</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="svd.html">B&agrave;i 26: Singular Value Decomposition &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2017/05/31/matrixfactorization/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11358048; 
+var sc_invisible=0; 
+var sc_security="5bef7cd2"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/5bef7cd2-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/05/31/matrixfactorization/">B&agrave;i 25: Matrix Factorization Collaborative Filtering</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/05/24/collaborativefiltering/">B&agrave;i 24: Neighborhood-Based Collaborative Filtering</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/05/17/contentbasedrecommendersys/">B&agrave;i 23: Content-based Recommendation Systems</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/05/31/matrixfactorization/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2017/05/31/matrixfactorization/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/05/31/matrixfactorization/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=B&agrave;i 25: Matrix Factorization Collaborative Filtering&url=https://machinelearningcoban.com/2017/05/31/matrixfactorization/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2017/05/31/matrixfactorization/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2017/05/31/matrixfactorization/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#6c533f190e06090f18513f05011c00094c3f040d1e094c2e19181803021f4a0d011c572e0308155125495e5c1f0d1b495e5c1804051f495e5c0d0208495e5c180403190b0418495e5c030a495e5c1503194d495e5c4c0418181c1f564343010d0f0405020900090d1e0205020b0f030e0d02420f0301435e5c5d5b435c59435f5d43010d181e05140a0d0f18031e05160d1805030243">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/05/24/collaborativefiltering/">B&agrave;i 24: Neighborhood-Based Collaborative Filtering</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2017/06/07/svd/">B&agrave;i 26: Singular Value Decomposition</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>

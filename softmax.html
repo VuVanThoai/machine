@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Machine Learning c&#417; b&#7843;n</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><script src="js/3.1.1-jquery.min.js"></script><script src="js/js-bootstrap.min.js"></script><link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"><!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --><link href="https://fonts.googleapis.com/css?family=Roboto%7CSource+Sans+Pro" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"><!-- Include CSS SCSS --><link rel="stylesheet" type="text/css" href="css/style-post.css"><link rel="stylesheet" type="text/css" href="css/css-monokai.css"><link rel="stylesheet" type="text/css" href="css/css-mystyle.css"><!-- <link rel="stylesheet" type="text/css" href="/css/github.css" /> --><title>B&agrave;i 13: Softmax Regression</title><!-- <script>
+var pageProperties = {
+    
+    category: "Neural-nets",
+    
+    url: "/2017/02/17/softmax/",
+    title: "B&agrave;i 13: Softmax Regression",
+    scripts: [
+        
+    ],
+};
+
+</script>
+<script src="/scripts/modules.js" async></script>
+ --><link rel="icon" type="image/png" href="favicons/latex-new_logo9.png" sizes="32x32"><link rel="canonical" href="https://machinelearningcoban.com/2017/02/17/softmax/"><meta name="author" content="Tiep Vu "><meta property="og:title" content="B&agrave;i 13: Softmax Regression"><meta property="og:site_name" content="Tiep Vu's blog"><meta property="og:url" content="https://machinelearningcoban.com/2017/02/17/softmax/"><meta property="og:description" content=""><meta property="og:type" content="article"><meta property="article:published_time" content="2017-02-17"><meta property="article:author" content="Tiep Vu"><meta property="article:section" content="Neural-nets"><meta property="article:tag" content="Neural-nets"><meta property="article:tag" content="Supervised-learning"><meta property="article:tag" content="Regression"><meta property="article:tag" content="Multi-class"><meta property="article:tag" content="MNIST"><link rel="alternate" type="application/atom+xml" title="Tiep Vu's blog - Atom feed" href="/feed.xml"><!-- Google Analytics --><script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-89509207-1', 'auto');
+// ga('send', 'pageview');
+ga('send', 'pageview', {
+'page': '/2017/02/17/softmax/',
+'title': 'B&agrave;i 13: Softmax Regression'
+});
+</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KTCD8BX');</script><!-- End Google Tag Manager --></head><body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><br><div class="container">
+      	<div class="row">
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	          	<a href="machinelearningcoban.html">
+            <!-- <img width="80%" src="/images/logo.svg" /> -->
+            <!-- <img width="100%" src="/images/logoTet.png" /> -->
+            <!-- <img width="100%" src="/images/logo2.png" /> -->
+            <!-- <img width="100%" style="padding-bottom: 3mm;" src="/images/logo_new.png" /> </a> -->
+            <img width="100%" style="padding-bottom: 3mm;" src="images/latex-new_logo92.png"></a>
+          <!-- <img width="100%" style="padding-bottom: 3mm;" src="/assets/latex/new_logo2_rau.png" /> </a> -->
+
+            <br><a href="buymeacoffee.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-Buymeacoffee_blue.png"><br></a><a href="ebook.html">
+            <img width="100%" style="padding-bottom: 3mm;" src="images/images-ebook_logo.png"><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#074B80', 
+            'A40822MV');kofiwidget2.draw();</script>  --><!-- 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations">
+            <input type="hidden" name="business" value="vuhuutiep@gmail.com">
+            <input type="hidden" name="lc" value="US">
+            <input type="hidden" name="item_name" value="I find machinelearningcoban.com helpful. I'd like to buy Tiep Vu a coffee ^^. (Thank you so much for your support.)">
+            <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="currency_code" value="USD">
+            <input type="hidden" name="bn" value="PP-DonationsBF:Buymeacoffee.png:NonHostedGuest">
+            <input type="image" src="/images/Buymeacoffee_blue.png" border="0" style="padding-bottom: -9mm;" width = 100% name="submit" alt="PayPal - The safer, easier way to pay online!">
+            </form> --><!-- <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee', '#805007', 'A40822MV');kofiwidget2.draw();</script>  --></a>
+
+          <!-- Google search -->
+         <!--  <table border="0">
+          <div id = "top-widget" style="width: 292px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          <!-- <nav>
+          
+            <div class="header">Popular</div>
+            <ul>
+              <li> (**): > 10k views</li>
+              <li> (*) : > 5k views</li>
+            </ul>
+          </nav> -->
+          
+
+          
+          <nav><div class="header">Latest by category</div>
+            <ul><li><a style="text-align: left; color: #074B80;" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="softmax.html">13. Softmax Regression</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="logisticregression.html">10. Logistic Regression</a></li>
+                  
+                    <li><a style="text-align: left; color: #074B80;" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul></nav><nav><div class="header">Latest</div>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar2.html">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="conv2d.html">37. T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="forum.html">Di&#7877;n &#273;&agrave;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">36. Keras</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="deeplearning.html">35. L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phuonghoagiang.html">Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="id3.html">34. Decision Trees (1): ID3</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="evaluation.html">33. &#272;&aacute;nh gi&aacute; h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 3: C&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_matrices.html">FundaML 2: Ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml_vectors.html">FundaML 1: M&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="fundaml.html">FundaML.com</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="nbc.html">32. Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="phdlife.html">Vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlemap.html">31. Maximum Likelihood v&agrave; Maximum A Posteriori</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lifesofar.html">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="prob.html">30. &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="tl.html">Q2. Transfer Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="lda.html">29. Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="qns1.html">Q1. Quick Notes 1</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca2.html">28. Principal Component Analysis (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="pca.html">27. Principal Component Analysis (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="svd.html">26. Singular Value Decomposition</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="matrixfactorization.html">25. Matrix Factorization Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="collaborativefiltering.html">24. Neighborhood-Based Collaborative Filtering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="contentbasedrecommendersys.html">23. Content-based Recommendation Systems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="multiclasssmv.html">22. Multi-class SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kernelsmv.html">21. Kernel SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmarginsmv.html">20. Soft Margin SVM</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="smv.html">19. Support Vector Machine</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="duality.html">18. Duality</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexopt.html">17. Convex Optimization Problems</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="convexity.html">16. Convex sets v&agrave; convex functions</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="overfitting.html">15. Overfitting</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="mlp.html">14. Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="softmax.html">13. Softmax Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="binaryclassifiers.html">12. Binary Classifiers</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="featureengineering.html">11. Feature Engineering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="howdoIcreatethisblog.html"></a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="logisticregression.html">10. Logistic Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="perceptron.html">9. Perceptron Learning Algorithm</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent2.html">8. Gradient Descent (2/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="gradientdescent.html">7. Gradient Descent (1/2)</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="knn.html">6. K-nearest neighbors</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans2.html">5. K-means Clustering - Applications</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="kmeans.html">4. K-means Clustering</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="linearregression.html">3. Linear Regression</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="categories.html">2. Ph&acirc;n nh&oacute;m c&aacute;c thu&#7853;t to&aacute;n Machine Learning</a></li>
+              
+                <li><a style="text-align: left; color: #074B80" href="introduce.html">1. Gi&#7899;i thi&#7879;u v&#7873; Machine Learning</a></li>
+              
+            
+          </nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/02/11/binaryclassifiers/">B&agrave;i 12: Binary Classifiers cho c&aacute;c b&agrave;i to&aacute;n Classification</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/02/24/mlp/">B&agrave;i 14: Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              </ul>
+            </nav>
+            --></div>
+	        <div class="col-md-8 col-xs-12" style="z-index: 1">
+	        	 <!-- <br> -->
+ <nav class="navbar navbar-inverse" style="background-color: #074B80"><div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="machinelearningcoban.html"><span style="color: #fff">Machine Learning c&#417; b&#7843;n</span></a>
+        <!-- <form class="navbar-form navbar-left" role="search">
+            <div class="form-group" align="right">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span></span>
+            </button>
+        </form> -->
+        
+
+
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav"><li><a href="about.html"><span style="color: #fff"> About</span></a></li>
+        <li><a href="index.html"><span style="color: #fff">Index</span></a></li>
+        <li><a href="tags.html"><span style="color: #fff">Tags</span></a></li>
+        <li><a href="categories.html"><span style="color: #fff">Categories</span></a></li>
+        <li><a href="archive.html"><span style="color: #fff">Archive</span></a></li>
+        <li><a href="math.html"><span style="color: #fff">Math</span></a></li>
+        <!-- <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScq3GkxM1I2fDevR7gth-O9QqxM7grf4AFc0WT1hFORv4flaw/viewform"><span style = "color: #fff">Survey</span></a></li> -->
+        <li><a href="copyrights.html"><span style="color: #fff">Copyrights</span></a></li>
+        <!-- <li><a href="/faqs/"><span style = "color: #fff">FAQs</span></a></li> -->
+        <li><a href="ebook.html"><span style="color: #fff">ebook</span></a></li>
+        <li><a href="search.html"><span style="color: #fff">Search</span></a></li>
+        <!-- <li><a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/latex/book.pdf"><span style = "color: #fff">Book</span></a></li> -->
+        <!-- <li><a href="https://www.facebook.com/groups/257768141347267/"><span style = "color: #fff">Forum</span></a></li> -->
+        <!-- <li><a href="/subscribe/">Subscribe</a></li> -->
+
+        <li> 
+      </li></ul></div>
+  </div>
+</nav><!-- <div class = "row"> --><!-- <div class = "col-xs-12 hidden-md hidden-lg"> --><!-- previous and next posts --><div class="PageNavigation">
+         
+            <a class="prev" style="color: #074B80;" href="binaryclassifiers.html">&laquo; B&agrave;i 12: Binary Classifiers cho c&aacute;c b&agrave;i to&aacute;n Classification</a>
+         <!-- <hr> -->
+         
+         
+            <a class="next" style="float: right; color: #074B80;" href="mlp.html">B&agrave;i 14: Multi-layer Perceptron v&agrave; Backpropagation &raquo;</a>
+         <hr></div>
+  <!-- </div> -->
+<!-- </div> -->
+<h1 itemprop="name" class="post-title">B&agrave;i 13: Softmax Regression</h1>
+
+
+<ul class="tags"><a href="/tags#Neural-nets" class="tag">Neural-nets</a>
+   
+      <a href="/tags#Supervised-learning" class="tag">Supervised-learning</a>
+   
+      <a href="/tags#Regression" class="tag">Regression</a>
+   
+      <a href="/tags#Multi-class" class="tag">Multi-class</a>
+   
+      <a href="/tags#MNIST" class="tag">MNIST</a>
+   
+</ul><span class="post-date" style="color: gray; font-style: italic;">Feb 17, 2017
+            </span>
+<!-- Main content -->
+<br><br><div itemprop="articleBody">
+   <p>C&aacute;c b&agrave;i to&aacute;n classification th&#7921;c t&#7871; th&#432;&#7901;ng c&oacute; r&#7845;t nhi&#7873;u classes (multi-class), c&aacute;c <a href="/2017/02/11/binaryclassifiers/#-binary-classifiers-cho-multi-class-classification-problems">binary classifiers m&#7863;c d&ugrave; c&oacute; th&#7875; &aacute;p d&#7909;ng cho c&aacute;c b&agrave;i to&aacute;n multi-class</a>, ch&uacute;ng v&#7851;n c&oacute; nh&#7919;ng h&#7841;n ch&#7871; nh&#7845;t &#273;&#7883;nh. V&#7899;i binary classifiers, k&#7929; thu&#7853;t &#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u nh&#7845;t <a href="/2017/02/11/binaryclassifiers/#one-vs-rest-hay-one-hot-coding"><strong>one-vs-rest</strong></a> c&oacute; <a href="/2017/02/11/binaryclassifiers/#han-che-cua-one-vs-rest">m&#7897;t h&#7841;n ch&#7871; v&#7873; t&#7893;ng c&aacute;c x&aacute;c su&#7845;t</a>. Trong post n&agrave;y, m&#7897;t ph&#432;&#417;ng ph&aacute;p m&#7903; r&#7897;ng c&#7911;a Logistic Regression s&#7869; &#273;&#432;&#7907;c gi&#7899;i thi&#7879;u gi&uacute;p kh&#7855;c ph&#7909;c h&#7841;n ch&#7871; tr&ecirc;n. M&#7897;t l&#7847;n n&#7919;a, d&ugrave; l&agrave; Softmax <strong>Regression</strong>, ph&#432;&#417;ng ph&aacute;p n&agrave;y &#273;&#432;&#7907;c s&#7917; d&#7909;ng r&#7897;ng r&atilde;i nh&#432; m&#7897;t ph&#432;&#417;ng ph&aacute;p classification.</p>
+
+<p><strong>Trong trang n&agrave;y:</strong>
+<!-- MarkdownTOC --></p>
+
+<ul><li><a href="#-gioi-thieu">1. Gi&#7899;i thi&#7879;u</a></li>
+  <li><a href="#-softmax-function">2. Softmax function</a>
+    <ul><li><a href="#-cong-thuc-cua-softmax-function">2.1. C&ocirc;ng th&#7913;c c&#7911;a Softmax function</a></li>
+      <li><a href="#-softmax-function-trong-python">2.2. Softmax function trong Python</a></li>
+      <li><a href="#-mot-vai-vi-du">2.3. M&#7897;t v&agrave;i v&iacute; d&#7909;</a></li>
+      <li><a href="#-phien-ban-on-dinh-hon-cua-softmax-function">2.4. Phi&ecirc;n b&#7843;n &#7893;n &#273;&#7883;nh h&#417;n c&#7911;a softmax function</a></li>
+    </ul></li>
+  <li><a href="#-ham-mat-mat-va-phuong-phap-toi-uu">3. H&agrave;m m&#7845;t m&aacute;t v&agrave; ph&#432;&#417;ng ph&aacute;p t&#7889;i &#432;u</a>
+    <ul><li><a href="#-one-hot-coding">3.1. One hot coding</a></li>
+      <li><a href="#-cross-entropy">3.2. Cross Entropy</a></li>
+      <li><a href="#-ham-mat-mat-cho-softmax-regression">3.3. H&agrave;m m&#7845;t m&aacute;t cho Softmax Regression</a></li>
+      <li><a href="#-toi-uu-ham-mat-mat">3.4. T&#7889;i &#432;u h&agrave;m m&#7845;t m&aacute;t</a></li>
+      <li><a href="#-logistic-regression-la-mot-truong-hop-dat-biet-cua-softmax-regression">3.5. Logistic Regression l&agrave; m&#7897;t tr&#432;&#7901;ng h&#7907;p &#273;&#7863;t bi&#7879;t c&#7911;a Softmax Regression</a></li>
+    </ul></li>
+  <li><a href="#-mot-vai-luu-y-khi-lap-trinh-voi-python">4. M&#7897;t v&agrave;i l&#432;u &yacute; khi l&#7853;p tr&igrave;nh v&#7899;i Python</a>
+    <ul><li><a href="#-bat-dau-voi-du-lieu-nho">4.1. B&#7855;t &#273;&#7847;u v&#7899;i d&#7919; li&#7879;u nh&#7887;</a></li>
+      <li><a href="#-ma-tran-one-hot-coding">4.2. Ma tr&#7853;n one-hot coding</a></li>
+      <li><a href="#-kiem-tra-dao-ham">4.3. Ki&#7875;m tra &#273;&#7841;o h&agrave;m</a></li>
+      <li><a href="#-ham-chinh-cho-training-softmax-regression">4.4. H&agrave;m ch&iacute;nh cho training Softmax Regression</a></li>
+      <li><a href="#-ham-du-doan-class-cho-du-lieu-moi">4.5. H&agrave;m d&#7921; &#273;o&aacute;n class cho d&#7919; li&#7879;u m&#7899;i</a></li>
+    </ul></li>
+  <li><a href="#-vi-du-voi-python">5. V&iacute; d&#7909; v&#7899;i Python</a>
+    <ul><li><a href="#-simulated-data">5.1. Simulated data</a></li>
+      <li><a href="#-softmax-regression-cho-mnist">5.2. Softmax Regression cho MNIST</a></li>
+    </ul></li>
+  <li><a href="#-thao-luan">6. Th&#7843;o lu&#7853;n</a>
+    <ul><li><a href="#-boundary-tao-boi-softmax-regression-la-linear">6.1 Boundary t&#7841;o b&#7903;i Softmax Regression l&agrave; linear</a></li>
+      <li><a href="#-softmax-regression-la-mot-trong-hai-classifiers-pho-bien-nhat">6.2. Softmax Regression l&agrave; m&#7897;t trong hai classifiers ph&#7893; bi&#7871;n nh&#7845;t</a></li>
+      <li><a href="#-source-code">6.3. Source code</a></li>
+    </ul></li>
+  <li><a href="#tai-lieu-tham-khao">T&agrave;i li&#7879;u tham kh&#7843;o</a></li>
+</ul><!-- /MarkdownTOC --><p><strong>M&#7897;t l&#432;u &yacute; nh&#7887;:</strong> H&agrave;m m&#7845;t m&aacute;t c&#7911;a Softmax Regression tr&ocirc;ng c&oacute; v&#7867; kh&aacute; ph&#7913;c t&#7841;p, nh&#432;ng n&#7871;u  ki&ecirc;n tr&igrave; &#273;&#7885;c &#273;&#7871;n ph&#7847;n ph&#432;&#417;ng ph&aacute;p t&#7889;i &#432;u, c&aacute;c b&#7841;n s&#7869; th&#7845;y v&#7867; &#273;&#7865;p &#7849;n sau s&#7921; ph&#7913;c t&#7841;p &#273;&oacute;. Gradient c&#7911;a h&agrave;m m&#7845;t m&aacute;t v&agrave; c&ocirc;ng th&#7913;c c&#7853;p nh&#7853;t ma tr&#7853;n tr&#7885;ng s&#7889; l&agrave; r&#7845;t &#273;&#417;n gi&#7843;n. (&#272;&#417;n gi&#7843;n sau v&agrave;i b&#432;&#7899;c bi&#7871;n &#273;&#7893;i to&aacute;n h&#7885;c <em>tr&ocirc;ng c&oacute; v&#7867;</em> ph&#7913;c t&#7841;p).</p>
+
+<p>N&#7871;u c&oacute; &#273;i&#7875;m n&agrave;o kh&oacute; hi&#7875;u, b&#7841;n &#273;&#7885;c &#273;&#432;&#7907;c khuy&#7871;n kh&iacute;ch &#273;&#7885;c l&#7841;i c&aacute;c b&agrave;i tr&#432;&#7899;c, trong &#273;&oacute; quan tr&#7885;ng nh&#7845;t l&agrave; <a href="logisticregression.html">B&agrave;i 10: Logistic Regression</a>.
+<a name="-gioi-thieu" href="softmax.html"></a></p>
+
+<h2 id="1-gi&#7899;i-thi&#7879;u">1. Gi&#7899;i thi&#7879;u</h2>
+<p>T&ocirc;i xin ph&eacute;p &#273;&#432;&#7907;c b&#7855;t &#273;&#7847;u t&#7915; m&ocirc; h&igrave;nh <a href="/2017/02/11/binaryclassifiers/#one-vs-rest-hay-one-hot-coding"><strong>one-vs-rest</strong></a> &#273;&#432;&#7907;c tr&igrave;nh b&agrave;y trong b&agrave;i tr&#432;&#7899;c. Output layer (m&agrave;u &#273;&#7887; nh&#7841;t) c&oacute; th&#7875; ph&acirc;n t&aacute;ch th&agrave;nh hai <em>sublayer</em> nh&#432; h&igrave;nh d&#432;&#7899;i &#273;&acirc;y:</p>
+
+<div class="imgcap">
+<img src="images/softmax-%5Cassets%5C13_softmax%5Conevsrest.png" align="center" width="600"><div class="thecap">H&igrave;nh 1: Multi-class classification v&#7899;i Logistic Regression v&agrave; one-vs-rest.</div>
+</div>
+
+<p>D&#7919; li&#7879;u \(\mathbf{x}\) c&oacute; s&#7889; chi&#7873;u l&agrave; \((d +1)\) v&igrave; c&oacute; ph&#7847;n t&#7917; 1 &#273;&#432;&#7907;c th&ecirc;m v&agrave;o ph&iacute;a tr&#432;&#7899;c, th&#7875; hi&#7879;n h&#7879; s&#7889; t&#7921; do trong h&agrave;m tuy&#7871;n t&iacute;nh. H&#7879; s&#7889; t&#7921; do \(w_{0j}\) c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; bias.</p>
+
+<p>Gi&#7843; s&#7917; s&#7889; classes l&agrave; \(C\). V&#7899;i one-vs-rest, ch&uacute;ng ta c&#7847;n x&acirc;y d&#7921;ng \(C\) Logistic Regression kh&aacute;c nhau. C&aacute;c <em>&#273;&#7847;u ra d&#7921; &#273;o&aacute;n</em> &#273;&#432;&#7907;c t&iacute;nh theo h&agrave;m sigmoid:
+\[
+a_i = \text{sigmoid}(z_i) = \text{sigmoid}(\mathbf{w}_i^T\mathbf{x})
+\]
+Trong k&#7929; thu&#7853;t n&agrave;y, c&aacute;c ph&#7847;n t&#7917; \(a_i, i = 1, 2, \dots, C\) &#273;&#432;&#7907;c suy ra tr&#7921;c ti&#7871;p ch&#7881; v&#7899;i \(z_i\). V&igrave; v&#7853;y, kh&ocirc;ng c&oacute; m&#7889;i quan h&#7879; ch&#7863;t ch&#7869; n&agrave;o gi&#7919;a c&aacute;c \(a_i\), t&#7913;c t&#7893;ng c&#7911;a ch&uacute;ng c&oacute; th&#7875; nh&#7887; h&#417;n ho&#7863;c l&#7899;n h&#417;n 1. N&#7871;u ta c&oacute; th&#7875; khai th&aacute;c &#273;&#432;&#7907;c m&#7895;i quan h&#7879; gi&#7919;a c&aacute;c \(z_i\) th&igrave; k&#7871;t qu&#7843; c&#7911;a b&agrave;i to&aacute;n classification c&oacute; th&#7875; t&#7889;t h&#417;n.</p>
+
+<p>Ch&uacute; &yacute; r&#7857;ng c&aacute;c m&ocirc; h&igrave;nh Linear Regression, PLA, Logistic Regression ch&#7881; c&oacute; 1 node &#7903; output layer. Trong c&aacute;c tr&#432;&#7901;ng h&#7907;p &#273;&oacute;, tham s&#7889; m&ocirc; h&igrave;nh ch&#7881; l&agrave; 1 vector \(\mathbf{w}\). Trong tr&#432;&#7901;ng h&#7907;p output layer c&oacute; nhi&#7873;u h&#417;n 1 node, tham s&#7889; m&ocirc; h&igrave;nh s&#7869; l&agrave; t&#7853;p h&#7907;p 
+tham s&#7889; \(\mathbf{w}_i\) &#7913;ng v&#7899;i t&#7915;ng node. L&uacute;c n&agrave;y, ta c&oacute; <em>ma tr&#7853;n tr&#7885;ng s&#7889;</em> \(\mathbf{W} = [\mathbf{w}_1, \mathbf{w}_2, \dots, \mathbf{w}_C]\).</p>
+
+<p><a name="-softmax-function" href="softmax.html"></a></p>
+
+<h2 id="2-softmax-function">2. Softmax function</h2>
+<p><a name="-cong-thuc-cua-softmax-function" href="softmax.html"></a></p>
+
+<h3 id="21-c&ocirc;ng-th&#7913;c-c&#7911;a-softmax-function">2.1. C&ocirc;ng th&#7913;c c&#7911;a Softmax function</h3>
+<p>Ch&uacute;ng ta c&#7847;n m&#7897;t m&ocirc; h&igrave;nh x&aacute;c su&#7845;t sao cho v&#7899;i m&#7895;i input \(\mathbf{x}\), \(a_i\) th&#7875; hi&#7879;n x&aacute;c su&#7845;t &#273;&#7875; input &#273;&oacute; r&#417;i v&agrave;o class \(i\). V&#7853;y &#273;i&#7873;u ki&#7879;n c&#7847;n l&agrave; c&aacute;c \(a_i\) ph&#7843;i d&#432;&#417;ng v&agrave; t&#7893;ng c&#7911;a ch&uacute;ng b&#7857;ng 1. &#272;&#7875; c&oacute; th&#7875; th&#7887;a m&atilde;n &#273;i&#7873;u ki&#7879;n n&agrave;y, ch&uacute;ng ta c&#7847;n <em>nh&igrave;n v&agrave;o</em> m&#7885;i gi&aacute; tr&#7883; \(z_i\) v&agrave; d&#7921;a tr&ecirc;n quan h&#7879; gi&#7919;a c&aacute;c \(z_i\) n&agrave;y &#273;&#7875; t&iacute;nh to&aacute;n gi&aacute; tr&#7883; c&#7911;a \(a_i\). Ngo&agrave;i c&aacute;c &#273;i&#7873;u ki&#7879;n \(a_i\) l&#7899;n h&#417;n 0 v&agrave; c&oacute; t&#7893;ng b&#7857;ng 1, ch&uacute;ng ta s&#7869; th&ecirc;m m&#7897;t &#273;i&#7873;u ki&#7879;n c&#361;ng r&#7845;t t&#7921; nhi&ecirc;n n&#7919;a, &#273;&oacute; l&agrave;: gi&aacute; tr&#7883; \(z_i = \mathbf{w}_i^T\mathbf{x}\) c&agrave;ng l&#7899;n th&igrave; x&aacute;c su&#7845;t d&#7919; li&#7879;u r&#417;i v&agrave;o class \(i\) c&agrave;ng cao. &#272;i&#7873;u ki&#7879;n cu&#7889;i n&agrave;y ch&#7881; ra r&#7857;ng ch&uacute;ng ta c&#7847;n m&#7897;t h&agrave;m &#273;&#7891;ng bi&#7871;n &#7903; &#273;&acirc;y.</p>
+
+<p>Ch&uacute; &yacute; r&#7857;ng \(z_i \) c&oacute; th&#7875; nh&#7853;n gi&aacute; tr&#7883; c&#7843; &acirc;m v&agrave; d&#432;&#417;ng. M&#7897;t h&agrave;m s&#7889; <em>m&#432;&#7907;t</em> &#273;&#417;n gi&#7843;n c&oacute; th&#7875; ch&#7855;c ch&#7855;n bi&#7871;n  \(z_i \) th&agrave;nh m&#7897;t gi&aacute; tr&#7883; d&#432;&#417;ng, v&agrave; h&#417;n n&#7919;a, &#273;&#7891;ng bi&#7871;n, l&agrave; h&agrave;m \(\exp(z_i) = e^{z_i}\). &#272;i&#7873;u ki&#7879;n <em>m&#432;&#7907;t</em> &#273;&#7875; thu&#7853;n l&#7907;i h&#417;n trong vi&#7879;c t&iacute;nh &#273;&#7841;o h&agrave;m sau n&agrave;y. &#272;i&#7873;u ki&#7879;n cu&#7889;i c&ugrave;ng, t&#7893;ng c&aacute;c \(a_i\) b&#7857;ng 1 c&oacute; th&#7875; &#273;&#432;&#7907;c &#273;&#7843;m b&#7843;o n&#7871;u:</p>
+
+<p>\[
+a_i = \frac{\exp(z_i)}{\sum_{j=1}^C \exp(z_j)}, ~~ \forall i = 1, 2, \dots, C
+\]</p>
+
+<p>H&agrave;m s&#7889; n&agrave;y, t&iacute;nh t&#7845;t c&#7843; c&aacute;c \(a_i\) d&#7921;a v&agrave;o t&#7845;t c&#7843; c&aacute;c \(z_i\), th&otilde;a m&atilde;n t&#7845;t c&#7843; c&aacute;c &#273;i&#7873;u ki&#7879;n &#273;&atilde; x&eacute;t: d&#432;&#417;ng, t&#7893;ng b&#7857;ng 1, gi&#7919; &#273;&#432;&#7907;c <em>th&#7913; t&#7921;</em> c&#7911;a \(z_i\). H&agrave;m s&#7889; n&agrave;y &#273;&#432;&#7907;c g&#7885;i l&agrave; <em>softmax function</em>. Ch&uacute; &yacute; r&#7857;ng v&#7899;i c&aacute;ch &#273;&#7883;nh ngh&#297;a n&agrave;y, kh&ocirc;ng c&oacute; x&aacute;c su&#7845;t \(a_i\) n&agrave;o tuy&#7879;t &#273;&#7889;i b&#7857;ng 0 ho&#7863;c tuy&#7879;t &#273;&#7889;i b&#7857;ng 1, m&#7863;c d&ugrave; ch&uacute;ng c&oacute; th&#7875; r&#7845;t g&#7847;n 0 ho&#7863;c 1 khi \(z_i\) r&#7845;t nh&#7887; ho&#7863;c r&#7845;t l&#7899;n khi so s&aacute;nh v&#7899;i c&aacute;c \(z_j, j \neq i\).</p>
+
+<p>L&uacute;c n&agrave;y, ta c&oacute; th&#7875; gi&#7843; s&#7917; r&#7857;ng:</p>
+
+<p>\[
+P(y_k = i | \mathbf{x}_k; \mathbf{W}) = a_i
+\]</p>
+
+<p>Trong &#273;&oacute;, \(P(y = i | \mathbf{x}; \mathbf{W})\) &#273;&#432;&#7907;c hi&#7875;u l&agrave; x&aacute;c su&#7845;t &#273;&#7875; m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u \(\mathbf{x}\) r&#417;i v&agrave;o class th&#7913; \(i\) n&#7871;u bi&#7871;t tham s&#7889; m&ocirc; h&igrave;nh (ma tr&#7853;n tr&#7885;ng s&#7889;) l&agrave; \(\mathbf{W}\).</p>
+
+<p>H&igrave;nh v&#7869; d&#432;&#7899;i &#273;&acirc;y th&#7875; hi&#7879;n m&#7841;ng Softmax Regression d&#432;&#7899;i d&#7841;ng neural network:</p>
+<div class="imgcap">
+<img src="images/softmax-%5Cassets%5C13_softmax%5Csoftmax_nn.png" align="center" width="800"><div class="thecap">H&igrave;nh 2: M&ocirc; h&igrave;nh Softmax Regression d&#432;&#7899;i d&#7841;ng Neural network.</div>
+</div>
+
+<p>&#7902; ph&#7847;n b&ecirc;n ph&#7843;i, h&agrave;m tuy&#7871;n t&iacute;nh \(\Sigma\) v&agrave; h&agrave;m softmax (activation function) &#273;&#432;&#7907;c t&aacute;ch ri&ecirc;ng ra &#273;&#7875; ph&#7909;c v&#7909; cho m&#7909;c &#273;&iacute;ch minh h&#7885;a. D&#7841;ng <em>short form</em> &#7903; b&ecirc;n ph&#7843;i l&agrave; d&#7841;ng hay &#273;&#432;&#7907;c s&#7917; d&#7909;ng trong c&aacute;c Neural Networks, l&#7899;p \(\mathbf{a}\) &#273;&#432;&#7907;c ng&#7847;m hi&#7875;u l&agrave; bao g&#7891;m c&#7843; l&#7899;p \(\mathbf{z}\).</p>
+
+<p><a name="-softmax-function-trong-python" href="softmax.html"></a></p>
+
+<h3 id="22-softmax-function-trong-python">2.2. Softmax function trong Python</h3>
+<p>D&#432;&#7899;i &#273;&acirc;y l&agrave; m&#7897;t &#273;o&#7841;n code vi&#7871;t h&agrave;m softmax. &#272;&#7847;u v&agrave;o l&agrave; m&#7897;t ma tr&#7853;n v&#7899;i m&#7895;i c&#7897;t l&agrave; m&#7897;t vector \(\mathbf{z}\), &#273;&#7847;u ra c&#361;ng l&agrave; m&#7897;t ma tr&#7853;n m&agrave; m&#7895;i c&#7897;t c&oacute; gi&aacute; tr&#7883; l&agrave; \(\mathbf{a} = \text{softmax}(\mathbf{z})\). C&aacute;c gi&aacute; tr&#7883; c&#7911;a \(\mathbf{z}\) c&ograve;n &#273;&#432;&#7907;c g&#7885;i l&agrave; <strong>scores</strong>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+
+<span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">Z</span><span class="p">):</span>
+    <span class="s">"""
+    Compute softmax values for each sets of scores in V.
+    each column of V is a set of score.    
+    """</span>
+    <span class="n">e_Z</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">e_Z</span> <span class="o">/</span> <span class="n">e_Z</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">A</span>
+</code></pre></div></div>
+
+<p><a name="-mot-vai-vi-du" href="softmax.html"></a></p>
+
+<h3 id="23-m&#7897;t-v&agrave;i-v&iacute;-d&#7909;">2.3. M&#7897;t v&agrave;i v&iacute; d&#7909;</h3>
+
+<p>H&igrave;nh 3 d&#432;&#7899;i &#273;&acirc;y l&agrave; m&#7897;t v&agrave;i v&iacute; d&#7909; v&#7873; m&#7889;i quan h&#7879; gi&#7919;a &#273;&#7847;u v&agrave;o v&agrave; &#273;&#7847;u ra c&#7911;a h&agrave;m softmax. H&agrave;ng tr&ecirc;n m&agrave;u xanh nh&#7841;t th&#7875; hi&#7879;n c&aacute;c scores \(z_i\) v&#7899;i gi&#7843; s&#7917; r&#7857;ng s&#7889; classes l&agrave; 3. H&agrave;ng d&#432;&#7899;i m&agrave;u &#273;&#7887; nh&#7841;t th&#7875; hi&#7879;n c&aacute;c gi&aacute; tr&#7883; &#273;&#7847;u ra \(a_i\) c&#7911;a h&agrave;m softmax.</p>
+
+<div class="imgcap">
+<img src="images/softmax-%5Cassets%5C13_softmax%5Csoftmax_ex.png" align="center" width="600"><div class="thecap">H&igrave;nh 3: M&#7897;t s&#7889; v&iacute; d&#7909; v&#7873; &#273;&#7847;u v&agrave;o v&agrave; &#273;&#7847;u ra c&#7911;a h&agrave;m softmax.</div>
+</div>
+
+<p>C&oacute; m&#7897;t v&agrave;i quan s&aacute;t nh&#432; sau:</p>
+
+<ul><li>
+    <p>C&#7897;t 1: N&#7871;u c&aacute;c \(z_i\) b&#7857;ng nhau, th&igrave; c&aacute;c \(a_i\) c&#361;ng b&#7857;ng nhau v&agrave; b&#7857;ng 1/3.</p>
+  </li>
+  <li>
+    <p>C&#7897;t 2: N&#7871;u gi&aacute; tr&#7883; l&#7899;n nh&#7845;t trong c&aacute;c \(z_i\) l&agrave; \(z_1\) v&#7851;n b&#7857;ng 2, nh&#432;ng c&aacute;c gi&aacute; tr&#7883; kh&aacute;c thay &#273;&#7893;i, th&igrave; m&#7863;c d&ugrave; x&aacute;c su&#7845;t t&#432;&#417;ng &#7913;ng \(a_1\) v&#7851;n l&agrave; l&#7899;n nh&#7845;t, nh&#432;ng n&oacute; &#273;&atilde; thay &#273;&#7893;i l&ecirc;n h&#417;n 0.5. &#272;&acirc;y ch&iacute;nh l&agrave; m&#7897;t l&yacute; do m&agrave; t&ecirc;n c&#7911;a h&agrave;m n&agrave;y c&oacute; t&#7915; <em>soft</em>. (<em>max</em> v&igrave; ph&#7849;n t&#7915; l&#7899;n nh&#7845;t v&#7851;n l&agrave; ph&#7847;n t&#7917; l&#7899;n nh&#7845;t).</p>
+  </li>
+  <li>
+    <p>C&#7897;t 3: Khi c&aacute;c gi&aacute; tr&#7883; \(z_i\) l&agrave; &acirc;m th&igrave; c&aacute;c gi&aacute; tr&#7883; \(a_i\) v&#7851;n l&agrave; d&#432;&#417;ng v&agrave; th&#7913; t&#7921; v&#7851;n &#273;&#432;&#7907;c &#273;&#7843;m b&#7843;o.</p>
+  </li>
+  <li>
+    <p>C&#7897;t 4: N&#7871;u \(z_1 = z_2\), th&igrave; \(a_1 = a_2\).</p>
+  </li>
+</ul><p>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; th&#7917; v&#7899;i c&aacute;c gi&aacute; tr&#7883; kh&aacute;c tr&#7921;c ti&#7871;p tr&ecirc;n tr&igrave;nh duy&#7879;t trong <a href="http://neuralnetworksanddeeplearning.com/chap3.html">link n&agrave;y</a>, k&eacute;o xu&#7889;ng ph&#7847;n Softmax.</p>
+
+<p><a name="-phien-ban-on-dinh-hon-cua-softmax-function" href="softmax.html"></a></p>
+
+<h3 id="24-phi&ecirc;n-b&#7843;n-&#7893;n-&#273;&#7883;nh-h&#417;n-c&#7911;a-softmax-function">2.4. Phi&ecirc;n b&#7843;n &#7893;n &#273;&#7883;nh h&#417;n c&#7911;a softmax function</h3>
+
+<p>Khi m&#7897;t trong c&aacute;c \(z_i\) qu&aacute; l&#7899;n, vi&#7879;c t&iacute;nh to&aacute;n \(\exp(z_i)\) c&oacute; th&#7875; g&acirc;y ra hi&#7879;n t&#432;&#7907;ng tr&agrave;n s&#7889; (overflow), &#7843;nh h&#432;&#7903;ng l&#7899;n t&#7899;i k&#7871;t qu&#7843; c&#7911;a h&agrave;m softmax. C&oacute; m&#7897;t c&aacute;ch kh&#7855;c ph&#7909;c hi&#7879;n t&#432;&#7907;ng n&agrave;y b&#7857;ng c&aacute;ch d&#7921;a tr&ecirc;n quan s&aacute;t sau:</p>
+
+<p>\[
+\begin{eqnarray}
+\frac{\exp(z_i)}{\sum_{j=1}^C \exp(z_j)} &amp;=&amp; \frac{\exp(-c)\exp(z_i)}{\exp(-c)\sum_{j=1}^C \exp(z_j)}\<br>
+&amp;=&amp; \frac{\exp(z_i-c)}{\sum_{j=1}^C \exp(z_j-c)}
+\end{eqnarray}
+\]
+v&#7899;i \(c\) l&agrave; m&#7897;t h&#7857;ng s&#7889; b&#7845;t k&#7923;.</p>
+
+<p>V&#7853;y m&#7897;t ph&#432;&#417;ng ph&aacute;p &#273;&#417;n gi&#7843;n gi&uacute;p kh&#7855;c ph&#7909;c hi&#7879;n t&#432;&#7907;ng overflow l&agrave; tr&#7915; t&#7845;t c&#7843; c&aacute;c \(z_i\) &#273;i m&#7897;t gi&aacute; tr&#7883; &#273;&#7911; l&#7899;n. Trong th&#7921;c nghi&#7879;m, gi&aacute; tr&#7883; &#273;&#7911; l&#7899;n n&agrave;y th&#432;&#7901;ng &#273;&#432;&#7907;c ch&#7885;n l&agrave; \(c = \max_i z_i\). V&#7853;y ch&uacute;ng ta c&oacute; th&#7875; s&#7917;a &#273;o&#7841;n code cho h&agrave;m <code class="language-plaintext highlighter-rouge">softmax</code> ph&iacute;a tr&ecirc;n b&#7857;ng c&aacute;ch tr&#7915; m&#7895;i c&#7897;t c&#7911;a ma tr&#7853;n &#273;&#7847;u v&agrave;o <code class="language-plaintext highlighter-rouge">Z</code> &#273;i gi&aacute; tr&#7883; l&#7899;n nh&#7845;t trong c&#7897;t &#273;&oacute;. Ta c&oacute; phi&ecirc;n b&#7843;n &#7893;n &#273;&#7883;nh h&#417;n l&agrave; <code class="language-plaintext highlighter-rouge">softmax_stable</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">softmax_stable</span><span class="p">(</span><span class="n">Z</span><span class="p">):</span>
+    <span class="s">"""
+    Compute softmax values for each sets of scores in Z.
+    each column of Z is a set of score.    
+    """</span>
+    <span class="n">e_Z</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Z</span> <span class="o">-</span> <span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span> <span class="o">=</span> <span class="bp">True</span><span class="p">))</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">e_Z</span> <span class="o">/</span> <span class="n">e_Z</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">A</span>
+</code></pre></div></div>
+
+<p>trong &#273;&oacute; <code class="language-plaintext highlighter-rouge">axis = 0</code> ngh&#297;a l&agrave; l&#7845;y <code class="language-plaintext highlighter-rouge">max</code> theo c&#7897;t (<code class="language-plaintext highlighter-rouge">axis = 1</code> s&#7869; l&#7845;y max theo h&agrave;ng), <code class="language-plaintext highlighter-rouge">keepdims = True</code> &#273;&#7875; &#273;&#7843;m b&#7843;o ph&eacute;p tr&#7915; gi&#7919;a ma tr&#7853;n <code class="language-plaintext highlighter-rouge">Z</code> v&agrave; vector  th&#7921;c hi&#7879;n &#273;&#432;&#7907;c.</p>
+
+<p><a name="-ham-mat-mat-va-phuong-phap-toi-uu" href="softmax.html"></a></p>
+
+<h2 id="3-h&agrave;m-m&#7845;t-m&aacute;t-v&agrave;-ph&#432;&#417;ng-ph&aacute;p-t&#7889;i-&#432;u">3. H&agrave;m m&#7845;t m&aacute;t v&agrave; ph&#432;&#417;ng ph&aacute;p t&#7889;i &#432;u</h2>
+
+<p><a name="-one-hot-coding" href="softmax.html"></a></p>
+
+<h3 id="31-one-hot-coding">3.1. One hot coding</h3>
+<p>V&#7899;i c&aacute;ch bi&#7875;u di&#7877;n network nh&#432; tr&ecirc;n, m&#7895;i output s&#7869; kh&ocirc;ng c&ograve;n l&agrave; m&#7897;t gi&aacute; tr&#7883; t&#432;&#417;ng &#7913;ng v&#7899;i m&#7895;i class n&#7919;a m&agrave; s&#7869; l&agrave; m&#7897;t vector c&oacute; &#273;&uacute;ng 1 ph&#7847;n t&#7917; b&#7857;ng 1, c&aacute;c ph&#7847;n t&#7917; c&ograve;n l&#7841;i b&#7857;ng 0. Ph&#7847;n t&#7917; b&#7857;ng 1 n&#259;m &#7903; v&#7883; tr&iacute; t&#432;&#417;ng &#7913;ng v&#7899;i class &#273;&oacute;, th&#7875; hi&#7879;n r&#7857;ng &#273;i&#7875;m d&#7919; li&#7879;u &#273;ang x&eacute;t r&#417;i v&agrave;o class n&agrave;y v&#7899;i x&aacute;c su&#7845;t b&#7857;ng 1 (<em>s&#7921; th&#7853;t</em> l&agrave; nh&#432; th&#7871;, kh&ocirc;ng c&#7847;n d&#7921; &#273;o&aacute;n). C&aacute;ch <em>m&atilde; h&oacute;a</em> output n&agrave;y ch&iacute;nh l&agrave; <em>one-hot coding</em> m&agrave; t&ocirc;i &#273;&atilde; &#273;&#7873; c&#7853;p trong b&agrave;i <a href="kmeans.html">K-means clustering</a> v&agrave; <a href="/2017/02/11/binaryclassifiers/#one-vs-rest-hay-one-hot-coding">b&agrave;i tr&#432;&#7899;c</a>.</p>
+
+<p>Khi s&#7917; d&#7909;ng m&ocirc; h&igrave;nh Softmax Regression, v&#7899;i m&#7895;i &#273;&#7847;u v&agrave;o \(\mathbf{x}\), ta s&#7869; c&oacute; <em>&#273;&#7847;u ra d&#7921; &#273;o&aacute;n</em> l&agrave; \(\mathbf{a} = \text{softmax}(\mathbf{W}^T\mathbf{x})\). Trong khi &#273;&oacute;, <em>&#273;&#7847;u ra th&#7921;c s&#7921;</em> ch&uacute;ng ta c&oacute; l&agrave; vector \(\mathbf{y}\) &#273;&#432;&#7907;c bi&#7875;u di&#7877;n d&#432;&#7899;i d&#7841;ng one-hot coding.</p>
+
+<p>H&agrave;m m&#7845;t m&aacute;t s&#7869; &#273;&#432;&#7907;c x&acirc;y d&#7921;ng &#273;&#7875; t&#7889;i thi&#7875;u s&#7921; kh&aacute;c nhau gi&#7919;a <em>&#273;&#7847;u ra d&#7921; &#273;o&aacute;n</em> \(\mathbf{a}\) v&agrave; <em>&#273;&#7847;u ra th&#7921;c s&#7921;</em> \(\mathbf{y}\). M&#7897;t l&#7921;a ch&#7885;n &#273;&#7847;u ti&ecirc;n ta c&oacute; th&#7875; ngh&#297; t&#7899;i l&agrave;:</p>
+
+<p>\[
+J(\mathbf{W}) = \sum_{i=1}^N ||\mathbf{a}_i - \mathbf{y}_i||_2^2
+\]
+<strong>Tuy nhi&ecirc;n &#273;&acirc;y ch&#432;a ph&#7843;i l&agrave; m&#7897;t l&#7921;a ch&#7885;n t&#7889;t</strong>. Khi &#273;&aacute;nh gi&aacute; s&#7921; kh&aacute;c nhau (hay kho&#7843;ng c&aacute;ch) gi&#7919;a hai ph&acirc;n b&#7889; x&aacute;c su&#7845;t (probability distributions), ch&uacute;ng ta c&oacute; m&#7897;t &#273;&#7841;i l&#432;&#7907;ng &#273;o &#273;&#7871;m kh&aacute;c hi&#7879;u qu&#7843; h&#417;n. &#272;&#7841;i l&#432;&#7907;ng &#273;&oacute; c&oacute; t&ecirc;n l&agrave; <a href="https://en.wikipedia.org/wiki/Cross_entropy"><strong>cross entropy</strong></a>.</p>
+
+<p><a name="-cross-entropy" href="softmax.html"></a></p>
+
+<h3 id="32-cross-entropy">3.2. Cross Entropy</h3>
+<p>Cross entropy gi&#7919;a hai ph&acirc;n ph&#7889;i \(\mathbf{p}\) v&agrave; \(\mathbf{q}\) &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a l&agrave;:
+\[
+H(\mathbf{p}, \mathbf{q}) = \mathbf{E_p}[-\log \mathbf{q}]
+\]</p>
+
+<p>V&#7899;i \(\mathbf{p}\) v&agrave; \(\mathbf{q}\) l&agrave; r&#7901;i r&#7841;c (nh&#432; \(\mathbf{y}\) v&agrave; \(\mathbf{a}\) trong b&agrave;i to&aacute;n c&#7911;a ch&uacute;ng ta), c&ocirc;ng th&#7913;c n&agrave;y &#273;&#432;&#7907;c vi&#7871;t d&#432;&#7899;i d&#7841;ng:</p>
+
+<p>\[
+H(\mathbf{p}, \mathbf{q}) =-\sum_{i=1}^C p_i \log q_i ~~~ (1)
+\]</p>
+
+<p>&#272;&#7875; hi&#7875;u r&otilde; h&#417;n &#432;u &#273;i&#7875;m c&#7911;a h&agrave;m cross entropy v&agrave; h&agrave;m b&igrave;nh ph&#432;&#417;ng kho&#7843;ng c&aacute;ch th&ocirc;ng th&#432;&#7901;ng, ch&uacute;ng ta c&ugrave;ng xem H&igrave;nh 4 d&#432;&#7899;i &#273;&acirc;y. &#272;&acirc;y l&agrave; v&iacute; d&#7909; trong tr&#432;&#7901;ng h&#7907;p \(C = 2\) v&agrave; \(p_1\) l&#7847;n l&#432;&#7907;t nh&#7853;n c&aacute;c gi&aacute; tr&#7883; \(0.5, 0.1\) v&agrave; \(0.8\).</p>
+
+<div>
+<table width="100%" style="border: 0px solid white"><tr><td width="30%" style="border: 0px solid white"> 
+        <img style="display:block;" width="100%" src="images/13_softmax-crossentropy1.png"></td>
+        <td width="30%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/13_softmax-crossentropy2.png"></td>
+        <td width="30%" style="border: 0px solid white">
+        <img style="display:block;" width="100%" src="images/13_softmax-crossentropy3.png"></td>
+    </tr></table><div class="thecap"> H&igrave;nh 4: So s&aacute;nh gi&#7919;a h&agrave;m cross entropy v&agrave; h&agrave;m b&igrave;nh ph&#432;&#417;ng kho&#7843;ng c&aacute;ch. C&aacute;c &#273;i&#7875;m m&agrave;u xanh l&#7909;c th&#7875; hi&#7879;n c&aacute;c gi&aacute; tr&#7883; nh&#7887; nh&#7845;t c&#7911;a m&#7895;i h&agrave;m. </div>
+</div>
+
+<p>C&oacute; hai nh&#7853;n x&eacute;t quan tr&#7885;ng sau &#273;&acirc;y:</p>
+
+<ul><li>
+    <p>Gi&aacute; tr&#7883; nh&#7887; nh&#7845;t c&#7911;a c&#7843; hai h&agrave;m s&#7889; &#273;&#7841;t &#273;&#432;&#7907;c khi \(q = p\) t&#7841;i ho&agrave;nh &#273;&#7897; c&#7911;a c&aacute;c &#273;i&#7875;m m&agrave;u xanh l&#7909;c.</p>
+  </li>
+  <li>
+    <p>Quan tr&#7885;ng h&#417;n, h&agrave;m cross entropy nh&#7853;n gi&aacute; tr&#7883; r&#7845;t cao (t&#7913;c loss r&#7845;t cao) khi \(q\) &#7903; xa \(p\). Trong khi &#273;&oacute;, s&#7921; ch&ecirc;nh l&#7879;ch gi&#7919;a c&aacute;c loss &#7903; g&#7847;n hay xa nghi&#7879;m c&#7911;a h&agrave;m b&igrave;nh ph&#432;&#417;ng kho&#7843;ng c&aacute;ch \((q - p)^2\) l&agrave; kh&ocirc;ng &#273;&aacute;ng k&#7875;. V&#7873; m&#7863;t t&#7889;i &#432;u, h&agrave;m cross entropy s&#7869; cho nghi&#7879;m <em>g&#7847;n</em> v&#7899;i \(p\) h&#417;n v&igrave; nh&#7919;ng nghi&#7879;m &#7903; xa b&#7883; <em>tr&#7915;ng ph&#7841;t</em> r&#7845;t n&#7863;ng.</p>
+  </li>
+</ul><p>Hai t&iacute;nh ch&#7845;t tr&ecirc;n &#273;&acirc;y khi&#7871;n cho cross entropy &#273;&#432;&#7907;c s&#7917; d&#7909;ng r&#7897;ng r&atilde;i khi t&iacute;nh kho&#7843;ng c&aacute;ch gi&#7919;a hai ph&acirc;n ph&#7889;i x&aacute;c su&#7845;t.</p>
+
+<p><strong>Ch&uacute; &yacute;:</strong> H&agrave;m cross entropy kh&ocirc;ng c&oacute; t&iacute;nh &#273;&#7889;i x&#7913;ng \(H(\mathbf{p}, \mathbf{q}) \neq H(\mathbf{q}, \mathbf{p})\). &#272;i&#7873;u n&agrave;y c&oacute; th&#7875; d&#7877; d&agrave;ng nh&#7853;n ra &#7903; vi&#7879;c c&aacute;c th&agrave;nh ph&#7847;n c&#7911;a \(\mathbf{p}\) trong c&ocirc;ng th&#7913;c \((1)\) c&oacute; th&#7875; nh&#7853;n gi&aacute; tr&#7883; b&#7857;ng 0, trong khi &#273;&oacute; c&aacute;c th&agrave;nh ph&#7847;n c&#7911;a \(\mathbf{q}\) ph&#7843;i l&agrave; d&#432;&#417;ng v&igrave; \(\log(0)\) kh&ocirc;ng x&aacute;c &#273;&#7883;nh. Ch&iacute;nh v&igrave; v&#7853;y, khi s&#7917; d&#7909;ng cross entropy trong c&aacute;c b&agrave;i to&aacute;n supervised learning, \(\mathbf{p}\) th&#432;&#7901;ng l&agrave; <em>&#273;&#7847;u ra th&#7921;c s&#7921;</em> v&igrave; &#273;&#7847;u ra th&#7921;c s&#7921; ch&#7881; c&oacute; 1 th&agrave;nh ph&#7847;n b&#7857;ng 1, c&ograve;n l&#7841;i b&#7857;ng 0 (one-hot), \(\mathbf{q}\) th&#432;&#7901;ng l&agrave; <em>&#273;&#7847;u ra d&#7921; &#273;o&aacute;n</em>, khi m&agrave; kh&ocirc;ng c&oacute; x&aacute;c su&#7845;t n&agrave;o tuy&#7879;t &#273;&#7889;i b&#7857;ng 1 ho&#7863;c tuy&#7879;t &#273;&#7889;i b&#7857;ng 0 c&#7843;.</p>
+
+<p>Trong <a href="logisticregression.html">Logistic Regression</a>, ch&uacute;ng ta c&#361;ng c&oacute; hai ph&acirc;n ph&#7889;i &#273;&#417;n gi&#7843;n. (i) <em>&#272;&#7847;u ra th&#7921;c s&#7921;</em> c&#7911;a &#273;i&#7875;m d&#7919; li&#7879;u &#273;&#7847;u v&agrave;o \(\mathbf{x}_i\) c&oacute; ph&acirc;n ph&#7889;i x&aacute;c su&#7845;t l&agrave; \([y_i; 1 - y_i]\) v&#7899;i \(y_i\) l&agrave; x&aacute;c su&#7845;t &#273;&#7875; &#273;i&#7875;m d&#7919; li&#7879;u &#273;&#7847;u v&agrave;o r&#417;i v&agrave;o class th&#7913; nh&#7845;t (b&#7857;ng 1 n&#7871;u \(y_i = 1\), b&#7857;ng 0 n&#7871;u \(y_i = 0\)). (ii). <em>&#272;&#7847;u ra d&#7921; &#273;o&aacute;n</em> c&#7911;a &#273;i&#7875;m d&#7919; li&#7879;u &#273;&oacute; l&agrave; \(a_i = \text{sigmoid}(\mathbf{w}^T\mathbf{x})\) l&agrave; x&aacute;c su&#7845;t &#273;&#7875; &#273;i&#7875;m &#273;&oacute; r&#417;i v&agrave;o class th&#7913; nh&#7845;t. X&aacute;c su&#7845;t &#273;&#7875; &#273;i&#7875;m &#273;&oacute; r&#417;i v&agrave;o class th&#7913; hai c&oacute; th&#7875; &#273;&#432;&#7907;c d&#7877; d&agrave;ng suy ra lf \(1 - a_i\). V&igrave; v&#7853;y, h&agrave;m m&#7845;t m&aacute;t trong Logistic Regression:
+\[
+J(\mathbf{w}) = -\sum_{i=1}^N(y_i \log {a}_i + (1-y_i) \log (1 - {a}_i))
+\]
+ch&iacute;nh l&agrave; m&#7897;t tr&#432;&#7901;ng h&#7907;p &#273;&#7863;c bi&#7879;t c&#7911;a Cross Entropy. (\(N\) &#273;&#432;&#7907;c d&ugrave;ng &#273;&#7875; th&#7875; hi&#7879;n s&#7889; &#273;i&#7875;m d&#7919; li&#7879;u trong t&#7853;p training).</p>
+
+<p>V&#7899;i Softmax Regression, trong tr&#432;&#7901;ng h&#7907;p c&oacute; \(C\) classes, <em>loss</em> gi&#7919;a &#273;&#7847;u ra d&#7921; &#273;o&aacute;n v&agrave; &#273;&#7847;u ra th&#7921;c s&#7921; c&#7911;a m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u \(\mathbf{x}_i\) &#273;&#432;&#7907;c t&iacute;nh b&#7857;ng:
+\[
+J(\mathbf{W};\mathbf{x}_i, \mathbf{y}_i) = -\sum_{j=1}^C y_{ji}\log(a_{ji})
+\]
+V&#7899;i \(y_{ji}\) v&agrave; \( a_{ji}\) l&#7847;n l&#432;&#7907;t l&agrave; l&agrave; ph&#7847;n t&#7917; th&#7913; \(j\) c&#7911;a vector (x&aacute;c su&#7845;t) \(\mathbf{y}_i\) v&agrave; \(\mathbf{a}_i\). Nh&#7855;c l&#7841;i r&#7857;ng &#273;&#7847;u ra \(\mathbf{a}_i\) ph&#7909; thu&#7897;c v&agrave;o &#273;&#7847;u v&agrave;o \(\mathbf{x}_i\) v&agrave; ma tr&#7853;n tr&#7885;ng s&#7889; \(\mathbf{W}\).</p>
+
+<p><a name="-ham-mat-mat-cho-softmax-regression" href="softmax.html"></a></p>
+
+<h3 id="33-h&agrave;m-m&#7845;t-m&aacute;t-cho-softmax-regression">3.3. H&agrave;m m&#7845;t m&aacute;t cho Softmax Regression</h3>
+<p>K&#7871;t h&#7907;p t&#7845;t c&#7843; c&aacute;c c&#7863;p d&#7919; li&#7879;u \(\mathbf{x}_i, \mathbf{y}_i, i = 1, 2, \dots, N\), ch&uacute;ng ta s&#7869; c&oacute; h&agrave;m m&#7845;t m&aacute;t cho Softmax Regression nh&#432; sau:</p>
+
+<p>\[
+\begin{eqnarray}
+J(\mathbf{W}; \mathbf{X}, \mathbf{Y}) = -\sum_{i = 1}^N \sum_{j = 1}^C y_{ji}\log(a_{ji}) \<br>
+= -\sum_{i = 1}^N \sum_{j = 1}^C y_{ji}\log\left(\frac{\exp(\mathbf{w}_j^T\mathbf{x}_i)}{\sum_{k=1}^C \exp(\mathbf{w}_k^T\mathbf{x}_i)}\right)
+\end{eqnarray}
+\]</p>
+
+<p>V&#7899;i ma tr&#7853;n tr&#7885;ng s&#7889; \(\mathbf{W}\) l&agrave; bi&#7871;n c&#7847;n t&#7889;i &#432;u. H&agrave;m m&#7845;t m&aacute;t n&agrave;y tr&ocirc;ng <em>c&oacute; v&#7867; &#273;&aacute;ng s&#7907;</em>, nh&#432;ng &#273;&#7915;ng s&#7907;, &#273;&#7885;c ti&#7871;p c&aacute;c b&#7841;n s&#7869; th&#7845;y &#273;&#7841;o h&agrave;m c&#7911;a n&oacute; r&#7845;t &#273;&#7865;p (<em>v&agrave; &#273;&aacute;ng y&ecirc;u</em>).</p>
+
+<p><a name="-toi-uu-ham-mat-mat" href="softmax.html"></a></p>
+
+<h3 id="34-t&#7889;i-&#432;u-h&agrave;m-m&#7845;t-m&aacute;t">3.4. T&#7889;i &#432;u h&agrave;m m&#7845;t m&aacute;t</h3>
+
+<p>M&#7897;t l&#7847;n n&#7919;a, ch&uacute;ng ta l&#7841;i s&#7917; d&#7909;ng <a href="/2017/01/16/gradientdescent2/#-stochastic-gradient-descent">Stochastic Gradient Descent (SGD)</a> &#7903; &#273;&acirc;y.</p>
+
+<p>V&#7899;i ch&#7881; m&#7897;t c&#7863;p d&#7919; li&#7879;u \((\mathbf{x}_i, \mathbf{y}_i)\), ta c&oacute;: 
+\[
+J_i(\mathbf{W}) \triangleq J(\mathbf{W}; \mathbf{x}_i, \mathbf{y}_i) = 
+\]
+\[
+\begin{eqnarray}
+&amp;=&amp; -\sum_{j = 1}^C y_{ji}\log\left(\frac{\exp(\mathbf{w}_j^T\mathbf{x}_i)}{\sum_{k=1}^C \exp(\mathbf{w}_k^T\mathbf{x}_i)}\right) \<br>
+&amp;=&amp; -\sum_{j=1}^C\left(y_{ji} \mathbf{w}_j^T\mathbf{x}_i - y_{ji}\log\left(\sum_{k=1}^C \exp(\mathbf{w}_k^T\mathbf{x}_i)\right)\right) \<br>
+&amp;=&amp; -\sum_{j=1}^C y_{ji} \mathbf{w}_j^T\mathbf{x}_i + \log\left(\sum_{k=1}^C \exp(\mathbf{w}_k^T\mathbf{x}_i)\right) ~~ (3)
+\end{eqnarray}
+\]</p>
+
+<p>trong bi&#7871;n &#273;&#7893;i &#7903; d&ograve;ng cu&#7889;i c&ugrave;ng, t&ocirc;i &#273;&atilde; s&#7917; d&#7909;ng quan s&aacute;t: \(\sum_{j=1}^C y_{ji} = 1\) v&igrave; n&oacute; l&agrave; t&#7893;ng c&aacute;c x&aacute;c su&#7845;t.</p>
+
+<p>Ti&#7871;p theo ta s&#7917; d&#7909;ng c&ocirc;ng th&#7913;c: 
+\[
+\frac{\partial J_i(\mathbf{W})}{\partial \mathbf{W}} = \left[\frac{\partial J_i(\mathbf{W})}{\partial \mathbf{w}_1}, \frac{\partial J_i(\mathbf{W})}{\partial \mathbf{w}_2}, \dots, \frac{\partial J_i(\mathbf{W})}{\partial \mathbf{w}_C}    \right]~~(4)
+\]</p>
+
+<p>Trong &#273;&oacute;, gradient theo t&#7915;ng c&#7897;t c&oacute; th&#7875; t&iacute;nh &#273;&#432;&#7907;c d&#7921;a theo \((3)\):</p>
+
+<p>\[
+\begin{eqnarray}
+\frac{\partial J_i(\mathbf{W})}{\partial \mathbf{w}_j} &amp;=&amp; -y_{ji}\mathbf{x}_i + 
+\frac{\exp(\mathbf{w}_j^T\mathbf{x}_i)}{\sum_{k = 1}^C \exp(\mathbf{w}_k^T\mathbf{x}_i)}\mathbf{x}_i \<br>
+&amp;=&amp; -y_{ji}\mathbf{x}_i + a_{ji} \mathbf{x}_i = \mathbf{x}_i (a_{ji} - y_{ji}) \<br>
+&amp;=&amp; e_{ji}\mathbf{x}_{i} ~(\text{where}~ e_{ji} = a_{ji} - y_{ji}) ~~(5)
+\end{eqnarray}
+\]</p>
+
+<p>Gi&aacute; tr&#7883; \(e_{ji} = a_{ji} - y_{ji} \) c&oacute; th&#7875; &#273;&#432;&#7907;c coi l&agrave; <em>sai s&#7889; d&#7921; &#273;o&aacute;n</em>.</p>
+
+<p>&#272;&#7871;n &#273;&acirc;y ta &#273;&atilde; &#273;&#432;&#7907;c bi&#7875;u th&#7913;c r&#7845;t &#273;&#7865;p r&#7891;i. K&#7871;t h&#7907;p \((4)\) v&agrave; \((5)\) ta c&oacute;: 
+\[
+\frac{\partial J_i(\mathbf{W})}{\partial \mathbf{W}} = \mathbf{x}_i [e_{1i}, e_{2i}, \dots, e_{Ci}] = \mathbf{x}_i\mathbf{e}_i^T
+\]
+<a name="vi-du-va-luu-y-khi-lap-trinh-voi-python" href="softmax.html"></a></p>
+
+<p>T&#7915; &#273;&acirc;y ta c&#361;ng c&oacute; th&#7875; suy ra r&#7857;ng:
+\[
+\frac{\partial J(\mathbf{W})}{\partial \mathbf{W}} = \sum_{i=1}^N \mathbf{x}_i\mathbf{e}_i^T = \mathbf{X}\mathbf{E}^T
+\]
+v&#7899;i \(\mathbf{E} = \mathbf{A - Y}\). C&ocirc;ng th&#7913;c t&iacute;nh gradient &#273;&#417;n gi&#7843;n th&#7871; n&agrave;y gi&uacute;p cho c&#7843; <a href="/2017/01/16/gradientdescent2/#-bien-the-cua-gradient-descent">Batch Gradient Descent, Stochastic Gradient Descent (SGD), v&agrave; Mini-batch Gradient Descent</a> &#273;&#7873;u c&oacute; th&#7875; d&#7877; d&agrave;ng &#273;&#432;&#7907;c &aacute;p d&#7909;ng.</p>
+
+<p>Gi&#7843; s&#7917; r&#7857;ng ch&uacute;ng ta s&#7917; d&#7909;ng SGD, c&ocirc;ng th&#7913;c c&#7853;p nh&#7853;t cho ma tr&#7853;n tr&#7885;ng s&#7889; \(\mathbf{W}\) s&#7869; l&agrave;: 
+\[
+\mathbf{W} = \mathbf{W} +\eta \mathbf{x}_{i}(\mathbf{y}_i - \mathbf{a}_i)^T
+\]</p>
+
+<p>B&#7841;n c&oacute; th&#7845;y c&ocirc;ng th&#7913;c n&agrave;y gi&#7889;ng v&#7899;i <a href="/2017/01/27/logisticregression/#cong-thuc-cap-nhat-cho-logistic-sigmoid-regression">c&ocirc;ng th&#7913;c c&#7853;p nh&#7853;t c&#7911;a Logistic Regression</a> kh&ocirc;ng!</p>
+
+<p>Th&#7921;c ra:</p>
+
+<p><a name="-logistic-regression-la-mot-truong-hop-dat-biet-cua-softmax-regression" href="softmax.html"></a></p>
+
+<h3 id="35-logistic-regression-l&agrave;-m&#7897;t-tr&#432;&#7901;ng-h&#7907;p-&#273;&#7863;t-bi&#7879;t-c&#7911;a-softmax-regression">3.5. Logistic Regression l&agrave; m&#7897;t tr&#432;&#7901;ng h&#7907;p &#273;&#7863;t bi&#7879;t c&#7911;a Softmax Regression</h3>
+
+<p>Khi \(C = 2\), Softmax Regression v&agrave; Logistic Regression l&agrave; gi&#7889;ng nhau. Th&#7853;t v&#7853;y, &#273;&#7847;u ra d&#7921; &#273;o&aacute;n c&#7911;a Softmax Regression v&#7899;i \(C= 2\) c&oacute; th&#7875; &#273;&#432;&#7907;c vi&#7871;t d&#432;&#7899;i d&#7841;ng: 
+\[
+\begin{eqnarray}
+a_1 &amp;=&amp; \frac{\exp(\mathbf{w}_1^T\mathbf{x})} {\exp(\mathbf{w}_1^T\mathbf{x}) + \exp(\mathbf{w}_2^T\mathbf{x})} \<br>
+&amp;=&amp; \frac{1}{1 + \exp((\mathbf{w}_2 - \mathbf{w}_1)^T\mathbf{x})}
+\end{eqnarray}
+\]</p>
+
+<p>&#272;&acirc;y ch&iacute;nh l&agrave; <a href="/2017/01/27/logisticregression/#sigmoid-function">sigmoid function</a>, l&agrave; &#273;&#7847;u ra d&#7921; &#273;o&aacute;n theo Logistic Regression. Khi \(C = 2\), b&#7841;n &#273;&#7885;c c&#361;ng c&oacute; th&#7875; th&#7845;y r&#7857;ng h&agrave;m m&#7845;t m&aacute;t c&#7911;a Logistic v&agrave; Softmax Regression &#273;&#7873;u l&agrave; cross entropy. H&#417;n n&#7919;a, m&#7863;c d&ugrave; c&oacute; 2 outputs, Softmax Regression c&oacute; th&#7875; r&uacute;t g&#7885;n th&agrave;nh 1 output v&igrave; t&#7893;ng 2 outputs lu&ocirc;n lu&ocirc;n b&#7857;ng 1.</p>
+
+<p>Softmax Regression c&ograve;n c&oacute; c&aacute;c t&ecirc;n g&#7885;i kh&aacute;c l&agrave; Multinomial Logistic Regression, Maximum Entropy Classifier, hay r&#7845;t nhi&#7873;u t&ecirc;n kh&aacute;c n&#7919;a. Xem th&ecirc;m <a href="https://en.wikipedia.org/wiki/Multinomial_logistic_regression">Multinomial logistic regression - Wikipedia</a>
+<a name="-mot-vai-luu-y-khi-lap-trinh-voi-python" href="softmax.html"></a></p>
+
+<h2 id="4-m&#7897;t-v&agrave;i-l&#432;u-&yacute;-khi-l&#7853;p-tr&igrave;nh-v&#7899;i-python">4. M&#7897;t v&agrave;i l&#432;u &yacute; khi l&#7853;p tr&igrave;nh v&#7899;i Python</h2>
+
+<p><a name="-bat-dau-voi-du-lieu-nho" href="softmax.html"></a></p>
+
+<h3 id="41-b&#7855;t-&#273;&#7847;u-v&#7899;i-d&#7919;-li&#7879;u-nh&#7887;">4.1. B&#7855;t &#273;&#7847;u v&#7899;i d&#7919; li&#7879;u nh&#7887;</h3>
+<p>C&aacute;c b&agrave;i to&aacute;n Machine Learning th&#432;&#7901;ng c&oacute; &#273;&#7897; ph&#7913;c t&#7841;p cao v&#7899;i l&#432;&#7907;ng d&#7919; li&#7879;u l&#7899;n v&agrave; nhi&#7873;u chi&#7873;u. &#272;&#7875; c&oacute; th&#7875; &aacute;p d&#7909;ng m&#7897;t thu&#7853;t to&aacute;n v&agrave;o m&#7897;t b&agrave;i to&aacute;n c&#7909; th&#7875;, tr&#432;&#7899;c ti&ecirc;n ch&uacute;ng ta c&#7847;n &aacute;p d&#7909;ng thu&#7853;t to&aacute;n &#273;&oacute; v&agrave;o <em>simulated data</em> (d&#7919; li&#7879;u gi&#7843;) v&#7899;i s&#7889; chi&#7873;u v&agrave; s&#7889; &#273;i&#7875;m d&#7919; li&#7879;u nh&#7887; h&#417;n. <em>Simulated data</em> n&agrave;y th&#432;&#7901;ng &#273;&#432;&#7907;c t&#7841;o ng&#7851;u nhi&ecirc;n (c&oacute; th&#7875; th&ecirc;m v&agrave;i r&agrave;ng bu&#7897;c t&ugrave;y v&agrave;o &#273;&#7863;c th&ugrave; c&#7911;a d&#7919; li&#7879;u). V&#7899;i <em>simulated data</em> nh&#7887;, ch&uacute;ng ta c&oacute; th&#7875; debug nhanh h&#417;n v&agrave; th&#7917; v&#7899;i nhi&#7873;u tr&#432;&#7901;ng h&#7907;p <em>simulated data</em> kh&aacute;c nhau. Khi n&agrave;o th&#7845;y thu&#7853;t to&aacute;n ch&#7841;y &#273;&uacute;ng ch&uacute;ng ta m&#7899;i &#273;&#432;a <em>d&#7919; li&#7879;u th&#7853;t</em> v&agrave;o.</p>
+
+<p>V&#7899;i Softmax Regression, t&ocirc;i t&#7841;o <em>simulated data</em> nh&#432; sau:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+
+<span class="c1"># randomly generate data 
+</span><span class="n">N</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># number of training sample 
+</span><span class="n">d</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># data dimension 
+</span><span class="n">C</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1"># number of classes 
+</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,))</span>
+</code></pre></div></div>
+<p>Trong v&iacute; d&#7909; &#273;&#417;n gi&#7843;n n&agrave;y, s&#7889; &#273;i&#7875;m d&#7919; li&#7879;u ch&#7881; l&agrave; <code class="language-plaintext highlighter-rouge">N = 2</code>, s&#7889; chi&#7873;u d&#7919; li&#7879;u <code class="language-plaintext highlighter-rouge">d = 2</code>, v&agrave; s&#7889; classes <code class="language-plaintext highlighter-rouge">C = 3</code>. Nh&#7919;ng gi&aacute; tr&#7883; &#273;&#7911; nh&#7887; n&agrave;y gi&uacute;p cho vi&#7879;c ki&#7875;m tra c&oacute; th&#7875; &#273;&#432;&#7907;c th&#7921;c hi&#7879;n m&#7897;t c&aacute;ch t&#7913;c th&igrave;. Sau khi thu&#7853;t to&aacute;n ch&#7841;y &#273;&uacute;ng v&#7899;i nh&#7919;ng gi&aacute; tr&#7883; nh&#7887; n&agrave;y, ta c&oacute; th&#7875; thay <code class="language-plaintext highlighter-rouge">N, d, C</code> b&#7857;ng v&agrave;i gi&aacute; tr&#7883; kh&aacute;c tr&#432;&#7899;c khi s&#7917; d&#7909;ng d&#7919; li&#7879;u th&#7853;t.</p>
+
+<p><a name="-ma-tran-one-hot-coding" href="softmax.html"></a></p>
+
+<h3 id="42-ma-tr&#7853;n-one-hot-coding">4.2. Ma tr&#7853;n one-hot coding</h3>
+<p>C&oacute; m&#7897;t b&#432;&#7899;c quan tr&#7885;ng n&#7919;a trong Softmax Regression l&agrave; ph&#7843;i chuy&#7875;n &#273;&#7893;i m&#7895;i label \(y_i\) th&agrave;nh m&#7897;t vector \(\mathbf{y}_i\) d&#432;&#7899;i d&#7841;ng one-hot coding. Trong &#273;&oacute;, ch&#7881; c&oacute; &#273;&uacute;ng m&#7897;t ph&#7847;n t&#7917; c&#7911;a \(\mathbf{y}_i\) b&#7857;ng 1, c&aacute;c ph&#7847;n t&#7917; c&ograve;n l&#7841;i b&#7857;ng 0. Nh&#432; v&#7853;y, v&#7899;i \(N\) &#273;i&#7875;m d&#7919; li&#7879;u v&agrave; \(C\) classes, ch&uacute;ng ta s&#7869; c&oacute; m&#7897;t ma tr&#7853;n c&oacute; k&iacute;ch th&#432;&#7899;c \(C \times N\) trong &#273;&oacute; m&#7895;i c&#7897;t ch&#7881; c&oacute; &#273;&uacute;ng 1 ph&#7847;n t&#7917; b&#7857;ng 1, c&ograve;n l&#7841;i b&#7857;ng 0. N&#7871;u ch&uacute;ng ta l&#432;u to&agrave;n b&#7897; d&#7919; li&#7879;u n&agrave;y th&igrave; s&#7869; b&#7883; l&atilde;ng ph&iacute; b&#7897; nh&#7899;.</p>
+
+<p>M&#7897;t c&aacute;ch th&#432;&#7901;ng &#273;&#432;&#7907;c s&#7917; d&#7909;ng l&agrave; l&#432;u ma tr&#7853;n output \(\mathbf{Y}\) d&#432;&#7899;i d&#7841;ng <em>sparse matrix</em>. V&#7873; c&#417; b&#7843;n, c&aacute;ch l&agrave;m n&agrave;y ch&#7881; l&#432;u c&aacute;c <strong>v&#7883; tr&iacute;</strong> kh&aacute;c 0 c&#7911;a ma tr&#7853;n v&agrave; <strong>gi&aacute; tr&#7883;</strong> kh&aacute;c 0 &#273;&oacute;.</p>
+
+<p>Python c&oacute; h&agrave;m <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html">scipy.sparse.coo_matrix</a> gi&uacute;p ch&uacute;ng ta th&#7921;c hi&#7879;n vi&#7879;c n&agrave;y. V&#7899;i one-hot coding, t&ocirc;i th&#7921;c hi&#7879;n nh&#432; sau:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## One-hot coding
+</span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span> 
+<span class="k">def</span> <span class="nf">convert_labels</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">C</span><span class="p">):</span>
+    <span class="s">"""
+    convert 1d label to a matrix label: each column of this 
+    matrix coresponding to 1 element in y. In i-th column of Y, 
+    only one non-zeros element located in the y[i]-th position, 
+    and = 1 ex: y = [0, 2, 1, 0], and 3 classes then return
+
+            [[1, 0, 0, 1],
+             [0, 0, 1, 0],
+             [0, 1, 0, 0]]
+    """</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">sparse</span><span class="p">.</span><span class="n">coo_matrix</span><span class="p">((</span><span class="n">np</span><span class="p">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> 
+        <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)))),</span> <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))).</span><span class="n">toarray</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Y</span> 
+
+<span class="n">Y</span> <span class="o">=</span> <span class="n">convert_labels</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a name="-kiem-tra-dao-ham" href="softmax.html"></a></p>
+
+<h3 id="43-ki&#7875;m-tra-&#273;&#7841;o-h&agrave;m">4.3. Ki&#7875;m tra &#273;&#7841;o h&agrave;m</h3>
+<p>&#272;i&#7873;u c&#7889;t l&otilde;i trong c&aacute;ch t&#7889;i &#432;u h&agrave;m m&#7845;t m&aacute;t l&agrave; t&iacute;nh gradient. V&#7899;i bi&#7875;u th&#7913;c to&aacute;n tr&ocirc;ng <em>kh&aacute; r&#7889;i m&#7855;t</em> nh&#432; tr&ecirc;n, r&#7845;t d&#7877; &#273;&#7875; c&aacute;c b&#7841;n nh&#7847;m l&#7851;n &#7903; m&#7897;t b&#432;&#7899;c n&agrave;o &#273;&oacute;. Softmax Regression v&#7851;n l&agrave; m&#7897;t thu&#7853;t to&aacute;n &#273;&#417;n gi&#7843;n, sau n&agrave;y c&aacute;c b&#7841;n s&#7869; th&#7845;y nh&#432;ng bi&#7875;u th&#7913;c ph&#7913;c t&#7841;p h&#417;n nhi&#7873;u. R&#7845;t kh&oacute; &#273;&#7875; c&oacute; th&#7875; t&iacute;nh to&aacute;n &#273;&uacute;ng gradient &#7903; ngay l&#7847;n th&#7917; &#273;&#7847;u ti&ecirc;n.</p>
+
+<p>Trong th&#7921;c nghi&#7879;m, m&#7897;t c&aacute;ch th&#432;&#7901;ng &#273;&#432;&#7907;c l&agrave;m l&agrave; so s&aacute;nh gradient t&iacute;nh &#273;&#432;&#7907;c v&#7899;i <em>numeric gradient</em>, t&#7913;c gradient t&iacute;nh theo &#273;&#7883;nh ngh&#297;a. B&#7841;n &#273;&#7885;c &#273;&#432;&#7907;c khuy&#7871;n kh&iacute;ch &#273;&#7885;c c&aacute;ch <a href="/2017/01/12/gradientdescent/#kiem-tra-dao-ham">Ki&#7875;m tra &#273;&#7841;o h&agrave;m</a>.</p>
+
+<p>Vi&#7879;c ki&#7875;m tra &#273;&#7841;o h&agrave;m &#273;&#432;&#7907;c th&#7921;c hi&#7879;n nh&#432; sau:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># cost or loss function  
+</span><span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">W</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">Y</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+
+<span class="n">W_init</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">((</span><span class="n">W</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">A</span> <span class="o">-</span> <span class="n">Y</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">E</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">numerical_grad</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">cost</span><span class="p">):</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-6</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">W</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">W</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">W_p</span> <span class="o">=</span> <span class="n">W</span><span class="p">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">W_n</span> <span class="o">=</span> <span class="n">W</span><span class="p">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">W_p</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">eps</span> 
+            <span class="n">W_n</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">eps</span>
+            <span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W_p</span><span class="p">)</span> <span class="o">-</span> <span class="n">cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W_n</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">eps</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span> 
+
+<span class="n">g1</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W_init</span><span class="p">)</span>
+<span class="n">g2</span> <span class="o">=</span> <span class="n">numerical_grad</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W_init</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">g1</span> <span class="o">-</span> <span class="n">g2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2.70479295591e-10
+</code></pre></div></div>
+
+<p>Nh&#432; v&#7853;y, s&#7921; kh&aacute;c bi&#7879;t gi&#7919;a hai &#273;&#7841;o h&agrave;m l&agrave; r&#7845;t nh&#7887;. N&#7871;u c&aacute;c b&#7841;n th&#7917; v&agrave;i tr&#432;&#7901;ng h&#7907;p kh&aacute;c n&#7919;a c&#7911;a <code class="language-plaintext highlighter-rouge">N, C, d</code>, ch&uacute;ng ta s&#7869; th&#7845;y s&#7921; sai kh&aacute;c v&#7851;n l&agrave; nh&#7887;. &#272;i&#7873;u n&agrave;y ch&#7913;ng t&#7887; &#273;&#7841;o h&agrave;m ch&uacute;ng ta t&iacute;nh &#273;&#432;&#7907;c coi l&agrave; ch&iacute;nh x&aacute;c. (V&#7851;n c&oacute; th&#7875; c&oacute; bug, ch&#7881; khi n&agrave;o k&#7871;t qu&#7843; cu&#7889;i c&ugrave;ng v&#7899;i d&#7919; li&#7879;u th&#7853;t l&agrave; ch&#7845;p nh&#7853;n &#273;&#432;&#7907;c th&igrave; ta m&#7899;i c&oacute; th&#7875; b&#7887; c&#7909;m t&#7915; &lsquo;c&oacute; th&#7875; coi&rsquo; &#273;i).</p>
+
+<p>Ch&uacute; &yacute; r&#7857;ng, n&#7871;u <code class="language-plaintext highlighter-rouge">N, C, d</code> qu&aacute; l&#7899;n, vi&#7879;c t&iacute;nh to&aacute;n <code class="language-plaintext highlighter-rouge">numerical_grad</code> tr&#7903; n&ecirc;n c&#7921;c k&#7923; t&#7889;n th&#7901;i gian v&agrave; b&#7897; nh&#7899;. Ch&uacute;ng ta ch&#7881; n&ecirc;n ki&#7875;m tra v&#7899;i nh&#7919;ng d&#7919; li&#7879;u nh&#7887;.
+<a name="-ham-chinh-cho-training-softmax-regression" href="softmax.html"></a></p>
+
+<h3 id="44-h&agrave;m-ch&iacute;nh-cho-training-softmax-regression">4.4. H&agrave;m ch&iacute;nh cho training Softmax Regression</h3>
+
+<p>Sau khi &#273;&atilde; c&oacute; nh&#7919;ng h&agrave;m c&#7847;n thi&#7871;t v&agrave; gradient &#273;&#432;&#7907;c t&iacute;nh &#273;&uacute;ng, ch&uacute;ng ta c&oacute; th&#7875; vi&#7871;t h&agrave;m ch&iacute;nh c&oacute; training Softmax Regression (theo SGD) nh&#432; sau:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">softmax_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">W_init</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_count</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">):</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="p">[</span><span class="n">W_init</span><span class="p">]</span>    
+    <span class="n">C</span> <span class="o">=</span> <span class="n">W_init</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">convert_labels</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+    <span class="n">it</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">check_w_after</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="k">while</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">max_count</span><span class="p">:</span>
+        <span class="c1"># mix data 
+</span>        <span class="n">mix_id</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mix_id</span><span class="p">:</span>
+            <span class="n">xi</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">].</span><span class="n">reshape</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">yi</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[:,</span> <span class="n">i</span><span class="p">].</span><span class="n">reshape</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">ai</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">T</span><span class="p">,</span> <span class="n">xi</span><span class="p">))</span>
+            <span class="n">W_new</span> <span class="o">=</span> <span class="n">W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">eta</span><span class="o">*</span><span class="n">xi</span><span class="p">.</span><span class="n">dot</span><span class="p">((</span><span class="n">yi</span> <span class="o">-</span> <span class="n">ai</span><span class="p">).</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># stopping criteria
+</span>            <span class="k">if</span> <span class="n">count</span><span class="o">%</span><span class="n">check_w_after</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>                
+                <span class="k">if</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">W_new</span> <span class="o">-</span> <span class="n">W</span><span class="p">[</span><span class="o">-</span><span class="n">check_w_after</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">W</span>
+            <span class="n">W</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">W_new</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">W</span>
+<span class="n">eta</span> <span class="o">=</span> <span class="p">.</span><span class="mi">05</span> 
+<span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">W_init</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+
+<span class="n">W</span> <span class="o">=</span> <span class="n">softmax_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">W_init</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+<span class="c1"># W[-1] is the solution, W is all history of weights
+</span></code></pre></div></div>
+
+<p><a name="-ham-du-doan-class-cho-du-lieu-moi" href="softmax.html"></a></p>
+
+<h3 id="45-h&agrave;m-d&#7921;-&#273;o&aacute;n-class-cho-d&#7919;-li&#7879;u-m&#7899;i">4.5. H&agrave;m d&#7921; &#273;o&aacute;n class cho d&#7919; li&#7879;u m&#7899;i</h3>
+
+<p>Sau khi train Softmax Regression v&agrave; t&iacute;nh &#273;&#432;&#7907;c ma tr&#7853;n h&#7879; s&#7889; <code class="language-plaintext highlighter-rouge">W</code>, class c&#7911;a m&#7897;t d&#7919; li&#7879;u m&#7899;i c&oacute; th&#7875; t&igrave;m &#273;&#432;&#7907;c b&#7857;ng c&aacute;ch x&aacute;c &#273;&#7883;nh v&#7883; tr&iacute; c&#7911;a gi&aacute; tr&#7883; l&#7899;n nh&#7845;t &#7903; &#273;&#7847;u ra d&#7921; &#273;o&aacute;n (t&#432;&#417;ng &#7913;ng v&#7899;i x&aacute;c su&#7845;t &#273;i&#7875;m d&#7919; li&#7879;u r&#417;i v&agrave;o class &#273;&oacute; l&agrave; l&#7899;n nh&#7845;t). Ch&uacute; &yacute; r&#7857;ng, c&aacute;c class &#273;&#432;&#7907;c &#273;&aacute;nh s&#7889; l&agrave; <code class="language-plaintext highlighter-rouge">0, 1, 2, ..., C</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">pred</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+    <span class="s">"""
+    predict output of each columns of X
+    Class of each x_i is determined by location of max probability
+    Note that class are indexed by [0, 1, 2, ...., C-1]
+    """</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">softmax_stable</span><span class="p">(</span><span class="n">W</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a name="-vi-du-voi-python" href="softmax.html"></a></p>
+
+<h2 id="5-v&iacute;-d&#7909;-v&#7899;i-python">5. V&iacute; d&#7909; v&#7899;i Python</h2>
+<p><a name="-simulated-data" href="softmax.html"></a></p>
+
+<h3 id="51-simulated-data">5.1. Simulated data</h3>
+<p>&#272;&#7875; minh h&#7885;a c&aacute;ch &aacute;p d&#7909;ng Softmax Regression, t&ocirc;i ti&#7871;p t&#7909;c l&agrave;m tr&ecirc;n <em>simulated data</em>.</p>
+
+<p><strong>T&#7841;o ba c&#7909;m d&#7919; li&#7879;u</strong></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">means</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">X0</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">means</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cov</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">X1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">means</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cov</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">means</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">cov</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="c1"># each column is a datapoint
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X0</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">).</span><span class="n">T</span> 
+<span class="c1"># extended data
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">N</span><span class="p">)),</span> <span class="n">X</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">original_label</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">N</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">N</span> <span class="o">+</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">N</span><span class="p">).</span><span class="n">T</span>
+</code></pre></div></div>
+<p>Ph&acirc;n b&#7889; c&#7911;a c&aacute;c d&#7919; li&#7879;u &#273;&#432;&#7907;c cho nh&#432; h&igrave;nh d&#432;&#7899;i:</p>
+
+<div class="imgcap">
+<img src="images/softmax-%5Cassets%5C13_softmax%5Cex1_1.png" align="center" width="500"><div class="thecap">H&igrave;nh 5: Ph&acirc;n b&#7889; d&#7919; li&#7879;u c&#7911;a c&aacute;c class.</div>
+</div>
+
+<p><strong>Th&#7921;c hi&#7879;n Softmax Regression</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">W_init</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">C</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">softmax_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">original_label</span><span class="p">,</span> <span class="n">W_init</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[ 8.45809734 -3.88415491 -3.44660294]
+ [-1.11205751  1.50441603 -0.76358758]
+ [ 0.24484886  0.26085383  3.3658872 ]]
+</code></pre></div></div>
+
+<p><strong>K&#7871;t qu&#7843; thu &#273;&#432;&#7907;c</strong></p>
+
+<div class="imgcap">
+<img src="images/softmax-%5Cassets%5C13_softmax%5Cex1_2.png" align="center" width="500"><div class="thecap">H&igrave;nh 6: Ranh gi&#7899;i gi&#7919;a c&aacute;c class t&igrave;m &#273;&#432;&#7907;c b&#7857;ng Softmax Regression. </div>
+</div>
+
+<p>Ta th&#7845;y r&#7857;ng Softmax Regression &#273;&atilde; t&#7841;o ra c&aacute;c v&ugrave;ng cho m&#7895;i class. K&#7871;t qu&#7843; n&agrave;y l&agrave; ch&#7845;p nh&#7853;n &#273;&#432;&#7907;c. T&#7915; h&igrave;nh tr&ecirc;n ta c&#361;ng th&#7845;y r&#7857;ng <em>&#273;&#432;&#7901;ng ranh gi&#7899;i</em> gi&#7919;a c&aacute;c classes l&agrave; &#273;&#432;&#7901;ng th&#7859;ng. T&ocirc;i s&#7869; ch&#7913;ng minh &#273;i&#7873;u n&agrave;y &#7903; ph&#7847;n sau.</p>
+
+<p><a name="-softmax-regression-cho-mnist" href="softmax.html"></a></p>
+
+<h3 id="52-softmax-regression-cho-mnist">5.2. Softmax Regression cho MNIST</h3>
+<p>C&aacute;c v&iacute; d&#7909; tr&ecirc;n &#273;&acirc;y &#273;&#432;&#7907;c tr&igrave;nh b&agrave;y &#273;&#7875; gi&uacute;p b&#7841;n &#273;&#7885;c hi&#7875;u r&otilde; Softmax Regression ho&#7841;t &#273;&#7897;ng nh&#432; th&#7871; n&agrave;o. Khi l&agrave;m vi&#7879;c v&#7899;i c&aacute;c b&agrave;i to&aacute;n th&#7921;c t&#7871;, ch&uacute;ng ta n&ecirc;n s&#7917; d&#7909;ng c&aacute;c th&#432; vi&#7879;n c&oacute; s&#7861;n, tr&#7915; khi b&#7841;n c&oacute; th&ecirc;m b&#7899;t v&agrave;i s&#7889; h&#7841;ng n&#7919;a trong h&agrave;m m&#7845;t mat.</p>
+
+<p>Softmax Regression c&#361;ng &#273;&#432;&#7907;c t&iacute;ch h&#7907;p trong h&agrave;m <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">sklearn.linear_model.LogisticRegression</a> c&#7911;a th&#432; vi&#7879;n <a href="http://scikit-learn.org/stable/index.html">sklearn</a>.</p>
+
+<p>&#272;&#7875; s&#7917; d&#7909;ng Softmax Regression, ta c&#7847;n th&ecirc;m m&#7897;t v&agrave;i thu&#7897;c t&iacute;nh n&#7919;a:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">linear_model</span><span class="p">.</span><span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1e5</span><span class="p">,</span> <span class="n">solver</span> <span class="o">=</span> <span class="s">'lbfgs'</span><span class="p">,</span> <span class="n">multi_class</span> <span class="o">=</span> <span class="s">'multinomial'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>V&#7899;i Logistic Regression, <code class="language-plaintext highlighter-rouge">multi_class = 'ovr'</code> l&agrave; gi&aacute; tr&#7883; m&#7863;c &#273;&#7883;nh, t&#432;&#417;ng &#7913;ng v&#7899;i <strong>one-vs-rest</strong>. <code class="language-plaintext highlighter-rouge">solver = 'lbfgs'</code> l&agrave; m&#7897;t ph&#432;&#417;ng ph&aacute;p t&#7889;i &#432;u c&#361;ng d&#7921;a tr&ecirc;n gradient nh&#432;ng hi&#7879;u qu&#7843; h&#417;n v&agrave; ph&#7913;c t&#7841;p h&#417;n Gradient Descent. B&#7841;n &#273;&#7885;c c&oacute; th&#7875; <a href="https://en.wikipedia.org/wiki/Limited-memory_BFGS">&#273;&#7885;c th&ecirc;m &#7903; &#273;&acirc;y</a>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># %reset
+</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="kn">from</span> <span class="nn">mnist</span> <span class="kn">import</span> <span class="n">MNIST</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<span class="n">mntrain</span> <span class="o">=</span> <span class="n">MNIST</span><span class="p">(</span><span class="s">'../MNIST/'</span><span class="p">)</span>
+<span class="n">mntrain</span><span class="p">.</span><span class="n">load_training</span><span class="p">()</span>
+<span class="n">Xtrain</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">mntrain</span><span class="p">.</span><span class="n">train_images</span><span class="p">)</span><span class="o">/</span><span class="mf">255.0</span>
+<span class="n">ytrain</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">mntrain</span><span class="p">.</span><span class="n">train_labels</span><span class="p">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">mntest</span> <span class="o">=</span> <span class="n">MNIST</span><span class="p">(</span><span class="s">'../MNIST/'</span><span class="p">)</span>
+<span class="n">mntest</span><span class="p">.</span><span class="n">load_testing</span><span class="p">()</span>
+<span class="n">Xtest</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">mntest</span><span class="p">.</span><span class="n">test_images</span><span class="p">)</span><span class="o">/</span><span class="mf">255.0</span>
+<span class="n">ytest</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">mntest</span><span class="p">.</span><span class="n">test_labels</span><span class="p">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="c1"># train
+</span><span class="n">logreg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="p">.</span><span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1e5</span><span class="p">,</span> 
+        <span class="n">solver</span> <span class="o">=</span> <span class="s">'lbfgs'</span><span class="p">,</span> <span class="n">multi_class</span> <span class="o">=</span> <span class="s">'multinomial'</span><span class="p">)</span>
+<span class="n">logreg</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+
+<span class="c1"># test
+</span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">logreg</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xtest</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">"Accuracy: %.2f %%"</span> <span class="o">%</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">.</span><span class="n">tolist</span><span class="p">()))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Accuracy: 92.59 %
+</code></pre></div></div>
+
+<p>So v&#7899;i k&#7871;t qu&#7843; h&#417;n 91% c&#7911;a one-vs-rest Logistic Regression th&igrave; Softmax Regression &#273;&atilde; c&#7843;i thi&#7879;n &#273;&#432;&#7907;c m&#7897;t ch&uacute;t. K&#7871;t qu&#7843; th&#7845;p nh&#432; th&#7871; n&agrave;y l&agrave; c&oacute; th&#7875; d&#7921; &#273;o&aacute;n &#273;&#432;&#7907;c v&igrave; th&#7921;c ra Softmax Regression v&#7851;n ch&#7881; t&#7841;o ra c&aacute;c &#273;&#432;&#7901;ng bi&ecirc;n l&agrave; c&aacute;c &#273;&#432;&#7901;ng tuy&#7871;n t&iacute;nh (ph&#7859;ng).</p>
+
+<p><a name="-thao-luan" href="softmax.html"></a></p>
+
+<h2 id="6-th&#7843;o-lu&#7853;n">6. Th&#7843;o lu&#7853;n</h2>
+<p><a name="-boundary-tao-boi-softmax-regression-la-linear" href="softmax.html"></a></p>
+
+<h3 id="61-boundary-t&#7841;o-b&#7903;i-softmax-regression-l&agrave;-linear">6.1 Boundary t&#7841;o b&#7903;i Softmax Regression l&agrave; linear</h3>
+<p>Th&#7853;t v&#7853;y, d&#7921;a v&agrave;o h&agrave;m softmax th&igrave; m&#7897;t &#273;i&#7875;m d&#7919; li&#7879;u \(\mathbf{x}\) &#273;&#432;&#7907;c d&#7921; &#273;o&aacute;n l&agrave; r&#417;i v&agrave;o class \(j\) n&#7871;u \(a_{j} \geq a_{k}, ~\forall k \neq j\). B&#7841;n &#273;&#7885;c c&oacute; th&#7875; ch&#7913;ng minh &#273;&#432;&#7907;c r&#7857;ng \(a_{j} \geq a_{k} \Leftrightarrow z_{j} \geq z_{k}\), hay n&oacute;i c&aacute;ch kh&aacute;c: 
+\[
+\mathbf{w}_j^T \mathbf{x} \geq \mathbf{w}_k^T\mathbf{x}\<br>
+\Leftrightarrow (\mathbf{w}_j - \mathbf{w}_k)^T\mathbf{x} \geq 0
+\]
+&#272;&acirc;y ch&iacute;nh l&agrave; m&#7897;t bi&#7875;u th&#7913;c tuy&#7871;n t&iacute;nh. V&#7853;y boundary t&#7841;o b&#7903;i Softmax Regression c&oacute; d&#7841;ng tuy&#7871;n t&iacute;nh. (Xem th&ecirc;m <a href="/2017/01/27/logisticregression/#boundary-tao-boi-logistic-regression-co-dang-tuyen-tinh">boundary t&#7841;o b&#7903;i Logistic Regression</a>)</p>
+
+<p><a name="-softmax-regression-la-mot-trong-hai-classifiers-pho-bien-nhat" href="softmax.html"></a></p>
+
+<h3 id="62-softmax-regression-l&agrave;-m&#7897;t-trong-hai-classifiers-ph&#7893;-bi&#7871;n-nh&#7845;t">6.2. Softmax Regression l&agrave; m&#7897;t trong hai classifiers ph&#7893; bi&#7871;n nh&#7845;t</h3>
+<p>Softmax Regression c&ugrave;ng v&#7899;i Support Vector Machine (t&ocirc;i s&#7869; tr&igrave;nh b&agrave;y sau v&agrave;i b&agrave;i n&#7919;a) l&agrave; hai classifier ph&#7893; bi&#7871;n nh&#7845;t &#273;&#432;&#7907;c d&ugrave;ng hi&#7879;n nay. Softmax Regression &#273;&#7863;c bi&#7879;t &#273;&#432;&#7907;c s&#7917; d&#7909;ng nhi&#7873;u trong c&aacute;c m&#7841;ng Neural c&oacute; nhi&#7873;u l&#7899;p (Deep Neural Networks hay DNN). Nh&#7919;ng l&#7899;p ph&iacute;a tr&#432;&#7899;c c&oacute; th&#7875; &#273;&#432;&#7907;c coi nh&#432; m&#7897;t b&#7897; <a href="/general/2017/02/06/featureengineering/#feature-extractor">Feature Extractor</a>, l&#7899;p cu&#7889;i c&ugrave;ng c&#7911;a DNN cho b&agrave;i to&aacute;n classification th&#432;&#7901;ng l&agrave; Softmax Regression.</p>
+
+<p><a name="-source-code" href="softmax.html"></a></p>
+
+<h3 id="63-source-code">6.3. Source code</h3>
+
+<p>C&aacute;c b&#7841;n c&oacute; th&#7875; t&igrave;m th&#7845;y source code trong <a href="https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/assets/13_softmax/Softmax%20Regression.ipynb">jupyter notebook n&agrave;y</a>.
+<a name="tai-lieu-tham-khao" href="softmax.html"></a></p>
+
+<h2 id="t&agrave;i-li&#7879;u-tham-kh&#7843;o">T&agrave;i li&#7879;u tham kh&#7843;o</h2>
+<p>[1] <a href="http://ufldl.stanford.edu/tutorial/supervised/SoftmaxRegression/">Softmax Regression</a></p>
+
+<p>[2] <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">sklearn.linear_model.LogisticRegression</a></p>
+
+<p>[3] <a href="https://en.wikipedia.org/wiki/Softmax_function">Softmax function - Wikipedia</a></p>
+
+<p>[4] <a href="http://neuralnetworksanddeeplearning.com/chap3.html">Improving the way neural networks learn</a></p>
+
+
+</div>
+
+<hr><em>N&#7871;u c&oacute; c&acirc;u h&#7887;i, B&#7841;n c&oacute; th&#7875; &#273;&#7875; l&#7841;i comment b&ecirc;n d&#432;&#7899;i ho&#7863;c tr&ecirc;n <a href="https://www.facebook.com/groups/257768141347267/">Forum</a> &#273;&#7875; nh&#7853;n &#273;&#432;&#7907;c c&acirc;u tr&#7843; l&#7901;i s&#7899;m h&#417;n.</em>
+<br><em>B&#7841;n &#273;&#7885;c c&oacute; th&#7875; &#7911;ng h&#7897; blog qua <a href="buymeacoffee.html">'Buy me a cofee'</a> &#7903; g&oacute;c tr&ecirc;n b&ecirc;n tr&aacute;i c&#7911;a blog.
+</em>
+
+<br><em>T&ocirc;i v&#7915;a ho&agrave;n th&agrave;nh cu&#7889;n ebook 'Machine Learning c&#417; b&#7843;n', b&#7841;n c&oacute; th&#7875; &#273;&#7863;t s&aacute;ch <a href="ebook.html">t&#7841;i &#273;&acirc;y</a>.
+
+C&#7843;m &#417;n b&#7841;n.</em>
+
+<hr><!-- previous and next posts --><div class="PageNavigation">
+   
+      <a class="prev" style="color: #204081;" href="binaryclassifiers.html">&laquo; B&agrave;i 12: Binary Classifiers cho c&aacute;c b&agrave;i to&aacute;n Classification</a>
+   
+   
+      <a class="next" style="float: right; color: #204081;" href="mlp.html">B&agrave;i 14: Multi-layer Perceptron v&agrave; Backpropagation &raquo;</a>
+   
+</div>
+
+
+<!-- disqus comments -->
+
+      <hr><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname  = 'tiepvu';
+  var disqus_identifier = 'tiepvupsu.github.io' + '/2017/02/17/softmax/';
+
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    <script id="dsq-count-scr" src="js/count.js" async></script><!-- Start of StatCounter Code for Default Guide --><script type="text/javascript">
+var sc_project=11257386; 
+var sc_invisible=0; 
+var sc_security="69612f05"; 
+var sc_text=2; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("Total visits: <sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'> </"+"script>");
+</script><noscript><div class="statcounter"><a title="web analytics" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="images/69612f05-0" alt="web
+analytics"></a> </div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+<script type="text/javascript" async src="js/2.7.1-MathJax.js">
+</script><!-- 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?...">
+</script> --></div>
+	        <div class="col-md-2 hidden-xs hidden-sm">
+	        	
+          <!-- Google search -->
+<!--           <table border="0">
+          <div id = "top-widget" style="width: 252px; margin-left: -13.5px; margin-top: -10px; margin-bottom: -15px;">
+         <script>
+           (function() {
+             var cx = '012053542614118746585:ktgei4l2oek';
+             var gcse = document.createElement('script');
+             gcse.type = 'text/javascript';
+             gcse.async = true;
+             gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+             var s = document.getElementsByTagName('script')[0];
+             s.parentNode.insertBefore(gcse, s);
+           })();
+         </script>
+         <gcse:search></gcse:search>
+          </div>
+          </table> -->
+
+          
+
+         <!--  
+          <nav>
+          
+            <div class="header">Latest by category</div>
+            <ul>
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/02/24/mlp/">B&agrave;i 14: Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/02/17/softmax/">B&agrave;i 13: Softmax Regression</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/02/11/binaryclassifiers/">B&agrave;i 12: Binary Classifiers cho c&aacute;c b&agrave;i to&aacute;n Classification</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/01/27/logisticregression/">B&agrave;i 10: Logistic Regression</a></li>
+                  
+                    <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif; color: #204081;" href="/2017/01/21/perceptron/">B&agrave;i 9: Perceptron Learning Algorithm</a></li>
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </ul>
+          </nav>
+          
+
+
+
+          <nav>
+            <div class="header">Latest</div>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar2/">Con &#273;&#432;&#7901;ng h&#7885;c PhD c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/10/03/conv2d">B&agrave;i 37: T&iacute;ch ch&#7853;p hai chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/09/11/forum/">Gi&#7899;i thi&#7879;u Di&#7877;n &#273;&agrave;n Machine Learning c&#417; b&#7843;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/07/06/deeplearning/">B&agrave;i 36. Gi&#7899;i thi&#7879;u v&#7873; Keras</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/06/22/deeplearning/">B&agrave;i 35: L&#432;&#7907;c s&#7917; Deep Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/03/22/phuonghoagiang/">B&#7841;n &#273;&#7885;c vi&#7871;t: Con &#273;&#432;&#7901;ng h&#7885;c Khoa h&#7885;c d&#7919; li&#7879;u c&#7911;a m&#7897;t sinh vi&ecirc;n Kinh t&#7871;</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2018/01/14/id3/">B&agrave;i 34: Decision Trees (1): Iterative Dichotomiser 3</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/31/evaluation/">B&agrave;i 33: C&aacute;c ph&#432;&#417;ng ph&aacute;p &#273;&aacute;nh gi&aacute; m&#7897;t h&#7879; th&#7889;ng ph&acirc;n l&#7899;p</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_vectors/">FundaML 3: L&agrave;m vi&#7879;c v&#7899;i c&aacute;c m&#7843;ng ng&#7851;u nhi&ecirc;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/20/fundaml_matrices/">FundaML 2: L&agrave;m vi&#7879;c v&#7899;i ma tr&#7853;n</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/10/12/fundaml_vectors/">FundaML 1: L&agrave;m vi&#7879;c v&#7899;i m&#7843;ng m&#7897;t chi&#7873;u</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/09/24/fundaml/">Gi&#7899;i thi&#7879;u trang web FundaML.com</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/08/nbc/">B&agrave;i 32: Naive Bayes Classifier</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/08/05/phdlife/">PhD life 1: Qu&aacute; tr&igrave;nh vi&#7871;t v&agrave; nh&#7853;n x&eacute;t c&aacute;c b&agrave;i b&aacute;o khoa h&#7885;c</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/17/mlemap/">B&agrave;i 31: Maximum Likelihood v&agrave; Maximum A Posteriori estimation</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/lifesofar/">Con &#273;&#432;&#7901;ng h&#7885;c To&aacute;n c&#7911;a t&ocirc;i</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/09/prob/">B&agrave;i 30: &Ocirc;n t&#7853;p X&aacute;c Su&#7845;t cho Machine Learning</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/07/02/tl/">Quick Note 2: Transfer Learning cho b&agrave;i to&aacute;n ph&acirc;n lo&#7841;i &#7843;nh</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/30/lda/">B&agrave;i 29: Linear Discriminant Analysis</a></li>
+              
+                <li><a style="text-align: left; font-family: 'Open Sans Condensed', sans-serif;color: #204081"  href="/2017/06/22/qns1/">Quick Notes 1</a></li>
+              
+            </ul>
+          </nav> -->
+
+          <aside class="social"><div class="header">Share</div>
+          <div class="share-page">
+    <!-- <b>Share this on:</b>  <br> -->
+
+    <!-- Facebook -->
+    <!-- <a href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/02/17/softmax/" rel="nofollow" target="_blank" title="Share on Facebook"><img src = "/assets/images/facebook.png" width="25"></a> -->
+
+    <div class="fb-share-button" data-href="https://machinelearningcoban.com/2017/02/17/softmax/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://machinelearningcoban.com/2017/02/17/softmax/">Share</a></div>
+
+
+    <!-- Twitter -->
+    <!-- <a href="https://twitter.com/intent/tweet?text=B&agrave;i 13: Softmax Regression&url=https://machinelearningcoban.com/2017/02/17/softmax/&via=&related=" rel="nofollow" target="_blank" title="Share on Twitter" width="25" ><img src = "/assets/images/twitter.png" width="25"></a> -->
+
+    <!-- Google -->
+    <!-- <a href="https://plus.google.com/share?url=https://machinelearningcoban.com/2017/02/17/softmax/" rel="nofollow" target="_blank" title="Share on Google+"><img src = "/assets/images/google.png" width="25"></a> -->
+
+    
+    <!-- LinkedIn -->
+    <!-- <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://machinelearningcoban.com/2017/02/17/softmax/" target="_blank"> <img src="/assets/images/linkedin.png" alt="LinkedIn" width="25"/> -->
+    <!-- </a> -->
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#2b14785e49414e485f167842465b474e0b78434a594e0b695e5f5f4445580d4a465b1069444f5216620e191b584a5c0e191b5f4342580e191b4a454f0e191b5f43445e4c435f0e191b444d0e191b52445e0a0e191b0b435f5f5b58110404464a484342454e474e4a594542454c4844494a450548444604191b1a1c041b19041a1c0458444d5f464a5304">
+        <img src="images/images-email.png" alt="Email" width="25"></a>
+    <!-- Print -->
+    <a href="javascript:;.html" onclick="window.print()">
+        <img src="images/images-print.png" alt="Print" width="25"></a>
+   </div>
+          </aside><nav><div class="header">Di&#7877;n &#273;&agrave;n</div>
+            <a href="https://forum.machinelearningcoban.com">
+            <img width="100%" src="images/latex-new_logo9-2.png"></a>
+          </nav><nav><div class="header">Interactive Learning</div>
+            <a href="https://fundaml.com">
+            <img width="100%" src="images/images-fundaml_web.png"></a>
+          </nav><nav><div class="header" with="100%">Facebook page</div>
+          <!-- <a href = "https://www.facebook.com/machinelearningbasicvn/" target="_blank" title="Follow us"><img src = "/assets/images/facebook.png" width="30"></a> -->
+          <!-- facebook page -->
+
+         <div class="fb-page" data-href="https://www.facebook.com/machinelearningbasicvn/" data-width="250" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/machinelearningbasicvn/" class="fb-xfbml-parse-ignore"><a style="color: #204081" href="https://www.facebook.com/machinelearningbasicvn/">Machine Learning c&#417; b&#7843;n</a></blockquote></div>
+          <!--end facebook page -->
+
+          </nav><nav><div class="header">Facebook group</div>
+            <a href="https://www.facebook.com/groups/257768141347267/">
+            <img width="100%" src="images/14_mlp-multi_layers.png"></a>
+          </nav><nav><div class="header">Recommended books</div>
+            <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjd7Y_Q-tzTAhVISyYKHUXyCekQFggvMAA&amp;url=http%3A%2F%2Fusers.isr.ist.utl.pt%2F~wurmd%2FLivros%2Fschool%2FBishop%2520-%2520Pattern%2520Recognition%2520And%2520Machine%2520Learning%2520-%2520Springer%2520%25202006.pdf&amp;usg=AFQjCNEVQzQ_dEpxG4P7NamTWUXnVXzCng&amp;sig2=H1WVtom4rq3uh8UfbGX4oA">"Pattern recognition and Machine Learning.", C. Bishop </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/tpn/pdfs/blob/master/The%20Elements%20of%20Statistical%20Learning%20-%20Data%20Mining%2C%20Inference%20and%20Prediction%20-%202nd%20Edition%20(ESLII_print4).pdf">"The Elements of Statistical Learning", T. Hastie et al.  </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://www.computervisionmodels.com/">"Computer Vision:  Models, Learning, and Inference", Simon J.D. Prince </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://stanford.edu/~boyd/cvxbook/">"Convex Optimization", Boyd and Vandenberghe</a></li>
+
+            </ul></nav><nav><div class="header">Recommended courses</div>
+
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://www.coursera.org/learn/machine-learning?utm_source=gg&amp;utm_medium=sem&amp;campaignid=693373197&amp;adgroupid=36745103515&amp;device=c&amp;keyword=machine%20learning%20andrew%20ng&amp;matchtype=e&amp;network=g&amp;devicemodel=&amp;adpostion=1t1&amp;creativeid=156061453588&amp;hide_mobile_promo&amp;gclid=Cj0KEQjwt6fHBRDtm9O8xPPHq4gBEiQAdxotvNEC6uHwKB5Ik_W87b9mo-zTkmj9ietB4sI8-WWmc5UaAi6a8P8HAQ">"Machine Learning", Andrew Ng </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs224n/">CS224n: Natural Language Processing with Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://cs231n.stanford.edu/">CS231n: Convolutional Neural Networks for Visual Recognition</a></li>           
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs246/">CS246: Mining Massive Data Sets</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://web.stanford.edu/class/cs20si/syllabus.html">CS20SI: Tensorflow for Deep Learning Research </a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.edx.org/course/introduction-computer-science-mitx-6-00-1x-10">Introduction to Computer Science and Programming Using Python</a></li>           
+
+            </ul></nav><nav><div class="header">Others</div>
+          <ul><li> <a style="text-align: left; color: #074B80;" href="https://github.com/ZuzooVn/machine-learning-for-software-engineers">Top-down learning path: Machine Learning for Software Engineers</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="howdoIcreatethisblog.html">Blog n&agrave;y &#273;&#432;&#7907;c t&#7841;o nh&#432; th&#7871; n&agrave;o?</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-1/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (1/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://thepresentwriter.com/chung-toi-da-apply-va-hoc-tien-si-nhu-the-nao-phan-2/">Ch&uacute;ng t&ocirc;i &#273;&atilde; apply v&agrave; h&#7885;c ti&#7871;n s&#7929; nh&#432; th&#7871; n&agrave;o? (2/2)</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="http://machinelearningmastery.com/inspirational-applications-deep-learning/">8 Inspirational Applications of Deep Learning</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://ccrma.stanford.edu/~dattorro/matrixcalc.pdf">Matrix calculus</a></li>
+
+              <li> <a style="text-align: left; color: #074B80;" href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a></li>
+              
+              <li> <a style="text-align: left; color: #074B80;" href="https://www.forbes.com/sites/quora/2017/04/05/eight-easy-steps-to-get-started-learning-artificial-intelligence/#53c29fa5b117">Eight Easy Steps To Get Started Learning Artificial Intelligence</a></li>
+              <li> <a style="text-align: left; color: #074B80;" href="https://adeshpande3.github.io/adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html">The 9 Deep Learning Papers You Need To Know About</a></li>
+
+                     
+
+            </ul></nav><!-- <img style = "transform: scaleX(1); width:100%; margin-left:00px;position: absolute;" src = "/images/mai.jpg"> --><!--   
+            <nav>
+              <div class="header">Previous by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #074B80;" href="/2017/02/11/binaryclassifiers/">B&agrave;i 12: Binary Classifiers cho c&aacute;c b&agrave;i to&aacute;n Classification</a></li>
+              </ul>
+            </nav>
+           
+           
+            <nav>
+              <div class="header">Next by date</div>
+              <ul>
+                <li><a style="text-align: left; font-family: 'Roboto Condensed', sans-serif; color: #204081;" href="/2017/02/24/mlp/">B&agrave;i 14: Multi-layer Perceptron v&agrave; Backpropagation</a></li>
+              </ul>
+            </nav>
+            --><!-- <img style = "transform: scaleX(1); width:250%; margin-left:-100px;" src = "/images/dao.jpg"> --><!-- <a href ="https://www.facebook.com/masspvn/?fref=nf&pnref=story">MaSSP</a> --></div>
+      	</div>
+    </div>
+<script data-cfasync="false" src="js/cloudflare-static-email-decode.min.js"></script></body></html>
